@@ -37,38 +37,38 @@ src/
     └── app.routes.ts        # Definición de rutas
 
 ```
-🛠️ Tecnologías y Características
-Angular 18: Última versión estable con Signals y nuevo flujo de control.
+## 🛠️ Tecnologías y Características
+**Angular 18:** Última versión estable con Signals y nuevo flujo de control.
 
-Standalone Architecture: Componentes independientes que se gestionan sin NgModules.
+**Standalone Architecture:** Componentes independientes que se gestionan sin NgModules.
 
-SSR & Hydration: Renderizado en servidor con withEventReplay() para mejor SEO.
+**SSR & Hydration:** Renderizado en servidor con withEventReplay() para mejor SEO.
 
-TypeScript: Tipado estricto para un código más robusto.
+**TypeScript:** Tipado estricto para un código más robusto.
 
-🚀 Instalación y Uso
+## 🚀 Instalación y Uso
 Requisitos previos
-Node.js: v20 o superior.
+**Node.js:** v20 o superior.
 
-Angular CLI: v18 o superior.
+**Angular CLI:** v18 o superior.
 
-Pasos para ejecutar
-1. Clonar el repositorio:
+## Pasos para ejecutar
+**1. Clonar el repositorio:**
 
 Bash
 git clone [https://github.com/tu-usuario/vendemosTuCocheFront.git](https://github.com/tu-usuario/vendemosTuCocheFront.git)
 cd vendemosTuCocheFront
-2. Instalar dependencias:
+**2. Instalar dependencias:**
 
 Bash
 npm install
-3. Arrancar el servidor de desarrollo:
+**3. Arrancar el servidor de desarrollo:**
 
 Bash
 ng serve
 🌍 Visita: http://localhost:4200
 
-🏗️ Guía de Comandos CLI
+## 🏗️ Guía de Comandos CLI
 | Acción | Comando |
 | :--- | :--- |
 | **Nuevo Componente** | `ng generate component module/components/nombre` |
@@ -76,7 +76,7 @@ ng serve
 | **Build Producción** | `ng build` |
 | **Ejecutar Tests** | `ng test` |
 
-✅ Próximos Pasos (To-Do)
+## ✅ Próximos Pasos (To-Do)
 [ ] Implementar la conexión real en conexion-bbdd.ts.
 
 [ ] Configurar las rutas principales en app.routes.ts.
