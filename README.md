@@ -1,47 +1,37 @@
-# TFGDAM
-VendemosTuCocheFront 🚗
-Este proyecto ha sido desarrollado con Angular 18, utilizando la arquitectura moderna de Standalone Components (sin módulos tradicionales) y soporte para Server-Side Rendering (SSR).
+# 🚗 VendemosTuCocheFront
 
-🛠️ Estructura del Proyecto
-La organización del código sigue las nuevas convenciones de Angular:
+<p align="center">
+  <img src="https://angular.dev/assets/images/logos/angular/angular.svg" width="100" alt="Angular Logo">
+</p>
 
-src/app/: Núcleo de la aplicación.
+<p align="center">
+  <img src="https://img.shields.io/badge/Angular-18.0-DD0031?style=for-the-badge&logo=angular" alt="Angular 18">
+  <img src="https://img.shields.io/badge/TypeScript-5.4-3178C6?style=for-the-badge&logo=typescript" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Node.js-20+-339933?style=for-the-badge&logo=nodedotjs" alt="Node.js">
+  <img src="https://img.shields.io/badge/SSR-Enabled-success?style=for-the-badge" alt="SSR">
+</p>
 
-components/: Contiene los componentes visuales organizados por secciones (header, body, footer).
+---
 
-services/: Lógica de negocio y comunicación con APIs (ej. conexion-bbdd.ts).
+## 📖 Descripción
 
-app.ts: Componente raíz de la aplicación (sustituye al antiguo app.component.ts).
+Frontend moderno para la plataforma **VendemosTuCoche**, desarrollado con **Angular 18**. El proyecto utiliza la nueva arquitectura de **Standalone Components**, eliminando la necesidad de módulos tradicionales y optimizando el rendimiento mediante **Server-Side Rendering (SSR)**.
 
-app.config.ts: Configuración global de proveedores y servicios.
+## 📂 Estructura del Proyecto
 
-app.routes.ts: Definición de las rutas de navegación.
+La organización sigue un patrón modular basado en componentes independientes dentro de la carpeta `src/app`:
 
-server.ts: Configuración del servidor para el renderizado del lado del servidor (SSR).
-
-🚀 Comandos Rápidos
-Para empezar a trabajar en el proyecto, usa los siguientes comandos en la terminal:
-
-Servidor de Desarrollo
-Ejecuta la aplicación en modo local. La web se actualizará automáticamente al guardar cambios.
-
-Bash
-ng serve
-Accede a: http://localhost:4200
-
-Generar nuevos elementos
-Para mantener la consistencia, usa el CLI de Angular:
-
-Componentes: ng generate component nombre-componente
-
-Servicios: ng generate service services/nombre-servicio
-
-Construcción (Build)
-Para compilar el proyecto y prepararlo para producción:
-
-Bash
-ng build
-💡 Notas de Arquitectura (Angular 18)
-Standalone: Este proyecto no utiliza NgModule. Cada componente gestiona sus propias dependencias a través del array imports en su decorador @Component.
-
-Hydration: Se ha implementado Client Hydration con withEventReplay() en app.config.ts para mejorar el rendimiento y la experiencia de usuario en la carga inicial.
+```text
+src/
+└── app/
+    ├── module/              
+    │   ├── components/      # Componentes de la interfaz
+    │   │   ├── header/      # Barra de navegación
+    │   │   ├── body/        # Contenido principal
+    │   │   └── footer/      # Pie de página
+    │   └── services/        # Lógica y conexión a API
+    │       └── conexion-bbdd.ts
+    ├── app.ts               # Componente raíz (AppComponent)
+    ├── app.html             # Template principal
+    ├── app.config.ts        # Configuración de Providers y SSR
+    └── app.routes.ts        # Definición de rutas
