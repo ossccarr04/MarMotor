@@ -35,3 +35,52 @@ src/
     ├── app.html             # Template principal
     ├── app.config.ts        # Configuración de Providers y SSR
     └── app.routes.ts        # Definición de rutas
+
+```
+🛠️ Tecnologías y Características
+Angular 18: Última versión estable con Signals y nuevo flujo de control.
+
+Standalone Architecture: Componentes independientes que se gestionan sin NgModules.
+
+SSR & Hydration: Renderizado en servidor con withEventReplay() para mejor SEO.
+
+TypeScript: Tipado estricto para un código más robusto.
+
+🚀 Instalación y Uso
+Requisitos previos
+Node.js: v20 o superior.
+
+Angular CLI: v18 o superior.
+
+Pasos para ejecutar
+1. Clonar el repositorio:
+
+Bash
+git clone [https://github.com/tu-usuario/vendemosTuCocheFront.git](https://github.com/tu-usuario/vendemosTuCocheFront.git)
+cd vendemosTuCocheFront
+2. Instalar dependencias:
+
+Bash
+npm install
+3. Arrancar el servidor de desarrollo:
+
+Bash
+ng serve
+🌍 Visita: http://localhost:4200
+
+🏗️ Guía de Comandos CLI
+| Acción | Comando |
+| :--- | :--- |
+| **Nuevo Componente** | `ng generate component module/components/nombre` |
+| **Nuevo Servicio** | `ng generate service module/services/nombre` |
+| **Build Producción** | `ng build` |
+| **Ejecutar Tests** | `ng test` |
+
+✅ Próximos Pasos (To-Do)
+[ ] Implementar la conexión real en conexion-bbdd.ts.
+
+[ ] Configurar las rutas principales en app.routes.ts.
+
+[ ] Añadir validaciones de formularios en el componente de contacto.
+
+[ ] Optimizar imágenes en la carpeta public/.
