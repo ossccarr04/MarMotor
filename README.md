@@ -58,10 +58,11 @@ Requisitos previos
 Bash
 git clone [https://github.com/tu-usuario/vendemosTuCocheFront.git](https://github.com/tu-usuario/vendemosTuCocheFront.git)
 cd vendemosTuCocheFront
-**2. Instalar dependencias:**
 
+**2. Instalar dependencias:**
 Bash
 npm install
+
 **3. Arrancar el servidor de desarrollo:**
 
 Bash
