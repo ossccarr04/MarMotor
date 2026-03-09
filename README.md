@@ -11,7 +11,7 @@
 
 ## 📖 Descripción
 
-Este es el repositorio del servidor (Backend) para **VendemosTuCoche**, una plataforma integral de catálogo y venta de vehículos. Esta API RESTful está construida con **Spring Boot** y se encarga de gestionar la lógica de negocio, la seguridad, la persistencia de datos y la comunicación segura con el frontend en Angular.
+Este es el repositorio del servidor (Backend) para **MarMotor**, una plataforma integral de catálogo y venta de vehículos. Esta API RESTful está construida con **Spring Boot** y se encarga de gestionar la lógica de negocio, la seguridad, la persistencia de datos y la comunicación segura con el frontend en Angular.
 
 [Image of Spring Boot MVC architecture diagram showing Controllers, Services, Repositories and MySQL Database]
 
@@ -53,5 +53,5 @@ El proyecto aplica prácticas de seguridad estándar de la industria:
 
 **1. Clonar el repositorio:**
 ```bash
-git clone [https://github.com/tu-usuario/vendemosTuCocheBackend.git](https://github.com/tu-usuario/vendemosTuCocheBackend.git)
-cd vendemosTuCocheBackend
+git clone [https://github.com/tu-usuario/MarMotorBackend.git](https://github.com/tu-usuario/MarMotorBackend.git)
+cd MarMotorBackend
