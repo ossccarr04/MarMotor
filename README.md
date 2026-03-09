@@ -1,66 +1,65 @@
-# 🚗 Catálogo de Coches - Web App
+# 🚗 Marmotor - Plataforma de Venta de Vehículos
 
-Una aplicación web de pila completa (Full-Stack) diseñada para explorar, buscar y visualizar detalles de vehículos en un catálogo interactivo. 
+Una aplicación web Full-Stack diseñada para la exploración, búsqueda y gestión de un catálogo de vehículos. Permite a los usuarios registrarse, guardar sus coches favoritos y visualizar galerías de imágenes detalladas, todo bajo una arquitectura segura y escalable.
 
 ## 📋 Características Principales
-* **Catálogo interactivo:** Visualización en cuadrícula/lista de los vehículos disponibles.
-* **Búsqueda y Filtros Avanzados:** Búsqueda personalizada por marca, modelo, año, etc.
-* **Vista de Detalles:** Información exhaustiva de cada vehículo al hacer clic sobre él.
-* **Arquitectura Segura:** Implementación de medidas de seguridad en frontend y backend.
 
-## 🛠️ Tecnologías Utilizadas
+* **Catálogo de Vehículos:** Visualización dinámica de coches con su información detallada (marca, modelo, año, precio).
+* **Búsqueda Personalizada:** Filtros avanzados para encontrar vehículos específicos.
+* **Galería de Imágenes:** Sistema de múltiples imágenes por vehículo (relación 1:N).
+* **Sistema de Usuarios y Favoritos:** Registro de usuarios, gestión de roles (USER/ADMIN) y capacidad de guardar vehículos en una lista de favoritos personalizada (relación N:M).
+* **Seguridad Robusta:** Implementación de prácticas estándar de la industria para proteger datos y comunicaciones.
 
-* **Frontend:** Angular, TypeScript, HTML/SCSS.
-* **Backend:** Java, Spring Boot, Spring Data JPA, Hibernate.
-* **Base de Datos:** MySQL.
-* **Despliegue (Producción):** Vercel (Frontend), Render (Backend), Koyeb (Base de datos).
+## 🛠️ Tecnologías y Despliegue
+
+* **Frontend:** Angular, TypeScript, HTML/SCSS. (Desplegado en **Vercel**)
+* **Backend:** Java, Spring Boot, Spring Data JPA, Hibernate. (Desplegado en **Render**)
+* **Base de Datos:** MySQL relacional. (Desplegada en **Koyeb**)
+
+## 🗄️ Arquitectura de la Base de Datos
+
+La aplicación utiliza un modelo relacional optimizado para un rendimiento rápido:
+* `usuarios`: Gestiona la autenticación e incluye el nivel de acceso (columna `rol`).
+* `marcas`: Catálogo de fabricantes independientes.
+* `coches`: Información central del vehículo (incluye la columna `modelo` y conecta con la marca).
+* `imagenes_coche`: Galería fotográfica vinculada a cada vehículo.
+* `favoritos`: Tabla intermedia que relaciona qué usuarios han guardado qué coches.
+
+
 
 ## 🔒 Arquitectura de Seguridad
 
-La aplicación implementa múltiples capas de seguridad para proteger los datos y la infraestructura:
+Se han implementado múltiples capas de seguridad tanto en el cliente como en el servidor:
 
 ### Seguridad en el Backend (Spring Boot)
-1. **Variables de Entorno:** Las credenciales de la base de datos (MySQL) nunca se exponen en el código fuente. Se inyectan a través de variables de entorno (`application.properties`).
-2. **CORS Restringido:** El servidor solo acepta peticiones HTTP provenientes del dominio oficial del frontend, bloqueando accesos no autorizados a la API.
-3. **Prevención de SQL Injection:** Uso de Spring Data JPA e Hibernate, que utilizan *Prepared Statements* de forma nativa para evitar inyecciones SQL en las búsquedas.
-4. **HTTPS en Tránsito:** Toda comunicación en producción se realiza a través de túneles encriptados (SSL/TLS).
+1. **Protección de Credenciales:** Uso exclusivo de Variables de Entorno (`application.properties`) para evitar la exposición de contraseñas de la base de datos en el código fuente.
+2. **Control de Acceso (CORS):** El servidor está configurado para rechazar cualquier petición HTTP que no provenga del dominio oficial del frontend en Vercel.
+3. **Prevención de Inyecciones SQL:** Uso de Spring Data JPA e Hibernate, que sanitizan automáticamente las consultas a la base de datos.
+4. **Cifrado en Tránsito:** Todas las comunicaciones en producción están protegidas mediante HTTPS/SSL.
 
 ### Seguridad en el Frontend (Angular)
-1. **Sanitización de Datos:** Angular protege la aplicación por defecto contra ataques XSS (Cross-Site Scripting) limpiando los valores antes de insertarlos en el DOM.
-2. **Variables de Entorno (Environments):** Separación de URLs de desarrollo (`localhost`) y producción para evitar apuntar accidentalmente a la base de datos real durante pruebas locales.
+1. **Sanitización Automática:** Protección nativa contra ataques XSS (Cross-Site Scripting).
+2. **Gestión de Entornos:** Uso de `environment.ts` y `environment.prod.ts` para separar las URLs locales de las de producción.
 
 ---
 
 ## ⚙️ Requisitos Previos
 
-Para ejecutar este proyecto en tu entorno local, asegúrate de tener instalado:
-* **Java:** JDK 17 o superior.
-* **Node.js:** Versión 18.x o superior.
-* **Angular CLI:** Versión 16+.
-* **MySQL:** Servidor local activo (o conexión a tu base de datos en Koyeb).
-* **Maven:** Para la gestión de dependencias del backend.
+Para ejecutar este proyecto en local, necesitas tener instalado:
+* **Java 17** o superior.
+* **Node.js** (v18+) y **NPM**.
+* **Angular CLI** (v16+).
+* **MySQL Server** local (o las credenciales de la base de datos en Koyeb).
+* **Maven**.
 
 ---
 
 ## 🚀 Instalación y Ejecución Local
 
-
-
-Sigue estos pasos para levantar la aplicación en tu máquina local:
-
 ### 1. Configuración de la Base de Datos (MySQL)
-1. Inicia tu servidor MySQL.
-2. Crea una base de datos local (ej. `coches_db`).
-3. Actualiza el archivo `src/main/resources/application.properties` en el backend con tus credenciales locales o configura las variables de entorno locales (`DB_URL`, `DB_USER`, `DB_PASSWORD`).
-
-### 2. Levantar el Backend (Spring Boot)
-Abre una terminal en la carpeta del backend y ejecuta:
-```bash
-# Descargar dependencias y compilar
-mvn clean install
-
-# Ejecutar la aplicación
-mvn spring-boot:run
-
-### Un par de consejos adicionales:
-* Asegúrate de tener tu archivo `.gitignore` bien configurado en ambas carpetas (frontend y backend) para que no subas la carpeta `node_modules`, ni la carpeta `target`, ni ningún archivo `.env` o `application-dev.properties` que contenga contraseñas locales.
+1. Crea una base de datos local (ej. `autocatalog_db`).
+2. Configura tus credenciales en el archivo del backend: `src/main/resources/application.properties`.
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/autocatalog_db
+spring.datasource.username=tu_usuario
+spring.datasource.password=tu_contraseña
