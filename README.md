@@ -1,86 +1,48 @@
-# 🚗 VendemosTuCocheFront
+# 🏎️ Marmotor Web - Frontend (Angular)
 
-<p align="center">
-  <img src="https://angular.dev/assets/images/logos/angular/angular.svg" width="100" alt="Angular Logo">
-</p>
+Este es el repositorio del cliente web (Frontend) para **Marmotor**, una plataforma moderna para la exploración y gestión de un catálogo de vehículos. Construida con Angular, esta aplicación ofrece una interfaz de usuario rápida, reactiva y completamente responsiva (adaptable a móviles y escritorio).
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Angular-18.0-DD0031?style=for-the-badge&logo=angular" alt="Angular 18">
-  <img src="https://img.shields.io/badge/TypeScript-5.4-3178C6?style=for-the-badge&logo=typescript" alt="TypeScript">
-  <img src="https://img.shields.io/badge/Node.js-20+-339933?style=for-the-badge&logo=nodedotjs" alt="Node.js">
-  <img src="https://img.shields.io/badge/SSR-Enabled-success?style=for-the-badge" alt="SSR">
-</p>
+
+
+## 🛠️ Stack Tecnológico
+
+* **Framework Principal:** Angular 16+
+* **Lenguaje:** TypeScript
+* **Estilos:** SCSS / CSS3
+* **Peticiones HTTP:** `HttpClient` y RxJS
+* **Despliegue en Producción:** Vercel
+
+## ✨ Características de la Interfaz
+
+* **Catálogo Dinámico:** Tarjetas de vehículos con su imagen principal, marca, modelo y precio.
+* **Sistema de Búsqueda y Filtros:** Búsqueda en tiempo real conectada a la API de Spring Boot.
+* **Vista de Detalles:** Páginas dinámicas (`/coches/:id`) que muestran la galería completa de imágenes y especificaciones del vehículo.
+* **Gestión de Favoritos:** Interfaz intuitiva con botones de "Me gusta" (❤️) para que los usuarios guarden sus coches preferidos.
+* **Control de Acceso (UI):** Renderizado condicional basado en roles (ej. los botones de "Añadir Coche" solo son visibles si el usuario tiene el rol `ADMIN`).
+
+## 🔒 Seguridad y Configuración
+
+1. **Protección XSS Nativa:** Angular purifica automáticamente todos los valores vinculados al DOM, previniendo ataques de Cross-Site Scripting.
+2. **Gestión de Entornos (`environments`):** La aplicación está configurada para apuntar dinámicamente a la API correcta sin exponer código.
+   * En desarrollo (`environment.ts`): Apunta a `http://localhost:8080`.
+   * En producción (`environment.prod.ts`): Apunta a la URL segura (HTTPS) de tu backend alojado en Render.
 
 ---
 
-## 📖 Descripción
+## ⚙️ Requisitos Previos (Desarrollo Local)
 
-Frontend moderno para la plataforma **VendemosTuCoche**, desarrollado con **Angular 18**. El proyecto utiliza la nueva arquitectura de **Standalone Components**, eliminando la necesidad de módulos tradicionales y optimizando el rendimiento mediante **Server-Side Rendering (SSR)**.
+Para ejecutar este proyecto en tu entorno local, asegúrate de tener instalado:
+* [Node.js](https://nodejs.org/) (Versión 18.x o superior)
+* [Angular CLI](https://angular.io/cli) (Instalable vía `npm install -g @angular/cli`)
 
-## 📂 Estructura del Proyecto
+## 🚀 Instalación y Ejecución Local
 
-La organización sigue un patrón modular basado en componentes independientes dentro de la carpeta `src/app`:
-
-```text
-src/
-└── app/
-    ├── module/              
-    │   ├── components/      # Componentes de la interfaz
-    │   │   ├── header/      # Barra de navegación
-    │   │   ├── body/        # Contenido principal
-    │   │   └── footer/      # Pie de página
-    │   └── services/        # Lógica y conexión a API
-    │       └── conexion-bbdd.ts
-    ├── app.ts               # Componente raíz (AppComponent)
-    ├── app.html             # Template principal
-    ├── app.config.ts        # Configuración de Providers y SSR
-    └── app.routes.ts        # Definición de rutas
-
-```
-## 🛠️ Tecnologías y Características
-**Angular 18:** Última versión estable con Signals y nuevo flujo de control.
-
-**Standalone Architecture:** Componentes independientes que se gestionan sin NgModules.
-
-**SSR & Hydration:** Renderizado en servidor con withEventReplay() para mejor SEO.
-
-**TypeScript:** Tipado estricto para un código más robusto.
-
-## 🚀 Instalación y Uso
-Requisitos previos
-**Node.js:** v20 o superior.
-
-**Angular CLI:** v18 o superior.
-
-## Pasos para ejecutar
-**1. Clonar el repositorio:**
-
-Bash
-git clone [https://github.com/tu-usuario/vendemosTuCocheFront.git](https://github.com/tu-usuario/vendemosTuCocheFront.git)
-cd vendemosTuCocheFront
-
-**2. Instalar dependencias:**
-Bash
+### 1. Clonar el repositorio e instalar dependencias
+Abre tu terminal y ejecuta:
+```bash
+git clone [https://github.com/tu-usuario/marmotor-frontend.git](https://github.com/tu-usuario/marmotor-frontend.git)
+cd marmotor-frontend
 npm install
-
-**3. Arrancar el servidor de desarrollo:**
-
-Bash
-ng serve
-🌍 Visita: http://localhost:4200
-
-## 🏗️ Guía de Comandos CLI
-| Acción | Comando |
-| :--- | :--- |
-| **Nuevo Componente** | `ng generate component module/components/nombre` |
-| **Nuevo Servicio** | `ng generate service module/services/nombre` |
-| **Build Producción** | `ng build` |
-| **Ejecutar Tests** | `ng test` |
-
-## ✅ Próximos Pasos (To-Do)
-[ ] Implementar la conexión real en conexion-bbdd.ts.
-
-[ ] Configurar las rutas principales en app.routes.ts.
 
 [ ] Añadir validaciones de formularios en el componente de contacto.
 
