@@ -1,5 +1,5 @@
 {
-  "name": "vendemos-tu-coche-front",
+  "name": "marMotor",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:vendemosTuCocheFront": "node dist/vendemosTuCocheFront/server/server.mjs"
+    "serve:ssr:marMotor": "node dist/marMotor/server/server.mjs"
   },
   "prettier": {
     "printWidth": 100,
