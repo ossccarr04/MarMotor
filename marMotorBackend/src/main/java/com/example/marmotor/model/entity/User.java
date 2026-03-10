@@ -26,6 +26,7 @@ public class User {
             name = "favorites",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "car_id")
+            
     )
     private Set<Car> favoriteCars = new HashSet<>();
 
