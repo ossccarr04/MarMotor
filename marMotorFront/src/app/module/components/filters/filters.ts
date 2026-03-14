@@ -1,14 +1,85 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-filters',
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, FormsModule],
   templateUrl: './filters.html',
   styleUrl: './filters.scss',
 })
 export class Filters {
+  marca = [
+    { nombre: 'SEAT', seleccionado: true },
+    { nombre: 'BMW', seleccionado: false },
+    { nombre: 'AUDI', seleccionado: false },
+    { nombre: 'MERCEDES', seleccionado: false },
+    { nombre: 'VOLKSWAGEN', seleccionado: false },
+    { nombre: 'PEUGEOT', seleccionado: false },
+    { nombre: 'RENAULT', seleccionado: false },
+    { nombre: 'TOYOTA', seleccionado: false },
+    { nombre: 'FORD', seleccionado: false },
+    { nombre: 'HYUNDAI', seleccionado: false },
+    { nombre: 'KIA', seleccionado: false },
+    { nombre: 'NISSAN', seleccionado: false },
+    { nombre: 'MAZDA', seleccionado: false },
+    { nombre: 'HONDA', seleccionado: false },
+    { nombre: 'FIAT', seleccionado: false },
+    { nombre: 'VOLVO', seleccionado: false },
+    { nombre: 'TESLA', seleccionado: false },
+  ];
+
+  contMostrarMarcas=10;
+  isModalMarcasOpen = false;
+  terminoBusqueda = '';
+  marcaBusqueda = '+';
+
+  // Obtiene solo las 10 primeras marcas para la vista principal
+  get marcasPrincipales() {
+    return this.marca.slice(0, this.contMostrarMarcas);
+  }
+
+  // Filtra las marcas en el modal según lo que el usuario escriba
+  get marcasFiltradas() {
+    if (!this.terminoBusqueda) {
+      return this.marca;
+    }
+    return this.marca.filter((marca) => {
+      return marca.nombre.toLowerCase().includes(this.terminoBusqueda.toLowerCase());
+      
+    });
+  }
+
+  // Abre el popup
+  abrirModalMarcas() {
+    this.isModalMarcasOpen = true;
+  }
+
+  // Cierra el popup y limpia el buscador
+  cerrarModalMarcas() {
+    this.isModalMarcasOpen = false;
+    this.terminoBusqueda = '';
+  }
+
+  // Nueva función unificada para seleccionar marca
+  seleccionarMarca(marcaSeleccionada: any) {
+    this.marca.forEach((item) => (item.seleccionado = false));
+    marcaSeleccionada.seleccionado = true;
+    
+    // Averiguamos en qué posición está la marca que acabamos de seleccionar
+    const index = this.marca.findIndex(m => m.nombre === marcaSeleccionada.nombre);
+
+    // Si el índice es 10 o mayor, significa que NO está en las marcasPrincipales
+    if (index >= this.contMostrarMarcas) {
+      this.marcaBusqueda = marcaSeleccionada.nombre;
+    } else {
+      // Si está entre las principales, el botón extra vuelve a ser un '+'
+      this.marcaBusqueda = '+';
+    }
+
+    this.cerrarModalMarcas();
+  }
 
   carrocerias = [
     { nombre: 'SUV', seleccionado: true },
@@ -18,16 +89,17 @@ export class Filters {
 
   combustibles = [
     { nombre: 'ELÉCTRICO', seleccionado: true },
+    { nombre: 'GASOLINA', seleccionado: false },
+    { nombre: 'DIESEL', seleccionado: false },
     { nombre: 'HÍBRIDO', seleccionado: false },
-    { nombre: 'MISMO', seleccionado: false },
-    { nombre: 'HÍBRIDO', seleccionado: false } // Nota: Tienes híbrido dos veces en el diseño original
+    { nombre: 'HÍBRIDO ENCHUFABLE', seleccionado: false }, // Nota: Tienes híbrido dos veces en el diseño original
   ];
 
   // Variables para el precio
-  precioActual = 48500;
-  precioMin = 900;
-  precioMax = 50100;
-  
+  precioActual = 1500;
+  precioMin = 1000;
+  precioMax = 20000;
+
   @ViewChild('sliderElement') sliderElement!: ElementRef;
   isDragging = false;
 
@@ -37,7 +109,7 @@ export class Filters {
 
   // Seleccionar una opción (y desmarcar las demás)
   seleccionarOpcion(lista: any[], index: number) {
-    lista.forEach(item => item.seleccionado = false);
+    lista.forEach((item) => (item.seleccionado = false));
     lista[index].seleccionado = true;
   }
 
@@ -50,14 +122,14 @@ export class Filters {
   get thumbX() {
     const progreso = (this.precioActual - this.precioMin) / (this.precioMax - this.precioMin);
     const angulo = progreso * 2 * Math.PI; // Convertimos el porcentaje a radianes
-    return 50 + 40 * Math.cos(angulo);     // Centro X (50) + Radio (40) * cos(ángulo)
+    return 50 + 40 * Math.cos(angulo); // Centro X (50) + Radio (40) * cos(ángulo)
   }
 
   // Calcula la posición Y del indicador
   get thumbY() {
     const progreso = (this.precioActual - this.precioMin) / (this.precioMax - this.precioMin);
     const angulo = progreso * 2 * Math.PI;
-    return 50 + 40 * Math.sin(angulo);     // Centro Y (50) + Radio (40) * sin(ángulo)
+    return 50 + 40 * Math.sin(angulo); // Centro Y (50) + Radio (40) * sin(ángulo)
   }
 
   iniciarArrastre(event: MouseEvent | TouchEvent) {
@@ -113,10 +185,10 @@ export class Filters {
 
     // 5. Calcular el nuevo precio en base al porcentaje
     const rangoPrecio = this.precioMax - this.precioMin;
-    let nuevoPrecio = this.precioMin + (porcentaje * rangoPrecio);
+    let nuevoPrecio = this.precioMin + porcentaje * rangoPrecio;
 
     // 6. Redondear el precio para que no tenga céntimos feos (ej: va de 500 en 500)
-    nuevoPrecio = Math.round(nuevoPrecio / 100) * 100;
+    nuevoPrecio = Math.round(nuevoPrecio / 500) * 500;
 
     // 7. Asegurar que no se pase de los límites
     if (nuevoPrecio > this.precioMax) nuevoPrecio = this.precioMax;

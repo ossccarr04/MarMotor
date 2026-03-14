@@ -140,13 +140,15 @@ $text-dark: #333;
               transition: stroke-dashoffset 0.05s linear;
             }
             &.thumb {
-            fill: #ffffff; // Interior blanco
-            stroke: #37df8c; // Borde verde para que combine con la línea
-            stroke-width: 2; // Grosor del borde de la bolita
-            // Aplicamos la misma transición que tiene .progress para que se muevan juntos sin lag
-            transition: cx 0.05s linear, cy 0.05s linear; 
-            filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3)); // Sombra para darle efecto 3D
-          }
+              fill: #ffffff; // Interior blanco
+              stroke: #37df8c; // Borde verde para que combine con la línea
+              stroke-width: 2; // Grosor del borde de la bolita
+              // Aplicamos la misma transición que tiene .progress para que se muevan juntos sin lag
+              transition:
+                cx 0.05s linear,
+                cy 0.05s linear;
+              filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.3)); // Sombra para darle efecto 3D
+            }
           }
         }
 
@@ -186,5 +188,188 @@ $text-dark: #333;
         margin-top: 5px;
       }
     }
+  }
+}
+.more-btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  width: 100%;
+}
+
+/* Botón + redondo y atractivo */
+.btn-more {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  color: #333;
+  font-family: $font-family; // Para que mantenga la fuente
+
+  &:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.05);
+  }
+
+  /* NUEVO: Estilos cuando el botón muestra una marca en vez del "+" */
+  &.is-brand-selected {
+    width: auto; // Deja de ser un círculo fijo
+    min-width: 100px; // Un ancho mínimo para que no quede muy corto
+    padding: 10px 20px;
+    border-radius: 12px; // Bordes redondeados como los demás botones
+    font-size: 14px;
+    font-weight: 600;
+
+    // Colores de seleccionado (iguales a tu clase .filter-option.selected)
+    background-color: $accent-green;
+    color: $text-light;
+    border-color: $accent-green;
+    box-shadow: 0 4px 15px rgba(55, 223, 140, 0.3);
+
+    &:hover {
+      background-color: $accent-green; // Evita que se ponga gris al pasar el ratón
+      transform: translateY(-2px); // Mismo efecto hover que las otras marcas
+    }
+  }
+}
+
+/* --- ESTILOS DEL MODAL / POPUP --- */
+.modal-overlay {
+  font-family: $font-family;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); // Fondo oscuro semitransparente
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; // Asegura que esté por encima de todo
+  backdrop-filter: blur(3px); // Toque moderno opcional
+}
+
+.modal-content {
+  font-family: $font-family;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+
+    &:hover {
+      color: #333;
+    }
+  }
+
+  .search-input {
+    font-family: $font-family;
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    box-sizing: border-box; // Evita que se desborde
+
+    &:focus {
+      outline: none;
+      border-color: $accent-green; // Cambia este color según la paleta de tu app
+    }
+  }
+
+  .modal-brands-list {
+    font-family: $font-family;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px; /* Espacio uniforme entre los botones */
+    padding: 10px 5px;
+    margin-top: 15px;
+    max-height: 300px; /* Altura máxima para que no crezca infinitamente */
+    overflow-y: auto; /* Activa el scroll interno si hay muchas marcas */
+    justify-content: center; /* Centra los botones en el contenedor */
+
+    /* Estilos específicos para los botones de marca dentro del modal */
+    .filter-option {
+      font-family: $font-family;
+      flex: 1 1 calc(33.333% - 12px); /* Crea exactamente 3 columnas */
+      min-width: 100px; /* Evita que se encojan demasiado en móviles */
+      padding: 12px 10px;
+      background-color: #f8f9fa; /* Fondo gris muy clarito */
+      border-radius: 8px; /* Bordes redondeados modernos */
+      text-align: center;
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      box-sizing: border-box;
+
+      /* Efecto al pasar el ratón por encima */
+      &:hover {
+        background-color: $accent-green;
+        border-color: #ced4da;
+        transform: translateY(-2px); /* Pequeño salto visual */
+      }
+
+      /* Estilo cuando la marca está seleccionada */
+      &.selected {
+        background-color: $accent-green; /* Color oscuro para destacar */
+        color: #ffffff;
+      }
+    }
+  }
+
+  /* Para personalizar un poco la barra de scroll del modal (opcional) */
+  .modal-brands-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  .modal-brands-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+  .modal-brands-list::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+  }
+  .modal-brands-list::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+  }
+
+  .no-results {
+    font-family: $font-family;
+    width: 100%;
+    text-align: center;
+    color: $accent-green;
+    padding: 20px 0;
   }
 }

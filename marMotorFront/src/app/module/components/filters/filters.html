@@ -3,6 +3,29 @@
 
   <div class="filters-container">
     <div class="filter-card">
+      <h3>MARCA</h3>
+      <div class="filter-options">
+        <div
+          class="filter-option"
+          *ngFor="let item of marcasPrincipales; let i = index"
+          [ngClass]="{ selected: item.seleccionado }"
+          (click)="seleccionarOpcion(marca, i)"
+        >
+          {{ item.nombre }}
+        </div>
+      </div>
+      <div class="more-btn-container">
+        <button
+          class="btn-more"
+          [ngClass]="{ 'is-brand-selected': marcaBusqueda !== '+' }"
+          (click)="abrirModalMarcas()"
+        >
+          {{ marcaBusqueda }}
+        </button>
+      </div>
+    </div>
+
+    <div class="filter-card">
       <h3>TIPO DE CARROCERÍA</h3>
       <div class="filter-options">
         <div
@@ -53,13 +76,8 @@
             [attr.stroke-dasharray]="circunferencia"
             [attr.stroke-dashoffset]="offsetCirculo"
           ></circle>
-          
-          <circle 
-            [attr.cx]="thumbX" 
-            [attr.cy]="thumbY" 
-            r="5" 
-            class="thumb">
-          </circle>
+
+          <circle [attr.cx]="thumbX" [attr.cy]="thumbY" r="5" class="thumb"></circle>
         </svg>
 
         <div class="dial-inner">
@@ -72,3 +90,31 @@
     </div>
   </div>
 </section>
+
+<div class="modal-overlay" *ngIf="isModalMarcasOpen" (click)="cerrarModalMarcas()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="cerrarModalMarcas()">×</button>
+
+    <h3>Buscar Marca</h3>
+
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Escribe una marca..."
+      [(ngModel)]="terminoBusqueda"
+    />
+
+    <div class="modal-brands-list filter-options">
+      <div
+        class="filter-option"
+        *ngFor="let item of marcasFiltradas"
+        [ngClass]="{ selected: item.seleccionado }"
+        (click)="seleccionarMarca(item)"
+      >
+        {{ item.nombre }}
+      </div>
+
+      <div class="no-results" *ngIf="marcasFiltradas.length === 0">No se encontraron marcas.</div>
+    </div>
+  </div>
+</div>
