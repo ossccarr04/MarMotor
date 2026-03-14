@@ -46,6 +46,7 @@ export class Filters {
     return this.circunferencia * (1 - progreso);
   }
 
+  // Calcula la posición X del indicador (la bolita blanca)
   get thumbX() {
     const progreso = (this.precioActual - this.precioMin) / (this.precioMax - this.precioMin);
     const angulo = progreso * 2 * Math.PI; // Convertimos el porcentaje a radianes
