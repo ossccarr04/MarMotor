@@ -89,6 +89,10 @@
       <span class="price-type">Rango tradicional {{ precioActual | number: '1.0-0' }} €</span>
     </div>
   </div>
+  <div class="action-buttons-container">
+    <button class="btn-secondary" (click)="buscarTodos()">Ver todos los coches</button>
+    <button class="btn-primary" (click)="buscarConFiltros()">Buscar con filtros</button>
+  </div>
 </section>
 
 <div class="modal-overlay" *ngIf="isModalMarcasOpen" (click)="cerrarModalMarcas()">

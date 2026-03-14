@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { filterDTO } from './filter.dto';
 
 @Component({
   selector: 'app-filters',
@@ -10,6 +11,8 @@ import { RouterModule } from '@angular/router';
   styleUrl: './filters.scss',
 })
 export class Filters {
+  constructor(private route: Router) {}
+
   marca = [
     { nombre: 'SEAT', seleccionado: true },
     { nombre: 'BMW', seleccionado: false },
@@ -30,7 +33,7 @@ export class Filters {
     { nombre: 'TESLA', seleccionado: false },
   ];
 
-  contMostrarMarcas=10;
+  contMostrarMarcas = 10;
   isModalMarcasOpen = false;
   terminoBusqueda = '';
   marcaBusqueda = '+';
@@ -47,7 +50,6 @@ export class Filters {
     }
     return this.marca.filter((marca) => {
       return marca.nombre.toLowerCase().includes(this.terminoBusqueda.toLowerCase());
-      
     });
   }
 
@@ -66,9 +68,9 @@ export class Filters {
   seleccionarMarca(marcaSeleccionada: any) {
     this.marca.forEach((item) => (item.seleccionado = false));
     marcaSeleccionada.seleccionado = true;
-    
+
     // Averiguamos en qué posición está la marca que acabamos de seleccionar
-    const index = this.marca.findIndex(m => m.nombre === marcaSeleccionada.nombre);
+    const index = this.marca.findIndex((m) => m.nombre === marcaSeleccionada.nombre);
 
     // Si el índice es 10 o mayor, significa que NO está en las marcasPrincipales
     if (index >= this.contMostrarMarcas) {
@@ -77,7 +79,6 @@ export class Filters {
       // Si está entre las principales, el botón extra vuelve a ser un '+'
       this.marcaBusqueda = '+';
     }
-
     this.cerrarModalMarcas();
   }
 
@@ -195,5 +196,43 @@ export class Filters {
     if (nuevoPrecio < this.precioMin) nuevoPrecio = this.precioMin;
 
     this.precioActual = nuevoPrecio;
+  }
+
+  get marcaActiva() {
+    const seleccionada = this.marca.find((m) => m.seleccionado);
+    return seleccionada ? seleccionada.nombre : null;
+  }
+
+  get carroceriaActiva() {
+    const seleccionada = this.carrocerias.find((c) => c.seleccionado);
+    return seleccionada ? seleccionada.nombre : null;
+  }
+
+  get combustibleActivo() {
+    const seleccionada = this.combustibles.find((c) => c.seleccionado);
+    return seleccionada ? seleccionada.nombre : null;
+  }
+
+  buscarTodos() {
+    // Cambia '/galeria' por la ruta real que tengas configurada en tu app.routes.ts
+    this.route.navigate(['/coches']);
+  }
+
+  // Botón 2: Navega a la galería pasando los filtros por la URL
+  buscarConFiltros() {
+    const queryParams: filterDTO = {};
+
+    // 2. Solo añadimos las propiedades si tienen un valor real
+    if (this.marcaActiva) queryParams.marca = this.marcaActiva;
+    if (this.carroceriaActiva) queryParams.carroceria = this.carroceriaActiva;
+    if (this.combustibleActivo) queryParams.combustible = this.combustibleActivo;
+    
+    // El precio lo mandamos siempre porque siempre tiene un valor en el slider
+    queryParams.precio = this.precioActual;
+
+    console.log(queryParams);
+
+    // Navegamos a la ruta y le adjuntamos los filtros
+    this.route.navigate(['/coches'], { queryParams: queryParams });
   }
 }

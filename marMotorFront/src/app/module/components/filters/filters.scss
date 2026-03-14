@@ -373,3 +373,61 @@ $text-dark: #333;
     padding: 20px 0;
   }
 }
+.action-buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 40px; /* Separación de las tarjetas */
+  width: 100%;
+
+  button {
+    padding: 15px 35px;
+    border-radius: 30px; /* Botones en forma de píldora */
+    font-size: 16px;
+    font-weight: bold;
+    font-family: $font-family;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Botón secundario (Ver todos) */
+  .btn-secondary {
+    background-color: #f0f4f8;
+    color: #555;
+    border: 2px solid transparent;
+
+    &:hover {
+      background-color: #e2e8f0;
+      color: #111;
+      transform: translateY(-2px);
+    }
+  }
+
+  /* Botón principal (Buscar con filtros) */
+  .btn-primary {
+    background-color: $accent-green;
+    color: $text-light;
+    box-shadow: 0 6px 20px rgba(55, 223, 140, 0.4);
+
+    &:hover {
+      background-color: darken(#37df8c, 10%); /* Oscurece un poco el verde al pasar el ratón */
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(55, 223, 140, 0.5);
+    }
+  }
+}
+
+/* Ajuste para móviles */
+@media (max-width: 768px) {
+  .action-buttons-container {
+    flex-direction: column;
+    padding: 0 20px;
+
+    button {
+      width: 100%;
+    }
+  }
+}
