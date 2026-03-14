@@ -1,0 +1,133 @@
+// Variables de color
+$primary-blue: #0a1f33;
+$accent-green: #37df8c;
+$electric-blue: #0b79d0;
+$light-blue-gradient: linear-gradient(135deg, #2b3d56 0%, #0a1f33 100%);
+$green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
+$hover-gradient: linear-gradient(135deg, #37df8c 0%, #109b7c 100%);
+$card-gradient: linear-gradient(180deg, rgba(235, 248, 255, 1) 0%, rgba(255, 255, 255, 1) 100%);
+$text-color: #333;
+$text-light: #fff;
+$font-family: 'Montserrat', sans-serif; // O la fuente que prefieras
+$accent-green: #37df8c;
+$text-light: #fff;
+$text-dark: #333;
+
+// Estilos globales de la página
+.autoflow-home {
+  font-family: $font-family;
+  color: $text-color;
+  background-color: #f7f9fc;
+}
+
+// Botones generales
+.btn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.3s,
+    color 0.3s;
+  border: none;
+
+  &.btn-primary {
+    background: $green-gradient;
+    color: $text-light;
+    &:hover {
+      background: $hover-gradient;
+    }
+  }
+
+  &.btn-outline {
+    background: transparent;
+    border: 1px solid $accent-green;
+    color: $accent-green;
+    &:hover {
+      background: rgba(55, 223, 140, 0.1);
+    }
+  }
+}
+
+// Estilos de la sección Hero / Descubrimiento
+.discovery-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 60px 40px;
+  background: $light-blue-gradient;
+  color: $text-light;
+
+  .discovery-text {
+    flex: 1;
+    max-width: 500px;
+    margin-right: 40px;
+
+    h1 {
+      font-size: 40px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .btn-discovery {
+      font-size: 16px;
+      padding: 12px 30px;
+    }
+  }
+
+  .vehicle-icons-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+    padding: 30px;
+    border-radius: 30px;
+    position: relative; // Para los iconos eléctricos flotantes
+
+    .icon-block {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      transition: background 0.3s;
+      cursor: pointer;
+
+      img {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 10px;
+      }
+
+      span {
+        display: block;
+        font-weight: bold;
+        color: $text-light;
+      }
+
+      &:hover,
+      &.highlighted {
+        background: $accent-green;
+        box-shadow: 0 4px 15px rgba(55, 223, 140, 0.5);
+      }
+    }
+
+    .electric-icon {
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 30px;
+        height: 30px;
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+

@@ -1,0 +1,74 @@
+<section class="visual-filter-section">
+  <h2>FILTRO VISUAL INTUITIVO: <span>Selecciona Categorías</span></h2>
+
+  <div class="filters-container">
+    <div class="filter-card">
+      <h3>TIPO DE CARROCERÍA</h3>
+      <div class="filter-options">
+        <div
+          class="filter-option"
+          *ngFor="let item of carrocerias; let i = index"
+          [ngClass]="{ selected: item.seleccionado }"
+          (click)="seleccionarOpcion(carrocerias, i)"
+        >
+          {{ item.nombre }}
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-card">
+      <h3>COMBUSTIBLE</h3>
+      <div class="filter-options">
+        <div
+          class="filter-option"
+          *ngFor="let item of combustibles; let i = index"
+          [ngClass]="{ selected: item.seleccionado }"
+          (click)="seleccionarOpcion(combustibles, i)"
+        >
+          {{ item.nombre }}
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-card price-orbit-card">
+      <h3>Price Orbit</h3>
+
+      <div
+        class="circular-slider"
+        #sliderElement
+        (mousedown)="iniciarArrastre($event)"
+        (touchstart)="iniciarArrastre($event)"
+        (window:mousemove)="arrastrar($event)"
+        (window:touchmove)="arrastrar($event)"
+        (window:mouseup)="detenerArrastre()"
+        (window:touchend)="detenerArrastre()"
+      >
+        <svg viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="40" class="track"></circle>
+          <circle
+            cx="50"
+            cy="50"
+            r="40"
+            class="progress"
+            [attr.stroke-dasharray]="circunferencia"
+            [attr.stroke-dashoffset]="offsetCirculo"
+          ></circle>
+          
+          <circle 
+            [attr.cx]="thumbX" 
+            [attr.cy]="thumbY" 
+            r="5" 
+            class="thumb">
+          </circle>
+        </svg>
+
+        <div class="dial-inner">
+          <span class="price-value">{{ precioActual | number: '1.0-0' }}</span>
+          <span class="price-label">Precio exacto €</span>
+        </div>
+      </div>
+
+      <span class="price-type">Rango tradicional {{ precioActual | number: '1.0-0' }} €</span>
+    </div>
+  </div>
+</section>

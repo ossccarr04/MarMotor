@@ -1,0 +1,190 @@
+// Variables de color
+$primary-blue: #0a1f33;
+$accent-green: #37df8c;
+$electric-blue: #0b79d0;
+$light-blue-gradient: linear-gradient(135deg, #2b3d56 0%, #0a1f33 100%);
+$green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
+$hover-gradient: linear-gradient(135deg, #37df8c 0%, #109b7c 100%);
+$card-gradient: linear-gradient(180deg, rgba(235, 248, 255, 1) 0%, rgba(255, 255, 255, 1) 100%);
+$text-color: #333;
+$text-light: #fff;
+$font-family: 'Montserrat', sans-serif; // O la fuente que prefieras
+$accent-green: #37df8c;
+$text-light: #fff;
+$text-dark: #333;
+
+.visual-filter-section {
+  padding: 60px 40px;
+  background-color: #f7f9fc; // Un gris muy clarito para que resalten las tarjetas blancas
+  font-family: $font-family;
+
+  h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    color: $text-dark;
+
+    span {
+      font-weight: normal;
+      color: #777;
+    }
+  }
+
+  .filters-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+
+    /* LA NUEVA CLASE PARA LAS TARJETAS */
+    .filter-card {
+      background: #ffffff;
+      flex: 1;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); // Sombra suave
+      display: flex;
+      flex-direction: column;
+
+      h3 {
+        font-size: 16px;
+        color: #111;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+      }
+
+      .filter-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+
+        .filter-option {
+          background: #f4f6f8; // Gris muy claro para los botones sin seleccionar
+          padding: 10px 20px;
+          border-radius: 12px;
+          font-weight: 600;
+          font-size: 14px;
+          color: #555;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border: 1px solid transparent;
+
+          // Efecto hover
+          &:hover {
+            background: #e2e8f0;
+          }
+
+          // Clase seleccionada controlada por Angular
+          &.selected {
+            background: $accent-green;
+            color: $text-light;
+            box-shadow: 0 4px 15px rgba(55, 223, 140, 0.3);
+          }
+
+          // El botón del "+"
+          &.add-icon {
+            font-size: 20px;
+            font-weight: bold;
+            color: #aaa;
+            background: #f4f6f8;
+            border: 2px dashed #ddd; // Borde punteado como en diseño
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 20px;
+
+            &:hover {
+              color: $accent-green;
+              border-color: $accent-green;
+            }
+          }
+        }
+      }
+    }
+
+    /* ESTILOS ESPECÍFICOS PARA LA TERCERA TARJETA (PRECIO) */
+    .price-orbit-card {
+      align-items: center;
+
+      .circular-slider {
+        position: relative;
+        width: 160px;
+        height: 160px;
+        cursor: grab; // Icono de manita abierta
+        touch-action: none; // Evita que el móvil haga scroll al arrastrar el dial
+        margin-bottom: 10px;
+
+        // Cuando lo estás arrastrando, la manita se cierra
+        &:active {
+          cursor: grabbing;
+        }
+
+        svg {
+          width: 100%;
+          height: 100%;
+          // Rotamos -90deg para que el punto cero empiece arriba del todo (a las 12 en punto)
+          transform: rotate(-90deg);
+
+          circle {
+            fill: none;
+            stroke-width: 8; // Grosor de la línea circular
+            stroke-linecap: round; // Bordes redondeados en la línea verde
+
+            &.track {
+              stroke: #f0f4f8; // Color del raíl de fondo
+            }
+
+            &.progress {
+              stroke: $accent-green; // Color verde brillante
+              /* Esta transición hace que la línea siga al ratón suavemente */
+              transition: stroke-dashoffset 0.05s linear;
+            }
+            &.thumb {
+            fill: #ffffff; // Interior blanco
+            stroke: #37df8c; // Borde verde para que combine con la línea
+            stroke-width: 2; // Grosor del borde de la bolita
+            // Aplicamos la misma transición que tiene .progress para que se muevan juntos sin lag
+            transition: cx 0.05s linear, cy 0.05s linear; 
+            filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3)); // Sombra para darle efecto 3D
+          }
+          }
+        }
+
+        .dial-inner {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: #fff;
+          border-radius: 50%;
+          width: 110px; // El tamaño del círculo blanco central
+          height: 110px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); // Sombra para darle volumen 3D
+          pointer-events: none; // Permite que los clics atraviesen el texto y lleguen al SVG
+
+          .price-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #111;
+          }
+
+          .price-label {
+            font-size: 11px;
+            color: #888;
+            margin-top: 2px;
+          }
+        }
+      }
+
+      .price-type {
+        font-size: 13px;
+        color: #888;
+        margin-top: 5px;
+      }
+    }
+  }
+}

@@ -1,0 +1,113 @@
+// 1. Variables de color (Necesarias en este archivo para que compile bien)
+$primary-blue: #0a1f33;
+$accent-green: #37df8c;
+$text-light: #fff;
+$green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
+$hover-gradient: linear-gradient(135deg, #37df8c 0%, #109b7c 100%);
+$font-family: 'Montserrat', sans-serif; // O la fuente que prefieras
+
+
+// 2. Contenedor principal del Header
+.autoflow-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: $primary-blue;
+  color: $text-light;
+  font-family: $font-family;
+  
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  // -- Logo --
+  .logo {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+
+    .logo-icon {
+      background: linear-gradient(135deg, #2b3d56 0%, #109b7c 100%);
+      color: $text-light;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 10px;
+      font-size: 20px;
+    }
+  }
+
+  // -- Enlaces de Navegación --
+  .nav-links {
+    font-family: $font-family;
+    display: flex;
+    gap: 30px;
+
+    a {
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.7); // Blanco un poco transparente por defecto
+      font-weight: 500;
+      font-size: 15px;
+      transition: color 0.3s ease;
+
+      // Efecto Hover y Clase Activa (la que configuraste con routerLinkActive)
+      &:hover,
+      &.active-link {
+        color: $accent-green; // Se vuelve verde brillante
+      }
+    }
+  }
+
+  // -- Contenedor de Botones --
+  .header-actions {
+    font-family: $font-family;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+}
+
+// 3. Estilos de los Botones del Header
+.btn {
+  font-family: $font-family;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+
+  // Efecto de "click"
+  &:active {
+    transform: scale(0.95);
+  }
+
+  // Botón "Reservar" (Verde sólido)
+  &.btn-primary {
+    background: $green-gradient;
+    color: $text-light;
+
+    &:hover {
+      background: $hover-gradient;
+      box-shadow: 0 4px 15px rgba(55, 223, 140, 0.3); // Brillo verde
+    }
+  }
+
+  // Botón "Log in" (Transparente con borde verde)
+  &.btn-outline {
+    background: transparent;
+    border: 1px solid $accent-green;
+    color: $accent-green;
+
+    &:hover {
+      background: rgba(55, 223, 140, 0.1); // Fondo verde muy sutil
+    }
+  }
+}

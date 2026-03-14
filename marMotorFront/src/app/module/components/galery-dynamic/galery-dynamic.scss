@@ -1,0 +1,192 @@
+// Variables de color
+$primary-blue: #0a1f33;
+$accent-green: #37df8c;
+$electric-blue: #0b79d0;
+$light-blue-gradient: linear-gradient(135deg, #2b3d56 0%, #0a1f33 100%);
+$green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
+$hover-gradient: linear-gradient(135deg, #37df8c 0%, #109b7c 100%);
+$card-gradient: linear-gradient(180deg, rgba(235, 248, 255, 1) 0%, rgba(255, 255, 255, 1) 100%);
+$text-color: #333;
+$text-light: #fff;
+$font-family: 'Montserrat', sans-serif; // O la fuente que prefieras
+$accent-green: #37df8c;
+$text-light: #fff;
+$text-dark: #333;
+
+// Botones generales
+.btn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.3s,
+    color 0.3s;
+  border: none;
+
+  &.btn-primary {
+    background: $green-gradient;
+    color: $text-light;
+    &:hover {
+      background: $hover-gradient;
+    }
+  }
+
+  &.btn-outline {
+    background: transparent;
+    border: 1px solid $accent-green;
+    color: $accent-green;
+    &:hover {
+      background: rgba(55, 223, 140, 0.1);
+    }
+  }
+}
+
+// Estilos de la sección de Galería de Novedades
+.car-gallery-section {
+  padding: 60px 40px;
+
+  .gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+
+    h2 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 40px;
+
+      font-family: $font-family;
+      color: $text-color;
+    }
+
+    .gallery-nav {
+      display: flex;
+      gap: 15px;
+
+      .nav-arrow {
+        background: #eee;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition:
+          background 0.3s,
+          color 0.3s;
+        font-weight: bold;
+
+        &:hover {
+          background: $accent-green;
+          color: $text-light;
+        }
+      }
+    }
+  }
+
+  .car-cards-grid {
+    font-family: $font-family;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); // He simplificado a 2 columnas
+    gap: 30px;
+
+    .car-card {
+      background: $card-gradient;
+      border-radius: 30px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s;
+
+      &:hover {
+        transform: translateY(-5px);
+      }
+
+      .car-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .car-details {
+        padding: 25px;
+
+        h3 {
+          font-size: 20px;
+          font-weight: bold;
+          margin-bottom: 5px;
+        }
+
+        .car-price {
+          font-size: 22px;
+          color: $electric-blue;
+          font-weight: bold;
+          margin-bottom: 15px;
+          display: block;
+        }
+
+        .car-stats {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 15px;
+          margin-bottom: 25px;
+
+          .stat {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+
+            .stat-value {
+              font-size: 16px;
+              font-weight: bold;
+            }
+
+            .stat-label {
+              font-size: 14px;
+              color: #777;
+            }
+          }
+        }
+
+        .btn-details {
+          width: 100%;
+          font-size: 16px;
+        }
+      }
+
+      .card-badges {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        gap: 10px;
+        font-family: $font-family;
+
+        .badge {
+          padding: 5px 12px;
+          border-radius: 15px;
+          font-size: 12px;
+          font-weight: bold;
+          color: $text-light;
+
+          &.badge-featured {
+            background: $green-gradient;
+          }
+
+          &.badge-new {
+            background: $light-blue-gradient;
+          }
+        }
+
+        .heart-icon {
+          color: red;
+          font-size: 18px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

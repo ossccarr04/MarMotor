@@ -1,0 +1,47 @@
+/* ==========================================================================
+   1. IMPORTACIÓN DE FUENTES GLOBAL
+   ========================================================================== */
+/* Importamos Montserrat desde Google Fonts para darle un toque moderno y tech */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+/* ==========================================================================
+   2. RESETEO CSS (Muy importante)
+   ========================================================================== */
+/* Esto asegura que todos los navegadores partan de cero y no añadan espacios raros */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   3. ESTILOS GLOBALES BASE
+   ========================================================================== */
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f7f9fc; /* El gris clarito de fondo de tu diseño */
+  color: #333333; /* Un gris oscuro para el texto (es mejor que negro puro para la vista) */
+  -webkit-font-smoothing: antialiased; /* Hace que la fuente se vea más nítida en Mac/iOS */
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Para que los enlaces no tengan la línea por debajo por defecto */
+a {
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   4. LAYOUT Y MÁRGENES DE LA PÁGINA
+   ========================================================================== */
+
+
+/* Media Query para móviles: 
+  En pantallas pequeñas reducimos los márgenes para aprovechar el espacio 
+*/
+@media (max-width: 768px) {
+  main {
+    margin-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}

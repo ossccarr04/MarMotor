@@ -1,1 +1,18 @@
-<p>header works!</p>
+<header class="autoflow-header">
+  <div class="logo">
+    <span class="logo-icon">MM</span>
+    MarMotor
+  </div>
+  <nav class="nav-links">
+    <a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }"
+      >Inicio</a
+    >
+    <a routerLink="/compañia" routerLinkActive="active-link">Compañia</a>
+    <a routerLink="/coches" routerLinkActive="active-link">Coches</a>
+    <a routerLink="/destacados" routerLinkActive="active-link">Destacados</a>
+  </nav>
+  <div class="header-actions">
+    <button class="btn btn-outline">Log in</button>
+    <button class="btn btn-primary btn-reservar">Reservar</button>
+  </div>
+</header>
