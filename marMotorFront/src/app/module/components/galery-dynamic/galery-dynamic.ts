@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-galery-dynamic',
+  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './galery-dynamic.html',
   styleUrl: './galery-dynamic.scss',

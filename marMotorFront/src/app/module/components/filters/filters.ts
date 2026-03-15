@@ -6,6 +6,7 @@ import { filterDTO } from './filter.dto';
 
 @Component({
   selector: 'app-filters',
+  standalone: true,
   imports: [RouterModule, CommonModule, FormsModule],
   templateUrl: './filters.html',
   styleUrl: './filters.scss',

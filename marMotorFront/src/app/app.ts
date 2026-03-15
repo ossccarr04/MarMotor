@@ -1,6 +1,6 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { Header } from "./module/components/header/header";
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Header } from './module/components/header/header';
 
 @Component({
   selector: 'app-root',
@@ -11,4 +11,14 @@ import { Header } from "./module/components/header/header";
 })
 export class App {
   protected readonly title = signal('marMotor');
+
+  private router = inject(Router);
+
+
+  get mostrarHeader(): boolean {
+
+    const rutasSinHeader = ['/login', '/register'];
+    
+    return !rutasSinHeader.includes(this.router.url);
+  }
 }

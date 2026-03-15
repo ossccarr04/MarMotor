@@ -1,0 +1,114 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h2>Crear Cuenta</h2>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Nombre y Apellidos</label>
+        <input
+          type="text"
+          formControlName="nombre"
+          placeholder="Juan Pérez"
+          [class.is-invalid]="f['nombre'].invalid && f['nombre'].touched"
+        />
+
+        @if (f['nombre'].invalid && f['nombre'].touched) {
+          @if (f['nombre'].errors?.['required']) {
+            <span class="error-text">El nombre es obligatorio.</span>
+          }
+          @if (f['nombre'].errors?.['minlength']) {
+            <span class="error-text">Demasiado corto (min. 3 letras).</span>
+          }
+        }
+      </div>
+
+      <div class="form-group">
+        <label>Correo Electrónico</label>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="ejemplo@correo.com"
+          [class.is-invalid]="f['email'].invalid && f['email'].touched"
+        />
+
+        @if (f['email'].invalid && f['email'].touched) {
+          @if (f['email'].errors?.['required']) {
+            <span class="error-text">El correo es obligatorio.</span>
+          }
+          @if (f['email'].errors?.['email']) {
+            <span class="error-text">El formato no es válido.</span>
+          }
+        }
+      </div>
+
+      <div class="form-group">
+        <label>Contraseña</label>
+        <div class="input-container">
+          <input
+            #passwordInput
+            [type]="passwordVisible ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="••••••••"
+            [class.is-invalid]="f['password'].invalid && f['password'].touched"
+          />
+
+          <button type="button" class="toggle-eye" (click)="togglePassword()">
+            @if (passwordVisible) {
+              <span>👓 </span>
+            } @else {
+              <span>👀</span>
+            }
+          </button>
+        </div>
+
+        @if (f['password'].invalid && f['password'].touched) {
+          @if (f['password'].errors?.['required']) {
+            <span class="error-text">Crea una contraseña.</span>
+          }
+          @if (f['password'].errors?.['minlength']) {
+            <span class="error-text">Debe tener al menos 6 caracteres.</span>
+          }
+          @if (f['password'].errors?.['pattern']) {
+            <span class="error-text"
+              >Debe tener al menos una letra minuscula, mayuscula, numero y un caracter
+              especial.</span
+            >
+          }
+        }
+      </div>
+
+      <div class="form-group">
+        <label>Repetir Contraseña</label>
+        <div class="input-container">
+        <input
+          #passwordInput
+          [type]="passwordVisible ? 'text' : 'password'"
+          formControlName="confirmPassword"
+          placeholder="••••••••"
+          [class.is-invalid]="f['confirmPassword'].invalid && f['confirmPassword'].touched"
+        />
+
+        <button type="button" class="toggle-eye" (click)="togglePassword()">
+            @if (passwordVisible) {
+              <span>👓 </span>
+            } @else {
+              <span>👀</span>
+            }
+          </button>
+        </div>
+        @if (f['confirmPassword'].invalid && f['confirmPassword'].touched) {
+          @if (f['confirmPassword'].errors?.['required']) {
+            <span class="error-text">Debes confirmar la contraseña.</span>
+          }
+          @if (f['confirmPassword'].errors?.['noCoinciden']) {
+            <span class="error-text">Las contraseñas no coinciden.</span>
+          }
+        }
+      </div>
+
+      <button type="submit" class="btn-submit">Registrarme</button>
+
+      <div class="auth-links">¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a></div>
+    </form>
+  </div>
+</div>
