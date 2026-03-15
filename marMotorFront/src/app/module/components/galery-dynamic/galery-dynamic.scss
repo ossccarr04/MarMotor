@@ -1,50 +1,16 @@
-// Variables de color
+// Variables (asegúrate de tenerlas arriba en tu archivo)
 $primary-blue: #0a1f33;
 $accent-green: #37df8c;
-$electric-blue: #0b79d0;
-$light-blue-gradient: linear-gradient(135deg, #2b3d56 0%, #0a1f33 100%);
+$text-dark: #1a202c;
 $green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
-$hover-gradient: linear-gradient(135deg, #37df8c 0%, #109b7c 100%);
-$card-gradient: linear-gradient(180deg, rgba(235, 248, 255, 1) 0%, rgba(255, 255, 255, 1) 100%);
-$text-color: #333;
-$text-light: #fff;
-$font-family: 'Montserrat', sans-serif; // O la fuente que prefieras
-$accent-green: #37df8c;
-$text-light: #fff;
-$text-dark: #333;
+$font-family: 'Montserrat', sans-serif;
 
-// Botones generales
-.btn {
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background 0.3s,
-    color 0.3s;
-  border: none;
-
-  &.btn-primary {
-    background: $green-gradient;
-    color: $text-light;
-    &:hover {
-      background: $hover-gradient;
-    }
-  }
-
-  &.btn-outline {
-    background: transparent;
-    border: 1px solid $accent-green;
-    color: $accent-green;
-    &:hover {
-      background: rgba(55, 223, 140, 0.1);
-    }
-  }
-}
-
-// Estilos de la sección de Galería de Novedades
 .car-gallery-section {
   padding: 60px 40px;
+  font-family: $font-family;
+
+  /* --- FONDO DEGRADADO PARA TODA LA SECCIÓN --- */
+  background: linear-gradient(135deg, #051121 0%, #162b44 100%);
 
   .gallery-header {
     display: flex;
@@ -55,138 +21,225 @@ $text-dark: #333;
     h2 {
       font-size: 24px;
       font-weight: bold;
-      margin-bottom: 40px;
-
-      font-family: $font-family;
-      color: $text-color;
+      color: #ffffff; /* Texto en blanco para contrastar con el fondo oscuro */
+      margin: 0;
     }
 
     .gallery-nav {
       display: flex;
-      gap: 15px;
+      gap: 10px;
 
       .nav-arrow {
-        background: #eee;
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
-        width: 35px;
-        height: 35px;
+
+        /* Fondo semi-transparente elegante para fondos oscuros */
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #ffffff; /* El símbolo < y > en blanco */
+
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
         cursor: pointer;
-        transition:
-          background 0.3s,
-          color 0.3s;
         font-weight: bold;
+        transition: all 0.3s ease;
+        user-select: none; /* Evita que el usuario seleccione el texto al hacer clic rápido */
 
         &:hover {
-          background: $accent-green;
-          color: $text-light;
+          background: $green-gradient; /* Usamos tu degradado verde al pasar el ratón */
+          color: #ffffff;
+          transform: scale(1.1); /* Pequeño efecto de zoom */
+          box-shadow: 0 4px 15px rgba(55, 223, 140, 0.4); /* Resplandor verde */
         }
       }
     }
   }
 
   .car-cards-grid {
-    font-family: $font-family;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); // He simplificado a 2 columnas
+    display: flex;
+    align-items: flex-start;
+    overflow-x: auto;
     gap: 30px;
+    padding: 10px 5px 40px 5px;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
+    /* --- TARJETA --- */
     .car-card {
-      background: $card-gradient;
-      border-radius: 30px;
-      overflow: hidden;
+      flex: 0 0 auto;
+      width: 340px;
+      scroll-snap-align: start;
+      background: #ffffff;
+      border-radius: 20px;
       position: relative;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      transition: transform 0.3s;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      transition:
+        transform 0.3s,
+        box-shadow 0.3s;
 
+      /* --- ANIMACIÓN HOVER DE LA TARJETA --- */
       &:hover {
         transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(55, 223, 140, 0.3);
+
+        /* Al hacer hover, el botón crece en altura y empuja la tarjeta hacia abajo */
+        .hover-btn-container {
+          max-height: 50px; /* Altura suficiente para que quepa el botón */
+          opacity: 1;
+        }
       }
 
-      .car-image {
-        width: 100%;
+      .car-image-container {
+        position: relative;
         height: 200px;
-        object-fit: cover;
-      }
 
-      .car-details {
-        padding: 25px;
-
-        h3 {
-          font-size: 20px;
-          font-weight: bold;
-          margin-bottom: 5px;
-        }
-
-        .car-price {
-          font-size: 22px;
-          color: $electric-blue;
-          font-weight: bold;
-          margin-bottom: 15px;
-          display: block;
-        }
-
-        .car-stats {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 15px;
-          margin-bottom: 25px;
-
-          .stat {
-            display: flex;
-            align-items: baseline;
-            gap: 5px;
-
-            .stat-value {
-              font-size: 16px;
-              font-weight: bold;
-            }
-
-            .stat-label {
-              font-size: 14px;
-              color: #777;
-            }
-          }
-        }
-
-        .btn-details {
+        .car-image {
           width: 100%;
-          font-size: 16px;
+          height: 100%;
+          object-fit: cover;
         }
-      }
-
-      .card-badges {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        display: flex;
-        gap: 10px;
-        font-family: $font-family;
 
         .badge {
-          padding: 5px 12px;
-          border-radius: 15px;
-          font-size: 12px;
-          font-weight: bold;
-          color: $text-light;
-
-          &.badge-featured {
-            background: $green-gradient;
-          }
-
-          &.badge-new {
-            background: $light-blue-gradient;
-          }
+          position: absolute;
+          top: 15px;
+          left: 15px;
+          padding: 6px 14px;
+          border-radius: 20px;
+          font-size: 11px;
+          font-weight: 800;
+          color: white;
+          background: $green-gradient;
         }
 
         .heart-icon {
-          color: red;
-          font-size: 18px;
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          font-size: 26px; /* Un poco más grande para que se vea bien el vacío */
           cursor: pointer;
+          user-select: none; /* Para que no se seleccione como texto al hacer doble clic */
+
+          /* ESTADO NORMAL (CORAZÓN VACÍO) */
+          color: #ffffff;
+          filter: drop-shadow(
+            0 2px 4px rgba(0, 0, 0, 0.5)
+          ); /* Sombrilla para contrastar con cielos o fondos claros */
+          transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Animación con efecto rebote */
+
+          &:hover {
+            transform: scale(1.2);
+          }
+
+          /* ESTADO GUARDADO (CORAZÓN LLENO) */
+          &.is-liked {
+            color: #ff4757; /* Tu rojo bonito */
+            /* El emoji ❤️ ya es rojo de por sí en muchos sistemas, pero la clase nos asegura el color si usamos fuentes de iconos después */
+            animation: latido 0.3s ease-in-out;
+          }
+        }
+      }
+
+      .car-details {
+        padding: 20px 20px 10px 20px;
+
+        .title-price-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 5px;
+
+          h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: $text-dark;
+            margin: 0;
+          }
+
+          .car-price {
+            font-size: 18px;
+            font-weight: 800;
+            color: $text-dark;
+          }
+        }
+
+        .car-subtitle {
+          display: block;
+          font-size: 13px;
+          color: #718096;
+          margin-bottom: 20px;
+        }
+
+        /* 4 estadísticas en una sola fila */
+        .car-stats-row {
+          display: flex;
+          justify-content: space-between;
+          text-align: center;
+          border-top: 1px solid #edf2f7;
+          padding-top: 15px;
+
+          .stat {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+
+            .stat-value {
+              font-size: 15px;
+              font-weight: 800;
+              color: $text-dark;
+            }
+
+            .stat-label {
+              font-size: 12px;
+              color: #a0aec0;
+            }
+          }
+        }
+      }
+
+      /* --- EL BOTÓN OCULTO --- */
+      .hover-btn-container {
+        /* Empieza oculto y sin ocupar espacio */
+        max-height: 0;
+        opacity: 0;
+        margin-top: 0;
+        overflow: hidden;
+
+        /* Transición fluida para que la tarjeta "crezca" */
+        transition:
+          max-height 0.4s ease,
+          opacity 0.3s ease,
+          margin-top 0.4s ease;
+        display: flex;
+        justify-content: center;
+
+        .btn-details {
+          width: 100%;
+          padding: 14px;
+          font-size: 14px;
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          color: #ffffff; /* Texto en blanco */
+
+          /* Los estilos que pediste */
+          background: $green-gradient;
+          border-radius: 30px; /* Bordes tipo píldora */
+          border: none;
+          cursor: pointer;
+          box-shadow: 0 4px 15px rgba(55, 223, 140, 0.4);
+          transition: transform 0.2s;
         }
       }
     }
   }
+}
+@keyframes latido {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
 }

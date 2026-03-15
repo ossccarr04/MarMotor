@@ -2,63 +2,68 @@
   <div class="gallery-header">
     <h2>GALERÍA DINÁMICA DE FILTRADO</h2>
     <div class="gallery-nav">
-      <span class="nav-arrow">&lt;</span>
-      <span class="nav-arrow">&gt;</span>
+      <span class="nav-arrow" (click)="moverCarrusel(-1)">&lt;</span>
+      <span class="nav-arrow" (click)="moverCarrusel(1)">&gt;</span>
     </div>
   </div>
-  <div class="car-cards-grid">
-    <div class="car-card">
-      <img class="car-image" src="assets/car1.png" alt="Tesla Model Y" />
-      <div class="car-details">
-        <h3>TESLA MODEL Y</h3>
-        <span class="car-price">48.500 €</span>
-        <div class="car-stats">
-          <div class="stat">
-            <span class="stat-value">324</span><span class="stat-label">Km</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value">19</span><span class="stat-label">Motor</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value">3.5%</span><span class="stat-label">Consumo</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value">123</span><span class="stat-label">Mes</span>
-          </div>
-        </div>
-        <button class="btn btn-primary btn-details">VER DETALLES</button>
-      </div>
-      <div class="card-badges">
-        <span class="badge badge-featured">DESTACADO</span>
-        <span class="heart-icon">❤️</span>
-      </div>
-    </div>
 
-    <div class="car-card">
-      <img class="car-image" src="assets/car2.png" alt="Tesla Model Y" />
-      <div class="car-details">
-        <h3>TESLA MODEL Y</h3>
-        <span class="car-price">48.500 €</span>
-        <div class="car-stats">
-          <div class="stat">
-            <span class="stat-value">324</span><span class="stat-label">Km</span>
+  <div class="car-cards-grid" #carrusel>
+    @for (coche of coches; track coche.nombre) {
+      <div class="car-card">
+        <div class="car-image-container">
+          @if (coche.etiqueta) {
+            <span
+              class="badge"
+              [ngClass]="coche.tipoEtiqueta === 'featured' ? 'badge-featured' : 'badge-new'"
+            >
+              {{ coche.etiqueta }}
+            </span>
+          }
+
+          <span class="heart-icon" [class.is-liked]="coche.guardado" (click)="toggleGuardar(coche)">
+            {{ coche.guardado ? '❤️' : '♡' }}
+          </span>
+
+          <img class="car-image" [src]="coche.imagen" [alt]="coche.nombre" />
+        </div>
+
+        <div class="car-details">
+          <div class="title-price-row">
+            <h3>{{ coche.nombre }}</h3>
+            <span class="car-price">{{ coche.precio | number: '1.0-0' }} €</span>
           </div>
-          <div class="stat">
-            <span class="stat-value">19</span><span class="stat-label">Motor</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value">3.5%</span><span class="stat-label">Consumo</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value">123</span><span class="stat-label">Mes</span>
+          <span class="car-subtitle">Condición / Subtítulo</span>
+
+          <div class="car-stats-row">
+            <div class="stat">
+              <span class="stat-value">{{ coche.km }}</span>
+              <span class="stat-label">Km</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">{{ coche.motor }}</span>
+              <span class="stat-label">Motor</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">{{ coche.consumo }}</span>
+              <span class="stat-label">Consumo</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">{{ coche.mes }}</span>
+              <span class="stat-label">Mes</span>
+            </div>
           </div>
         </div>
-        <button class="btn btn-primary btn-details">VER DETALLES</button>
+
+        <div class="car-details">
+          <div class="hover-btn-container">
+            <button class="btn-details">VER DETALLES</button>
+          </div>
+        </div>
       </div>
-      <div class="card-badges">
-        <span class="badge badge-new">NOVEDAD</span>
-        <span class="heart-icon">❤️</span>
+    } @empty {
+      <div class="empty-state">
+        <h3 style="color: white">No hay coches disponibles</h3>
       </div>
-    </div>
+    }
   </div>
 </section>
