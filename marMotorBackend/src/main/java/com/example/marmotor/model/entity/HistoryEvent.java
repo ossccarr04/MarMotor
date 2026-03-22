@@ -19,5 +19,5 @@ public class HistoryEvent {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id")
-    private Car car;
+    private CarDetail car;
 }
