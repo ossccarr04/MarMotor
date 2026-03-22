@@ -1,6 +1,7 @@
 package com.example.marmotor.controller;
 
 import com.example.marmotor.model.DTO.CarDTO;
+import com.example.marmotor.model.DTO.CarDetailDTO;
 import com.example.marmotor.model.entity.Car;
 import com.example.marmotor.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,13 @@ public class CarController {
     @GetMapping("/{id}")
     public ResponseEntity<CarDTO> getCarById(@PathVariable Long id) {
         return carService.getCarById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/detail")
+    public ResponseEntity<CarDetailDTO> getCarDetail(@PathVariable Long id) {
+        return carService.getCarDetailById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
