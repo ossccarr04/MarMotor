@@ -1,0 +1,25 @@
+<header class="autoflow-header">
+  <div class="logo" [routerLink]="['/']" (click)="isMenuOpen = false">
+    <span class="logo-icon">MM</span>
+    MarMotor
+  </div>
+
+  <button class="menu-toggle" (click)="toggleMenu()" [class.is-active]="isMenuOpen">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <nav class="nav-links" [class.is-open]="isMenuOpen">
+    <a [routerLink]="['/']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" (click)="isMenuOpen = false">Inicio</a>
+    <a routerLink="/coches" routerLinkActive="active-link" (click)="isMenuOpen = false">Coches</a>
+    <a routerLink="/destacados" routerLinkActive="active-link" (click)="isMenuOpen = false">Destacados</a>
+    <a routerLink="/compañia" routerLinkActive="active-link" (click)="isMenuOpen = false">Compañia</a>
+    
+    <button class="btn btn-outline btn-login-mobile" [routerLink]="['/login']" (click)="isMenuOpen = false">Login</button>
+  </nav>
+
+  <div class="header-actions">
+    <button class="btn btn-outline btn-login-desktop" [routerLink]="['/login']">Login</button>
+  </div>
+</header>

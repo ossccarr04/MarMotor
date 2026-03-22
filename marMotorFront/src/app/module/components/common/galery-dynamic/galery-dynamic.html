@@ -8,55 +8,55 @@
   </div>
 
   <div class="car-cards-grid" #carrusel>
-    @for (coche of coches; track coche.nombre) {
+    @for (coche of coches; track coche.make + " " + coche.model) {
       <div class="car-card">
         <div class="car-image-container">
-          @if (coche.etiqueta) {
+          @if (coche.badge) {
             <span
               class="badge"
-              [ngClass]="coche.tipoEtiqueta === 'featured' ? 'badge-featured' : 'badge-new'"
+              [ngClass]="coche.badgeType === 'featured' ? 'badge-featured' : 'badge-new'"
             >
-              {{ coche.etiqueta }}
+              {{ coche.badge }}
             </span>
           }
 
-          <span class="heart-icon" [class.is-liked]="coche.guardado" (click)="toggleGuardar(coche)">
-            {{ coche.guardado ? '❤️' : '♡' }}
+          <span class="heart-icon" [class.is-liked]="coche.isSaved" (click)="toggleGuardar(coche)">
+            {{ coche.isSaved ? '❤️' : '♡' }}
           </span>
 
-          <img class="car-image" [src]="coche.imagen" [alt]="coche.nombre" />
+          <img class="car-image" [src]="coche.imageUrl" [alt]='coche.make + " " + coche.model' />
         </div>
 
         <div class="car-details">
           <div class="title-price-row">
-            <h3>{{ coche.nombre }}</h3>
-            <span class="car-price">{{ coche.precio | number: '1.0-0' }} €</span>
+            <h3>{{ coche.make + " " + coche.model }}</h3>
+            <span class="car-price">{{ coche.price | number: '1.0-0' }} €</span>
           </div>
           <span class="car-subtitle">Condición / Subtítulo</span>
 
           <div class="car-stats-row">
             <div class="stat">
-              <span class="stat-value">{{ coche.km }}</span>
+              <span class="stat-value">{{ coche.mileage }}</span>
               <span class="stat-label">Km</span>
             </div>
             <div class="stat">
-              <span class="stat-value">{{ coche.motor }}</span>
+              <span class="stat-value">{{ coche.power }}</span>
               <span class="stat-label">Motor</span>
             </div>
             <div class="stat">
-              <span class="stat-value">{{ coche.consumo }}</span>
+              <span class="stat-value">{{ coche.consumption }}</span>
               <span class="stat-label">Consumo</span>
             </div>
             <div class="stat">
-              <span class="stat-value">{{ coche.mes }}</span>
-              <span class="stat-label">Mes</span>
+              <span class="stat-value">{{ coche.fuelType }}</span>
+              <span class="stat-label">Combustible</span>
             </div>
           </div>
         </div>
 
         <div class="car-details">
           <div class="hover-btn-container">
-            <button class="btn-details">VER DETALLES</button>
+            <button class="btn-details" (click)="showDetails(coche.id)">VER DETALLES</button>
           </div>
         </div>
       </div>

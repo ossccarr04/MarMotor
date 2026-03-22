@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { filterDTO } from './filter.dto';
 
 @Component({
   selector: 'app-filters',
@@ -83,11 +82,20 @@ export class Filters {
     this.cerrarModalMarcas();
   }
 
+  limpiarMarca() {
+    this.marca.forEach((item) => (item.seleccionado = false));
+    this.marcaBusqueda = '+';
+  }
+
   carrocerias = [
     { nombre: 'SUV', seleccionado: true },
     { nombre: 'SEDÁN', seleccionado: false },
     { nombre: 'ROADS', seleccionado: false },
   ];
+
+  limpiarCarroceria() {
+    this.carrocerias.forEach((item) => (item.seleccionado = false));
+  }
 
   combustibles = [
     { nombre: 'ELÉCTRICO', seleccionado: true },
@@ -97,10 +105,17 @@ export class Filters {
     { nombre: 'HÍBRIDO ENCHUFABLE', seleccionado: false }, // Nota: Tienes híbrido dos veces en el diseño original
   ];
 
+  limpiarCombustible() {
+    this.combustibles.forEach((item) => (item.seleccionado = false));
+  }
+
   // Variables para el precio
-  precioActual = 1500;
+  precioActual = 1000;
   precioMin = 1000;
   precioMax = 20000;
+  precioModificado = true; // Siempre activado para enviar el precio
+
+  
 
   @ViewChild('sliderElement') sliderElement!: ElementRef;
   isDragging = false;
@@ -197,6 +212,7 @@ export class Filters {
     if (nuevoPrecio < this.precioMin) nuevoPrecio = this.precioMin;
 
     this.precioActual = nuevoPrecio;
+    this.precioModificado = true; // Si el usuario lo mueve, se activa el filtro
   }
 
   get marcaActiva() {
@@ -221,17 +237,22 @@ export class Filters {
 
   // Botón 2: Navega a la galería pasando los filtros por la URL
   buscarConFiltros() {
-    const queryParams: filterDTO = {};
+    const queryParams: any = {};
 
     // 2. Solo añadimos las propiedades si tienen un valor real
-    if (this.marcaActiva) queryParams.marca = this.marcaActiva;
-    if (this.carroceriaActiva) queryParams.carroceria = this.carroceriaActiva;
-    if (this.combustibleActivo) queryParams.combustible = this.combustibleActivo;
-    
-    // El precio lo mandamos siempre porque siempre tiene un valor en el slider
-    queryParams.precio = this.precioActual;
+    if (this.marcaActiva) {
+      queryParams[btoa('marca')] = btoa(this.marcaActiva);
+    }
+    if (this.carroceriaActiva) {
+      queryParams[btoa('carroceria')] = btoa(this.carroceriaActiva);
+    }
+    if (this.combustibleActivo){
+      queryParams[btoa('combustible')] = btoa(this.combustibleActivo);
+    } 
+      queryParams[btoa('precio')] = btoa(this.precioActual.toString());
 
-    console.log(queryParams);
+
+    //! Acordarme de aqui desencriptar al recibir la informacion
 
     // Navegamos a la ruta y le adjuntamos los filtros
     this.route.navigate(['/coches'], { queryParams: queryParams });

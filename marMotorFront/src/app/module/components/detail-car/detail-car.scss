@@ -1,0 +1,717 @@
+/* --- VARIABLES --- */
+$dark-navy-banner: #051121;
+$bg-body-light: #f4f7fa;
+$accent-green: #37df8c;
+$accent-teal: #32d5a4;
+$text-gray: #718096;
+$vibrant-green: #37df8c;
+$vibrant-teal: #32d5a4;
+$deep-emerald: #0d5e4b;
+$font-family: 'Montserrat', sans-serif;
+
+.detail-page-wrapper {
+  background-color: $bg-body-light;
+  min-height: 100vh;
+  font-family: $font-family;
+  color: $dark-navy-banner;
+  padding-bottom: 50px;
+  width: 100%;
+  overflow-x: hidden;
+
+  &.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+  }
+}
+
+/* --- HERO CON DEGRADADO --- */
+.hero-gradient-section {
+  background: linear-gradient(
+    180deg,
+    $dark-navy-banner 0%,
+    $dark-navy-banner 300px,
+    rgba($dark-navy-banner, 0.8) 500px,
+    $bg-body-light 100%
+  );
+  padding: 30px 0; /* Un poco menos de padding en móvil */
+  position: relative;
+  z-index: 1;
+  &.opacity-0 {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  @media (min-width: 768px) {
+    padding: 40px 0;
+  }
+}
+
+.hero-gradient-section,
+.content-grid {
+  &.opacity-0 {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* --- CABECERA (RESPONSIVE) --- */
+.detail-header {
+  max-width: 1200px;
+  margin: 0 auto 20px;
+  padding: 0 20px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  transition: opacity 0.3s;
+
+  @media (min-width: 768px) {
+    flex-direction: row; /* En PC se ponen uno a cada lado */
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  .title-group {
+    flex: 1;
+    min-width: 0; /* Previene que textos largos de la marca rompan el header flex */
+  }
+
+  h1 {
+    font-size: 20px; /* Ajustado para móvil */
+    font-weight: 800;
+    margin: 0;
+    line-height: 1.2;
+    word-wrap: break-word; /* Rompe el texto si es una palabra exageradamente larga */
+    @media (min-width: 768px) {
+      font-size: 32px;
+    }
+  }
+
+  .brand-subtitle {
+    display: block;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    @media (min-width: 768px) {
+      font-size: 16px;
+    }
+  }
+
+  .nav-arrows {
+    display: flex;
+    gap: 15px;
+
+    .arrow {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      width: 36px; /* Flechas un poco más pequeñas en móvil */
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 4px;
+      transition: all 0.3s ease;
+
+      @media (min-width: 768px) {
+        width: 50px;
+        height: 50px;
+        font-size: 28px;
+      }
+
+      &:hover {
+        background: $accent-green;
+        color: $dark-navy-banner;
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+/* --- GALERÍA Y ZOOM (RESPONSIVE) --- */
+.gallery-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 15px; /* Añadido padding lateral para móvil */
+}
+
+.main-photo-card {
+  width: 100%; /* Ocupa el 100% del contenedor con padding */
+  height: 240px; /* Altura incrementada en móviles para que luzca mejor la imagen */
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  overflow: hidden;
+
+  @media (min-width: 768px) {
+    height: 520px; /* Altura incrementada en PC y Tablets grandes */
+    border-radius: 25px;
+
+    img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.5s ease;
+  }
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    transition: all 0.5s ease;
+  }
+
+  &.is-zoomed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    z-index: 99999;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      max-width: 95%;
+      max-height: 95%;
+      object-fit: contain;
+    }
+
+    .zoom-btn-detail {
+      background: rgba(0, 0, 0, 0.1);
+      &::after {
+        content: '✕';
+        font-size: 20px;
+        color: #051121;
+      }
+      font-size: 0;
+    }
+  }
+}
+
+/* Controles dentro de la foto */
+.float-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  border: none;
+  width: 35px;
+  height: 35px; /* Más pequeñas en móvil */
+  border-radius: 50%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 15;
+
+  @media (min-width: 768px) {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  &.left {
+    left: 10px;
+    @media (min-width: 768px) {
+      left: 20px;
+    }
+  }
+  &.right {
+    right: 10px;
+    @media (min-width: 768px) {
+      right: 20px;
+    }
+  }
+  &:hover {
+    color: $accent-green;
+  }
+}
+
+.heart-icon-detail {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+  font-size: 22px;
+  z-index: 20;
+  color: #051121;
+  @media (min-width: 768px) {
+    top: 20px;
+    left: 20px;
+    font-size: 28px;
+  }
+}
+
+.zoom-btn-detail {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  border: none;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  z-index: 20;
+  color: #051121;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @media (min-width: 768px) {
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Miniaturas */
+.thumbnail-strip {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* En móvil, si hay muchas, bajan de línea */
+  gap: 8px;
+  margin-top: 15px;
+  padding: 0 10px;
+
+  @media (min-width: 768px) {
+    gap: 15px;
+    margin-top: 30px;
+  }
+
+  .thumb-item {
+    width: 60px;
+    height: 45px; /* Más pequeñas en móvil para que quepan más */
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    cursor: pointer;
+    background: white;
+
+    @media (min-width: 768px) {
+      width: 90px;
+      height: 60px;
+      border-radius: 10px;
+    }
+
+    &.active {
+      border-color: $accent-green;
+      transform: translateY(-3px);
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+/* --- GRID DE CONTENIDO (BENTO BOX RESPONSIVE) --- */
+.content-grid {
+  max-width: 1400px;
+  margin: 20px auto; /* Menos margen superior en móvil */
+  padding: 0 15px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* CRÍTICO: Previene que hijos grandes ensanchen la página */
+  gap: 15px; /* Menos espacio entre tarjetas en móvil */
+
+  @media (min-width: 1024px) {
+    margin: 40px auto;
+    padding: 0 20px;
+    gap: 25px;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales en PC */
+  }
+}
+
+/* Asignación de espacios solo en escritorio */
+@media (min-width: 1024px) {
+  .specs-card {
+    grid-column: span 1;
+  } /* Ocupa 1/3 (Arriba Izquierda) */
+  .history-card {
+    grid-column: span 2;
+  } /* Ocupa 2/3 (Arriba Derecha) */
+
+  .features-card {
+    grid-column: span 2;
+  } /* Ocupa 2/3 (Abajo Izquierda) */
+  .reserve-card {
+    grid-column: span 1;
+  } /* Ocupa 1/3 (Abajo Derecha) */
+}
+
+/* Base para todas las tarjetas */
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px 15px; /* Padding ajustado para móvil */
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  min-width: 0; /* CRÍTICO: Permite que el contenedor colapse al ancho de la pantalla y el scroll interno funcione */
+  width: 100%;
+
+  @media (min-width: 768px) {
+    padding: 30px;
+  }
+
+  h3 {
+    font-size: 14px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-weight: 800;
+    color: #051121;
+  }
+}
+
+/* --- ESPECIFICACIONES --- */
+.specs-list {
+  padding: 0;
+  list-style: none;
+  margin-bottom: 20px;
+  li {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px dashed #e2e8f0;
+    font-size: 12px; /* Ajuste sutil para móvil */
+    @media (min-width: 768px) {
+      font-size: 14px;
+    }
+
+    span {
+      color: $text-gray;
+    }
+    strong {
+      color: $dark-navy-banner;
+      font-weight: 700;
+    }
+  }
+}
+
+.btn-specs-dark {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #051121, #1a4a38, $accent-green);
+  color: white;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* --- TIMELINE HORIZONTAL (HISTORIAL) --- */
+.timeline-container {
+  position: relative;
+  padding: 20px 0 30px;
+  width: 100%;
+  overflow-x: auto; /* Permite hacer scroll horizontal con el dedo en móvil */
+  -webkit-overflow-scrolling: touch; /* Scroll suave en iPhone */
+  max-width: 100%;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.timeline-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  min-width: 650px; /* Igualamos al min-width de los items para que no se corte en el scroll */
+  height: 3px;
+  background: #cbd5e1;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.timeline-items {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  min-width: 650px; /* Importante para que no se aplaste en móvil y obligue a hacer scroll */
+}
+
+.timeline-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 110px;
+
+  .node-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: #f1f5f9;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+    @media (min-width: 768px) {
+      width: 50px;
+      height: 50px;
+      font-size: 20px;
+    }
+  }
+
+  .node-point {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid #94a3b8;
+    margin-bottom: 15px;
+    transition: all 0.3s;
+  }
+
+  .node-info {
+    text-align: center;
+    .year {
+      display: block;
+      font-weight: 800;
+      font-size: 13px;
+      color: $dark-navy-banner;
+      @media (min-width: 768px) {
+        font-size: 15px;
+      }
+    }
+    .title {
+      display: block;
+      font-size: 11px;
+      color: $text-gray;
+      line-height: 1.3;
+      margin-top: 6px;
+    }
+  }
+
+  &.is-completed {
+    .node-icon {
+      background: $accent-green;
+      color: white;
+      box-shadow: 0 5px 15px rgba(55, 223, 140, 0.3);
+    }
+    .node-point {
+      border-color: $accent-green;
+      background: $accent-green;
+    }
+  }
+
+  &.down {
+    flex-direction: column-reverse;
+    .node-icon {
+      margin-bottom: 0;
+      margin-top: 15px;
+    }
+    .node-point {
+      margin-bottom: 0;
+      margin-top: 15px;
+    }
+    .node-info {
+      margin-bottom: 15px;
+    }
+  }
+}
+
+/* --- EQUIPAMIENTO DESTACADO --- */
+.features-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  @media (min-width: 768px) {
+    gap: 10px;
+  }
+
+  .feature-tag {
+    background: #f1f5f9;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    @media (min-width: 768px) {
+      padding: 10px 15px;
+      font-size: 13px;
+    }
+    i {
+      color: $accent-green;
+    }
+  }
+}
+
+/* --- RESERVA --- */
+.reserve-card {
+  background: linear-gradient(135deg, $vibrant-teal, $vibrant-green, $deep-emerald);
+  background-size: 200% 200%;
+  animation: shine-gradient 5s infinite;
+  border-radius: 20px;
+  padding: 25px 20px; /* Padding reducido para móviles */
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  color: #051121;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media (min-width: 768px) {
+    padding: 40px 30px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: rotate(45deg);
+    animation: reflection 3s infinite;
+  }
+
+  .reserve-icon {
+    width: 36px;
+    height: 36px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: $deep-emerald;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 5;
+
+    @media (min-width: 768px) {
+      width: 45px;
+      height: 45px;
+      font-size: 20px;
+    }
+  }
+
+  h3.reserve-title {
+    color: #051121;
+    font-size: 18px;
+    margin-bottom: 5px;
+    font-weight: 900;
+    position: relative;
+    z-index: 5;
+    @media (min-width: 768px) {
+      font-size: 22px;
+    }
+  }
+
+  .reserve-subtitle {
+    font-size: 11px;
+    color: rgba(5, 17, 33, 0.7);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 600;
+    position: relative;
+    z-index: 5;
+    @media (min-width: 768px) {
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .final-price {
+    font-size: 32px; /* Mucho más pequeño en móvil para que no rompa la pantalla */
+    font-weight: 900;
+    margin: 5px 0 15px 0;
+    position: relative;
+    z-index: 5;
+
+    @media (min-width: 768px) {
+      font-size: 42px;
+      margin-bottom: 25px;
+    }
+  }
+
+  .btn-contact {
+    background: #051121;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    width: 100%;
+    border-radius: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    position: relative;
+    z-index: 5;
+    transition: transform 0.2s;
+    font-size: 14px;
+
+    @media (min-width: 768px) {
+      font-size: 16px;
+      padding: 15px 40px;
+    }
+    &:hover {
+      transform: translateY(-3px);
+    }
+  }
+}
+
+/* Animations */
+@keyframes shine-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes reflection {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(45deg);
+  }
+}

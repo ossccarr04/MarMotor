@@ -1,17 +1,28 @@
 /* ==========================================================================
    1. IMPORTACIÓN DE FUENTES GLOBAL
    ========================================================================== */
-/* Importamos Montserrat desde Google Fonts para darle un toque moderno y tech */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
 
 /* ==========================================================================
-   2. RESETEO CSS (Muy importante)
+   2. RESETEO CSS (Crítico para evitar bordes blancos)
    ========================================================================== */
-/* Esto asegura que todos los navegadores partan de cero y no añadan espacios raros */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  /* El overflow-x: hidden aquí es el primer nivel de seguridad */
+  overflow-x: hidden; 
+  position: relative;
+  background-color: #081225; /* Color oscuro base para que no brille blanco al cargar */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ==========================================================================
@@ -19,29 +30,62 @@
    ========================================================================== */
 body {
   font-family: 'Montserrat', sans-serif;
-  background-color: #f7f9fc; /* El gris clarito de fondo de tu diseño */
-  color: #333333; /* Un gris oscuro para el texto (es mejor que negro puro para la vista) */
-  -webkit-font-smoothing: antialiased; /* Hace que la fuente se vea más nítida en Mac/iOS */
-  -moz-osx-font-smoothing: grayscale;
+  color: #333333;
 }
 
-/* Para que los enlaces no tengan la línea por debajo por defecto */
 a {
   text-decoration: none;
 }
 
 /* ==========================================================================
-   4. LAYOUT Y MÁRGENES DE LA PÁGINA
+   4. LAYOUT PRINCIPAL (SOLUCIÓN BORDES BLANCOS)
    ========================================================================== */
 
+#page-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden; 
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
-/* Media Query para móviles: 
-  En pantallas pequeñas reducimos los márgenes para aprovechar el espacio 
-*/
+main {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  /* MUY IMPORTANTE: 
+     He quitado el padding lateral de 20px en móvil. 
+     Si quieres margen en los textos, dáselo a los componentes internos, 
+     pero NO al <main>, porque romperá los fondos que deben ir de lado a lado.
+  */
+  overflow-x: hidden; 
+  position: relative;
+  flex-grow: 1; /* Empuja el footer hacia abajo si hay poco contenido */
+}
+
+/* Media Query para móviles */
 @media (max-width: 768px) {
   main {
-    margin-top: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
+    /* Mantenemos solo el margen superior si lo necesitas para el header sticky */
+    margin-top: 0; 
+    /* Padding lateral ELIMINADO para evitar el desborde blanco */
+    padding-left: 0;
+    padding-right: 0;
   }
+}
+
+/* Corrección para componentes inyectados por el Router */
+router-outlet + * {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Asegura que las imágenes no rompan el layout */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }

@@ -1,4 +1,4 @@
-// Variables (asegúrate de tenerlas arriba en tu archivo)
+/* --- VARIABLES --- */
 $primary-blue: #0a1f33;
 $accent-green: #37df8c;
 $text-dark: #1a202c;
@@ -6,23 +6,33 @@ $green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
 $font-family: 'Montserrat', sans-serif;
 
 .car-gallery-section {
-  padding: 60px 40px;
+  padding: 40px 20px; /* Reducido para móviles */
   font-family: $font-family;
-
-  /* --- FONDO DEGRADADO PARA TODA LA SECCIÓN --- */
   background: linear-gradient(135deg, #051121 0%, #162b44 100%);
+  width: 100%;
+  overflow: hidden;
 
+  @media (min-width: 768px) {
+    padding: 60px 40px;
+  }
+
+  /* --- HEADER DE LA GALERÍA --- */
   .gallery-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
+
+    @media (min-width: 768px) {
+      margin-bottom: 40px;
+    }
 
     h2 {
-      font-size: 24px;
+      font-size: 20px;
       font-weight: bold;
-      color: #ffffff; /* Texto en blanco para contrastar con el fondo oscuro */
+      color: #ffffff;
       margin: 0;
+      @media (min-width: 768px) { font-size: 24px; }
     }
 
     .gallery-nav {
@@ -30,73 +40,87 @@ $font-family: 'Montserrat', sans-serif;
       gap: 10px;
 
       .nav-arrow {
-        width: 40px;
-        height: 40px;
+        width: 35px;
+        height: 35px;
         border-radius: 50%;
-
-        /* Fondo semi-transparente elegante para fondos oscuros */
         background-color: rgba(255, 255, 255, 0.1);
-        color: #ffffff; /* El símbolo < y > en blanco */
-
+        color: #ffffff;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
         font-weight: bold;
         transition: all 0.3s ease;
-        user-select: none; /* Evita que el usuario seleccione el texto al hacer clic rápido */
+        user-select: none;
+
+        @media (min-width: 768px) {
+          width: 40px;
+          height: 40px;
+        }
 
         &:hover {
-          background: $green-gradient; /* Usamos tu degradado verde al pasar el ratón */
-          color: #ffffff;
-          transform: scale(1.1); /* Pequeño efecto de zoom */
-          box-shadow: 0 4px 15px rgba(55, 223, 140, 0.4); /* Resplandor verde */
+          background: $green-gradient;
+          transform: scale(1.1);
+          box-shadow: 0 4px 15px rgba(55, 223, 140, 0.4);
         }
+        
+        &:active { transform: scale(0.95); }
       }
     }
   }
 
+  /* --- GRID / CONTENEDOR DE TARJETAS --- */
   .car-cards-grid {
     display: flex;
     align-items: flex-start;
     overflow-x: auto;
-    gap: 30px;
+    gap: 20px;
     padding: 10px 5px 40px 5px;
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    
+    /* Ocultar scrollbar */
+    &::-webkit-scrollbar { display: none; }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 
-    /* --- TARJETA --- */
+    @media (min-width: 768px) { gap: 30px; }
+
+    /* --- TARJETA INDIVIDUAL --- */
     .car-card {
-      flex: 0 0 auto;
-      width: 340px;
-      scroll-snap-align: start;
+      flex: 0 0 280px; /* Ancho más pequeño en móvil */
+      scroll-snap-align: center; /* Centrado en móvil para mejor UX */
       background: #ffffff;
       border-radius: 20px;
       position: relative;
       overflow: hidden;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-      transition:
-        transform 0.3s,
-        box-shadow 0.3s;
+      transition: transform 0.3s, box-shadow 0.3s;
 
-      /* --- ANIMACIÓN HOVER DE LA TARJETA --- */
+      @media (min-width: 768px) {
+        flex: 0 0 340px;
+        scroll-snap-align: start;
+      }
+
       &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(55, 223, 140, 0.3);
+        @media (min-width: 1024px) {
+          transform: translateY(-8px);
+          box-shadow: 0 15px 35px rgba(55, 223, 140, 0.3);
 
-        /* Al hacer hover, el botón crece en altura y empuja la tarjeta hacia abajo */
-        .hover-btn-container {
-          max-height: 50px; /* Altura suficiente para que quepa el botón */
-          opacity: 1;
+          .hover-btn-container {
+            max-height: 80px;
+            opacity: 1;
+            margin-top: 15px;
+            padding-bottom: 15px;
+          }
         }
       }
 
+      /* --- CONTENEDOR IMAGEN --- */
       .car-image-container {
         position: relative;
-        height: 200px;
+        height: 180px;
+        @media (min-width: 768px) { height: 200px; }
 
         .car-image {
           width: 100%;
@@ -110,71 +134,65 @@ $font-family: 'Montserrat', sans-serif;
           left: 15px;
           padding: 6px 14px;
           border-radius: 20px;
-          font-size: 11px;
+          font-size: 10px;
           font-weight: 800;
           color: white;
           background: $green-gradient;
+          text-transform: uppercase;
         }
 
         .heart-icon {
           position: absolute;
-          top: 15px;
-          right: 15px;
-          font-size: 26px; /* Un poco más grande para que se vea bien el vacío */
+          top: 12px;
+          right: 12px;
+          font-size: 24px;
           cursor: pointer;
-          user-select: none; /* Para que no se seleccione como texto al hacer doble clic */
-
-          /* ESTADO NORMAL (CORAZÓN VACÍO) */
           color: #ffffff;
-          filter: drop-shadow(
-            0 2px 4px rgba(0, 0, 0, 0.5)
-          ); /* Sombrilla para contrastar con cielos o fondos claros */
-          transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Animación con efecto rebote */
+          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+          transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
-          &:hover {
-            transform: scale(1.2);
-          }
+          &:hover { transform: scale(1.2); }
 
-          /* ESTADO GUARDADO (CORAZÓN LLENO) */
           &.is-liked {
-            color: #ff4757; /* Tu rojo bonito */
-            /* El emoji ❤️ ya es rojo de por sí en muchos sistemas, pero la clase nos asegura el color si usamos fuentes de iconos después */
+            color: #ff4757;
             animation: latido 0.3s ease-in-out;
           }
         }
       }
 
+      /* --- DETALLES --- */
       .car-details {
-        padding: 20px 20px 10px 20px;
+        padding: 20px;
 
         .title-price-row {
           display: flex;
           justify-content: space-between;
-          align-items: center;
+          align-items: flex-start;
           margin-bottom: 5px;
 
           h3 {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 800;
             color: $text-dark;
             margin: 0;
+            @media (min-width: 768px) { font-size: 18px; }
           }
 
           .car-price {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 800;
-            color: $text-dark;
+            color: $accent-green;
+            @media (min-width: 768px) { font-size: 18px; }
           }
         }
 
         .car-subtitle {
           display: block;
-          font-size: 13px;
+          font-size: 12px;
           color: #718096;
-          margin-bottom: 20px;
+          margin-bottom: 15px;
         }
 
-        /* 4 estadísticas en una sola fila */
         .car-stats-row {
           display: flex;
           justify-content: space-between;
@@ -185,61 +203,72 @@ $font-family: 'Montserrat', sans-serif;
           .stat {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
 
             .stat-value {
-              font-size: 15px;
+              font-size: 13px;
               font-weight: 800;
               color: $text-dark;
+              @media (min-width: 768px) { font-size: 15px; }
             }
 
             .stat-label {
-              font-size: 12px;
+              font-size: 10px;
               color: #a0aec0;
+              text-transform: uppercase;
             }
           }
         }
       }
 
-      /* --- EL BOTÓN OCULTO --- */
+      /* --- BOTÓN DESPLEGABLE --- */
       .hover-btn-container {
-        /* Empieza oculto y sin ocupar espacio */
         max-height: 0;
         opacity: 0;
-        margin-top: 0;
         overflow: hidden;
-
-        /* Transición fluida para que la tarjeta "crezca" */
-        transition:
-          max-height 0.4s ease,
-          opacity 0.3s ease,
-          margin-top 0.4s ease;
+        transition: all 0.4s ease;
+        padding: 0 20px;
         display: flex;
         justify-content: center;
 
+        /* En móvil el botón siempre es visible para facilitar la navegación */
+        @media (max-width: 1023px) {
+          max-height: 80px;
+          opacity: 1;
+          margin-top: 10px;
+          padding-bottom: 20px;
+        }
+
         .btn-details {
           width: 100%;
-          padding: 14px;
-          font-size: 14px;
+          padding: 12px;
+          font-size: 13px;
           font-weight: 800;
           text-transform: uppercase;
           letter-spacing: 1px;
-          color: #ffffff; /* Texto en blanco */
-
-          /* Los estilos que pediste */
+          color: #ffffff;
           background: $green-gradient;
-          border-radius: 30px; /* Bordes tipo píldora */
+          border-radius: 30px;
           border: none;
           cursor: pointer;
           box-shadow: 0 4px 15px rgba(55, 223, 140, 0.4);
           transition: transform 0.2s;
+
+          &:active { transform: scale(0.96); }
         }
       }
     }
   }
 }
+
+/* --- ANIMACIONES --- */
 @keyframes latido {
   0% { transform: scale(1); }
   50% { transform: scale(1.3); }
   100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

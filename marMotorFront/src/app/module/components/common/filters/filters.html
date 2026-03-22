@@ -2,8 +2,11 @@
   <h2>FILTRO VISUAL INTUITIVO: <span>Selecciona Categorías</span></h2>
 
   <div class="filters-container">
-    <div class="filter-card">
-      <h3>MARCA</h3>
+    <div class="filter-card" [ngClass]="{'is-disabled': !marcaActiva}">
+      <div class="card-header">
+        <h3>MARCA</h3>
+        <button class="clear-filter" (click)="limpiarMarca()" [title]="marcaActiva ? 'Limpiar filtro' : 'Filtro limpio'">{{ marcaActiva ? '✓' : '×' }}</button>
+      </div>
       <div class="filter-options">
         <div
           class="filter-option"
@@ -25,8 +28,11 @@
       </div>
     </div>
 
-    <div class="filter-card">
-      <h3>TIPO DE CARROCERÍA</h3>
+    <div class="filter-card" [ngClass]="{'is-disabled': !carroceriaActiva}">
+      <div class="card-header">
+        <h3>TIPO DE CARROCERÍA</h3>
+        <button class="clear-filter" (click)="limpiarCarroceria()" [title]="carroceriaActiva ? 'Limpiar filtro' : 'Filtro limpio'">{{ carroceriaActiva ? '✓' : '×' }}</button>
+      </div>
       <div class="filter-options">
         <div
           class="filter-option"
@@ -39,8 +45,11 @@
       </div>
     </div>
 
-    <div class="filter-card">
-      <h3>COMBUSTIBLE</h3>
+    <div class="filter-card" [ngClass]="{'is-disabled': !combustibleActivo}">
+      <div class="card-header">
+        <h3>COMBUSTIBLE</h3>
+        <button class="clear-filter" (click)="limpiarCombustible()" [title]="combustibleActivo ? 'Limpiar filtro' : 'Filtro limpio'">{{ combustibleActivo ? '✓' : '×' }}</button>
+      </div>
       <div class="filter-options">
         <div
           class="filter-option"
@@ -54,7 +63,9 @@
     </div>
 
     <div class="filter-card price-orbit-card">
-      <h3>Price Orbit</h3>
+      <div class="card-header">
+        <h3>PRICE ORBIT</h3>
+      </div>
 
       <div
         class="circular-slider"
@@ -86,7 +97,7 @@
         </div>
       </div>
 
-      <span class="price-type">Rango tradicional {{ precioActual | number: '1.0-0' }} €</span>
+      <span class="price-type">Rango de precio {{ precioActual | number: '1.0-0' }} €</span>
     </div>
   </div>
   <div class="action-buttons-container">
