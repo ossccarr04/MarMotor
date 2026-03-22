@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
+import { BrandDTO } from '../../../../@types/interface/brand.interface';
+import { BrandServiceBBDD } from '../../../services/brand-service-bbdd';
 
 @Component({
   selector: 'app-filters',
@@ -11,28 +13,28 @@ import { RouterModule, Router } from '@angular/router';
   styleUrl: './filters.scss',
 })
 export class Filters {
-  constructor(private route: Router) {}
+  constructor(private route: Router, private brandService: BrandServiceBBDD) {}
 
-  marca = [
-    { nombre: 'SEAT', seleccionado: true },
-    { nombre: 'BMW', seleccionado: false },
-    { nombre: 'AUDI', seleccionado: false },
-    { nombre: 'MERCEDES', seleccionado: false },
-    { nombre: 'VOLKSWAGEN', seleccionado: false },
-    { nombre: 'PEUGEOT', seleccionado: false },
-    { nombre: 'RENAULT', seleccionado: false },
-    { nombre: 'TOYOTA', seleccionado: false },
-    { nombre: 'FORD', seleccionado: false },
-    { nombre: 'HYUNDAI', seleccionado: false },
-    { nombre: 'KIA', seleccionado: false },
-    { nombre: 'NISSAN', seleccionado: false },
-    { nombre: 'MAZDA', seleccionado: false },
-    { nombre: 'HONDA', seleccionado: false },
-    { nombre: 'FIAT', seleccionado: false },
-    { nombre: 'VOLVO', seleccionado: false },
-    { nombre: 'TESLA', seleccionado: false },
-  ];
+  marca: BrandDTO[] = [];
 
+  ngOnInit(): void {
+
+    this.brandService.getBrands().subscribe({
+      next: (data) => {
+        this.marca = data;
+        this.marca.forEach((item) => (item.name = item.name.toUpperCase()));
+        this.marca.forEach((item) => (item.selected = false));
+        console.log(this.marca)
+      },
+      error: (err) => {
+        console.error('Error de conexión o de API:', err);
+      },
+    });
+
+
+
+
+  }
   contMostrarMarcas = 10;
   isModalMarcasOpen = false;
   terminoBusqueda = '';
@@ -49,7 +51,7 @@ export class Filters {
       return this.marca;
     }
     return this.marca.filter((marca) => {
-      return marca.nombre.toLowerCase().includes(this.terminoBusqueda.toLowerCase());
+      return marca.name.toLowerCase().includes(this.terminoBusqueda.toLowerCase());
     });
   }
 
@@ -66,15 +68,15 @@ export class Filters {
 
   // Nueva función unificada para seleccionar marca
   seleccionarMarca(marcaSeleccionada: any) {
-    this.marca.forEach((item) => (item.seleccionado = false));
-    marcaSeleccionada.seleccionado = true;
+    this.marca.forEach((item) => (item.selected = false));
+    marcaSeleccionada.selected = true;
 
     // Averiguamos en qué posición está la marca que acabamos de seleccionar
-    const index = this.marca.findIndex((m) => m.nombre === marcaSeleccionada.nombre);
+    const index = this.marca.findIndex((m) => m.name === marcaSeleccionada.name);
 
     // Si el índice es 10 o mayor, significa que NO está en las marcasPrincipales
     if (index >= this.contMostrarMarcas) {
-      this.marcaBusqueda = marcaSeleccionada.nombre;
+      this.marcaBusqueda = marcaSeleccionada.name;
     } else {
       // Si está entre las principales, el botón extra vuelve a ser un '+'
       this.marcaBusqueda = '+';
@@ -83,14 +85,14 @@ export class Filters {
   }
 
   limpiarMarca() {
-    this.marca.forEach((item) => (item.seleccionado = false));
+    this.marca.forEach((item) => (item.selected = false));
     this.marcaBusqueda = '+';
   }
 
   carrocerias = [
-    { nombre: 'SUV', seleccionado: true },
-    { nombre: 'SEDÁN', seleccionado: false },
-    { nombre: 'ROADS', seleccionado: false },
+    {nombre: 'SUV', seleccionado: true },
+    {nombre: 'SEDÁN', seleccionado: false },
+    {nombre: 'ROADS', seleccionado: false },
   ];
 
   limpiarCarroceria() {
@@ -98,11 +100,11 @@ export class Filters {
   }
 
   combustibles = [
-    { nombre: 'ELÉCTRICO', seleccionado: true },
-    { nombre: 'GASOLINA', seleccionado: false },
-    { nombre: 'DIESEL', seleccionado: false },
-    { nombre: 'HÍBRIDO', seleccionado: false },
-    { nombre: 'HÍBRIDO ENCHUFABLE', seleccionado: false }, // Nota: Tienes híbrido dos veces en el diseño original
+    {nombre: 'ELÉCTRICO', seleccionado: true },
+    {nombre: 'GASOLINA', seleccionado: false },
+    {nombre: 'DIESEL', seleccionado: false },
+    {nombre: 'HÍBRIDO', seleccionado: false },
+    {nombre: 'HÍBRIDO ENCHUFABLE', seleccionado: false }, // Nota: Tienes híbrido dos veces en el diseño original
   ];
 
   limpiarCombustible() {
@@ -126,8 +128,8 @@ export class Filters {
 
   // Seleccionar una opción (y desmarcar las demás)
   seleccionarOpcion(lista: any[], index: number) {
-    lista.forEach((item) => (item.seleccionado = false));
-    lista[index].seleccionado = true;
+    lista.forEach((item) => (item.selected = false));
+    lista[index].selected = true;
   }
 
   get offsetCirculo() {
@@ -216,8 +218,8 @@ export class Filters {
   }
 
   get marcaActiva() {
-    const seleccionada = this.marca.find((m) => m.seleccionado);
-    return seleccionada ? seleccionada.nombre : null;
+    const seleccionada = this.marca.find((m) => m.selected);
+    return seleccionada ? seleccionada.name : null;
   }
 
   get carroceriaActiva() {

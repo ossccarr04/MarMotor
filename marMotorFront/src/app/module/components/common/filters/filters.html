@@ -11,10 +11,10 @@
         <div
           class="filter-option"
           *ngFor="let item of marcasPrincipales; let i = index"
-          [ngClass]="{ selected: item.seleccionado }"
+          [ngClass]="{ selected: item.selected }"
           (click)="seleccionarOpcion(marca, i)"
         >
-          {{ item.nombre }}
+          {{ item.name }}
         </div>
       </div>
       <div class="more-btn-container">
@@ -123,10 +123,10 @@
       <div
         class="filter-option"
         *ngFor="let item of marcasFiltradas"
-        [ngClass]="{ selected: item.seleccionado }"
+        [ngClass]="{ selected: item.selected }"
         (click)="seleccionarMarca(item)"
       >
-        {{ item.nombre }}
+        {{ item.name }}
       </div>
 
       <div class="no-results" *ngIf="marcasFiltradas.length === 0">No se encontraron marcas.</div>
