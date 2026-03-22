@@ -7,8 +7,6 @@ import java.util.List;
 
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
-
     List<Car> findByBrandId(Long brandId);
-
     List<Car> findByStatus(Car.Status status);
 }

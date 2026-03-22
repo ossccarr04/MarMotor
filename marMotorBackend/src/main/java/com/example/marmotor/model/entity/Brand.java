@@ -2,6 +2,7 @@ package com.example.marmotor.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.util.*;
 
 @Entity

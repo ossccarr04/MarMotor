@@ -2,6 +2,7 @@ package com.example.marmotor.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.util.*;
 
 @Entity
@@ -11,16 +12,12 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(unique = true, nullable = false, length = 50)
     private String username;
-
     @Column(nullable = false)
     private String password;
-
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
-
     @ManyToMany
     @JoinTable(
             name = "favorites",
@@ -29,5 +26,7 @@ public class User {
     )
     private Set<Car> favoriteCars = new HashSet<>();
 
-    public enum Role { USER, ADMIN }
+    public enum Role {
+        USER, ADMIN
+    }
 }
