@@ -2,6 +2,7 @@ package com.example.marmotor.model.DTO;
 
 import com.example.marmotor.model.entity.Car;
 import lombok.Data;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class CarDTO {
     private String imageUrl;
 
     private Integer power; //cv
-    private Integer mileage; // //km
+    private Integer mileage; //km
     private String consumption;
 
     private String badge;
@@ -23,9 +24,10 @@ public class CarDTO {
     private boolean isSaved;
 
     private Car.Transmission transmission;
-    private Car.FuelType fuelType;
-    private Car.BodyType bodyType;
     private Car.Status status;
+    private String fuelType;
+    private String bodyType;
+
     private String description;
     private List<CarImageDTO> images;
 }

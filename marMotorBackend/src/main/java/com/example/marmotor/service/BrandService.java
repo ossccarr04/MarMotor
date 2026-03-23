@@ -5,6 +5,7 @@ import com.example.marmotor.model.entity.Brand;
 import com.example.marmotor.repository.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
 

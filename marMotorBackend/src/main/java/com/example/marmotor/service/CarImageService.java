@@ -23,7 +23,6 @@ public class CarImageService {
         return carImageRepository.save(image);
     }
 
-
     public CarImage addImage(Long carId, CarImage image) {
         Car car = carRepository.findById(carId)
                 .orElseThrow(() -> new RuntimeException("Coche no encontrado con ID: " + carId));
@@ -31,6 +30,7 @@ public class CarImageService {
         image.setCar(car);
         return carImageRepository.save(image);
     }
+
     @Transactional
     public void setMainImage(Long imageId, Long carId) {
         List<CarImage> images = carImageRepository.findAll().stream()

@@ -2,8 +2,10 @@ package com.example.marmotor.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "cars", indexes = {
@@ -30,7 +32,6 @@ public class Car {
     private Integer power;
     private Integer mileage;
     private String consumption;
-
     private String badge;
     private String badgeType;
 
@@ -40,26 +41,24 @@ public class Car {
     @Enumerated(EnumType.STRING)
     private Transmission transmission = Transmission.MANUAL;
 
-    @Enumerated(EnumType.STRING)
-    private FuelType fuelType = FuelType.GASOLINE;
+    @ManyToOne
+    @JoinColumn(name = "fuel_type_id")
+    private FuelType fuelType;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
-
-    @Enumerated(EnumType.STRING)
-    private BodyType bodyType = BodyType.SEDAN;
+    @ManyToOne
+    @JoinColumn(name = "body_type_id")
+    private BodyType bodyType;
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.AVAILABLE;
 
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CarImage> images = new ArrayList<>();
 
-    public enum BodyType {
-        SEDAN, SUV, COUPE, HATCHBACK, CONVERTIBLE, VAN
-    }
+    public enum Status {AVAILABLE, SOLD, RESERVED}
 
-    public enum Status { AVAILABLE, SOLD, RESERVED }
-    public enum Transmission { MANUAL, AUTOMATIC }
-    public enum FuelType { GASOLINE, DIESEL, ELECTRIC, HYBRID }
+    public enum Transmission {MANUAL, AUTOMATIC}
 }

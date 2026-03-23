@@ -1,7 +1,11 @@
 package com.example.marmotor.service;
 
-import com.example.marmotor.model.DTO.*;
-import com.example.marmotor.model.entity.*;
+import com.example.marmotor.model.DTO.CarDTO;
+import com.example.marmotor.model.DTO.CarDetailDTO;
+import com.example.marmotor.model.DTO.HistoryEventDTO;
+import com.example.marmotor.model.entity.Car;
+import com.example.marmotor.model.entity.CarDetail;
+import com.example.marmotor.model.entity.CarImage;
 import com.example.marmotor.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,11 +48,11 @@ public class CarService {
         carRepository.deleteById(id);
     }
 
-    public List<CarDTO> searchCars(String brand, Car.FuelType fuelType, Car.BodyType bodyType, BigDecimal maxPrice) {
+    public List<CarDTO> searchCars(String brand, String fuelTypeName, String bodyTypeName, BigDecimal maxPrice) {
         return carRepository.findAll().stream()
                 .filter(car -> brand == null || (car.getBrand() != null && car.getBrand().getName().equalsIgnoreCase(brand)))
-                .filter(car -> fuelType == null || car.getFuelType() == fuelType)
-                .filter(car -> bodyType == null || car.getBodyType() == bodyType)
+                .filter(car -> fuelTypeName == null || (car.getFuelType() != null && car.getFuelType().getName().equalsIgnoreCase(fuelTypeName)))
+                .filter(car -> bodyTypeName == null || (car.getBodyType() != null && car.getBodyType().getName().equalsIgnoreCase(bodyTypeName)))
                 .filter(car -> maxPrice == null || car.getPrice().compareTo(maxPrice) <= 0)
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -64,13 +68,18 @@ public class CarService {
         dto.setMileage(car.getMileage());
         dto.setConsumption(car.getConsumption());
         dto.setTransmission(car.getTransmission());
-        dto.setFuelType(car.getFuelType());
-        dto.setBodyType(car.getBodyType());
         dto.setStatus(car.getStatus());
         dto.setDescription(car.getDescription());
         dto.setBadge(car.getBadge());
         dto.setBadgeType(car.getBadgeType());
         dto.setSaved(car.isSaved());
+
+        if (car.getFuelType() != null) {
+            dto.setFuelType(car.getFuelType().getName());
+        }
+        if (car.getBodyType() != null) {
+            dto.setBodyType(car.getBodyType().getName());
+        }
 
         if (car.getBrand() != null) {
             dto.setMake(car.getBrand().getName());
@@ -90,24 +99,24 @@ public class CarService {
         CarDetail detail = car.getDetail();
         CarDetailDTO dto = new CarDetailDTO();
 
-        dto.setId(car.getId());
-        dto.setModel(car.getModel());
-        dto.setYear(car.getYear());
-        dto.setPrice(car.getPrice());
-        dto.setPower(car.getPower());
-        dto.setMileage(car.getMileage());
-        dto.setConsumption(car.getConsumption());
-        dto.setTransmission(car.getTransmission());
-        dto.setFuelType(car.getFuelType());
-        dto.setBodyType(car.getBodyType());
-        dto.setStatus(car.getStatus());
-        dto.setBadge(car.getBadge());
-        dto.setBadgeType(car.getBadgeType());
-        dto.setSaved(car.isSaved());
+        CarDTO basic = convertToDto(car);
 
-        if (car.getBrand() != null) {
-            dto.setMake(car.getBrand().getName());
-        }
+        dto.setId(basic.getId());
+        dto.setMake(basic.getMake());
+        dto.setModel(basic.getModel());
+        dto.setYear(basic.getYear());
+        dto.setPrice(basic.getPrice());
+        dto.setImageUrl(basic.getImageUrl());
+        dto.setPower(basic.getPower());
+        dto.setMileage(basic.getMileage());
+        dto.setConsumption(basic.getConsumption());
+        dto.setTransmission(basic.getTransmission());
+        dto.setFuelType(basic.getFuelType());
+        dto.setBodyType(basic.getBodyType());
+        dto.setStatus(basic.getStatus());
+        dto.setBadge(basic.getBadge());
+        dto.setBadgeType(basic.getBadgeType());
+        dto.setSaved(basic.isSaved());
 
         if (detail != null) {
             dto.setColor(detail.getColor());
@@ -126,13 +135,8 @@ public class CarService {
 
         if (car.getImages() != null) {
             dto.setImagesAlbum(car.getImages().stream()
-                    .map(img -> img.getUrl())
+                    .map(CarImage::getUrl)
                     .collect(Collectors.toList()));
-
-            car.getImages().stream()
-                    .filter(img -> img.getIsMain() != null && img.getIsMain())
-                    .findFirst()
-                    .ifPresent(main -> dto.setImageUrl(main.getUrl()));
         }
 
         return dto;

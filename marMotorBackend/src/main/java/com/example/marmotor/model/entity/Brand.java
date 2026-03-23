@@ -3,7 +3,8 @@ package com.example.marmotor.model.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "brands")

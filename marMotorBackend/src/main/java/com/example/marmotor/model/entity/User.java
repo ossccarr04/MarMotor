@@ -3,7 +3,8 @@ package com.example.marmotor.model.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -23,7 +24,7 @@ public class User {
             name = "favorites",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "car_id")
-            
+
     )
     private Set<Car> favoriteCars = new HashSet<>();
 
