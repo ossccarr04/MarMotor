@@ -6,6 +6,7 @@ import com.example.marmotor.model.DTO.HistoryEventDTO;
 import com.example.marmotor.model.entity.Car;
 import com.example.marmotor.model.entity.CarDetail;
 import com.example.marmotor.model.entity.CarImage;
+import com.example.marmotor.model.enums.Status;
 import com.example.marmotor.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class CarService {
                 .collect(Collectors.toList());
     }
 
+
     public Optional<CarDTO> getCarById(Long id) {
         return carRepository.findById(id).map(this::convertToDto);
     }
@@ -39,7 +41,7 @@ public class CarService {
 
     public Car createCar(Car car) {
         if (car.getStatus() == null) {
-            car.setStatus(Car.Status.AVAILABLE);
+            car.setStatus(Status.AVAILABLE);
         }
         return carRepository.save(car);
     }

@@ -1,6 +1,7 @@
 package com.example.marmotor.repository;
 
 import com.example.marmotor.model.entity.Car;
+import com.example.marmotor.model.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +11,5 @@ import java.util.List;
 public interface CarRepository extends JpaRepository<Car, Long> {
     List<Car> findByBrandId(Long brandId);
 
-    List<Car> findByStatus(Car.Status status);
+    List<Car> findByStatus(Status status);
 }

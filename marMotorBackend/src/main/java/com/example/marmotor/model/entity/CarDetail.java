@@ -1,5 +1,6 @@
 package com.example.marmotor.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,6 +17,7 @@ public class CarDetail {
     @OneToOne
     @MapsId
     @JoinColumn(name = "car_id")
+    @JsonBackReference
     private Car car;
 
     private String color;
