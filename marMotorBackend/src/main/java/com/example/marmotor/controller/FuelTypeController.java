@@ -1,8 +1,9 @@
 package com.example.marmotor.controller;
 
-import com.example.marmotor.model.entity.FuelType;
-import com.example.marmotor.repository.FuelTypeRepository;
+import com.example.marmotor.model.DTO.FuelTypeDTO;
+import com.example.marmotor.service.FuelTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,13 +13,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/fuel-types")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200")
 public class FuelTypeController {
-    @Autowired
-    private FuelTypeRepository repository;
+    @Autowired private FuelTypeService fuelTypeService;
 
     @GetMapping
-    public List<FuelType> getAll() {
-        return repository.findAll();
+    public ResponseEntity<List<FuelTypeDTO>> getFuelTypes() {
+        return ResponseEntity.ok(fuelTypeService.getAllFuelTypes());
     }
 }
