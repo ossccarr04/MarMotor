@@ -7,13 +7,13 @@ import { environment } from '../../../environments/environment.development';
 @Injectable({
   providedIn: 'root',
 })
-export class FuelServiceBBDD {
+export class BadgeServiceBBDD {
   private http = inject(HttpClient);
   
 
-  private readonly URL = `${environment.apiUrl}/fuels`;
+  private readonly URL = `${environment.apiUrl}/badges`;
 
-  getFuels(): Observable<any> {
+  getBadges(): Observable<any> {
     return this.http.get<any>(this.URL);
   }
 }
