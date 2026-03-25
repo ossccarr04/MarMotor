@@ -7,11 +7,11 @@ import { environment } from '../../../environments/environment.development';
 @Injectable({
   providedIn: 'root',
 })
-export class FuelServiceBBDD {
+export class FuelTypeServiceBBDD {
   private http = inject(HttpClient);
   
 
-  private readonly URL = `${environment.apiUrl}/fuels`;
+  private readonly URL = `${environment.apiUrl}/fuel-types`;
 
   getFuels(): Observable<any> {
     return this.http.get<any>(this.URL);

@@ -5,6 +5,11 @@ import { RouterModule, Router } from '@angular/router';
 import { BrandDTO } from '../../../../@types/interface/brand.interface';
 import { BrandServiceBBDD } from '../../../services/brand-service-bbdd';
 
+import { FuelTypeServiceBBDD } from '../../../services/fuel-service-bbdd';
+import { BadgeDTO } from '../../../../@types/interface/badge.interface';
+import { FuelDTO } from '../../../../@types/interface/fuel.interface';
+import { BodyTypeServiceBBDD } from '../../../services/bodyType-service-bbdd';
+
 @Component({
   selector: 'app-filters',
   standalone: true,
@@ -13,44 +18,73 @@ import { BrandServiceBBDD } from '../../../services/brand-service-bbdd';
   styleUrl: './filters.scss',
 })
 export class Filters {
-  constructor(private route: Router, private brandService: BrandServiceBBDD) {}
+  constructor(
+    private route: Router,
+    private brandService: BrandServiceBBDD,
+    private bodyTypeService: BodyTypeServiceBBDD,
+    private fuelTypeService: FuelTypeServiceBBDD,
+  ) {}
 
-  marca: BrandDTO[] = [];
+  marcas: BrandDTO[] = [];
+  carrocerias: BadgeDTO[]= [];
+  combustibles: FuelDTO[] = [];
+  
+  contMostrarMarcas = 10;
+  isModalMarcasOpen = false;
+  terminoBusqueda = '';
+  marcaBusqueda = '+';
 
   ngOnInit(): void {
 
     this.brandService.getBrands().subscribe({
       next: (data) => {
-        this.marca = data;
-        this.marca.forEach((item) => (item.name = item.name.toUpperCase()));
-        this.marca.forEach((item) => (item.selected = false));
-        console.log(this.marca)
+        this.marcas = data;
+        this.marcas.forEach((item) => (item.name = item.name.toUpperCase()));
+        this.marcas.forEach((item) => (item.selected = false));
+
       },
       error: (err) => {
         console.error('Error de conexión o de API:', err);
       },
     });
 
+    this.bodyTypeService.getBadges().subscribe({
+      next: (data) => {
+        this.carrocerias = data;
+        this.carrocerias.forEach((item) => (item.name = item.name.toUpperCase()));
+        this.carrocerias.forEach((item) => (item.selected = false));
 
+      },
+      error: (err) => {
+        console.error('Error de conexión o de API:', err);
+      },
+    });
 
-
+    this.fuelTypeService.getFuels().subscribe({
+      next: (data) => {
+        this.combustibles = data;
+        this.combustibles.forEach((item) => (item.name = item.name.toUpperCase()));
+        this.combustibles.forEach((item) => (item.selected = false));
+      },
+      error: (err) => {
+        console.error('Error de conexión o de API:', err);
+      },
+    });
   }
-  contMostrarMarcas = 10;
-  isModalMarcasOpen = false;
-  terminoBusqueda = '';
-  marcaBusqueda = '+';
+
+
 
   // Obtiene solo las 10 primeras marcas para la vista principal
   get marcasPrincipales() {
-    return this.marca.slice(0, this.contMostrarMarcas);
+    return this.marcas.slice(0, this.contMostrarMarcas);
   }
 
   // Filtra las marcas en el modal según lo que el usuario escriba
   get marcasFiltradas() {
     if (!this.terminoBusqueda) {
-      return this.marca;
+      return this.marcas;
     }
-    return this.marca.filter((marca) => {
+    return this.marcas.filter((marca) => {
       return marca.name.toLowerCase().includes(this.terminoBusqueda.toLowerCase());
     });
   }
@@ -68,11 +102,11 @@ export class Filters {
 
   // Nueva función unificada para seleccionar marca
   seleccionarMarca(marcaSeleccionada: any) {
-    this.marca.forEach((item) => (item.selected = false));
+    this.marcas.forEach((item) => (item.selected = false));
     marcaSeleccionada.selected = true;
 
     // Averiguamos en qué posición está la marca que acabamos de seleccionar
-    const index = this.marca.findIndex((m) => m.name === marcaSeleccionada.name);
+    const index = this.marcas.findIndex((m) => m.name === marcaSeleccionada.name);
 
     // Si el índice es 10 o mayor, significa que NO está en las marcasPrincipales
     if (index >= this.contMostrarMarcas) {
@@ -85,30 +119,17 @@ export class Filters {
   }
 
   limpiarMarca() {
-    this.marca.forEach((item) => (item.selected = false));
+    this.marcas.forEach((item) => (item.selected = false));
     this.marcaBusqueda = '+';
   }
 
-  carrocerias = [
-    {nombre: 'SUV', seleccionado: true },
-    {nombre: 'SEDÁN', seleccionado: false },
-    {nombre: 'ROADS', seleccionado: false },
-  ];
-
   limpiarCarroceria() {
-    this.carrocerias.forEach((item) => (item.seleccionado = false));
+    this.carrocerias.forEach((item) => (item.selected = false));
   }
 
-  combustibles = [
-    {nombre: 'ELÉCTRICO', seleccionado: true },
-    {nombre: 'GASOLINA', seleccionado: false },
-    {nombre: 'DIESEL', seleccionado: false },
-    {nombre: 'HÍBRIDO', seleccionado: false },
-    {nombre: 'HÍBRIDO ENCHUFABLE', seleccionado: false }, // Nota: Tienes híbrido dos veces en el diseño original
-  ];
 
   limpiarCombustible() {
-    this.combustibles.forEach((item) => (item.seleccionado = false));
+    this.combustibles.forEach((item) => (item.selected = false));
   }
 
   // Variables para el precio
@@ -116,8 +137,6 @@ export class Filters {
   precioMin = 1000;
   precioMax = 20000;
   precioModificado = true; // Siempre activado para enviar el precio
-
-  
 
   @ViewChild('sliderElement') sliderElement!: ElementRef;
   isDragging = false;
@@ -218,18 +237,18 @@ export class Filters {
   }
 
   get marcaActiva() {
-    const seleccionada = this.marca.find((m) => m.selected);
+    const seleccionada = this.marcas.find((m) => m.selected);
     return seleccionada ? seleccionada.name : null;
   }
 
   get carroceriaActiva() {
-    const seleccionada = this.carrocerias.find((c) => c.seleccionado);
-    return seleccionada ? seleccionada.nombre : null;
+    const seleccionada = this.carrocerias.find((c) => c.selected);
+    return seleccionada ? seleccionada.name : null;
   }
 
   get combustibleActivo() {
-    const seleccionada = this.combustibles.find((c) => c.seleccionado);
-    return seleccionada ? seleccionada.nombre : null;
+    const seleccionada = this.combustibles.find((c) => c.selected);
+    return seleccionada ? seleccionada.name : null;
   }
 
   buscarTodos() {
@@ -248,11 +267,10 @@ export class Filters {
     if (this.carroceriaActiva) {
       queryParams[btoa('carroceria')] = btoa(this.carroceriaActiva);
     }
-    if (this.combustibleActivo){
+    if (this.combustibleActivo) {
       queryParams[btoa('combustible')] = btoa(this.combustibleActivo);
-    } 
-      queryParams[btoa('precio')] = btoa(this.precioActual.toString());
-
+    }
+    queryParams[btoa('precio')] = btoa(this.precioActual.toString());
 
     //! Acordarme de aqui desencriptar al recibir la informacion
 

@@ -12,7 +12,7 @@
           class="filter-option"
           *ngFor="let item of marcasPrincipales; let i = index"
           [ngClass]="{ selected: item.selected }"
-          (click)="seleccionarOpcion(marca, i)"
+          (click)="seleccionarOpcion(marcas, i)"
         >
           {{ item.name }}
         </div>
@@ -37,10 +37,10 @@
         <div
           class="filter-option"
           *ngFor="let item of carrocerias; let i = index"
-          [ngClass]="{ selected: item.seleccionado }"
+          [ngClass]="{ selected: item.selected }"
           (click)="seleccionarOpcion(carrocerias, i)"
         >
-          {{ item.nombre }}
+          {{ item.name }}
         </div>
       </div>
     </div>
@@ -54,10 +54,10 @@
         <div
           class="filter-option"
           *ngFor="let item of combustibles; let i = index"
-          [ngClass]="{ selected: item.seleccionado }"
+          [ngClass]="{ selected: item.selected }"
           (click)="seleccionarOpcion(combustibles, i)"
         >
-          {{ item.nombre }}
+          {{ item.name }}
         </div>
       </div>
     </div>

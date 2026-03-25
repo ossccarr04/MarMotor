@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CarDTO } from '../../@types/interface/car.interface';
 import { environment } from '../../../environments/environment.development';
+import { CarDetail } from '../../@types/interface/car-details.interface';
 
 
 @Injectable({
@@ -22,5 +23,9 @@ export class CarServiceBBDD {
   getCarsByFilters(filtros: any): Observable<any[]> {
 
     return this.http.get<CarDTO[]>(this.URL, { params: filtros });
+  }
+
+  getCarsDetails(id: string): Observable<CarDetail> {
+    return this.http.get<CarDetail>(`${this.URL}/${id}`);
   }
 }
