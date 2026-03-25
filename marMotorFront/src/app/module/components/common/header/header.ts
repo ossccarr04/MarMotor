@@ -10,6 +10,7 @@ import { Router, RouterLink, RouterLinkActive, RouterModule } from '@angular/rou
 })
 export class Header {
   isMenuOpen = false;
+  isLogoZoomed: boolean = false;
 
   constructor(private renderer: Renderer2) {}
 

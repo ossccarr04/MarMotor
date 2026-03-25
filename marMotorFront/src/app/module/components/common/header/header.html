@@ -1,6 +1,15 @@
 <header class="autoflow-header">
+  <!-- Contenedor del logo en grande (modo zoom) -->
+  @if (isLogoZoomed) {
+  <div 
+       (click)="isLogoZoomed = false"
+       style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; align-items: center; justify-content: center; cursor: zoom-out;">
+    <img src="logoMarMotor.png" alt="Logo MarMotor Ampliado" style="max-width: 90%; max-height: 90%; object-fit: contain;" />
+  </div>
+  }
+
   <div class="logo" [routerLink]="['/']" (click)="isMenuOpen = false">
-    <span class="logo-icon">MM</span>
+    <img src="logoMarMotor.png" alt="Logo MarMotor" style="height: 60px; width: auto; object-fit: contain; margin-right: 10px; cursor: zoom-in;" (click)="isLogoZoomed = true; $event.stopPropagation(); $event.preventDefault();" />
     MarMotor
   </div>
 
