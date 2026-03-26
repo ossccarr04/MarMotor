@@ -10,7 +10,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class FuelTypeService {
-    @Autowired private FuelTypeRepository repository;
+    @Autowired
+    private FuelTypeRepository repository;
 
     public List<FuelTypeDTO> getAllFuelTypes() {
         return repository.findAll().stream().map(ft -> {

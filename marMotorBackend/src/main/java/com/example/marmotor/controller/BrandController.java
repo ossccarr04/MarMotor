@@ -27,6 +27,13 @@ public class BrandController {
         return ResponseEntity.ok(brandService.saveBrand(brand));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<BrandDTO> updateBrand(@PathVariable Long id, @RequestBody Brand brand) {
+        return brandService.updateBrand(id, brand)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBrand(@PathVariable Long id) {
         return ResponseEntity.noContent().build();

@@ -15,7 +15,8 @@ import java.util.List;
 @RequestMapping("/api/fuel-types")
 @CrossOrigin(origins = "http://localhost:4200")
 public class FuelTypeController {
-    @Autowired private FuelTypeService fuelTypeService;
+    @Autowired
+    private FuelTypeService fuelTypeService;
 
     @GetMapping
     public ResponseEntity<List<FuelTypeDTO>> getFuelTypes() {

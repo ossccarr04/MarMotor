@@ -15,7 +15,8 @@ import java.util.List;
 @RequestMapping("/api/body-types")
 @CrossOrigin(origins = "http://localhost:4200")
 public class BodyTypeController {
-    @Autowired private BodyTypeService bodyTypeService;
+    @Autowired
+    private BodyTypeService bodyTypeService;
 
     @GetMapping
     public ResponseEntity<List<BodyTypeDTO>> getBodyTypes() {

@@ -1,8 +1,8 @@
 package com.example.marmotor.controller;
 
+import com.example.marmotor.model.DTO.CarCreateDTO;
 import com.example.marmotor.model.DTO.CarDTO;
 import com.example.marmotor.model.DTO.CarDetailDTO;
-import com.example.marmotor.model.entity.Car;
 import com.example.marmotor.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +29,27 @@ public class CarController {
         return ResponseEntity.ok(carService.searchCars(brand, fuelType, bodyType, maxPrice));
     }
 
+    @GetMapping("/detailed")
+    public ResponseEntity<List<CarDetailDTO>> getCarsDetailed() {
+        List<CarDetailDTO> detailedCars = carService.getAllCarsDetailed();
+        return ResponseEntity.ok(detailedCars);
+    }
+
+    @GetMapping("/filters/detailed")
+    public ResponseEntity<List<CarDetailDTO>> getCarsFilteredDetailed(
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) String fuelType,
+            @RequestParam(required = false) String bodyType,
+            @RequestParam(required = false) BigDecimal maxPrice
+    ) {
+        return ResponseEntity.ok(carService.searchCarsDetailed(brand, fuelType, bodyType, maxPrice));
+    }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<CarDetailDTO>> getCarsByCategory(@PathVariable String category) {
+        return ResponseEntity.ok(carService.getTop10ByBadge(category));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<CarDTO> getCarById(@PathVariable Long id) {
         return carService.getCarById(id)
@@ -43,9 +64,16 @@ public class CarController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<CarDTO> updateCar(@PathVariable Long id, @RequestBody CarCreateDTO carDto) {
+        return carService.updateCar(id, carDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
-    public ResponseEntity<Car> createCar(@RequestBody Car car) {
-        return ResponseEntity.ok(carService.createCar(car));
+    public ResponseEntity<CarDTO> createCar(@RequestBody CarCreateDTO carDto) {
+        return ResponseEntity.ok(carService.createCar(carDto));
     }
 
     @DeleteMapping("/{id}")
