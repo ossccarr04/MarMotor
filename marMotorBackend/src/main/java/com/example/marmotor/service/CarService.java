@@ -7,10 +7,13 @@ import com.example.marmotor.model.DTO.HistoryEventDTO;
 import com.example.marmotor.model.entity.Car;
 import com.example.marmotor.model.entity.CarDetail;
 import com.example.marmotor.model.entity.CarImage;
+import com.example.marmotor.model.enums.Status;
+import com.example.marmotor.model.enums.Transmission;
 import com.example.marmotor.repository.BodyTypeRepository;
 import com.example.marmotor.repository.BrandRepository;
 import com.example.marmotor.repository.CarRepository;
 import com.example.marmotor.repository.FuelTypeRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +36,7 @@ public class CarService {
     private BodyTypeRepository bodyTypeRepository;
 
     public List<CarDTO> getAllCars() {
-        return carRepository.findAll()
-                .stream()
+        return carRepository.findAll().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
@@ -44,22 +46,52 @@ public class CarService {
     }
 
     public Optional<CarDetailDTO> getCarDetailById(Long id) {
-        return carRepository.findById(id)
-                .map(this::convertToDetailDto);
+        return carRepository.findById(id).map(this::convertToDetailDto);
     }
 
     @Transactional
     public CarDTO createCar(CarCreateDTO dto) {
         Car car = new Car();
         mapDtoToEntity(dto, car);
-
-        if (car.getStatus() == null) car.setStatus(Car.Status.AVAILABLE);
-
+        if (car.getStatus() == null) {
+            car.setStatus(Status.AVAILABLE);
+        }
         return convertToDto(carRepository.save(car));
     }
 
     public void deleteCar(Long id) {
         carRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Optional<CarDTO> updateCar(Long id, CarCreateDTO dto) {
+        return carRepository.findById(id).map(existingCar -> {
+            mapDtoToEntity(dto, existingCar);
+            return convertToDto(carRepository.save(existingCar));
+        });
+    }
+
+    private void mapDtoToEntity(CarCreateDTO dto, Car car) {
+        car.setModel(dto.getModel());
+        car.setYear(dto.getYear());
+        car.setPrice(dto.getPrice());
+        car.setPower(dto.getPower());
+        car.setMileage(dto.getMileage());
+        car.setConsumption(dto.getConsumption());
+        car.setDescription(dto.getDescription());
+        car.setBadge(dto.getBadge());
+        car.setBadgeType(dto.getBadgeType());
+
+        if (dto.getTransmission() != null) {
+            car.setTransmission(Transmission.valueOf(dto.getTransmission().toUpperCase()));
+        }
+
+        car.setBrand(brandRepository.findById(dto.getBrandId())
+                .orElseThrow(() -> new EntityNotFoundException("Marca no encontrada")));
+        car.setFuelType(fuelTypeRepository.findById(dto.getFuelTypeId())
+                .orElseThrow(() -> new EntityNotFoundException("Tipo de combustible no encontrado")));
+        car.setBodyType(bodyTypeRepository.findById(dto.getBodyTypeId())
+                .orElseThrow(() -> new EntityNotFoundException("Tipo de carrocería no encontrado")));
     }
 
     public List<CarDTO> searchCars(String brand, String fuelTypeName, String bodyTypeName, BigDecimal maxPrice) {
@@ -72,13 +104,6 @@ public class CarService {
                 .collect(Collectors.toList());
     }
 
-    public List<CarDetailDTO> getAllCarsDetailed() {
-        return carRepository.findAll()
-                .stream()
-                .map(this::convertToDetailDto)
-                .collect(Collectors.toList());
-    }
-
     public CarDTO convertToDto(Car car) {
         CarDTO dto = new CarDTO();
         dto.setId(car.getId());
@@ -88,23 +113,16 @@ public class CarService {
         dto.setPower(car.getPower());
         dto.setMileage(car.getMileage());
         dto.setConsumption(car.getConsumption());
-        dto.setTransmission(car.getTransmission());
-        dto.setStatus(car.getStatus());
+        dto.setTransmission(car.getTransmission() != null ? car.getTransmission().name() : null);
+        dto.setStatus(car.getStatus() != null ? car.getStatus().name() : null);
         dto.setDescription(car.getDescription());
         dto.setBadge(car.getBadge());
         dto.setBadgeType(car.getBadgeType());
         dto.setSaved(car.isSaved());
 
-        if (car.getFuelType() != null) {
-            dto.setFuelType(car.getFuelType().getName());
-        }
-        if (car.getBodyType() != null) {
-            dto.setBodyType(car.getBodyType().getName());
-        }
-
-        if (car.getBrand() != null) {
-            dto.setMake(car.getBrand().getName());
-        }
+        if (car.getFuelType() != null) dto.setFuelType(car.getFuelType().getName());
+        if (car.getBodyType() != null) dto.setBodyType(car.getBodyType().getName());
+        if (car.getBrand() != null) dto.setMake(car.getBrand().getName());
 
         if (car.getImages() != null) {
             car.getImages().stream()
@@ -112,14 +130,12 @@ public class CarService {
                     .findFirst()
                     .ifPresent(main -> dto.setImageUrl(main.getUrl()));
         }
-
         return dto;
     }
 
     public CarDetailDTO convertToDetailDto(Car car) {
         CarDetail detail = car.getDetail();
         CarDetailDTO dto = new CarDetailDTO();
-
         CarDTO basic = convertToDto(car);
 
         dto.setId(basic.getId());
@@ -143,7 +159,6 @@ public class CarService {
             dto.setColor(detail.getColor());
             dto.setDescription(detail.getDescription());
             dto.setFeatures(detail.getFeatures());
-
             dto.setHistory(detail.getHistory().stream().map(h -> {
                 HistoryEventDTO hDto = new HistoryEventDTO();
                 hDto.setYear(h.getYear());
@@ -159,39 +174,13 @@ public class CarService {
                     .map(CarImage::getUrl)
                     .collect(Collectors.toList()));
         }
-
         return dto;
     }
 
-    @Transactional
-    public Optional<CarDTO> updateCar(Long id, CarCreateDTO dto) {
-        return carRepository.findById(id).map(existingCar -> {
-            mapDtoToEntity(dto, existingCar);
-            return convertToDto(carRepository.save(existingCar));
-        });
-    }
-
-    private void mapDtoToEntity(CarCreateDTO dto, Car car) {
-        car.setModel(dto.getModel());
-        car.setYear(dto.getYear());
-        car.setPrice(dto.getPrice());
-        car.setPower(dto.getPower());
-        car.setMileage(dto.getMileage());
-        car.setConsumption(dto.getConsumption());
-        car.setDescription(dto.getDescription());
-        car.setBadge(dto.getBadge());
-        car.setBadgeType(dto.getBadgeType());
-
-        if (dto.getTransmission() != null) {
-            car.setTransmission(Car.Transmission.valueOf(dto.getTransmission().toUpperCase()));
-        }
-
-        car.setBrand(brandRepository.findById(dto.getBrandId())
-                .orElseThrow(() -> new jakarta.persistence.EntityNotFoundException("Marca no encontrada")));
-        car.setFuelType(fuelTypeRepository.findById(dto.getFuelTypeId())
-                .orElseThrow(() -> new jakarta.persistence.EntityNotFoundException("Tipo de combustible no encontrado")));
-        car.setBodyType(bodyTypeRepository.findById(dto.getBodyTypeId())
-                .orElseThrow(() -> new jakarta.persistence.EntityNotFoundException("Tipo de carrocería no encontrado")));
+    public List<CarDetailDTO> getAllCarsDetailed() {
+        return carRepository.findAll().stream()
+                .map(this::convertToDetailDto)
+                .collect(Collectors.toList());
     }
 
     public List<CarDetailDTO> searchCarsDetailed(String brand, String fuelTypeName, String bodyTypeName, BigDecimal maxPrice) {

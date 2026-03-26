@@ -1,5 +1,7 @@
 package com.example.marmotor.model.entity;
 
+import com.example.marmotor.model.enums.Status;
+import com.example.marmotor.model.enums.Transmission;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -39,7 +41,7 @@ public class Car {
     private boolean isSaved;
 
     @Enumerated(EnumType.STRING)
-    private Transmission transmission = Transmission.MANUAL;
+    private Transmission transmission;
 
     @ManyToOne
     @JoinColumn(name = "fuel_type_id")
@@ -50,7 +52,7 @@ public class Car {
     private BodyType bodyType;
 
     @Enumerated(EnumType.STRING)
-    private Status status = Status.AVAILABLE;
+    private Status status;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -58,7 +60,4 @@ public class Car {
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CarImage> images = new ArrayList<>();
 
-    public enum Status {AVAILABLE, SOLD, RESERVED}
-
-    public enum Transmission {MANUAL, AUTOMATIC}
 }

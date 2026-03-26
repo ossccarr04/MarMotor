@@ -20,7 +20,13 @@ public class CarController {
     private CarService carService;
 
     @GetMapping
-    public ResponseEntity<List<CarDTO>> getCars(
+    public ResponseEntity<List<CarDTO>> getAllCars() {
+        List<CarDTO> cars = carService.getAllCars();
+        return ResponseEntity.ok(cars);
+    }
+
+    @GetMapping("/filters")
+    public ResponseEntity<List<CarDTO>> getCarsByFilters(
             @RequestParam(required = false) String brand,
             @RequestParam(required = false) String fuelType,
             @RequestParam(required = false) String bodyType,
