@@ -75,6 +75,7 @@ $font-family: 'Montserrat', sans-serif;
 /* --- CAR CARD --- */
 .car-card {
   background: $card-stock-bg;
+  border: 1px solid #888686; // Borde negro sólido de 1px
   border-radius: 20px;
   overflow: hidden;
   position: relative;
@@ -231,6 +232,109 @@ $font-family: 'Montserrat', sans-serif;
           bottom: 15px; // Sube pero deja un pequeño margen inferior
           opacity: 1;
         }
+      }
+    }
+  }
+}
+
+.results-info-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; // Para que en móvil no se amontone
+  gap: 20px;
+  padding: 0 10px 20px 10px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 40px;
+
+  p {
+    margin: 0;
+    font-size: 16px;
+    color: $text-dark;
+  }
+
+  .results-controls {
+    display: flex;
+    align-items: center;
+    gap: 30px; // Espacio entre el select y el "Mostrando"
+
+    .sort-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      label {
+        font-size: 14px;
+        color: $text-gray;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      select {
+        padding: 8px 15px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        background-color: white;
+        font-family: $font-family;
+        font-size: 14px;
+        font-weight: 700;
+        color: $text-dark;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.3s;
+
+        &:focus {
+          border-color: $accent-green;
+        }
+      }
+    }
+  }
+}
+
+/* --- MENSAJE DE NO RESULTADOS --- */
+.no-results-container {
+  grid-column: 1 / -1; // Ocupa todo el ancho del grid
+  padding: 80px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  .no-results-content {
+    i {
+      font-size: 60px;
+      color: $accent-green;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    h2 {
+      font-size: 28px;
+      color: $text-dark;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: $text-gray;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    .btn-reset-filters {
+      background: $text-dark;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: $accent-green;
+        color: $text-dark;
+        transform: scale(1.05);
       }
     }
   }

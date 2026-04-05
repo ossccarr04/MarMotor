@@ -17,7 +17,7 @@ export class App {
 
   get mostrarHeader(): boolean {
 
-    const rutasSinHeader = ['/login', '/register'];
+    const rutasSinHeader = ['/auth/login', '/auth/register'];
     
     return !rutasSinHeader.includes(this.router.url);
   }

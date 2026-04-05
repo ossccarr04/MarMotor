@@ -6,7 +6,7 @@ $green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
 $font-family: 'Montserrat', sans-serif;
 
 .car-gallery-section {
-  padding: 40px 20px; /* Reducido para móviles */
+  padding: 40px 0; // Eliminado padding lateral para que el scroll llegue al borde
   font-family: $font-family;
   background: linear-gradient(135deg, #051121 0%, #162b44 100%);
   width: 100%;
@@ -22,9 +22,11 @@ $font-family: 'Montserrat', sans-serif;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
+    padding: 0 20px; // Padding solo para el texto y flechas
 
     @media (min-width: 768px) {
       margin-bottom: 40px;
+      padding: 0;
     }
 
     h2 {
@@ -69,19 +71,47 @@ $font-family: 'Montserrat', sans-serif;
         &:active {
           transform: scale(0.95);
         }
+
+        &.disabled {
+          opacity: 0.3;
+          pointer-events: none;
+          filter: grayscale(1);
+        }
       }
     }
   }
 
-  /* --- GRID / CONTENEDOR DE TARJETAS --- */
+  /* --- GRID / CONTENEDOR DE TARJETAS (MOVIMIENTO TÁCTIL) --- */
   .car-cards-grid {
     display: flex;
     align-items: flex-start;
     overflow-x: auto;
     gap: 20px;
-    padding: 10px 5px 40px 5px;
+    padding: 10px 20px 40px 20px; // Padding lateral para que la 1ª tarjeta respire
+
+    // Propiedades críticas para el deslizamiento móvil
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
+    user-select: none; // Evita que se seleccione el texto al arrastrar
+    -webkit-user-drag: none;
+    -webkit-overflow-scrolling: touch;
+
+    img {
+      pointer-events: none;
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+    h3,
+    span,
+    div {
+      user-select: none;
+    }
+
+    &.is-dragging {
+    scroll-snap-type: none !important;
+    scroll-behavior: auto !important;
+    cursor: grabbing;
+  }
 
     /* Ocultar scrollbar */
     &::-webkit-scrollbar {
@@ -92,21 +122,29 @@ $font-family: 'Montserrat', sans-serif;
 
     @media (min-width: 768px) {
       gap: 30px;
+      padding: 10px 5px 40px 5px;
+      scroll-snap-type: none; // En PC preferimos scroll libre con flechas
     }
 
     /* --- TARJETA INDIVIDUAL --- */
     .car-card {
-      flex: 0 0 320px; /* Ancho más pequeño en móvil */
-      scroll-snap-align: center; /* Centrado en móvil para mejor UX */
+      flex: 0 0 90%; // Ocupa casi todo el ancho en móvil para impacto visual
+      scroll-snap-align: center; // Se imanta al centro en móvil
       background: #ffffff;
       border-radius: 20px;
+
       position: relative;
       overflow: hidden;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
       transition:
         transform 0.3s,
         box-shadow 0.3s;
-
+      .btn-details,
+      .heart-icon,
+      button {
+        pointer-events: auto;
+      }
+      img { pointer-events: none; -webkit-user-drag: none; }
       @media (min-width: 768px) {
         flex: 0 0 340px;
         scroll-snap-align: start;
@@ -126,10 +164,11 @@ $font-family: 'Montserrat', sans-serif;
         }
       }
 
-      /* --- CONTENEDOR IMAGEN --- */
+      /* --- IMAGEN MÁS GRANDE EN MÓVIL --- */
       .car-image-container {
         position: relative;
-        height: 180px;
+        height: 220px; // Aumentado para móvil
+
         @media (min-width: 768px) {
           height: 200px;
         }
@@ -138,6 +177,7 @@ $font-family: 'Montserrat', sans-serif;
           width: 100%;
           height: 100%;
           object-fit: cover;
+          transition: transform 0.5s ease;
         }
 
         .badge {
@@ -166,7 +206,6 @@ $font-family: 'Montserrat', sans-serif;
           &:hover {
             transform: scale(1.2);
           }
-
           &.is-liked {
             color: #ff4757;
             animation: latido 0.3s ease-in-out;
@@ -179,26 +218,26 @@ $font-family: 'Montserrat', sans-serif;
         padding: 20px;
 
         .title-price-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 10px;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 10px;
 
-      h3 {
-        color: $text-dark;
-        font-size: 17px;
-        font-weight: 700;
-        margin: 0;
-        flex: 1;
-      }
+          h3 {
+            color: $text-dark;
+            font-size: 19px; // Ligeramente más grande
+            font-weight: 700;
+            margin: 0;
+            flex: 1;
+          }
 
-      .car-price {
-        color: $accent-green;
-        font-size: 19px;
-        font-weight: 900;
-        margin-left: 10px;
-      }
-    }
+          .car-price {
+            color: $accent-green;
+            font-size: 21px; // Ligeramente más grande
+            font-weight: 900;
+            margin-left: 10px;
+          }
+        }
 
         .car-subtitle {
           display: block;
@@ -220,7 +259,7 @@ $font-family: 'Montserrat', sans-serif;
             gap: 2px;
 
             .stat-value {
-              font-size: 13px;
+              font-size: 14px;
               font-weight: 800;
               color: $text-dark;
               @media (min-width: 768px) {
@@ -237,7 +276,7 @@ $font-family: 'Montserrat', sans-serif;
         }
       }
 
-      /* --- BOTÓN DESPLEGABLE --- */
+      /* --- BOTÓN SIEMPRE VISIBLE EN MÓVIL --- */
       .hover-btn-container {
         max-height: 0;
         opacity: 0;
@@ -247,7 +286,6 @@ $font-family: 'Montserrat', sans-serif;
         display: flex;
         justify-content: center;
 
-        /* En móvil el botón siempre es visible para facilitar la navegación */
         @media (max-width: 1023px) {
           max-height: 80px;
           opacity: 1;
@@ -279,12 +317,18 @@ $font-family: 'Montserrat', sans-serif;
   }
 }
 
+/* --- FILTROS CON SCROLL EN MÓVIL --- */
 .badge-filters {
   font-family: $font-family;
   display: flex;
   gap: 10px;
-  margin-right: auto; // Empuja la navegación a la derecha
-  margin-left: 20px;
+  transition: all 0.3s ease;
+
+  @media (min-width: 769px) {
+    flex-wrap: wrap;
+    margin-left: 20px;
+    margin-right: auto;
+  }
 
   button {
     background: rgba(255, 255, 255, 0.05);
@@ -295,6 +339,7 @@ $font-family: 'Montserrat', sans-serif;
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
+    white-space: nowrap;
     transition: all 0.3s ease;
 
     &:hover {
@@ -302,29 +347,68 @@ $font-family: 'Montserrat', sans-serif;
     }
 
     &.active {
-      background: #37df8c; // Tu color accent-green
+      background: #37df8c;
       color: #051121;
       border-color: #37df8c;
       box-shadow: 0 0 15px rgba(55, 223, 140, 0.3);
     }
   }
-}
 
-// Ajuste para el header de la galería en móvil
-@media (max-width: 768px) {
-  .gallery-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
+  @media (max-width: 768px) {
+    margin: 20px 0;
+    padding: 0 20px 10px 20px;
+    justify-content: flex-start;
+    overflow-x: auto; // Permite deslizar los filtros si hay muchos
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
 
-    .badge-filters {
-      margin-left: 0;
-      width: 100%;
-      overflow-x: auto; // Scroll horizontal si no caben
-      padding-bottom: 5px;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    button {
+      font-size: 12px;
+      padding: 8px 16px;
     }
   }
 }
+
+/* --- RESPONSIVE HEADER --- */
+@media (max-width: 768px) {
+  .car-gallery-section {
+    .gallery-header {
+      flex-direction: column;
+      align-items: center; // Centra el H2 y el grupo de nav-arrows
+      text-align: center; // Centra el texto del H2
+      gap: 20px;
+
+      h2 {
+        width: 100%; // Asegura que el título ocupe el ancho para centrarse
+      }
+
+      .gallery-nav {
+        align-self: center; // Centra las flechas en lugar de mandarlas a la derecha
+      }
+    }
+  }
+
+  /* --- FILTROS CENTRADOS EN MÓVIL --- */
+  .badge-filters {
+    margin: 20px 0;
+    padding: 0 10px; // Pequeño aire lateral
+    justify-content: center; // MÁGIA: Centra los botones de filtro
+    width: 100%;
+    flex-wrap: wrap; // Si hay muchos, bajan centrados.
+    // Si prefieres que deslicen de lado, cambia wrap por nowrap y usa overflow-x: auto
+
+    button {
+      margin-top: 5px; // Espacio si llegan a saltar de línea
+      font-size: 12px;
+      padding: 8px 16px;
+    }
+  }
+}
+
 /* --- ANIMACIONES --- */
 @keyframes latido {
   0% {

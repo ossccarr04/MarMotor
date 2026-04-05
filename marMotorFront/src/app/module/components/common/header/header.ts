@@ -1,11 +1,12 @@
-import { Component, Inject, inject, PLATFORM_ID, Renderer2 } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, Renderer2 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
+import { isPlatformBrowser, CommonModule } from '@angular/common'; // Importante importar estos
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLinkActive, RouterLink, RouterModule],
+  imports: [CommonModule, RouterLinkActive, RouterLink, RouterModule],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
@@ -13,38 +14,48 @@ export class Header {
   isMenuOpen = false;
   isLogoZoomed: boolean = false;
 
- constructor(private renderer: Renderer2, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
-  // Escuchamos cada vez que el usuario cambia de página
-  this.router.events.pipe(
-    filter(event => event instanceof NavigationEnd)
-  ).subscribe(() => {
-    this.closeMenu(); // Forzamos el cierre y desbloqueo del scroll
-  });
-}
-  
+  constructor(
+    private renderer: Renderer2, 
+    private router: Router, 
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    // Escuchamos los cambios de ruta para cerrar el menú automáticamente
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.closeMenu(); 
+    });
+  }
+
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
 
-    // Si el menú está abierto, añadimos la clase al body, si no, la quitamos
     if (this.isMenuOpen) {
-      this.renderer.setStyle(document.body, 'overflow', 'hidden');
-    this.renderer.setStyle(document.body, 'position', 'fixed');
-    this.renderer.setStyle(document.body, 'width', '100%');
-    this.renderer.setStyle(document.body, 'height', '100%');
-    this.renderer.setStyle(document.body, 'touch-action', 'none');
+      // SOLO si estamos en el navegador podemos tocar el 'document'
+      if (isPlatformBrowser(this.platformId)) {
+        this.renderer.setStyle(document.body, 'overflow', 'hidden');
+        // Te recomiendo quitar position fixed si te da problemas de scroll, 
+        // pero si lo dejas, asegúrate de que esté aquí dentro.
+        this.renderer.setStyle(document.body, 'position', 'fixed');
+        this.renderer.setStyle(document.body, 'width', '100%');
+        this.renderer.setStyle(document.body, 'height', '100%');
+        this.renderer.setStyle(document.body, 'touch-action', 'none');
+      }
     } else {
-      this.closeMenu()
+      this.closeMenu();
     }
   }
 
-  // Función para cerrar el menú (úsala en los enlaces <a>)
   closeMenu() {
     this.isMenuOpen = false;
-  // Quitamos el estilo y devolvemos la posición normal
-  this.renderer.removeStyle(document.body, 'overflow');
-  this.renderer.removeStyle(document.body, 'position');
-  this.renderer.removeStyle(document.body, 'width');
-  this.renderer.removeStyle(document.body, 'height');
-  this.renderer.removeStyle(document.body, 'touch-action');
+    
+    // Protección para el servidor
+    if (isPlatformBrowser(this.platformId)) {
+      this.renderer.removeStyle(document.body, 'overflow');
+      this.renderer.removeStyle(document.body, 'position');
+      this.renderer.removeStyle(document.body, 'width');
+      this.renderer.removeStyle(document.body, 'height');
+      this.renderer.removeStyle(document.body, 'touch-action');
+    }
   }
 }

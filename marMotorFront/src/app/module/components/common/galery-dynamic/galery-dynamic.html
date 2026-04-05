@@ -3,17 +3,25 @@
     <h2>GALERÍA DINÁMICA DE FILTRADO</h2>
 
     <div class="badge-filters">
-      <button 
-        [class.active]="filtroSeleccionado === BadgeType.ALL" 
-        (click)="setFiltro(BadgeType.ALL)">TODOS</button>
-      <button 
-        [class.active]="filtroSeleccionado === BadgeType.NEW" 
-        (click)="setFiltro(BadgeType.NEW)">RECIÉN LLEGADOS</button>
-      <button 
-        [class.active]="filtroSeleccionado === BadgeType.FEATURED" 
-        (click)="setFiltro(BadgeType.FEATURED)">DESTACADOS</button>
+      <button
+        [class.active]="filtroSeleccionado === BadgeType.ALL"
+        (click)="setFiltro(BadgeType.ALL)"
+      >
+        TODOS
+      </button>
+      <button
+        [class.active]="filtroSeleccionado === BadgeType.NEW"
+        (click)="setFiltro(BadgeType.NEW)"
+      >
+        RECIÉN LLEGADOS
+      </button>
+      <button
+        [class.active]="filtroSeleccionado === BadgeType.FEATURED"
+        (click)="setFiltro(BadgeType.FEATURED)"
+      >
+        DESTACADOS
+      </button>
     </div>
-
 
     <div class="gallery-nav">
       <span class="nav-arrow" (click)="moverCarrusel(-1)">&lt;</span>
@@ -21,8 +29,17 @@
     </div>
   </div>
 
-  <div class="car-cards-grid" #carrusel>
-    @for (coche of coches; track coche.make + " " + coche.model) {
+  <div
+    class="car-cards-grid"
+    #carrusel
+    [class.is-dragging]="isDragging"
+    (mousedown)="onMouseDown($event)"
+    (mousemove)="onMouseMove($event)"
+    (mouseup)="onMouseUp()"
+    (mouseleave)="onMouseUp()"
+    (scroll)="onScrollCheck()"
+  >
+    @for (coche of coches; track coche.id) {
       <div class="car-card">
         <div class="car-image-container">
           @if (coche.badge) {
@@ -38,12 +55,12 @@
             {{ coche.isSaved ? '❤️' : '♡' }}
           </span>
 
-          <img class="car-image" [src]="coche.imageUrl" [alt]='coche.make + " " + coche.model' />
+          <img class="car-image" [src]="coche.imageUrl" [alt]="coche.make + ' ' + coche.model" />
         </div>
 
         <div class="car-details">
           <div class="title-price-row">
-            <h3>{{ coche.make}} {{ coche.model }}</h3>
+            <h3>{{ coche.make }} {{ coche.model }}</h3>
             <span class="car-price">{{ coche.price | number: '1.0-0' }} €</span>
           </div>
           <span class="car-subtitle">{{ coche.year }} · {{ coche.transmission }}</span>

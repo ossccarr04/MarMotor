@@ -22,13 +22,12 @@
   <nav class="nav-links" [class.is-open]="isMenuOpen">
     <a [routerLink]="['/']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" (click)="isMenuOpen = false">Inicio</a>
     <a routerLink="/coches" routerLinkActive="active-link" (click)="isMenuOpen = false">Coches</a>
-    <a routerLink="/destacados" routerLinkActive="active-link" (click)="isMenuOpen = false">Destacados</a>
     <a routerLink="/compañia" routerLinkActive="active-link" (click)="isMenuOpen = false">Compañia</a>
     
-    <button class="btn btn-outline btn-login-mobile" [routerLink]="['/login']" (click)="isMenuOpen = false">Login</button>
+    <button class="btn btn-outline btn-login-mobile" [routerLink]="['/auth/login']" (click)="isMenuOpen = false">Login</button>
   </nav>
 
   <div class="header-actions">
-    <button class="btn btn-outline btn-login-desktop" [routerLink]="['/login']">Login</button>
+    <button class="btn btn-outline btn-login-desktop" [routerLink]="['/auth/login']">Login</button>
   </div>
 </header>

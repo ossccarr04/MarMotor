@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
 import { CarServiceBBDD } from '../../services/car-service-bbdd';
 import { Filters } from '../common/filters/filters';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,6 +13,10 @@ import { CarDTO } from '../../../@types/interface/car.interface';
   styleUrl: './cars.scss',
 })
 export class Cars {
+
+  @ViewChild(Filters) filtroComponent!: Filters;
+
+
   private carService = inject(CarServiceBBDD);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -91,13 +95,57 @@ export class Cars {
     return this.cochesVisibles.length < this.cochesFiltrados.length;
   }
 
+  ordenarCoches(event: any) {
+  const criterio = event.target.value;
+
+  switch (criterio) {
+    case 'priceAsc':
+      this.cochesFiltrados.sort((a, b) => a.price - b.price);
+      break;
+    case 'priceDesc':
+      this.cochesFiltrados.sort((a, b) => b.price - a.price);
+      break;
+    case 'brand':
+      this.cochesFiltrados.sort((a, b) => a.make.localeCompare(b.make));
+      break;
+    case 'power':
+      this.cochesFiltrados.sort((a, b) => b.power - a.power);
+      break;
+    case 'year':
+      this.cochesFiltrados.sort((a, b) => b.year - a.year);
+      break;
+    case "km":
+      this.cochesFiltrados.sort((a, b) => a.mileage - b.mileage);
+      break;
+    case "kmDesc":
+      this.cochesFiltrados.sort((a, b) => b.mileage - a.mileage);
+      break;
+    default:
+      // Aquí podrías volver al orden original si guardaste una copia
+      break;
+  }
+
+  // Reiniciamos la paginación para mostrar los primeros resultados del nuevo orden
+  this.paginaActual = 1;
+  this.actualizarVista(); // El método que recorta los coches que se ven
+}
+
   resetFilters() {
-    // Navegamos a la ruta limpia, lo que disparará cargarCoches con {}
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {},
-    });
-    this.paginaActual = 1;
+    if (this.filtroComponent) {
+    this.filtroComponent.limpiarMarca();
+    this.filtroComponent.limpiarCarroceria();
+    this.filtroComponent.limpiarCombustible();
+    this.filtroComponent.precioActual = 0;
+    this.filtroComponent.precioModificado = false;
+  }
+
+  // 2. Navegamos a la ruta limpia (esto resetea los coches en pantalla)
+  this.router.navigate([], {
+    relativeTo: this.route,
+    queryParams: {},
+  });
+
+  this.paginaActual = 1;
   }
 
   toggleGuardar(coche: any, event: Event) {

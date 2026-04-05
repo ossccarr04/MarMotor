@@ -38,6 +38,9 @@
           @if (f['email'].errors?.['email']) {
             <span class="error-text">El formato no es válido.</span>
           }
+          @if (f['email'].errors?.['emailProtegido']) {
+            <span class="error-text">Este correo está reservado</span>
+          }
         }
       </div>
 
@@ -53,10 +56,15 @@
           />
 
           <button type="button" class="toggle-eye" (click)="togglePassword()">
-            @if (passwordVisible) {
+            <!-- @if (passwordVisible) {
               <span>👓 </span>
             } @else {
               <span>👀</span>
+            } -->
+            @if (passwordVisible) {
+              <i class="fa-solid fa-eye-slash"></i>
+            } @else {
+              <i class="fa-solid fa-eye"></i>
             }
           </button>
         </div>
@@ -80,19 +88,19 @@
       <div class="form-group">
         <label>Repetir Contraseña</label>
         <div class="input-container">
-        <input
-          #passwordInput
-          [type]="passwordVisible ? 'text' : 'password'"
-          formControlName="confirmPassword"
-          placeholder="••••••••"
-          [class.is-invalid]="f['confirmPassword'].invalid && f['confirmPassword'].touched"
-        />
+          <input
+            #passwordInput
+            [type]="passwordVisible ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            placeholder="••••••••"
+            [class.is-invalid]="f['confirmPassword'].invalid && f['confirmPassword'].touched"
+          />
 
-        <button type="button" class="toggle-eye" (click)="togglePassword()">
+          <button type="button" class="toggle-eye" (click)="togglePassword()">
             @if (passwordVisible) {
-              <span>👓 </span>
+              <i class="fa-solid fa-eye-slash"></i>
             } @else {
-              <span>👀</span>
+              <i class="fa-solid fa-eye"></i>
             }
           </button>
         </div>
@@ -108,7 +116,7 @@
 
       <button type="submit" class="btn-submit">Registrarme</button>
 
-      <div class="auth-links">¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a></div>
+      <div class="auth-links">¿Ya tienes cuenta? <a routerLink="/auth/login">Inicia sesión</a></div>
     </form>
   </div>
 </div>

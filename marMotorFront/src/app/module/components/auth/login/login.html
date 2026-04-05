@@ -26,34 +26,41 @@
         <label>Contraseña</label>
         <div class="input-container">
           <input
-            #passwordInput
             [type]="passwordVisible ? 'text' : 'password'"
             formControlName="password"
             placeholder="••••••••"
+            autocomplete="current-password"
             [class.is-invalid]="f['password'].invalid && f['password'].touched"
           />
 
-          <button type="button" class="toggle-eye" (click)="togglePassword()">
+          <button type="button" class="toggle-eye" (click)="togglePassword()" tabindex="-1">
             @if (passwordVisible) {
-              <span>👓 </span>
+              <i class="fa-solid fa-eye-slash"></i>
             } @else {
-              <span>👀</span>
+              <i class="fa-solid fa-eye"></i>
             }
           </button>
         </div>
+
         @if (f['password'].invalid && f['password'].touched) {
-          @if (f['password'].errors?.['required']) {
-            <span class="error-text">La contraseña es obligatoria.</span>
-          }
-          @if (f['password'].errors?.['minlength']) {
-            <span class="error-text">Debe tener al menos 6 caracteres.</span>
-          }
+          <div class="error-container">
+            @if (f['password'].errors?.['required']) {
+              <span class="error-text">La contraseña es obligatoria.</span>
+            }
+            @if (f['password'].errors?.['minlength']) {
+              <span class="error-text">Mínimo 6 caracteres.</span>
+            }
+          </div>
         }
       </div>
 
-      <button type="submit" class="btn-submit">Iniciar sesión</button>
+      <button type="submit" class="btn-submit">
+        Iniciar sesión
+      </button>
 
-      <div class="auth-links">¿No tienes cuenta? <a routerLink="/register">Regístrate aquí</a></div>
+      <div class="auth-links">
+        ¿No tienes cuenta? <a routerLink="/auth/register">Regístrate aquí</a>
+      </div>
     </form>
   </div>
 </div>

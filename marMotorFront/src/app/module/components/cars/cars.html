@@ -1,19 +1,40 @@
 <div class="stock-page-wrapper">
   <section class="filters-section-wrapper">
     <div class="container-mx">
-      <app-filters [initialFilters]="filtrosSeleccionados" [limiteMarcas]="5" (onFilterChange)="aplicarFiltros($event)"></app-filters>
+      <app-filters
+        [initialFilters]="filtrosSeleccionados"
+        [limiteMarcas]="5"
+        (onFilterChange)="aplicarFiltros($event)"
+      ></app-filters>
     </div>
   </section>
 
   <main class="results-wrapper">
     <div class="container-mx">
       <div class="results-info-bar">
-        <p>
-          Vehículos encontrados: <strong>{{ cochesFiltrados.length }}</strong>
-        </p>
-        <p>
-          Mostrando: <strong>{{ cochesVisibles.length }}</strong>
-        </p>
+        <p class="found-count">
+    Vehículos encontrados: <strong>{{ cochesFiltrados.length }}</strong>
+  </p>
+
+  <div class="results-controls">
+    <div class="sort-wrapper">
+      <label for="sortSelect">Ordenar por:</label>
+      <select id="sortSelect" (change)="ordenarCoches($event)">
+        <option value="default">Relevancia</option>
+        <option value="priceAsc">Precio: Menor a Mayor</option>
+        <option value="priceDesc">Precio: Mayor a Menor</option>
+        <option value="brand">Marca: A-Z</option>
+        <option value="power">Potencia: Más CV</option>
+        <option value="year">Año: Más nuevos</option>
+        <option value="km">Kilometraje: Menor a Mayor</option>
+        <option value="kmDesc">Kilometraje: Mayor a Menor</option>
+      </select>
+    </div>
+
+    <p class="showing-count">
+      Mostrando: <strong>{{ cochesVisibles.length }}</strong>
+    </p>
+  </div>
       </div>
 
       <div class="stock-grid">
@@ -67,6 +88,17 @@
                   <span class="stat-label">Motor</span>
                 </div>
               </div>
+            </div>
+          </div>
+        } @empty {
+          <div class="no-results-container">
+            <div class="no-results-content">
+              <i class="fa-solid fa-car-on"></i>
+              <h2>No se han encontrado vehículos</h2>
+              <p>Prueba a cambiar los filtros o el rango de precio para encontrar lo que buscas.</p>
+              <button class="btn-reset-filters" (click)="resetFilters()">
+                Limpiar todos los filtros
+              </button>
             </div>
           </div>
         }

@@ -7,32 +7,41 @@ $hover-gradient: linear-gradient(135deg, #37df8c 0%, #109b7c 100%);
 $font-family: 'Montserrat', sans-serif;
 
 .autoflow-header {
+  font-family: $font-family;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; // 🚩 Separa el Logo (izquierda) de las Acciones (derecha)
   align-items: center;
-  padding: 15px 20px;
+  padding: 12px 15px; // Padding reducido para ganar espacio en móviles
   background: $primary-blue;
   color: $text-light;
-  font-family: $font-family;
+  width: 100%;
   position: sticky;
   top: 0;
-  width: 100%;
-  z-index: 1000; 
+  z-index: 1000;
+  box-sizing: border-box; // Evita que el padding ensanche el header en móviles
 
   @media (min-width: 1024px) {
     padding: 20px 40px;
   }
 
-  /* --- LOGO --- */
+  /* --- LOGO (Sin cambios) --- */
   .logo {
     display: flex;
     align-items: center;
     font-size: 20px;
+    flex-shrink: 1; // Permite que el logo se encoja un poco si es necesario
+    min-width: 0; // Evita que el texto del logo bloquee el espacio
+    z-index: 1010;
     font-weight: bold;
     cursor: pointer;
     position: relative;
-    z-index: 1010; 
+    z-index: 1010;
 
+    span {
+      white-space: nowrap; // Evita que el nombre de la marca salte de línea
+      overflow: hidden;
+      text-overflow: ellipsis; // Si el móvil es diminuto, corta el texto con "..."
+    }
     @media (min-width: 1024px) {
       font-size: 24px;
       z-index: 1100;
@@ -42,27 +51,33 @@ $font-family: 'Montserrat', sans-serif;
       background: linear-gradient(135deg, #2b3d56 0%, #109b7c 100%);
       color: $text-light;
       border-radius: 50%;
-      width: 35px; height: 35px;
-      display: flex; justify-content: center; align-items: center;
-      margin-right: 10px; font-size: 18px;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 10px;
+      font-size: 18px;
     }
   }
 
-  /* --- BOTÓN HAMBURGUESA --- */
+
   .menu-toggle {
     display: flex;
-    margin-left: 50%;
     flex-direction: column;
     justify-content: center;
     gap: 5px;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 10px;
+    padding: 8px; // Área de clic optimizada
+    margin-left: 50%; // 🚩 Eliminado cualquier margen previo (como el 64%)
     position: relative;
-    z-index: 2000; 
+    z-index: 2100;
 
-    @media (min-width: 1024px) { display: none; }
+    @media (min-width: 1024px) {
+      display: none;
+    }
 
     span {
       display: block;
@@ -74,32 +89,43 @@ $font-family: 'Montserrat', sans-serif;
     }
 
     &.is-active {
-      span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-      span:nth-child(2) { opacity: 0; transform: translateX(-20px); }
-      span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+      span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+      }
+      span:nth-child(2) {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+      }
     }
   }
 
-  /* --- NAVEGACIÓN MÓVIL (PANTALLA COMPLETA OPACO) --- */
+  /* --- NAVEGACIÓN MÓVIL (Sin cambios) --- */
   .nav-links {
     display: flex;
     gap: 30px;
     transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    align-items: center;
 
     @media (max-width: 1023px) {
       position: fixed;
       top: 0;
-      right: -100%; 
-      width: 100vw; 
+      right: 0;
+      width: 100vw;
       height: 100vh;
-      background: $primary-blue; 
+      background: $primary-blue;
+      z-index: 1500;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      z-index: 1500; 
-      
+      align-items: center;
+      gap: 20px;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+
       &.is-open {
-        right: 0; 
+        transform: translateX(0);
       }
     }
 
@@ -108,7 +134,7 @@ $font-family: 'Montserrat', sans-serif;
       color: rgba(255, 255, 255, 0.8);
       font-weight: 600;
       font-size: 24px;
-      padding: 15px 0;
+      padding: 10px 0;
       transition: color 0.3s ease;
 
       @media (min-width: 1024px) {
@@ -117,22 +143,25 @@ $font-family: 'Montserrat', sans-serif;
         padding: 0;
       }
 
-      &:hover, &.active-link {
+      &:hover,
+      &.active-link {
         color: $accent-green;
       }
     }
   }
 
-  /* --- ACCIONES --- */
+  /* --- ACCIONES (Modificado para anclar la hamburguesa a la derecha) --- */
   .header-actions {
     display: flex;
     align-items: center;
-    position: relative;
-    z-index: 1010; 
+    justify-content: flex-end;
+    flex-shrink: 0; // 🚩 ESTO ES LO MÁS IMPORTANTE: impide que la hamburguesa desaparezca
+    margin-left: 10px; // Espacio mínimo de seguridad con el logo
+    z-index: 1010;
   }
 }
 
-/* --- BOTONES --- */
+/* --- BOTONES Y RESTO (Sin cambios) --- */
 .btn {
   font-family: $font-family;
   padding: 10px 24px;
@@ -144,42 +173,51 @@ $font-family: 'Montserrat', sans-serif;
   border: none;
   white-space: nowrap;
 
-  @media (min-width: 1024px) { font-size: 14px; }
-
-  &:active { transform: scale(0.95); }
+  @media (min-width: 1024px) {
+    font-size: 14px;
+  }
+  &:active {
+    transform: scale(0.95);
+  }
 
   &.btn-primary {
     background: $green-gradient;
     color: #fff;
-    &:hover { background: $hover-gradient; box-shadow: 0 4px 15px rgba($accent-green, 0.4); }
+    &:hover {
+      background: $hover-gradient;
+      box-shadow: 0 4px 15px rgba($accent-green, 0.4);
+    }
   }
 
   &.btn-outline {
     background: transparent;
     border: 2px solid $accent-green;
     color: $accent-green;
-    &:hover { background: rgba($accent-green, 0.1); }
+    &:hover {
+      background: rgba($accent-green, 0.1);
+    }
   }
 
   &.btn-login-desktop {
     display: none;
-    @media (min-width: 1024px) { display: inline-block; }
+    @media (min-width: 1024px) {
+      display: inline-block;
+    }
   }
 
   &.btn-login-mobile {
     margin-top: 40px;
     display: inline-block;
-    @media (min-width: 1024px) { display: none; }
+    @media (min-width: 1024px) {
+      display: none;
+    }
   }
 }
 
-/* --- 👇 TRUCO MAESTRO PARA BLOQUEAR SCROLL EN MÓVIL 👇 --- */
-/* Esta regla se activará cuando uses setStyle en el body desde TS */
-/* El body { overflow: hidden } a veces falla en iOS si no añadimos esto: */
-body[style*="overflow: hidden"] {
+body[style*='overflow: hidden'] {
   position: fixed;
   width: 100%;
   height: 100%;
-  touch-action: none; /* Bloquea el scroll táctil */
-  -webkit-overflow-scrolling: none; 
+  touch-action: none;
+  -webkit-overflow-scrolling: none;
 }
