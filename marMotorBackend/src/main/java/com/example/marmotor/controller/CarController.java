@@ -27,10 +27,10 @@ public class CarController {
 
     @GetMapping("/filters")
     public ResponseEntity<List<CarDTO>> getCarsByFilters(
-            @RequestParam(required = false) String brand,
-            @RequestParam(required = false) String fuelType,
-            @RequestParam(required = false) String bodyType,
-            @RequestParam(required = false) BigDecimal maxPrice
+            @RequestParam(name="brand", required = false) String brand,
+            @RequestParam(name="fuelType",required = false) String fuelType,
+            @RequestParam(name="bodyType",required = false) String bodyType,
+            @RequestParam(name="maxPrice",required = false) String maxPrice
     ) {
         return ResponseEntity.ok(carService.searchCars(brand, fuelType, bodyType, maxPrice));
     }

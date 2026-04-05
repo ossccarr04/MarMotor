@@ -94,14 +94,29 @@ public class CarService {
                 .orElseThrow(() -> new EntityNotFoundException("Tipo de carrocería no encontrado")));
     }
 
-    public List<CarDTO> searchCars(String brand, String fuelTypeName, String bodyTypeName, BigDecimal maxPrice) {
+    public List<CarDTO> searchCars(String brand, String fuelTypeName, String bodyTypeName, String maxPrice) {
+
+
         return carRepository.findAll().stream()
-                .filter(car -> brand == null || (car.getBrand() != null && car.getBrand().getName().equalsIgnoreCase(brand)))
-                .filter(car -> fuelTypeName == null || (car.getFuelType() != null && car.getFuelType().getName().equalsIgnoreCase(fuelTypeName)))
-                .filter(car -> bodyTypeName == null || (car.getBodyType() != null && car.getBodyType().getName().equalsIgnoreCase(bodyTypeName)))
-                .filter(car -> maxPrice == null || car.getPrice().compareTo(maxPrice) <= 0)
+                .filter(car -> isNullOrEmpty(brand) ||
+                        (car.getBrand() != null && car.getBrand().getName().equalsIgnoreCase(brand)))
+
+                .filter(car -> isNullOrEmpty(fuelTypeName) ||
+                        (car.getFuelType() != null && car.getFuelType().getName().equalsIgnoreCase(fuelTypeName)))
+
+                .filter(car -> isNullOrEmpty(bodyTypeName) ||
+                        (car.getBodyType() != null && car.getBodyType().getName().equalsIgnoreCase(bodyTypeName)))
+
+                .filter(car -> isNullOrEmpty(maxPrice) ||
+                        (car.getPrice() != null && car.getPrice().compareTo(new BigDecimal(maxPrice)) <= 0))
+
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+    }
+
+    // Método auxiliar para limpiar el código
+    private boolean isNullOrEmpty(String str) {
+        return str == null || str.trim().isEmpty() || str.equalsIgnoreCase("all");
     }
 
     public CarDTO convertToDto(Car car) {
