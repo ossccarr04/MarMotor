@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/application-prod.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/MarMotorBackendApplication.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/config/SecurityConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/BodyTypeController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/BrandController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/CarController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/CarImageController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/FuelTypeController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/UserController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/BodyTypeDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/BrandDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/CarDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/CarDetailDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/CarImageDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/FuelTypeDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/HistoryEventDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/UserDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/BodyType.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/Brand.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/Car.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/CarDetail.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/CarImage.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/FuelType.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/HistoryEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/User$Role.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/User.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/enums/Status.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/enums/Transmission.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/BodyTypeRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/BrandRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/CarImageRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/CarRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/FuelTypeRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/UserRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/BodyTypeService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/BrandService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/CarImageService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/CarService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/FuelTypeService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/UserService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/example/marmotor/MarMotorBackendApplicationTests.class" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "oscdaw202401"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/oscdaw202401/TFGDAM.git",
+    "accountId": "bfb8c803-4fa1-4208-9de2-658c83702258"
+  }
+}]]></component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="3BGKnMAf45uqaRVp3vppOLs4BtX" />
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "git-widget-placeholder": "backend__funcional",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.14835948"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
