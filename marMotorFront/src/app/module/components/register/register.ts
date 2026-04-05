@@ -52,7 +52,6 @@ export class Register {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      console.log('Creando usuario:', this.registerForm.value);
     } else {
       this.registerForm.markAllAsTouched();
     }

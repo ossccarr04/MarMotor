@@ -1,0 +1,265 @@
+/* --- VARIABLES --- */
+$dark-background: #0b1624;
+$white-results: #ffffff;
+$card-stock-bg: #fdfdfd;
+$accent-green: #37df8c;
+$text-dark: #051121;
+$text-gray: #718096;
+$font-family: 'Montserrat', sans-serif;
+
+.stock-page-wrapper {
+  background-color: $dark-background;
+  min-height: 100vh;
+  font-family: $font-family;
+}
+
+.container-mx {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 30px;
+}
+
+/* --- SECCIÓN DE FILTROS --- */
+.filters-section-wrapper {
+  padding: 60px 0 80px 0; // Más padding abajo para el solape
+}
+
+/* --- CONTENEDOR BLANCO --- */
+.results-wrapper {
+  background-color: $white-results;
+  padding: 50px 0;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+  box-shadow: 0 -20px 40px rgba(0, 0, 0, 0.05);
+  margin-top: -40px; // Solape visual sobre el fondo oscuro
+  position: relative;
+  z-index: 5;
+}
+
+.results-info-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  padding: 0 10px 20px 10px;
+  border-bottom: 1px solid #eee;
+  font-weight: bold;
+  color: $text-dark;
+  font-size: 20px;
+
+  strong {
+    color: $accent-green;
+    font-weight: 800;
+    margin-left: 5px;
+    font-size: 18px;
+  }
+}
+
+/* --- GRID --- */
+.stock-grid {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: repeat(1, 1fr);
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 1100px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (min-width: 1400px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* --- CAR CARD --- */
+.car-card {
+  background: $card-stock-bg;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-8px);
+
+    .hover-btn-container {
+      bottom: 0;
+      opacity: 1;
+    }
+
+    .car-image {
+      transform: scale(1.08);
+    }
+  }
+
+  .car-image-container {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+
+    .car-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .badge-premium {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: $accent-green;
+      color: $text-dark;
+      padding: 5px 12px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 900;
+      z-index: 2;
+    }
+
+    .heart-icon {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 2;
+      transition: all 0.2s ease;
+      &:hover {
+        transform: scale(1.15);
+      }
+      &.is-liked {
+        color: #ff4d4d;
+      }
+    }
+  }
+
+  .car-details {
+    padding: 25px;
+
+    .title-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+
+      h3 {
+        color: $text-dark;
+        font-size: 17px;
+        font-weight: 700;
+        margin: 0;
+        flex: 1;
+      }
+
+      .car-price {
+        color: $accent-green;
+        font-size: 19px;
+        font-weight: 900;
+        margin-left: 10px;
+      }
+    }
+
+    .car-subtitle {
+      display: block;
+      color: $text-gray;
+      font-size: 13px;
+      margin-bottom: 25px;
+    }
+
+    .car-stats-row {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 18px;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+
+      .stat {
+        display: flex;
+        flex-direction: column;
+        .stat-value {
+          color: $text-dark;
+          font-weight: 700;
+          font-size: 14px;
+        }
+        .stat-label {
+          color: $text-gray;
+          font-size: 11px;
+          text-transform: uppercase;
+          margin-top: 3px;
+        }
+      }
+    }
+  }
+
+  /* BOTÓN QUE SUBE */
+  .hover-btn-container {
+    position: absolute;
+    bottom: -80px; // Un poco más abajo para que no se vea la sombra al inicio
+    left: 0;
+    width: 100%;
+    height: 80px; // Un poco más alto para dar margen
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px; // Margen lateral para que no toque los bordes
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    z-index: 3;
+
+    .btn-details {
+      width: 100%;
+      height: 50px; // Altura fija de cápsula
+      background: $accent-green;
+      border: none;
+      color: $text-dark;
+      font-weight: 800; // Un poco menos que 900 para que sea más legible
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-radius: 30px; // EL ROUND: Forma de cápsula
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba($accent-green, 0.4); // Sombra para que flote sobre la imagen
+      transition: transform 0.2s ease;
+
+      &:active {
+        transform: scale(0.95);
+      }
+      &:hover {
+        .hover-btn-container {
+          bottom: 15px; // Sube pero deja un pequeño margen inferior
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+/* --- BOTÓN CARGAR MÁS --- */
+.load-more-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 70px;
+
+  .btn-load-more {
+    background: transparent;
+    color: $text-dark;
+    border: 2px solid $accent-green;
+    padding: 18px 60px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: $accent-green;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba($accent-green, 0.3);
+    }
+  }
+}

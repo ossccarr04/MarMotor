@@ -1,5 +1,6 @@
-import { Component, inject, Renderer2 } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
+import { Component, Inject, inject, PLATFORM_ID, Renderer2 } from '@angular/core';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -12,8 +13,15 @@ export class Header {
   isMenuOpen = false;
   isLogoZoomed: boolean = false;
 
-  constructor(private renderer: Renderer2) {}
-
+ constructor(private renderer: Renderer2, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
+  // Escuchamos cada vez que el usuario cambia de página
+  this.router.events.pipe(
+    filter(event => event instanceof NavigationEnd)
+  ).subscribe(() => {
+    this.closeMenu(); // Forzamos el cierre y desbloqueo del scroll
+  });
+}
+  
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
 

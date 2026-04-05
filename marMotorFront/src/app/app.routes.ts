@@ -3,6 +3,7 @@ import { Home } from './module/components/home/home';
 import { Login } from './module/components/login/login';
 import { Register } from './module/components/register/register';
 import { DetailCar } from './module/components/detail-car/detail-car';
+import { Cars } from './module/components/cars/cars';
 
 export const routes: Routes = [
   {
@@ -16,6 +17,10 @@ export const routes: Routes = [
   {
     path: 'register',
     component: Register,
+  },
+  {
+    path: 'coches',
+    component: Cars,
   },
   {
     path: 'detail-car/:id',

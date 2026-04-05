@@ -1,6 +1,20 @@
 <section class="car-gallery-section">
   <div class="gallery-header">
     <h2>GALERÍA DINÁMICA DE FILTRADO</h2>
+
+    <div class="badge-filters">
+      <button 
+        [class.active]="filtroSeleccionado === BadgeType.ALL" 
+        (click)="setFiltro(BadgeType.ALL)">TODOS</button>
+      <button 
+        [class.active]="filtroSeleccionado === BadgeType.NEW" 
+        (click)="setFiltro(BadgeType.NEW)">RECIÉN LLEGADOS</button>
+      <button 
+        [class.active]="filtroSeleccionado === BadgeType.FEATURED" 
+        (click)="setFiltro(BadgeType.FEATURED)">DESTACADOS</button>
+    </div>
+
+
     <div class="gallery-nav">
       <span class="nav-arrow" (click)="moverCarrusel(-1)">&lt;</span>
       <span class="nav-arrow" (click)="moverCarrusel(1)">&gt;</span>
@@ -29,10 +43,10 @@
 
         <div class="car-details">
           <div class="title-price-row">
-            <h3>{{ coche.make + " " + coche.model }}</h3>
+            <h3>{{ coche.make}} {{ coche.model }}</h3>
             <span class="car-price">{{ coche.price | number: '1.0-0' }} €</span>
           </div>
-          <span class="car-subtitle">Condición / Subtítulo</span>
+          <span class="car-subtitle">{{ coche.year }} · {{ coche.transmission }}</span>
 
           <div class="car-stats-row">
             <div class="stat">

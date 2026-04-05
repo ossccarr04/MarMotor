@@ -32,7 +32,9 @@ $font-family: 'Montserrat', sans-serif;
       font-weight: bold;
       color: #ffffff;
       margin: 0;
-      @media (min-width: 768px) { font-size: 24px; }
+      @media (min-width: 768px) {
+        font-size: 24px;
+      }
     }
 
     .gallery-nav {
@@ -63,8 +65,10 @@ $font-family: 'Montserrat', sans-serif;
           transform: scale(1.1);
           box-shadow: 0 4px 15px rgba(55, 223, 140, 0.4);
         }
-        
-        &:active { transform: scale(0.95); }
+
+        &:active {
+          transform: scale(0.95);
+        }
       }
     }
   }
@@ -78,24 +82,30 @@ $font-family: 'Montserrat', sans-serif;
     padding: 10px 5px 40px 5px;
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
-    
+
     /* Ocultar scrollbar */
-    &::-webkit-scrollbar { display: none; }
+    &::-webkit-scrollbar {
+      display: none;
+    }
     -ms-overflow-style: none;
     scrollbar-width: none;
 
-    @media (min-width: 768px) { gap: 30px; }
+    @media (min-width: 768px) {
+      gap: 30px;
+    }
 
     /* --- TARJETA INDIVIDUAL --- */
     .car-card {
-      flex: 0 0 280px; /* Ancho más pequeño en móvil */
+      flex: 0 0 320px; /* Ancho más pequeño en móvil */
       scroll-snap-align: center; /* Centrado en móvil para mejor UX */
       background: #ffffff;
       border-radius: 20px;
       position: relative;
       overflow: hidden;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s, box-shadow 0.3s;
+      transition:
+        transform 0.3s,
+        box-shadow 0.3s;
 
       @media (min-width: 768px) {
         flex: 0 0 340px;
@@ -120,7 +130,9 @@ $font-family: 'Montserrat', sans-serif;
       .car-image-container {
         position: relative;
         height: 180px;
-        @media (min-width: 768px) { height: 200px; }
+        @media (min-width: 768px) {
+          height: 200px;
+        }
 
         .car-image {
           width: 100%;
@@ -151,7 +163,9 @@ $font-family: 'Montserrat', sans-serif;
           filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
           transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
-          &:hover { transform: scale(1.2); }
+          &:hover {
+            transform: scale(1.2);
+          }
 
           &.is-liked {
             color: #ff4757;
@@ -165,26 +179,26 @@ $font-family: 'Montserrat', sans-serif;
         padding: 20px;
 
         .title-price-row {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
 
-          h3 {
-            font-size: 16px;
-            font-weight: 800;
-            color: $text-dark;
-            margin: 0;
-            @media (min-width: 768px) { font-size: 18px; }
-          }
+      h3 {
+        color: $text-dark;
+        font-size: 17px;
+        font-weight: 700;
+        margin: 0;
+        flex: 1;
+      }
 
-          .car-price {
-            font-size: 16px;
-            font-weight: 800;
-            color: $accent-green;
-            @media (min-width: 768px) { font-size: 18px; }
-          }
-        }
+      .car-price {
+        color: $accent-green;
+        font-size: 19px;
+        font-weight: 900;
+        margin-left: 10px;
+      }
+    }
 
         .car-subtitle {
           display: block;
@@ -209,7 +223,9 @@ $font-family: 'Montserrat', sans-serif;
               font-size: 13px;
               font-weight: 800;
               color: $text-dark;
-              @media (min-width: 768px) { font-size: 15px; }
+              @media (min-width: 768px) {
+                font-size: 15px;
+              }
             }
 
             .stat-label {
@@ -254,21 +270,81 @@ $font-family: 'Montserrat', sans-serif;
           box-shadow: 0 4px 15px rgba(55, 223, 140, 0.4);
           transition: transform 0.2s;
 
-          &:active { transform: scale(0.96); }
+          &:active {
+            transform: scale(0.96);
+          }
         }
       }
     }
   }
 }
 
+.badge-filters {
+  font-family: $font-family;
+  display: flex;
+  gap: 10px;
+  margin-right: auto; // Empuja la navegación a la derecha
+  margin-left: 20px;
+
+  button {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    &.active {
+      background: #37df8c; // Tu color accent-green
+      color: #051121;
+      border-color: #37df8c;
+      box-shadow: 0 0 15px rgba(55, 223, 140, 0.3);
+    }
+  }
+}
+
+// Ajuste para el header de la galería en móvil
+@media (max-width: 768px) {
+  .gallery-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+
+    .badge-filters {
+      margin-left: 0;
+      width: 100%;
+      overflow-x: auto; // Scroll horizontal si no caben
+      padding-bottom: 5px;
+    }
+  }
+}
 /* --- ANIMACIONES --- */
 @keyframes latido {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.3); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

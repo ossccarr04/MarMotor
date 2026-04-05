@@ -145,9 +145,11 @@ $font-family: 'Montserrat', sans-serif;
 }
 
 .main-photo-card {
-  width: 100%; /* Ocupa el 100% del contenedor con padding */
-  height: 240px; /* Altura incrementada en móviles para que luzca mejor la imagen */
-  background: white;
+  width: 100%;
+  // Eliminamos los height fijos conflictivos y usamos una proporción lógica
+  height: auto; 
+  aspect-ratio: 16 / 9; // Proporción cinematográfica ideal para coches
+  background: #0b1624; // Fondo oscuro para que combine con tu banner si hay bordes
   border-radius: 20px;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
   display: flex;
@@ -159,22 +161,24 @@ $font-family: 'Montserrat', sans-serif;
   overflow: hidden;
 
   @media (min-width: 768px) {
-    height: 520px; /* Altura incrementada en PC y Tablets grandes */
+    height: 550px; // Altura fija para escritorio
+    aspect-ratio: auto;
     border-radius: 25px;
-
+    
     img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: all 0.5s ease;
-  }
+      // Importante: En escritorio también usamos cover para que el coche llene la tarjeta
+      object-fit: cover; 
+      object-position: center 60%; // Ajusta un poco el "foco" hacia abajo para no cortar ruedas
+    }
   }
 
   img {
     width: 100%;
     height: 100%;
-    object-fit: fill;
+    object-fit: cover; // Llenado total sin deformar
+    object-position: center; // Centrado automático
     transition: all 0.5s ease;
+    display: block;
   }
 
   &.is-zoomed {
@@ -188,7 +192,7 @@ $font-family: 'Montserrat', sans-serif;
     padding: 0;
     border-radius: 0;
     z-index: 99999;
-    background: white;
+    background: #000; // Fondo negro en zoom para resaltar el coche
     display: flex;
     align-items: center;
     justify-content: center;
@@ -196,15 +200,17 @@ $font-family: 'Montserrat', sans-serif;
     img {
       max-width: 95%;
       max-height: 95%;
-      object-fit: contain;
+      width: auto; // En zoom no queremos que se estire a la fuerza
+      height: auto;
+      object-fit: contain; // Ver el coche completo sin recortes
     }
 
     .zoom-btn-detail {
-      background: rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.2);
       &::after {
         content: '✕';
         font-size: 20px;
-        color: #051121;
+        color: white;
       }
       font-size: 0;
     }

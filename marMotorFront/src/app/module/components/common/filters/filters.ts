@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { BrandDTO } from '../../../../@types/interface/brand.interface';
@@ -18,6 +18,31 @@ import { BodyTypeServiceBBDD } from '../../../services/bodyType-service-bbdd';
   styleUrl: './filters.scss',
 })
 export class Filters {
+
+  @Input() limiteMarcas: number = 10; 
+
+  @Input() set initialFilters(value: any) {
+  if (value) {
+    // Decodificamos si usas Base64 en la URL (como vi en tu componente Cars)
+    // Si no usas Base64, quita el atob()
+    const brand = value[btoa('brand')] ? atob(value[btoa('brand')]) : null;
+    const body = value[btoa('bodyType')] ? atob(value[btoa('bodyType')]) : null;
+    const fuel = value[btoa('fuelType')] ? atob(value[btoa('fuelType')]) : null;
+    const price = value[btoa('maxPrice')] ? atob(value[btoa('maxPrice')]) : null;
+
+    if (brand) this.seleccionarMarca({ name: brand.toUpperCase() });
+    if (body) this.seleccionarCarroceriaPorNombre(body);
+    if (fuel) this.seleccionarCombustiblePorNombre(fuel);
+    
+    if (price) {
+      this.precioActual = parseInt(price);
+      this.precioModificado = true;
+    }
+  }
+}
+
+  @Output() filterChange = new EventEmitter<any>();
+
   constructor(
     private route: Router,
     private brandService: BrandServiceBBDD,
@@ -26,57 +51,78 @@ export class Filters {
   ) {}
 
   marcas: BrandDTO[] = [];
-  carrocerias: BadgeDTO[]= [];
+  carrocerias: BadgeDTO[] = [];
   combustibles: FuelDTO[] = [];
+
   
-  contMostrarMarcas = 10;
   isModalMarcasOpen = false;
   terminoBusqueda = '';
   marcaBusqueda = '+';
 
   ngOnInit(): void {
-
     this.brandService.getBrands().subscribe({
-      next: (data) => {
-        this.marcas = data;
-        this.marcas.forEach((item) => (item.name = item.name.toUpperCase()));
-        this.marcas.forEach((item) => (item.selected = false));
+    next: (data) => {
+      this.marcas = data;
+      this.marcas.forEach((item) => {
+        item.name = item.name.toUpperCase();
+        item.selected = false;
+      });
 
-      },
-      error: (err) => {
-        console.error('Error de conexión o de API:', err);
-      },
-    });
+      // --- IMPORTANTE: Comprobar si venimos de la Home con una marca ---
+      const params = new URLSearchParams(window.location.search);
+      const encodedBrandKey = btoa('brand');
+      const brandEncodedValue = params.get(encodedBrandKey);
+
+      if (brandEncodedValue) {
+        const brandName = atob(brandEncodedValue);
+        // Llamamos al método que acabamos de arreglar
+        this.seleccionarMarca({ name: brandName });
+      }
+    },
+    error: (err) => console.error(err)
+  });
 
     this.bodyTypeService.getBadges().subscribe({
-      next: (data) => {
-        this.carrocerias = data;
-        this.carrocerias.forEach((item) => (item.name = item.name.toUpperCase()));
-        this.carrocerias.forEach((item) => (item.selected = false));
-
-      },
-      error: (err) => {
-        console.error('Error de conexión o de API:', err);
-      },
-    });
+    next: (data) => {
+      this.carrocerias = data;
+      this.carrocerias.forEach((item) => {
+        item.name = item.name.toUpperCase();
+        item.selected = false;
+      });
+      const bodyFromUrl = this.getParamFromUrl('bodyType');
+      if (bodyFromUrl) this.seleccionarCarroceriaPorNombre(bodyFromUrl);
+    }
+  });
 
     this.fuelTypeService.getFuels().subscribe({
-      next: (data) => {
-        this.combustibles = data;
-        this.combustibles.forEach((item) => (item.name = item.name.toUpperCase()));
-        this.combustibles.forEach((item) => (item.selected = false));
-      },
-      error: (err) => {
-        console.error('Error de conexión o de API:', err);
-      },
-    });
+    next: (data) => {
+      this.combustibles = data;
+      this.combustibles.forEach((item) => {
+        item.name = item.name.toUpperCase();
+        item.selected = false;
+      });
+      const fuelFromUrl = this.getParamFromUrl('fuelType');
+      if (fuelFromUrl) this.seleccionarCombustiblePorNombre(fuelFromUrl);
+    }
+  });
   }
 
+  seleccionarCarroceriaPorNombre(nombre: string) {
+  if (!nombre) return;
+  const nombreUpper = nombre.toUpperCase();
+  this.carrocerias.forEach(c => c.selected = (c.name === nombreUpper));
+}
 
+// Marca el combustible como seleccionado buscando por nombre
+seleccionarCombustiblePorNombre(nombre: string) {
+  if (!nombre) return;
+  const nombreUpper = nombre.toUpperCase();
+  this.combustibles.forEach(f => f.selected = (f.name === nombreUpper));
+}
 
   // Obtiene solo las 10 primeras marcas para la vista principal
   get marcasPrincipales() {
-    return this.marcas.slice(0, this.contMostrarMarcas);
+    return this.marcas.slice(0, this.limiteMarcas);
   }
 
   // Filtra las marcas en el modal según lo que el usuario escriba
@@ -101,22 +147,34 @@ export class Filters {
   }
 
   // Nueva función unificada para seleccionar marca
-  seleccionarMarca(marcaSeleccionada: any) {
-    this.marcas.forEach((item) => (item.selected = false));
-    marcaSeleccionada.selected = true;
+  seleccionarMarca(marcaRecibida: any) {
+  if (!marcaRecibida || !marcaRecibida.name) return;
 
-    // Averiguamos en qué posición está la marca que acabamos de seleccionar
-    const index = this.marcas.findIndex((m) => m.name === marcaSeleccionada.name);
+  const nombreBusqueda = marcaRecibida.name.trim().toUpperCase();
 
-    // Si el índice es 10 o mayor, significa que NO está en las marcasPrincipales
-    if (index >= this.contMostrarMarcas) {
-      this.marcaBusqueda = marcaSeleccionada.name;
+  // 1. Desmarcamos todas primero
+  this.marcas.forEach((item) => (item.selected = false));
+
+  // 2. Buscamos la marca en el array completo
+  const marcaEncontrada = this.marcas.find(m => m.name.trim().toUpperCase() === nombreBusqueda);
+
+  if (marcaEncontrada) {
+    marcaEncontrada.selected = true;
+    
+    // 3. Calculamos su posición para ver si mostramos el nombre en el botón "+"
+    const index = this.marcas.indexOf(marcaEncontrada);
+    
+    if (index >= this.limiteMarcas) {
+      // Si es una marca "oculta", la ponemos en el botón de búsqueda
+      this.marcaBusqueda = marcaEncontrada.name;
     } else {
-      // Si está entre las principales, el botón extra vuelve a ser un '+'
+      // Si es una de las 10 primeras, el botón extra vuelve a ser "+"
       this.marcaBusqueda = '+';
     }
-    this.cerrarModalMarcas();
   }
+  
+  this.cerrarModalMarcas();
+}
 
   limpiarMarca() {
     this.marcas.forEach((item) => (item.selected = false));
@@ -127,16 +185,15 @@ export class Filters {
     this.carrocerias.forEach((item) => (item.selected = false));
   }
 
-
   limpiarCombustible() {
     this.combustibles.forEach((item) => (item.selected = false));
   }
 
   // Variables para el precio
-  precioActual = 1000;
-  precioMin = 1000;
+  precioActual = 0;
+  precioMin = 0;
   precioMax = 20000;
-  precioModificado = true; // Siempre activado para enviar el precio
+  precioModificado = false; // Siempre activado para enviar el precio
 
   @ViewChild('sliderElement') sliderElement!: ElementRef;
   isDragging = false;
@@ -184,7 +241,7 @@ export class Filters {
 
   // Cuando el usuario suelta el clic o levanta el dedo
   detenerArrastre() {
-    this.isDragging = false;
+    this.isDragging = false; // Asegura que el filtro se active al soltar
   }
 
   // Calcula el porcentaje para el gráfico circular (0 a 100)
@@ -253,6 +310,12 @@ export class Filters {
 
   buscarTodos() {
     // Cambia '/galeria' por la ruta real que tengas configurada en tu app.routes.ts
+    this.limpiarMarca();
+    this.limpiarCarroceria();
+    this.limpiarCombustible();
+    this.precioActual = 0;
+    this.precioModificado = false;
+
     this.route.navigate(['/coches']);
   }
 
@@ -262,19 +325,26 @@ export class Filters {
 
     // 2. Solo añadimos las propiedades si tienen un valor real
     if (this.marcaActiva) {
-      queryParams[btoa('marca')] = btoa(this.marcaActiva);
+      queryParams[btoa('brand')] = btoa(this.marcaActiva);
     }
     if (this.carroceriaActiva) {
-      queryParams[btoa('carroceria')] = btoa(this.carroceriaActiva);
+      queryParams[btoa('bodyType')] = btoa(this.carroceriaActiva);
     }
     if (this.combustibleActivo) {
-      queryParams[btoa('combustible')] = btoa(this.combustibleActivo);
+      queryParams[btoa('fuelType')] = btoa(this.combustibleActivo);
     }
-    queryParams[btoa('precio')] = btoa(this.precioActual.toString());
-
-    //! Acordarme de aqui desencriptar al recibir la informacion
+    if (this.precioModificado && this.precioActual > 0) {
+      queryParams[btoa('maxPrice')] = btoa(this.precioActual.toString());
+    }
 
     // Navegamos a la ruta y le adjuntamos los filtros
     this.route.navigate(['/coches'], { queryParams: queryParams });
   }
+
+  private getParamFromUrl(key: string): string | null {
+  const params = new URLSearchParams(window.location.search);
+  const encodedKey = btoa(key);
+  const value = params.get(encodedKey);
+  return value ? atob(value) : null;
+}
 }

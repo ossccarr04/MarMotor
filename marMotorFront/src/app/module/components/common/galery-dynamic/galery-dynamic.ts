@@ -3,6 +3,7 @@ import { Component, ElementRef, inject, Inject, ViewChild } from '@angular/core'
 import { Router, RouterModule } from '@angular/router';
 import { CarDTO } from '../../../../@types/interface/car.interface';
 import { CarServiceBBDD } from '../../../services/car-service-bbdd';
+import { Badge, BadgeType } from '../../../../@types/enums/badge.enum';
 
 
 @Component({
@@ -18,14 +19,24 @@ export class GaleryDynamic {
 
   @ViewChild('carrusel') carrusel!: ElementRef;
 
+  BadgeType = Badge; 
+  filtroSeleccionado: Badge = Badge.ALL;
+  cochesOriginal: CarDTO[] = [];
   coches: CarDTO[] = []
+  cochesFiltradoDetail: CarDTO[] = [];
 
   ngOnInit(): void {
 
   
   this.carservice.getCars().subscribe({
     next: (data) => {
-      this.coches = data;
+      this.cochesOriginal = data;
+      
+      this.coches = data
+        .filter(c => c.badge && c.badge.trim() !== '') // Solo con etiqueta
+        .slice(0, 10); // Máximo 10
+        
+      this.cochesFiltradoDetail = [...this.coches];
     },
     error: (err) => {
       console.error('Error de conexión o de API:', err);
@@ -68,9 +79,23 @@ export class GaleryDynamic {
     }
   }
 
+  setFiltro(tipo: Badge) {
+    this.filtroSeleccionado = tipo;
+    if (tipo === Badge.ALL) {
+      this.coches = [...this.cochesOriginal];
+      
+    } else {
+      this.coches = this.cochesOriginal.filter(c => c.badge && (c.badge.charAt(0).toUpperCase() + c.badge.slice(1).toLowerCase()) === (tipo.charAt(0).toUpperCase() + tipo.slice(1).toLowerCase()));
+      
+    }
+    this.cochesFiltradoDetail = this.coches;
+  }
+
   showDetails(id: number) {
     // Codificamos el ID a Base64
     const encodedId = btoa(id.toString());
-    this.router.navigate(['/detail-car', encodedId]);
+    this.router.navigate(['/detail-car', encodedId], {
+      state: { listaFiltrada: this.cochesFiltradoDetail }
+    });
   }
 }

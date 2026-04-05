@@ -2,10 +2,16 @@
   <h2>FILTRO VISUAL INTUITIVO: <span>Selecciona Categorías</span></h2>
 
   <div class="filters-container">
-    <div class="filter-card" [ngClass]="{'is-disabled': !marcaActiva}">
+    <div class="filter-card" [ngClass]="{ 'is-disabled': !marcaActiva }">
       <div class="card-header">
         <h3>MARCA</h3>
-        <button class="clear-filter" (click)="limpiarMarca()" [title]="marcaActiva ? 'Limpiar filtro' : 'Filtro limpio'">{{ marcaActiva ? '✓' : '×' }}</button>
+        <button
+          class="clear-filter"
+          (click)="limpiarMarca()"
+          [title]="marcaActiva ? 'Limpiar filtro' : 'Filtro limpio'"
+        >
+          {{ marcaActiva ? '✓' : '×' }}
+        </button>
       </div>
       <div class="filter-options">
         <div
@@ -28,10 +34,12 @@
       </div>
     </div>
 
-    <div class="filter-card" [ngClass]="{'is-disabled': !carroceriaActiva}">
+    <div class="filter-card" [ngClass]="{ 'is-disabled': !carroceriaActiva }">
       <div class="card-header">
         <h3>TIPO DE CARROCERÍA</h3>
-        <button class="clear-filter" (click)="limpiarCarroceria()" [title]="carroceriaActiva ? 'Limpiar filtro' : 'Filtro limpio'">{{ carroceriaActiva ? '✓' : '×' }}</button>
+        <button class="clear-filter" (click)="limpiarCarroceria()">
+          {{ carroceriaActiva ? '✓' : '×' }}
+        </button>
       </div>
       <div class="filter-options">
         <div
@@ -45,10 +53,12 @@
       </div>
     </div>
 
-    <div class="filter-card" [ngClass]="{'is-disabled': !combustibleActivo}">
+    <div class="filter-card" [ngClass]="{ 'is-disabled': !combustibleActivo }">
       <div class="card-header">
         <h3>COMBUSTIBLE</h3>
-        <button class="clear-filter" (click)="limpiarCombustible()" [title]="combustibleActivo ? 'Limpiar filtro' : 'Filtro limpio'">{{ combustibleActivo ? '✓' : '×' }}</button>
+        <button class="clear-filter" (click)="limpiarCombustible()">
+          {{ combustibleActivo ? '✓' : '×' }}
+        </button>
       </div>
       <div class="filter-options">
         <div

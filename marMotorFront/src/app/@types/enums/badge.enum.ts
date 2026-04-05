@@ -1,6 +1,7 @@
 export enum Badge {
-    FEATURED = "FEATURED",
-    NEW = "NEW"
+    FEATURED = "featured",
+    NEW = "new",
+    ALL= "all"
 }
 
 export type BadgeType = Lowercase<Badge>;

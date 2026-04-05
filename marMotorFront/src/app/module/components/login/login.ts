@@ -33,7 +33,6 @@ export class Login {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      console.log('Enviando datos al backend:', this.loginForm.value);
       // Aquí llamarías a tu servicio de autenticación
     } else {
       // Si el usuario le da a "Entrar" sin rellenar, marcamos todo en rojo

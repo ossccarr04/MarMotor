@@ -1,0 +1,85 @@
+<div class="stock-page-wrapper">
+  <section class="filters-section-wrapper">
+    <div class="container-mx">
+      <app-filters [initialFilters]="filtrosSeleccionados" [limiteMarcas]="5" (onFilterChange)="aplicarFiltros($event)"></app-filters>
+    </div>
+  </section>
+
+  <main class="results-wrapper">
+    <div class="container-mx">
+      <div class="results-info-bar">
+        <p>
+          Vehículos encontrados: <strong>{{ cochesFiltrados.length }}</strong>
+        </p>
+        <p>
+          Mostrando: <strong>{{ cochesVisibles.length }}</strong>
+        </p>
+      </div>
+
+      <div class="stock-grid">
+        @for (coche of cochesVisibles; track coche.id) {
+          <div class="car-card">
+            <div class="car-image-container">
+              @if (coche.badgeType === 'new') {
+                <span class="badge-premium">NUEVO</span>
+              }
+              @if (coche.badgeType === 'featured') {
+                <span class="badge-premium">DESTACADO</span>
+              }
+
+              <span
+                class="heart-icon"
+                [class.is-liked]="coche.isSaved"
+                (click)="toggleGuardar(coche, $event)"
+              >
+                {{ coche.isSaved ? '❤️' : '♡' }}
+              </span>
+
+              <img
+                class="car-image"
+                [src]="coche.imageUrl"
+                [alt]="coche.make + ' ' + coche.model"
+              />
+
+              <div class="hover-btn-container">
+                <button class="btn-details" (click)="showDetails(coche.id)">VER DETALLES</button>
+              </div>
+            </div>
+
+            <div class="car-details">
+              <div class="title-price-row">
+                <h3>{{ coche.make }} {{ coche.model }}</h3>
+                <span class="car-price">{{ coche.price | number: '1.0-0' }} €</span>
+              </div>
+              <span class="car-subtitle">{{ coche.year }} · {{ coche.transmission }}</span>
+
+              <div class="car-stats-row">
+                <div class="stat">
+                  <span class="stat-value">{{ coche.mileage | number }} Km</span>
+                  <span class="stat-label">Km</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-value">{{ coche.power }} CV</span>
+                  <span class="stat-label">CV</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-value">{{ coche.fuelType }}</span>
+                  <span class="stat-label">Motor</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      @if (tieneMasCoches) {
+        <div class="load-more-section">
+          <button class="btn-load-more" (click)="mostrarMas()">
+            <span>CARGAR MÁS VEHÍCULOS</span>
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+      }
+    </div>
+  </main>
+</div>
