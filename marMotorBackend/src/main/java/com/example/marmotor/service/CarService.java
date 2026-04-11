@@ -4,9 +4,7 @@ import com.example.marmotor.model.DTO.CarCreateDTO;
 import com.example.marmotor.model.DTO.CarDTO;
 import com.example.marmotor.model.DTO.CarDetailDTO;
 import com.example.marmotor.model.DTO.HistoryEventDTO;
-import com.example.marmotor.model.entity.Car;
-import com.example.marmotor.model.entity.CarDetail;
-import com.example.marmotor.model.entity.CarImage;
+import com.example.marmotor.model.entity.*;
 import com.example.marmotor.model.enums.Status;
 import com.example.marmotor.model.enums.Transmission;
 import com.example.marmotor.repository.BodyTypeRepository;
@@ -17,8 +15,11 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,6 +35,8 @@ public class CarService {
     private FuelTypeRepository fuelTypeRepository;
     @Autowired
     private BodyTypeRepository bodyTypeRepository;
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     public List<CarDTO> getAllCars() {
         return carRepository.findAll().stream()
@@ -50,13 +53,64 @@ public class CarService {
     }
 
     @Transactional
-    public CarDTO createCar(CarCreateDTO dto) {
+    public CarDTO createCarWithImages(CarCreateDTO dto, MultipartFile[] images) throws IOException {
+
+        // 1. Crear el coche base y mapear relaciones (Marca, Combustible, etc.)
         Car car = new Car();
         mapDtoToEntity(dto, car);
+
         if (car.getStatus() == null) {
             car.setStatus(Status.AVAILABLE);
         }
-        return convertToDto(carRepository.save(car));
+
+        // 2. Lógica de subida de imágenes
+        if (images != null && images.length > 0) {
+            List<CarImage> carImages = new ArrayList<>();
+            for (int i = 0; i < images.length; i++) {
+                MultipartFile file = images[i];
+
+                if (file != null && !file.isEmpty()) {
+                    String url = cloudinaryService.uploadFile(file);
+
+                    CarImage imgEntity = new CarImage();
+                    imgEntity.setUrl(url);
+
+                    imgEntity.setIsMain(i == 0);
+
+                    imgEntity.setCar(car);
+                    carImages.add(imgEntity);
+                }
+                car.setImages(carImages);
+            }
+        }
+
+        // 3. Crear y vincular CarDetail (IMPORTANTE)
+        CarDetail detail = new CarDetail();
+        detail.setColor(dto.getColor());
+        detail.setDescription(dto.getDescription());
+        detail.setFeatures(dto.getFeatures());
+        detail.setCar(car);
+
+        // 4. Mapear el historial del DTO a Entidades
+        if (dto.getHistory() != null) {
+            List<HistoryEvent> historyEvents = dto.getHistory().stream().map(hDto -> {
+                HistoryEvent event = new HistoryEvent();
+                event.setYear(hDto.getYear());
+                event.setTitle(hDto.getTitle());
+                event.setIcon(hDto.getIcon() != null ? hDto.getIcon() : "🔧");
+                event.setCompleted(hDto.isCompleted());
+                event.setCar(detail); // Vincular al detalle
+                return event;
+            }).collect(Collectors.toList());
+            detail.setHistory(historyEvents);
+        }
+
+        car.setDetail(detail);
+
+        // 5. Guardar en Base de Datos
+        Car savedCar = carRepository.save(car);
+
+        return convertToDto(savedCar);
     }
 
     public void deleteCar(Long id) {
@@ -86,12 +140,38 @@ public class CarService {
             car.setTransmission(Transmission.valueOf(dto.getTransmission().toUpperCase()));
         }
 
-        car.setBrand(brandRepository.findById(dto.getBrandId())
-                .orElseThrow(() -> new EntityNotFoundException("Marca no encontrada")));
-        car.setFuelType(fuelTypeRepository.findById(dto.getFuelTypeId())
-                .orElseThrow(() -> new EntityNotFoundException("Tipo de combustible no encontrado")));
-        car.setBodyType(bodyTypeRepository.findById(dto.getBodyTypeId())
-                .orElseThrow(() -> new EntityNotFoundException("Tipo de carrocería no encontrado")));
+        // --- LÓGICA DE BUSCAR O CREAR (MARCA) ---
+        if (dto.getBrandName() != null) {
+            Brand brand = brandRepository.findByNameIgnoreCase(dto.getBrandName())
+                    .orElseGet(() -> {
+                        Brand newBrand = new Brand();
+                        newBrand.setName(dto.getBrandName());
+                        return brandRepository.save(newBrand);
+                    });
+            car.setBrand(brand);
+        }
+
+        // --- LÓGICA DE BUSCAR O CREAR (COMBUSTIBLE) ---
+        if (dto.getFuelTypeName() != null) {
+            FuelType fuel = fuelTypeRepository.findByNameIgnoreCase(dto.getFuelTypeName())
+                    .orElseGet(() -> {
+                        FuelType newFuel = new FuelType();
+                        newFuel.setName(dto.getFuelTypeName());
+                        return fuelTypeRepository.save(newFuel);
+                    });
+            car.setFuelType(fuel);
+        }
+
+        // --- LÓGICA DE BUSCAR O CREAR (CARROCERÍA) ---
+        if (dto.getBodyTypeName() != null) {
+            BodyType body = bodyTypeRepository.findByNameIgnoreCase(dto.getBodyTypeName())
+                    .orElseGet(() -> {
+                        BodyType newBody = new BodyType();
+                        newBody.setName(dto.getBodyTypeName());
+                        return bodyTypeRepository.save(newBody);
+                    });
+            car.setBodyType(body);
+        }
     }
 
     public List<CarDTO> searchCars(String brand, String fuelTypeName, String bodyTypeName, String maxPrice) {

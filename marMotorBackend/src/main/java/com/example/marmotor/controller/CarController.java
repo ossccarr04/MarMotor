@@ -5,8 +5,11 @@ import com.example.marmotor.model.DTO.CarDTO;
 import com.example.marmotor.model.DTO.CarDetailDTO;
 import com.example.marmotor.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.databind.ObjectMapper;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -77,9 +80,25 @@ public class CarController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<CarDTO> createCar(@RequestBody CarCreateDTO carDto) {
-        return ResponseEntity.ok(carService.createCar(carDto));
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CarDTO> createCar(
+            @RequestPart("carData") String carDataJson,
+            @RequestPart(value = "images", required = false) MultipartFile[] images) {
+
+        try {
+            // Convertimos el JSON (String) que viene de Angular a tu CarCreateDTO
+            ObjectMapper objectMapper = new ObjectMapper();
+            CarCreateDTO carDto = objectMapper.readValue(carDataJson, CarCreateDTO.class);
+
+            // Pasamos el DTO y las imágenes al Servicio (él se encargará de Cloudinary)
+            CarDTO savedCar = carService.createCarWithImages(carDto, images);
+
+            return ResponseEntity.ok(savedCar);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @DeleteMapping("/{id}")
