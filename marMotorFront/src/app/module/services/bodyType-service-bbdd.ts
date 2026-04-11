@@ -13,7 +13,9 @@ export class BodyTypeServiceBBDD {
 
   private readonly URL = `${environment.apiUrl}/body-types`;
 
-  getBadges(): Observable<any> {
+  getBodyTypes(): Observable<any> {
     return this.http.get<any>(this.URL);
   }
+
+  
 }

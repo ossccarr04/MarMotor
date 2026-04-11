@@ -1,3 +1,5 @@
+import { identity } from "rxjs";
+
 export interface UserDTO {
     id: number;
     username: string;
@@ -17,4 +19,9 @@ export interface RegisterDTO {
     username: string;
     email: string;
     password: string;
+}
+
+export interface LoggedUserDTO {
+    id: string;
+    rol: string;
 }

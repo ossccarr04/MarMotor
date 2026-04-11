@@ -378,6 +378,7 @@ $text-dark: #333;
     display: grid;
     grid-template-columns: repeat(2, 1fr); // 2 columnas en móvil
     gap: 12px;
+    min-height: 200px;
     overflow-y: auto;
     padding-right: 5px;
     margin-bottom: 10px;
@@ -410,8 +411,10 @@ $text-dark: #333;
       cursor: pointer;
       border: 1px solid #e2e8f0;
       transition: all 0.2s;
+      margin-top: 5px;
 
       &:hover {
+        
         background: #f1f5f9;
         border-color: $accent-green;
         transform: translateY(-2px);
@@ -426,11 +429,24 @@ $text-dark: #333;
     }
   }
 
-  .no-results {
+.no-results {
+    /* Forzamos que ocupe todo el ancho del contenedor */
+    width: 100%;
+    
+    /* Centrado de texto */
     text-align: center;
-    padding: 30px;
+    margin-left: 110%;
+    
+    /* Estilo visual */
     color: #94a3b8;
     font-style: italic;
+    font-size: 15px;
+    min-height: 100px;
+    
+    /* Si el padre es flex, esto asegura el centrado */
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -464,37 +480,37 @@ $text-dark: #333;
   }
 
   .btn-primary {
-  // --- TUS COLORES ORIGINALES ---
-  background-color: $accent-green;
-  color: $text-light;
-  
-  // --- MEJORA DE VISIBILIDAD ---
-  border: none;
-  font-weight: 700;           // Un poco más de grosor para que el blanco destaque
-  padding: 12px 28px;
-  border-radius: 30px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
+    // --- TUS COLORES ORIGINALES ---
+    background-color: $accent-green;
+    color: $text-light;
 
-  box-shadow: 0 4px 14px 0 rgba(55, 223, 140, 0.39);
+    // --- MEJORA DE VISIBILIDAD ---
+    border: none;
+    font-weight: 700; // Un poco más de grosor para que el blanco destaque
+    padding: 12px 28px;
+    border-radius: 30px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
 
-  &:hover {
-    // En el hover, aumentamos un poco la sombra para que "flote"
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(55, 223, 140, 0.6);
-    
-    // Le damos un pelín de brillo al fondo sin cambiar el color base
-    filter: brightness(1.05); 
+    box-shadow: 0 4px 14px 0 rgba(55, 223, 140, 0.39);
+
+    &:hover {
+      // En el hover, aumentamos un poco la sombra para que "flote"
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(55, 223, 140, 0.6);
+
+      // Le damos un pelín de brillo al fondo sin cambiar el color base
+      filter: brightness(1.05);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 10px rgba(55, 223, 140, 0.4);
+    }
   }
-
-  &:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 10px rgba(55, 223, 140, 0.4);
-  }
-}
   .btn-secondary {
     background-color: rgba(255, 255, 255, 0.9); // Blanco casi sólido para que destaque
     color: #0a1f33; // Usamos tu azul primario para la letra (máximo contraste)

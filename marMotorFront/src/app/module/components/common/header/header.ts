@@ -2,6 +2,9 @@ import { Component, Inject, PLATFORM_ID, Renderer2 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
 import { isPlatformBrowser, CommonModule } from '@angular/common'; // Importante importar estos
+import { AuthServiceBBDD } from '../../../services/auth-service';
+import { ToastrService } from 'ngx-toastr';
+import { UserRoles } from '../../../../@types/enums/roles.enums';
 
 @Component({
   selector: 'app-header',
@@ -13,18 +16,31 @@ import { isPlatformBrowser, CommonModule } from '@angular/common'; // Importante
 export class Header {
   isMenuOpen = false;
   isLogoZoomed: boolean = false;
+  isAdmin: boolean = true; //! Cambiarlo a False cuando este hecho el Login
 
+  
   constructor(
     private renderer: Renderer2, 
     private router: Router, 
-    @Inject(PLATFORM_ID) private platformId: Object
+    private toast: ToastrService,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private authService: AuthServiceBBDD
   ) {
-    // Escuchamos los cambios de ruta para cerrar el menú automáticamente
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.closeMenu(); 
     });
+  }
+
+  ngOnInit(): void {
+    if(this.authService.isLoggedIn()) {
+      const user = this.authService.getCurrentUser();
+      if(user) {
+        this.isAdmin = atob(user.rol) === UserRoles.ADMIN; 
+      }
+    }
+    
   }
 
   toggleMenu() {

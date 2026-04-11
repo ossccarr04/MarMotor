@@ -10,6 +10,7 @@ export interface CarDTO {
   imageUrl: string;
   fuelType: string;
   transmission: string;
+  bodyType: string | null;
   power: number; // cv
   mileage: number; // km
   consumption: string;

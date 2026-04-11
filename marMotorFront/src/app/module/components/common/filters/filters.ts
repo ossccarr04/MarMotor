@@ -15,7 +15,7 @@ import { RouterModule, Router } from '@angular/router';
 import { BrandDTO } from '../../../../@types/interface/brand.interface';
 import { BrandServiceBBDD } from '../../../services/brand-service-bbdd';
 import { FuelTypeServiceBBDD } from '../../../services/fuel-service-bbdd';
-import { BadgeDTO } from '../../../../@types/interface/badge.interface';
+import { BodyTypeDTO } from '../../../../@types/interface/bodyType.interface';
 import { FuelDTO } from '../../../../@types/interface/fuel.interface';
 import { BodyTypeServiceBBDD } from '../../../services/bodyType-service-bbdd';
 
@@ -63,7 +63,7 @@ export class Filters implements OnInit {
   ) {}
 
   marcas: BrandDTO[] = [];
-  carrocerias: BadgeDTO[] = [];
+  carrocerias: BodyTypeDTO[] = [];
   combustibles: FuelDTO[] = [];
 
   isModalMarcasOpen = false;
@@ -99,7 +99,7 @@ export class Filters implements OnInit {
     });
 
     // 2. Cargar Carrocerías
-    this.bodyTypeService.getBadges().subscribe({
+    this.bodyTypeService.getBodyTypes().subscribe({
       next: (data) => {
         this.carrocerias = data;
         this.carrocerias.forEach((item) => {

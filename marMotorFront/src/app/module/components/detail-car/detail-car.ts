@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CarDetail } from '../../../@types/interface/car-details.interface';
 import { CarServiceBBDD } from '../../services/car-service-bbdd';
+import { AuthServiceBBDD } from '../../services/auth-service';
+import { UserRoles } from '../../../@types/enums/roles.enums';
 
 @Component({
   selector: 'detail-car',
@@ -13,7 +15,7 @@ import { CarServiceBBDD } from '../../services/car-service-bbdd';
 })
 export class DetailCar implements OnInit, OnDestroy {
   // Inyecciones
-  constructor(private carsService: CarServiceBBDD) {
+  constructor(private carsService: CarServiceBBDD, private authService: AuthServiceBBDD) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state && navigation.extras.state['listaFiltrada']) {
       const listaEntrante = navigation.extras.state['listaFiltrada'];
@@ -32,9 +34,17 @@ export class DetailCar implements OnInit, OnDestroy {
   currentIndex: number = 0;
   currentImageIndex: number = 0;
   isZoomed: boolean = false;
+  isAdmin: boolean= true //! Cambiar a false
   private scrollPosition: number = 0;
 
   ngOnInit(): void {
+    if(this.authService.isLoggedIn()) {
+          const user = this.authService.getCurrentUser();
+          if(user) {
+            this.isAdmin = atob(user.rol) === UserRoles.ADMIN; 
+          }
+        }
+
     this.route.paramMap.subscribe((params) => {
       const encodedId = params.get('id');
       if (!encodedId) return;
@@ -52,6 +62,9 @@ export class DetailCar implements OnInit, OnDestroy {
         this.carsService.getCarsDetails(idNumerico).subscribe({
           next: (data) => {
             this.car = data;
+            this.car.fuelType= this.car.fuelType.toLowerCase()
+            this.car.transmission= this.car.transmission.toLowerCase()
+            this.car.bodyType= this.car.bodyType?.toLocaleLowerCase() ?? null;
 
             // Si carIds está vacío (acceso directo por URL), lo inicializamos con el actual
             if (this.carIds.length === 0) {

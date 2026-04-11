@@ -1,0 +1,622 @@
+/* ==========================================================================
+   VARIABLES Y CONFIGURACIÓN BASE
+   ========================================================================== */
+$bg-page: #1e293b;
+$bg-card: #121d2b;
+$bg-input: #0b131d;
+$accent-teal: #20c997;
+$text-main: #f8f9fa;
+$text-muted: #8c9baf;
+$border-color: #2a3b4f;
+$danger: #ff4757;
+$transition: all 0.3s ease;
+$font-family: 'Montserrat', sans-serif;
+
+/* RESET Y WRAPPER */
+.page-wrapper {
+
+  background-color: $bg-page;
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  font-family: $font-family;
+}
+
+/* CLASES DE UTILIDAD (ROJO Y ERRORES) */
+.text-danger {
+  color: $danger !important;
+  font-weight: bold;
+  margin-left: 2px;
+}
+
+.is-invalid {
+  border-color: $danger !important;
+  box-shadow: 0 0 0 3px rgba($danger, 0.15) !important;
+}
+
+/* ==========================================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================================== */
+.form-container {
+  background-color: $bg-card;
+  width: 100%;
+  max-width: 1150px;
+  border-radius: 16px;
+  padding: 40px;
+  color: $text-main;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.form-header {
+  margin-bottom: 30px;
+  border-bottom: 1px solid $border-color;
+  padding-bottom: 20px;
+
+  .brand-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    h2 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+    }
+    .logo-m {
+      background: $accent-teal;
+      color: $bg-card;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 900;
+    }
+    .divider {
+      color: $border-color;
+      margin: 0 5px;
+    }
+  }
+  .subtitle {
+    color: $text-muted;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+}
+
+/* ==========================================================================
+   SECCIONES Y GRIDS
+   ========================================================================== */
+.form-section {
+  margin-bottom: 40px;
+  .section-title {
+    color: $accent-teal;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+.form-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+/* ==========================================================================
+   CAMPOS DE ENTRADA GENERALES
+   ========================================================================== */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+
+  label {
+    color: $text-muted;
+    font-size: 13px;
+    margin-bottom: 8px;
+    font-weight: 500;
+    .icon {
+      margin-right: 5px;
+      opacity: 0.8;
+    }
+  }
+
+  input,
+  select,
+  textarea {
+    background: $bg-input;
+    border: 1px solid $border-color;
+    color: $text-main;
+    padding: 12px 16px;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    transition: $transition;
+    box-sizing: border-box;
+    width: 100% !important;
+    max-width: 100%;        // Evita que crezca más que el padre
+    box-sizing: border-box; // Incluye el padding en el cálculo del ancho
+    overflow: hidden;       
+    text-overflow: ellipsis; 
+    white-space: nowrap;
+    
+    /* Para que el menú no sea más ancho que el input */
+    min-width: 0;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.2);
+    }
+    &:focus {
+      border-color: $accent-teal;
+      box-shadow: 0 0 0 3px rgba(32, 201, 151, 0.15);
+    }
+  }
+
+  textarea {
+    resize: none;
+    min-height: 45px;
+    max-height: 300px;
+    overflow: hidden;
+    line-height: 1.5;
+    transition: height 0.1s ease;
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2320c997'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+}
+
+/* ==========================================================================
+   MULTIMEDIA (PORTADA Y GALERÍA ACUMULATIVA)
+   ========================================================================= */
+
+.sub-label {
+  display: block;
+  font-size: 13px;
+  color: $text-muted;
+  margin-bottom: 12px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  opacity: 0.9;
+}
+
+.upload-zone.loading {
+  cursor: wait;
+  opacity: 0.7;
+}
+.text-danger {
+    color: #ff4757;
+    margin-right: 15px;
+    font-size: 14px;
+  }
+
+.gallery-upload-wrapper {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+.upload-zone {
+  border: 2px dashed $border-color;
+  padding: 40px;
+  text-align: center;
+  border-radius: 16px;
+  background: rgba(11, 19, 29, 0.3);
+  transition: $transition;
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $accent-teal;
+    background: rgba(32, 201, 151, 0.05);
+    .upload-icon {
+      transform: scale(1.1);
+      color: $accent-teal;
+    }
+  }
+
+  /* La zona de portada se mantiene algo más compacta */
+  &.portrait {
+    height: 160px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-style: solid;
+    border-width: 1px;
+  }
+
+  .upload-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+    display: block;
+    color: $text-muted;
+  }
+
+  .highlight {
+    color: $accent-teal;
+    text-decoration: underline;
+    font-weight: 600;
+  }
+
+  input[type='file'] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .img-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.gallery-previews-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+
+  .gallery-item {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid $border-color;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .btn-delete-mini {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: $danger;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+.upload-count {
+  font-size: 13px;
+  color: $accent-teal;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 15px;
+
+  .gallery-item {
+    position: relative;
+    height: 110px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid $border-color;
+    background: $bg-input;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+.btn-delete-img {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: $danger;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  &:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+  }
+}
+
+/* ==========================================================================
+   LISTAS DINÁMICAS (EQUIPAMIENTO E HISTORIAL)
+   ========================================================================== */
+.dynamic-sections-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 30px;
+}
+
+.section-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.btn-add {
+  background: transparent;
+  color: $accent-teal;
+  border: 1px solid $accent-teal;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: $transition;
+  &:hover {
+    background: rgba(32, 201, 151, 0.1);
+    transform: translateY(-1px);
+  }
+}
+
+.dynamic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .dynamic-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    background: rgba(11, 19, 29, 0.5);
+    padding: 8px 16px;
+    border-radius: 12px;
+    border: 1px solid $border-color;
+    transition: $transition;
+    box-sizing: border-box;
+    width: 100%;
+
+    &:hover {
+      border-color: rgba($accent-teal, 0.5);
+      background: rgba(11, 19, 29, 0.8);
+    }
+
+    input {
+      flex: 1;
+      background: transparent !important;
+      border: none !important;
+      color: $text-main !important;
+      padding: 8px 5px;
+      outline: none !important;
+      box-shadow: none !important;
+      min-width: 0;
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.3) !important;
+      }
+    }
+  }
+}
+
+.history-card {
+  .event-icon-preview {
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .input-year {
+    flex: 0 0 70px !important;
+    text-align: center;
+    color: $accent-teal !important;
+    font-weight: bold;
+    border-right: 1px solid $border-color !important;
+    border-radius: 0 !important;
+  }
+  .input-event {
+    flex: 1 !important;
+    padding-left: 10px !important;
+  }
+}
+
+.checkbox-custom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 0 10px;
+  border-left: 1px solid $border-color;
+  flex-shrink: 0;
+  .check-text {
+    font-size: 11px;
+    color: $accent-teal;
+    font-weight: bold;
+  }
+  input {
+    width: 18px;
+    height: 18px;
+    accent-color: $accent-teal;
+    margin: 0;
+  }
+}
+
+.btn-remove {
+  flex-shrink: 0;
+  background: rgba($danger, 0.15);
+  color: $danger;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: $transition;
+  &:hover {
+    background: $danger;
+    color: white;
+  }
+}
+
+/* ==========================================================================
+   ACCIONES FOOTER
+   ========================================================================== */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 25px;
+  margin-top: 50px;
+  border-top: 1px solid $border-color;
+  padding-top: 30px;
+
+  .btn-cancel {
+    background: transparent;
+    color: $text-muted;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    &:hover {
+      color: $text-main;
+    }
+  }
+
+  .btn-submit {
+    background: $accent-teal;
+    color: $bg-card;
+    padding: 14px 35px;
+    border-radius: 10px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: $transition;
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(32, 201, 151, 0.3);
+    }
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+}
+
+/* Quitar flechas number */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 900px) {
+  .form-grid-3,
+  .form-grid-4 {
+    grid-template-columns: 1fr 1fr;
+  }
+  .dynamic-sections-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .gallery-upload-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 768px) {
+  .page-wrapper {
+    padding: 10px; // Menos espacio exterior para ganar pantalla
+  }
+
+  .form-container {
+    padding: 20px;
+    border-radius: 0; // Opcional: quitar redondeado para ganar espacio lateral
+  }
+
+  /* Forzamos que todos los GRIDS pasen a ser de 1 sola columna */
+  .form-grid-2, 
+  .form-grid-3, 
+  .form-grid-4 {
+    grid-template-columns: 1fr !important; 
+    gap: 15px;
+  }
+
+  /* Ajuste para las secciones dinámicas (Equipamiento e Historial) */
+  .dynamic-sections-wrapper {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Importante: Ajuste de la fila del Historial para que no desborde */
+  .dynamic-row {
+    flex-wrap: wrap; // Permite que si no cabe, baje a la siguiente línea
+    padding: 10px;
+    gap: 8px;
+
+    input {
+      font-size: 16px; // Evita el zoom automático en iOS
+    }
+  }
+  select {
+    font-size: 16px; // Evita el zoom automático en iPhone que causa desbordamientos
+  }
+
+  .history-card {
+    .input-year {
+      flex: 0 0 50px !important; // Año más estrecho en móvil
+      border-right: none !important;
+    }
+    .input-event {
+      width: 100%; // La descripción ocupa todo si es necesario
+      order: 2;    // La mandamos abajo si no cabe al lado del icono
+    }
+  }
+
+  /* Ajuste para el wrapper de imágenes */
+  .gallery-upload-wrapper {
+    grid-template-columns: 1fr !important;
+  }
+}

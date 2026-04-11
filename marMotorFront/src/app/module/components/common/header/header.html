@@ -1,15 +1,37 @@
 <header class="autoflow-header">
   <!-- Contenedor del logo en grande (modo zoom) -->
   @if (isLogoZoomed) {
-  <div 
-       (click)="isLogoZoomed = false"
-       style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; align-items: center; justify-content: center; cursor: zoom-out;">
-    <img src="logoMarMotor.png" alt="Logo MarMotor Ampliado" style="max-width: 90%; max-height: 90%; object-fit: contain;" />
-  </div>
+    <div
+      (click)="isLogoZoomed = false"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.85);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: zoom-out;
+      "
+    >
+      <img
+        src="logoMarMotor.png"
+        alt="Logo MarMotor Ampliado"
+        style="max-width: 90%; max-height: 90%; object-fit: contain"
+      />
+    </div>
   }
 
   <div class="logo" [routerLink]="['/']" (click)="isMenuOpen = false">
-    <img src="logoMarMotor.png" alt="Logo MarMotor" style="height: 60px; width: auto; object-fit: contain; margin-right: 10px; cursor: zoom-in;" (click)="isLogoZoomed = true; $event.stopPropagation(); $event.preventDefault();" />
+    <img
+      src="logoMarMotor.png"
+      alt="Logo MarMotor"
+      style="height: 60px; width: auto; object-fit: contain; margin-right: 10px; cursor: zoom-in"
+      (click)="isLogoZoomed = true; $event.stopPropagation(); $event.preventDefault()"
+    />
     MarMotor
   </div>
 
@@ -20,11 +42,29 @@
   </button>
 
   <nav class="nav-links" [class.is-open]="isMenuOpen">
-    <a [routerLink]="['/']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" (click)="isMenuOpen = false">Inicio</a>
-    <a routerLink="/coches" routerLinkActive="active-link" (click)="isMenuOpen = false">Coches</a>
-    <a routerLink="/compañia" routerLinkActive="active-link" (click)="isMenuOpen = false">Compañia</a>
-    
-    <button class="btn btn-outline btn-login-mobile" [routerLink]="['/auth/login']" (click)="isMenuOpen = false">Login</button>
+    <a
+      [routerLink]="['/']"
+      routerLinkActive="active-link"
+      [routerLinkActiveOptions]="{ exact: true }"
+      (click)="isMenuOpen = false"
+      >Inicio</a
+    >
+    <a routerLink="/coches" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" (click)="isMenuOpen = false">Coches</a>
+    <a routerLink="/compañia" routerLinkActive="active-link" (click)="isMenuOpen = false"
+      >Compañia</a
+    >
+    @if (isAdmin) {
+      <a routerLink="/coches/anadir-coche" routerLinkActive="active-link" (click)="isMenuOpen = false"
+        >Añadir vehiculo</a
+      >
+    }
+    <button
+      class="btn btn-outline btn-login-mobile"
+      [routerLink]="['/auth/login']"
+      (click)="isMenuOpen = false"
+    >
+      Login
+    </button>
   </nav>
 
   <div class="header-actions">

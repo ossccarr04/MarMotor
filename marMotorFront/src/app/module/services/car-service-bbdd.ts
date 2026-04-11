@@ -40,4 +40,17 @@ export class CarServiceBBDD {
   getCarsDetails(id: string | number): Observable<CarDetail> {
     return this.http.get<CarDetail>(`${this.URL}/${id}/detail`);
   }
+
+  //TODO Revisar URL
+  getCarById(id: string): Observable<CarDetail> {
+    return this.http.get<CarDetail>(`${this.URL}/coches/detail/${id}`);
+  }
+
+  createCarWithImages(formData: FormData): Observable<any> {
+    return this.http.post<any>(this.URL, formData);
+  }
+  //TODO Revisar URL
+  updateCar(id: string, formData: FormData): Observable<CarDTO> {
+    return this.http.put<CarDTO>(`${this.URL}/coches/${id}`, formData);
+  }
 }

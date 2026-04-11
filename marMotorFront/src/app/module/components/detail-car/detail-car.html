@@ -4,8 +4,13 @@
     <header class="detail-header" [class.opacity-0]="isZoomed">
       <div class="title-group">
         <span class="brand-subtitle">HISTORIA INMERSIVA DEL VEHÍCULO</span>
-        <h1>{{ car.make }} {{ car.model }}</h1>
+        <h1>{{ car.make }} {{ car.model }} - {{ car.bodyType | titlecase}}</h1>
       </div>
+      <div class="admin-actions">
+  <button class="btn-edit" [routerLink]="['/editar-coche', car.id]">
+    <i class="fa-solid fa-pen-to-square"></i> Editar Vehículo
+  </button>
+</div>
       <div class="nav-arrows">
         <button class="arrow" (click)="prevCar()">‹</button>
         <button class="arrow" (click)="nextCar()">›</button>
@@ -62,7 +67,10 @@
           <span>Año:</span> <strong>{{ car.year }}</strong>
         </li>
         <li>
-          <span>Motorización:</span> <strong>{{ car.fuelType }}</strong>
+          <span>Motorización:</span> <strong>{{ car.fuelType | titlecase }}</strong>
+        </li>
+        <li>
+          <span>Transmisión:</span> <strong>{{ car.transmission | titlecase}}</strong>
         </li>
         <li>
           <span>Potencia:</span> <strong>{{ car.power }} cv</strong>
