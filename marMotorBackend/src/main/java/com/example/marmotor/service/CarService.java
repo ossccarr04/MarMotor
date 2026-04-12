@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -59,6 +60,19 @@ public class CarService {
 
     public Optional<CarDetailDTO> getCarDetailById(Long id) {
         return carRepository.findById(id).map(this::convertToDetailDto);
+    }
+
+    public List<CarDTO> searchByBrandOrModel(String query) {
+
+        if (query == null || query.trim().isEmpty()) return Collections.emptyList();
+
+        // Reemplaza múltiples espacios por uno solo: "Porsche    911" -> "Porsche 911"
+        String cleanedQuery = query.trim().replaceAll("\\s+", " ");
+
+        return carRepository.findByFullSearch(cleanedQuery)
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     /* ==========================================================================
@@ -318,7 +332,7 @@ public class CarService {
                 hDto.setYear(h.getYear());
                 hDto.setTitle(h.getTitle());
                 hDto.setIcon(h.getIcon());
-                hDto.setCompleted(h.isCompleted());
+                hDto.setIsCompleted(h.isCompleted());
                 return hDto;
             }).collect(Collectors.toList()));
         }

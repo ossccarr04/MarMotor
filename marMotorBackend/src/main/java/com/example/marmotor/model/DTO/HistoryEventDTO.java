@@ -1,5 +1,6 @@
 package com.example.marmotor.model.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
@@ -7,6 +8,8 @@ public class HistoryEventDTO {
     private int year;
     private String title;
     private String icon;
+
+    @JsonProperty("isCompleted")
     private boolean isCompleted;
 
     public int getYear() {
@@ -37,7 +40,7 @@ public class HistoryEventDTO {
         return isCompleted;
     }
 
-    public void setCompleted(boolean completed) {
-        isCompleted = completed;
+    public void setIsCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
     }
 }

@@ -60,6 +60,12 @@ public class CarController {
         return ResponseEntity.ok(carService.getTop10ByBadge(category));
     }
 
+    @GetMapping("/search/admin")
+    public ResponseEntity<List<CarDTO>> searchCarsAdmin(@RequestParam String query) {
+        List<CarDTO> results = carService.searchByBrandOrModel(query);
+        return ResponseEntity.ok(results);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<CarDTO> getCarById(@PathVariable Long id) {
         return carService.getCarById(id)
