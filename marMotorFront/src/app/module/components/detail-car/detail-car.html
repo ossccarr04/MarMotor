@@ -1,10 +1,54 @@
 @if (car) {
+<<<<<<< Updated upstream
   <div class="detail-page-wrapper" [class.no-scroll]="isZoomed">
     <div class="hero-gradient-section">
       <header class="detail-header" [class.opacity-0]="isZoomed">
         <div class="title-group">
           <span class="brand-subtitle">HISTORIA INMERSIVA DEL VEHÍCULO</span>
           <h1>{{ car.make }} {{ car.model }} - {{ car.bodyType | titlecase }}</h1>
+=======
+<div class="detail-page-wrapper" [class.no-scroll]="isZoomed">
+  <div class="hero-gradient-section">
+    <header class="detail-header" [class.opacity-0]="isZoomed">
+      <div class="title-group">
+        <span class="brand-subtitle">HISTORIA INMERSIVA DEL VEHÍCULO</span>
+        <h1>{{ car.make }} {{ car.model }} - {{ car.bodyType | titlecase}}</h1>
+      </div>
+      <div class="admin-actions">
+      @if (isAdmin){
+  <button class="btn-edit" [routerLink]="['/editar-coche', car.id]">
+    <i class="fa-solid fa-pen-to-square"></i> Editar Vehículo
+  </button>
+</div>
+      }
+      <div class="nav-arrows">
+        <button class="arrow" (click)="prevCar()">‹</button>
+        <button class="arrow" (click)="nextCar()">›</button>
+      </div>
+    </header>
+
+    <section class="gallery-viewport">
+      <div class="gallery-container">
+        <div class="main-photo-card" [class.is-zoomed]="isZoomed">
+          <span class="heart-icon-detail" [class.is-liked]="car.isSaved" (click)="toggleSave()">
+            {{ car.isSaved ? '❤️' : '♡' }}
+          </span>
+
+          <button class="zoom-btn-detail" (click)="toggleZoom()">🔍</button>
+
+          @if (car.imagesAlbum && car.imagesAlbum.length > 0) {
+            <img
+              [src]="car.imagesAlbum[currentImageIndex]"
+              [alt]="car.model"
+              (error)="onImageError($event)"
+            />
+          } @else {
+            <img src="assets/placeholder-car.jpg" alt="No image available" />
+          }
+
+          <button class="float-arrow left" (click)="prevImage()">‹</button>
+          <button class="float-arrow right" (click)="nextImage()">›</button>
+>>>>>>> Stashed changes
         </div>
         <div class="admin-actions">
           <button class="btn-edit" (click)="navigateToEdit()">
