@@ -1,5 +1,5 @@
 export enum Transmission {
-    MANUAL= "MANUAL",
-    AUTOMATICA= "AUTOMATICA"
+    MANUAL= "Manual",
+    AUTOMATICA= "Automatica"
 
 }

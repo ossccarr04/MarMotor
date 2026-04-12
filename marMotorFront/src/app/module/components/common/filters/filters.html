@@ -1,4 +1,21 @@
 <section class="visual-filter-section">
+  <div class="admin-quick-search" *ngIf="isAdmin">
+  <div class="search-box">
+    <i class="fa-solid fa-user-gear admin-icon"></i>
+    
+    <input 
+      type="text" 
+      [(ngModel)]="busquedaAdmin" 
+      placeholder="Marca o modelo (Admin)..."
+      (keyup.enter)="buscarAdmin()"
+    />
+    
+    <button (click)="buscarAdmin()" *ngIf="busquedaAdmin.length > 0">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  </div>
+  
+  </div>
   <h2>FILTRO VISUAL INTUITIVO: <span>Selecciona Categorías</span></h2>
 
   <div class="filters-container">

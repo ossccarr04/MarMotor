@@ -414,7 +414,6 @@ $text-dark: #333;
       margin-top: 5px;
 
       &:hover {
-        
         background: #f1f5f9;
         border-color: $accent-green;
         transform: translateY(-2px);
@@ -429,20 +428,20 @@ $text-dark: #333;
     }
   }
 
-.no-results {
+  .no-results {
     /* Forzamos que ocupe todo el ancho del contenedor */
     width: 100%;
-    
+
     /* Centrado de texto */
     text-align: center;
     margin-left: 110%;
-    
+
     /* Estilo visual */
     color: #94a3b8;
-    font-style: italic; 
+    font-style: italic;
     font-size: 15px;
     min-height: 100px;
-    
+
     /* Si el padre es flex, esto asegura el centrado */
     display: flex;
     justify-content: center;
@@ -553,5 +552,97 @@ $text-dark: #333;
     background-color: $accent-green;
     color: white;
     border: none;
+  }
+}
+
+.visual-filter-section {
+  position: relative; // Necesario para que el buscador flote dentro
+}
+
+.admin-quick-search {
+position: absolute;
+  // Movemos más a la izquierda y más abajo
+  top: 35px; 
+  right: 40px; 
+  z-index: 1000;
+  width: 280px;
+
+  .search-box {
+display: flex;
+    align-items: center;
+    // Fondo más oscuro y con desenfoque para que resalte sobre el fondo
+    background: rgba(15, 23, 42, 0.9);
+    // Borde sutil que combine con tu botón "Buscar con filtros"
+    border: 1px solid rgba(16, 185, 129, 0.4); 
+    border-radius: 50px; // Forma de píldora para un look más moderno
+    padding: 8px 18px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+
+    &:hover, &:focus-within {
+      border-color: #10b981;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+      transform: translateY(-2px); // Pequeña elevación
+    }
+
+    .admin-icon {
+      color: #10b981;
+      margin-right: 10px;
+      font-size: 0.9rem;
+    }
+
+    input {
+      background: transparent;
+      border: none;
+      color: #f8fafc;
+      font-size: 0.85rem;
+      outline: none;
+      width: 100%;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+        font-weight: 300;
+      }
+    }
+
+    button {
+      background: transparent;
+      border: none;
+      color: #10b981;
+      cursor: pointer;
+      margin-left: 5px;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      
+      &:hover {
+        color: #34d399;
+      }
+    }
+  }
+}
+.admin-results-dropdown {
+  margin-top: 10px;
+  border-radius: 20px !important;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.95) !important;
+}
+
+// Responsive: en móviles lo movemos para que no tape el título
+@media (max-width: 768px) {
+  .admin-quick-search {
+    position: relative;
+    top: 0;
+    right: 0;
+    margin-bottom: 20px;
+
+    .search-box {
+      width: 100%;
+      input {
+        width: 100%;
+      }
+    }
   }
 }

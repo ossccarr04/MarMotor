@@ -55,9 +55,9 @@ export class AnadirCoche implements OnInit {
 
   iconosDisponibles = Object.entries(HistoryIcon).map(([key, value]) => ({
     label: HistoryIconLabel.get(value) || key,
-    value: value
+    value: value,
   }));
-  
+
   ngOnInit() {
     this.cargarSugerencias();
     this.initForm();
@@ -72,72 +72,101 @@ export class AnadirCoche implements OnInit {
 
   private initForm() {
     this.carForm = this.fb.group({
-      model: ['', Validators.required],
-      year: [new Date().getFullYear(), [Validators.required, Validators.min(1900)]],
-      price: ['', [Validators.required, Validators.min(0)]],
-      power: ['', Validators.required],
-      mileage: ['', Validators.required],
-      consumption: ['', Validators.required],
+      model: ['', [Validators.required, Validators.minLength(2)]],
+      // El año no puede ser mayor al actual + 1 (coches nuevos)
+      year: [
+        new Date().getFullYear(),
+        [Validators.required, Validators.min(1900), Validators.max(new Date().getFullYear() + 1)],
+      ],
+      price: ['', [Validators.required, Validators.min(1)]],
+      power: ['', [Validators.required, Validators.min(1), Validators.max(2000)]],
+      mileage: ['', [Validators.required, Validators.min(0)]],
+      consumption: ['', [Validators.required, Validators.pattern(/^[0-9](\.[0-9]+)?$/)]],
       transmission: ['Manual', Validators.required],
       brandName: ['', Validators.required],
       fuelTypeName: ['', Validators.required],
       bodyTypeName: [null],
-      color: ['', Validators.required],
+      color: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
       badge: [null],
-      description: ['', Validators.required],
+      description: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.pattern(/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,!¡?¿]+$/),
+        ],
+      ],
       features: this.fb.array([]),
       history: this.fb.array([]),
     });
   }
 
-  cargarDatosParaEditar(id: string) {
-    const idDecoded = atob(id);
-    this.carService.getCarsDetails(idDecoded).subscribe({
-      next: (car) => {
-        // Rellenar campos simples
-        this.carForm.patchValue({
-          model: car.model,
-          year: car.year,
-          price: car.price,
-          power: car.power,
-          mileage: car.mileage,
-          consumption: car.consumption,
-          transmission: car.transmission,
-          brandName: car.make, // Ojo: verifica si tu DTO usa 'make' o 'brandName'
-          fuelTypeName: car.fuelType,
-          bodyTypeName: car.bodyType,
-          color: car.color,
-          badge: car.badge,
-          description: car.description,
-        });
+cargarDatosParaEditar(id: string) {
+  const idDecoded = atob(id);
+  this.carService.getCarsDetails(idDecoded).subscribe({
+    next: (car) => {
+      // 1. Rellenar campos simples
+      this.carForm.patchValue({
+        model: car.model,
+        year: car.year,
+        price: car.price,
+        power: car.power,
+        mileage: car.mileage,
+        consumption: car.consumption,
+        transmission: car.transmission ? 
+        car.transmission.charAt(0).toUpperCase() + car.transmission.slice(1).toLowerCase() : 'Manual',
+        brandName: car.make, 
+        fuelTypeName: car.fuelType,
+        bodyTypeName: car.bodyType,
+        color: car.color,
+        badge: car.badge,
+        description: car.description,
+      });
 
-        // Rellenar Equipamiento (FormArray)
-        car.features?.forEach((f: string) => {
-          this.features.push(this.fb.control(f, Validators.required));
-        });
+      // 2. Limpiar FormArrays antes de cargar (evita duplicados si entras/sales)
+      this.features.clear();
+      this.history.clear();
 
-        // Rellenar Historial (FormArray)
-        car.history?.forEach((h: any) => {
+      // 3. Rellenar Equipamiento
+      car.features?.forEach((f: string) => {
+        this.features.push(this.fb.control(f, Validators.required));
+      });
+
+      // 4. Rellenar Historial (Aseguramos los nombres de campos)
+      if (car.history && car.history.length > 0) {
+        car.history.forEach((h: any) => {
           this.history.push(
             this.fb.group({
-              year: [h.year, Validators.required],
+              // IMPORTANTE: Verifica si en tu BBDD el campo es 'year' o 'año'
+              year: [h.year, [
+                Validators.required, 
+                Validators.min(1900), 
+                Validators.max(new Date().getFullYear())
+              ]],
               title: [h.title, Validators.required],
               icon: [h.icon || '🔧'],
-              isCompleted: [h.isCompleted],
-            }),
+              // IMPORTANTE: Asegúrate de que el nombre sea 'isCompleted' o 'completed' según tu DTO
+              isCompleted: [!!h.isCompleted], 
+            })
           );
         });
+      }
 
-        // Mostrar imágenes actuales como preview
-        if (car.imagesAlbum && car.imagesAlbum.length > 0) {
-          this.previewPortada = car.imagesAlbum[0];
-          this.previewsGaleria = car.imagesAlbum.slice(1);
-        }
+      // 5. Imágenes
+      if (car.imagesAlbum && car.imagesAlbum.length > 0) {
+        this.previewPortada = car.imagesAlbum[0];
+        this.previewsGaleria = car.imagesAlbum.slice(1);
+      }
 
-        this.cdr.detectChanges();
-      },
-      error: () => this.toast.error('No se pudieron cargar los datos del vehículo'),
-    });
+      this.cdr.detectChanges();
+    },
+    error: () => this.toast.error('No se pudieron cargar los datos del vehículo'),
+  });
+}
+
+  private formatToTitleCase(text: string): string {
+    if (!text) return '';
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
   }
 
   // --- GETTERS Y MÉTODOS DINÁMICOS ---
@@ -158,7 +187,10 @@ export class AnadirCoche implements OnInit {
   addHistoryEvent() {
     this.history.push(
       this.fb.group({
-        year: [new Date().getFullYear(), Validators.required],
+        year: [
+          new Date().getFullYear(),
+          [Validators.required, Validators.min(1900), Validators.max(new Date().getFullYear())],
+        ],
         title: ['', Validators.required],
         icon: [HistoryIcon.MANTENIMIENTO], // Usas el enum aquí
         isCompleted: [false],
@@ -201,41 +233,60 @@ export class AnadirCoche implements OnInit {
   }
 
   // --- ENVÍO ---
-onSubmit() {
-  const formRawValue = this.carForm.getRawValue();
-
-  // Filtramos las imágenes que se quedan (las que ya tienen URL de Cloudinary)
-  const currentExistingImages: string[] = [];
-  
-  // Si la portada actual es de Cloudinary (no es un blob local), se queda
-  if (this.previewPortada && this.previewPortada.startsWith('http')) {
-    currentExistingImages.push(this.previewPortada);
-  }
-  
-  // Lo mismo con la galería
-  this.previewsGaleria.forEach(url => {
-    if (url.startsWith('http')) {
-      currentExistingImages.push(url);
+  onSubmit() {
+    if (this.carForm.invalid) {
+      this.carForm.markAllAsTouched();
+      this.toast.error('Revisa los campos marcados.', "Error de validación.");
+      return;
     }
-  });
 
-  const carData = {
-    ...formRawValue,
-    existingImages: currentExistingImages, // Mandamos la lista de "sobrevivientes"
-    clearImages: currentExistingImages.length === 0 && !this.fotoPortada && this.fotosGaleria.length === 0,
-    history: formRawValue.history.map((h: any) => ({
-      ...h,
-      isCompleted: !!h.isCompleted,
-    })),
-  };
+    if (!this.fotoPortada && !this.previewPortada) {
+      this.toast.error('Por favor, selecciona una portada.');
+      return;
+    }
 
-  const formData = new FormData();
-  formData.append('carData', JSON.stringify(carData));
+    if (!this.combustiblesSugeridos.includes(this.carForm.get('fuelTypeName')?.value)) {
+      this.toast.error('Por favor, selecciona un tipo de combustible válido.');
+      return;
+    }
 
-  // Solo adjuntamos los archivos FÍSICOS nuevos
-  if (this.fotoPortada) formData.append('images', this.fotoPortada);
-  this.fotosGaleria.forEach((f) => formData.append('images', f));
+    this.isSubmitting = true;
 
+    const formRawValue = this.carForm.getRawValue();
+
+    // Filtramos las imágenes que se quedan (las que ya tienen URL de Cloudinary)
+    const currentExistingImages: string[] = [];
+
+    // Si la portada actual es de Cloudinary (no es un blob local), se queda
+    if (this.previewPortada && this.previewPortada.startsWith('http')) {
+      currentExistingImages.push(this.previewPortada);
+    }
+
+    // Lo mismo con la galería
+    this.previewsGaleria.forEach((url) => {
+      if (url.startsWith('http')) {
+        currentExistingImages.push(url);
+      }
+    });
+
+    const carData = {
+      ...formRawValue,
+      transmission: formRawValue.transmission.toUpperCase(),
+      existingImages: currentExistingImages, // Mandamos la lista de "sobrevivientes"
+      clearImages:
+        currentExistingImages.length === 0 && !this.fotoPortada && this.fotosGaleria.length === 0,
+      history: formRawValue.history.map((h: any) => ({
+        ...h,
+        isCompleted: !!h.isCompleted,
+      })).sort((a: any, b: any) => a.year - b.year),
+    };
+
+    const formData = new FormData();
+    formData.append('carData', JSON.stringify(carData));
+
+    // Solo adjuntamos los archivos FÍSICOS nuevos
+    if (this.fotoPortada) formData.append('images', this.fotoPortada);
+    this.fotosGaleria.forEach((f) => formData.append('images', f));
 
     // 5. LLAMADA AL SERVICIO
     const idDecoded = atob(this.carId!);
@@ -244,9 +295,10 @@ onSubmit() {
       : this.carService.createCarWithImages(formData);
 
     request.subscribe({
-      next: () => {
+      next: (car: any) => {
         this.toast.success(this.isEditMode ? 'Vehículo actualizado.' : 'Vehículo creado.');
-        this.router.navigate(['/coches']);
+        const idNavegacion = this.isEditMode ? this.carId : btoa(car.id.toString());
+        this.router.navigate(['/detail-car', idNavegacion]);
       },
       error: (err) => {
         this.isSubmitting = false;

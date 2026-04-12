@@ -15,6 +15,13 @@ export class CarServiceBBDD {
 
   private readonly URL = `${environment.apiUrl}/cars`;
 
+  getCarsByModel(query: string): Observable<CarDTO[]> {
+
+    return this.http.get<CarDTO[]>(`${this.URL}/search/admin`,{
+      params: {query}
+    });
+  }
+
   getCars(): Observable<CarDTO[]> {
     return this.http.get<CarDTO[]>(this.URL);
   }

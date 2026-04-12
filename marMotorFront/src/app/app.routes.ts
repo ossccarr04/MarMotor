@@ -20,18 +20,18 @@ export const routes: Routes = [
     component: Register,
   },
   {
-    path: 'coches',
+    path: 'cars',
     children: [
       {
         path: '',
         component: Cars,
       },
       {
-        path: 'anadir-coche',
+        path: 'create-car',
         component: AnadirCoche,
       },
       {
-        path: 'editar-coche/:id',
+        path: 'edit-car/:id',
         component: AnadirCoche
       }
     ],

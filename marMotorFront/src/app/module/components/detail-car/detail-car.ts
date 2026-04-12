@@ -67,7 +67,6 @@ export class DetailCar implements OnInit, OnDestroy {
             this.car.transmission= this.car.transmission.toLowerCase()
             this.car.bodyType= this.car.bodyType?.toLocaleLowerCase() ?? null;
 
-            console.log(this.car)
 
             // Si carIds está vacío (acceso directo por URL), lo inicializamos con el actual
             if (this.carIds.length === 0) {
@@ -160,7 +159,7 @@ export class DetailCar implements OnInit, OnDestroy {
   navigateToEdit(){
     if(this.car){
       const idCoded= btoa(this.car.id.toString())
-      this.router.navigate(['/coches/editar-coche', idCoded])
+      this.router.navigate(['/cars/edit-car', idCoded])
     }
   }
   ngOnDestroy(): void {

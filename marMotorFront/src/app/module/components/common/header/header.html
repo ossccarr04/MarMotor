@@ -49,12 +49,12 @@
       (click)="isMenuOpen = false"
       >Inicio</a
     >
-    <a routerLink="/coches" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" (click)="isMenuOpen = false">Coches</a>
+    <a routerLink="/cars" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" (click)="isMenuOpen = false">Coches</a>
     <a routerLink="/compañia" routerLinkActive="active-link" (click)="isMenuOpen = false"
       >Compañia</a
     >
     @if (isAdmin) {
-      <a routerLink="/coches/anadir-coche" routerLinkActive="active-link" (click)="isMenuOpen = false"
+      <a routerLink="/cars/create-car" routerLinkActive="active-link" (click)="isMenuOpen = false"
         >Añadir vehiculo</a
       >
     }

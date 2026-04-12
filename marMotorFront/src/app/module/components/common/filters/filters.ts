@@ -9,6 +9,8 @@ import {
   PLATFORM_ID,
   ViewChild,
   OnInit,
+  inject,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
@@ -18,6 +20,9 @@ import { FuelTypeServiceBBDD } from '../../../services/fuel-service-bbdd';
 import { BodyTypeDTO } from '../../../../@types/interface/bodyType.interface';
 import { FuelDTO } from '../../../../@types/interface/fuel.interface';
 import { BodyTypeServiceBBDD } from '../../../services/bodyType-service-bbdd';
+import { CarServiceBBDD } from '../../../services/car-service-bbdd';
+import { ToastrService } from 'ngx-toastr';
+import { CarDTO } from '../../../../@types/interface/car.interface';
 
 @Component({
   selector: 'app-filters',
@@ -51,7 +56,7 @@ export class Filters implements OnInit {
       }
     }
   }
-
+  @Output() resultadosEncontrados = new EventEmitter<CarDTO[]>();
   @Output() filterChange = new EventEmitter<any>();
 
   constructor(
@@ -77,6 +82,9 @@ export class Filters implements OnInit {
   precioModificado = false;
   circunferencia = 2 * Math.PI * 40;
   isDragging = false;
+  busquedaAdmin: string = '';
+  resultadosAdmin: any[] = [];
+  isAdmin: boolean = true; //! Cambiar a true
 
   @ViewChild('sliderElement') sliderElement!: ElementRef;
 
@@ -245,7 +253,7 @@ export class Filters implements OnInit {
     this.limpiarCombustible();
     this.precioActual = 0;
     this.precioModificado = false;
-    this.route.navigate(['/coches']);
+    this.route.navigate(['/cars']);
   }
 
   buscarConFiltros() {
@@ -257,7 +265,7 @@ export class Filters implements OnInit {
     if (this.precioModificado && this.precioActual > 0) {
       queryParams[btoa('maxPrice')] = btoa(this.precioActual.toString());
     }
-    this.route.navigate(['/coches'], { queryParams });
+    this.route.navigate(['/cars'], { queryParams });
   }
 
   // Seleccionar una opción de una lista (Carrocerías o Combustibles)
@@ -291,4 +299,18 @@ export class Filters implements OnInit {
     }
     return null;
   }
+
+  buscarAdmin() {
+    const term = this.busquedaAdmin.trim();
+
+    if (!term) {
+      this.resultadosAdmin = [];
+      return;
+    }
+
+    this.route.navigate(['/cars'], {
+    queryParams: { q: btoa(term) }
+  });
+  }
+
 }

@@ -226,7 +226,7 @@ $font-family: 'Montserrat', sans-serif;
 .main-photo-card {
   width: 100%;
   // Eliminamos los height fijos conflictivos y usamos una proporción lógica
-  height: auto; 
+  height: auto;
   aspect-ratio: 16 / 9; // Proporción cinematográfica ideal para coches
   background: #0b1624; // Fondo oscuro para que combine con tu banner si hay bordes
   border-radius: 20px;
@@ -243,10 +243,10 @@ $font-family: 'Montserrat', sans-serif;
     height: 550px; // Altura fija para escritorio
     aspect-ratio: auto;
     border-radius: 25px;
-    
+
     img {
       // Importante: En escritorio también usamos cover para que el coche llene la tarjeta
-      object-fit: cover; 
+      object-fit: cover;
       object-position: center 60%; // Ajusta un poco el "foco" hacia abajo para no cortar ruedas
     }
   }
@@ -419,7 +419,10 @@ $font-family: 'Montserrat', sans-serif;
   margin: 20px auto; /* Menos margen superior en móvil */
   padding: 0 15px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr); /* CRÍTICO: Previene que hijos grandes ensanchen la página */
+  grid-template-columns: minmax(
+    0,
+    1fr
+  ); /* CRÍTICO: Previene que hijos grandes ensanchen la página */
   gap: 15px; /* Menos espacio entre tarjetas en móvil */
 
   @media (min-width: 1024px) {
@@ -512,14 +515,13 @@ $font-family: 'Montserrat', sans-serif;
   }
 }
 
-/* --- TIMELINE PREMIUM (HISTORIAL) --- */
+/* --- TIMELINE GREEN PREMIUM (HISTORIAL) --- */
 .timeline-container {
   position: relative;
-  padding: 60px 0; // Más espacio vertical para el zig-zag
+  padding: 80px 0; // Espacio suficiente para iconos arriba y abajo
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  max-width: 100%;
 
   &::-webkit-scrollbar { display: none; }
   -ms-overflow-style: none;
@@ -528,12 +530,12 @@ $font-family: 'Montserrat', sans-serif;
 
 .timeline-line {
   position: absolute;
-  top: 50%; // Línea exactamente al medio
+  top: 50%;
   left: 0;
   width: 100%;
   min-width: 650px;
   height: 2px;
-  background: rgba(203, 213, 225, 0.2); // Línea más sutil y elegante
+  background: rgba(32, 201, 151, 0.2); 
   transform: translateY(-50%);
   z-index: 1;
 }
@@ -553,102 +555,109 @@ $font-family: 'Montserrat', sans-serif;
   align-items: center;
   position: relative;
   width: 140px;
+  height: 160px; // Altura fija para controlar el centro
+  justify-content: center;
 
-  /* CONTENEDOR DEL ICONO (Caja superior/inferior) */
-  .node-icon {
-    width: 45px;
-    height: 45px;
-    border-radius: 14px;
-    background: #1e293b; // Fondo azul noche profundo
-    color: #64748b; // Icono apagado por defecto
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    margin-bottom: 20px;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
-    i {
-      filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
-    }
-  }
-
-  /* EL PUNTO SOBRE LA LÍNEA */
+  /* EL PUNTO SOBRE LA LÍNEA (Siempre fijo al centro) */
   .node-point {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
-    background: #1e293b;
-    border: 2px solid #64748b;
-    margin-bottom: 20px;
+    background: #064e3b;
+    border: 2px solid #34d399;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 5;
     transition: all 0.3s ease;
+  }
+
+  /* CAJA DEL ICONO */
+  .node-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: #000000;
+    color: #34d399;
+    border: 1px solid rgba(52, 211, 153, 0.2);
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 18px;
+    position: absolute;
+    top: 0; // Por defecto arriba
+    z-index: 10;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease;
+
+    i { font-weight: 900 !important; }
   }
 
   /* TEXTO INFORMATIVO */
   .node-info {
     text-align: center;
+    position: absolute;
+    top: calc(50% + 20px); // Por defecto debajo de la línea
+    width: 100%;
+
     .year {
       display: block;
       font-weight: 800;
-      font-size: 15px;
-      color: #f8f9fa; // Año en blanco brillante
+      font-size: 16px;
+      color: #34d399;
+      margin-bottom: 2px;
     }
     .title {
       display: block;
       font-size: 12px;
-      color: #94a3b8; // Gris azulado suave
-      line-height: 1.3;
-      margin-top: 4px;
+      color: #000000;
+      line-height: 1.2;
     }
   }
 
   /* === ESTADO COMPLETADO (NEÓN VERDE) === */
   &.is-completed {
     .node-icon {
-      background: #20c997; // Tu verde teal
-      color: #0f172a; // Icono oscuro para contraste
-      box-shadow: 0 0 20px rgba(32, 201, 151, 0.4);
-      transform: translateY(-5px); // Pequeña elevación
+      background: #10b981;
+      color: #064e3b;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
     }
     .node-point {
-      border-color: #20c997;
-      background: #20c997;
-      box-shadow: 0 0 10px rgba(32, 201, 151, 0.6);
+      background: #10b981;
+      border-color: #10b981;
+      transform: translate(-50%, -50%) scale(1.2);
     }
-    .node-info .year {
-      color: #20c997; // El año también se ilumina
+    .node-info {
+      .year { color: #10b981 !important; }
+      .title { color: #000000; }
     }
   }
 
   /* === DISEÑO ZIG-ZAG (Abajo) === */
   &.down {
-    flex-direction: column-reverse;
     .node-icon {
-      margin-bottom: 0;
-      margin-top: 20px;
-    }
-    .node-point {
-      margin-bottom: 0;
-      margin-top: 20px;
+      top: auto;
+      bottom: 0; // Mover el icono abajo
     }
     .node-info {
-      margin-bottom: 20px;
+      top: auto;
+      bottom: calc(50% + 20px); // Mover el texto arriba de la línea
     }
     
+    // Si además está completado y es hacia abajo
     &.is-completed .node-icon {
-      transform: translateY(5px); // Elevación hacia abajo
+      transform: translateY(5px);
     }
   }
 }
 
 /* El tick verde al lado del texto */
 .tick-success {
-  color: #20c997 !important;
+  color: #10b981 !important;
   margin-left: 5px;
   font-size: 0.9rem;
+  vertical-align: middle;
 }
 
 /* --- EQUIPAMIENTO DESTACADO --- */

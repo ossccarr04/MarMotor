@@ -4,6 +4,7 @@ import { CarServiceBBDD } from '../../services/car-service-bbdd';
 import { Filters } from '../common/filters/filters';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CarDTO } from '../../../@types/interface/car.interface';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-cars',
@@ -13,14 +14,13 @@ import { CarDTO } from '../../../@types/interface/car.interface';
   styleUrl: './cars.scss',
 })
 export class Cars {
-
   @ViewChild(Filters) filtroComponent!: Filters;
-
 
   private carService = inject(CarServiceBBDD);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private toast= inject(ToastrService)
 
   filtrosSeleccionados: any = {};
   cochesFiltrados: CarDTO[] = [];
@@ -29,28 +29,43 @@ export class Cars {
   itemsPorPagina = 12;
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-    if (Object.keys(params).length > 0) {
-      
-      this.filtrosSeleccionados = { ...params };
-      
-      this.cargarCoches(params);
-      window.scrollTo({ top: 600, behavior: 'smooth' });
-      
-    } else {
-      // Si no hay parámetros (vengo de un menú directo), cargamos todo
-      this.cargarCoches({});
-    }
-  });
+    this.route.queryParams.subscribe((params) => {
+      if (Object.keys(params).length > 0) {
+        this.filtrosSeleccionados = { ...params };
+
+        this.cargarCoches(params);
+        window.scrollTo({ top: 600, behavior: 'smooth' });
+      } else {
+        // Si no hay parámetros (vengo de un menú directo), cargamos todo
+        this.cargarCoches({});
+      }
+    });
   }
 
   cargarCoches(filtrosNuevos: any = {}) {
-    // Creamos una copia limpia de los filtros
-    const filtrosLimpios: any = {};
+    if (filtrosNuevos['q']) {
+      const queryTerm = atob(filtrosNuevos['q']); // Desencriptamos el modelo/marca
 
+      this.carService.getCarsByModel(queryTerm).subscribe({
+        next: (data) => {
+          this.cochesFiltrados = data || [];
+          if(this.cochesFiltrados.length === 0){
+            this.toast.warning("No se han encontrado coches con ese modelo/marca", "Atención")
+          }
+          console.log(this.cochesFiltrados)
+          this.paginaActual = 1;
+          this.actualizarVista();
+          this.cdr.detectChanges();
+        },
+        error: (err) => console.error('Error en búsqueda admin:', err),
+      });
+      return; 
+    }
+
+    // 2. LÓGICA DE FILTROS NORMALES (Lo que ya tenías)
+    const filtrosLimpios: any = {};
     Object.keys(filtrosNuevos).forEach((key) => {
       const valor = filtrosNuevos[key];
-
       if (valor !== 'all' && valor !== null && valor !== undefined && valor !== '') {
         filtrosLimpios[atob(key)] = atob(valor);
       }
@@ -59,15 +74,18 @@ export class Cars {
     this.carService.getCarsByFilters(filtrosLimpios).subscribe({
       next: (data) => {
         this.cochesFiltrados = data || [];
+        if(this.cochesFiltrados.length === 0){
+            this.toast.warning("No se han encontrado coches con esos filtros", "Atención")
+          }
         this.paginaActual = 1;
         this.actualizarVista();
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('Error:', err);
-      },
+      error: (err) => console.error('Error:', err),
     });
   }
+
+  
 
   // Este método recibe los cambios del componente Filters
   aplicarFiltros(filtrosNuevos: any) {
@@ -96,56 +114,57 @@ export class Cars {
   }
 
   ordenarCoches(event: any) {
-  const criterio = event.target.value;
+    const criterio = event.target.value;
 
-  switch (criterio) {
-    case 'priceAsc':
-      this.cochesFiltrados.sort((a, b) => a.price - b.price);
-      break;
-    case 'priceDesc':
-      this.cochesFiltrados.sort((a, b) => b.price - a.price);
-      break;
-    case 'brand':
-      this.cochesFiltrados.sort((a, b) => a.make.localeCompare(b.make));
-      break;
-    case 'power':
-      this.cochesFiltrados.sort((a, b) => b.power - a.power);
-      break;
-    case 'year':
-      this.cochesFiltrados.sort((a, b) => b.year - a.year);
-      break;
-    case "km":
-      this.cochesFiltrados.sort((a, b) => a.mileage - b.mileage);
-      break;
-    case "kmDesc":
-      this.cochesFiltrados.sort((a, b) => b.mileage - a.mileage);
-      break;
-    default:
-      // Aquí podrías volver al orden original si guardaste una copia
-      break;
+    switch (criterio) {
+      case 'priceAsc':
+        this.cochesFiltrados.sort((a, b) => a.price - b.price);
+        break;
+      case 'priceDesc':
+        this.cochesFiltrados.sort((a, b) => b.price - a.price);
+        break;
+      case 'brand':
+        this.cochesFiltrados.sort((a, b) => a.make.localeCompare(b.make));
+        break;
+      case 'power':
+        this.cochesFiltrados.sort((a, b) => b.power - a.power);
+        break;
+      case 'year':
+        this.cochesFiltrados.sort((a, b) => b.year - a.year);
+        break;
+      case 'km':
+        this.cochesFiltrados.sort((a, b) => a.mileage - b.mileage);
+        break;
+      case 'kmDesc':
+        this.cochesFiltrados.sort((a, b) => b.mileage - a.mileage);
+        break;
+      default:
+        // Aquí podrías volver al orden original si guardaste una copia
+        break;
+    }
+
+    // Reiniciamos la paginación para mostrar los primeros resultados del nuevo orden
+    this.paginaActual = 1;
+    this.actualizarVista(); // El método que recorta los coches que se ven
   }
-
-  // Reiniciamos la paginación para mostrar los primeros resultados del nuevo orden
-  this.paginaActual = 1;
-  this.actualizarVista(); // El método que recorta los coches que se ven
-}
 
   resetFilters() {
     if (this.filtroComponent) {
-    this.filtroComponent.limpiarMarca();
-    this.filtroComponent.limpiarCarroceria();
-    this.filtroComponent.limpiarCombustible();
-    this.filtroComponent.precioActual = 0;
-    this.filtroComponent.precioModificado = false;
-  }
+      this.filtroComponent.limpiarMarca();
+      this.filtroComponent.limpiarCarroceria();
+      this.filtroComponent.limpiarCombustible();
+      this.filtroComponent.precioActual = 0;
+      this.filtroComponent.precioModificado = false;
+      this.filtroComponent.busquedaAdmin = '';
+    }
 
-  // 2. Navegamos a la ruta limpia (esto resetea los coches en pantalla)
-  this.router.navigate([], {
-    relativeTo: this.route,
-    queryParams: {},
-  });
+    // 2. Navegamos a la ruta limpia (esto resetea los coches en pantalla)
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {},
+    });
 
-  this.paginaActual = 1;
+    this.paginaActual = 1;
   }
 
   toggleGuardar(coche: any, event: Event) {

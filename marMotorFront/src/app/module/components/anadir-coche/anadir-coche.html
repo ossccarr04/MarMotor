@@ -273,55 +273,59 @@
             </button>
           </div>
           <div formArrayName="history" class="history-list-container">
-            @for (item of history.controls; track item; let i = $index) {
-              <div [formGroupName]="i" class="history-card-item">
-                <div class="row-top">
-                  <div class="icon-selector-block">
-                    <div class="icon-preview-box">
-                      <i class="fa-solid" [class]="item.get('icon')?.value || 'fa-wrench'"></i>
-                    </div>
-                    <select formControlName="icon" class="minimal-select">
-                      @for (icon of iconosDisponibles; track icon.value) {
-                        <option [value]="icon.value">{{ icon.label }}</option>
-                      }
-                    </select>
-                  </div>
-
-                  <div class="year-field">
-                    <input
-                      type="number"
-                      formControlName="year"
-                      placeholder="Año"
-                      class="dark-input-compact"
-                    />
-                  </div>
-
-                  <div class="check-field">
-                    <input
-                      type="checkbox"
-                      formControlName="isCompleted"
-                      [id]="'check-' + i"
-                      class="dark-checkbox"
-                    />
-                    <label [for]="'check-' + i">Completado</label>
-                  </div>
-
-                  <button type="button" class="btn-remove-compact" (click)="removeHistoryEvent(i)">
-                    <i class="fa-solid fa-trash-can"></i>
-                  </button>
-                </div>
-
-                <div class="row-bottom">
-                  <input
-                    type="text"
-                    formControlName="title"
-                    placeholder="Descripción detallada del hito..."
-                    class="dark-input-compact"
-                  />
-                </div>
-              </div>
-            }
+  @for (item of history.controls; track item; let i = $index) {
+    <div [formGroupName]="i" class="history-card-item">
+      <div class="row-top">
+        <div class="icon-selector-block">
+          <div class="icon-preview-box">
+            <i class="fa-solid" [class]="item.get('icon')?.value || 'fa-wrench'"></i>
           </div>
+          <select formControlName="icon" class="minimal-select">
+            @for (icon of iconosDisponibles; track icon.value) {
+              <option [value]="icon.value">{{ icon.label }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="year-field field-wrapper">
+          <span class="required-asterisk">*</span>
+          <input
+            type="number"
+            formControlName="year"
+            placeholder="Año"
+            class="dark-input-compact"
+            [class.is-invalid]="item.get('year')?.invalid && item.get('year')?.touched"
+          />
+        </div>
+
+        <div class="check-field">
+          <input
+            type="checkbox"
+            formControlName="isCompleted"
+            [id]="'check-' + i"
+            class="dark-checkbox"
+          />
+          <label [for]="'check-' + i">Completado</label>
+        </div>
+
+        <button type="button" class="btn-remove-compact" (click)="removeHistoryEvent(i)">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      </div>
+
+      <div class="row-bottom field-wrapper">
+        <span class="required-asterisk">*</span>
+        <input
+          type="text"
+          formControlName="title"
+          placeholder="Descripción detallada del hito..."
+          class="dark-input-compact"
+          [class.is-invalid]="item.get('title')?.invalid && item.get('title')?.touched"
+        />
+      </div>
+    </div>
+  }
+</div>
         </section>
       </div>
 
