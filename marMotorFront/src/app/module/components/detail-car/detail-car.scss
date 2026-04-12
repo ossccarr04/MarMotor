@@ -25,23 +25,82 @@ $font-family: 'Montserrat', sans-serif;
 }
 
 .btn-edit {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid $accent-teal;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(32, 201, 151, 0.1); // Color teal muy suave
+  color: #20c997; // El color accent-teal
+  border: 1px solid rgba(32, 201, 151, 0.4);
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-weight: 600;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(8px); // Efecto de cristal
 
   &:hover {
-    background: $accent-teal;
-    color: #121d2b;
+    background: #20c997;
+    color: #121d2b; // El color oscuro de tu fondo
     transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(32, 201, 151, 0.3);
   }
 
-  i { margin-right: 8px; }
+  i {
+    font-size: 1.1em;
+  }
+}
+
+.no-history {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: #6c757d; /* Gris suave */
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+.no-history p {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #495057;
+}
+
+.hint {
+  font-size: 0.9rem;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.no-features {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 30px;
+  background-color: #f8f9fa; /* Un fondo gris muy ligero */
+  border-radius: 8px;
+  border: 1px dashed #dee2e6; /* Borde discontinuo para indicar "vacío" */
+  color: #6c757d;
+  text-align: center;
+}
+
+.no-features i {
+  font-size: 1.2rem;
+  color: #adb5bd;
+}
+
+.no-features p {
+  margin: 0;
+  font-size: 0.95rem;
+  font-style: italic;
 }
 
 /* --- HERO CON DEGRADADO --- */
@@ -453,41 +512,39 @@ $font-family: 'Montserrat', sans-serif;
   }
 }
 
-/* --- TIMELINE HORIZONTAL (HISTORIAL) --- */
+/* --- TIMELINE PREMIUM (HISTORIAL) --- */
 .timeline-container {
   position: relative;
-  padding: 20px 0 30px;
+  padding: 60px 0; // Más espacio vertical para el zig-zag
   width: 100%;
-  overflow-x: auto; /* Permite hacer scroll horizontal con el dedo en móvil */
-  -webkit-overflow-scrolling: touch; /* Scroll suave en iPhone */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   max-width: 100%;
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  &::-webkit-scrollbar { display: none; }
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
 .timeline-line {
   position: absolute;
-  top: 50%;
+  top: 50%; // Línea exactamente al medio
   left: 0;
   width: 100%;
-  min-width: 650px; /* Igualamos al min-width de los items para que no se corte en el scroll */
-  height: 3px;
-  background: #cbd5e1;
+  min-width: 650px;
+  height: 2px;
+  background: rgba(203, 213, 225, 0.2); // Línea más sutil y elegante
   transform: translateY(-50%);
   z-index: 1;
 }
 
 .timeline-items {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   position: relative;
   z-index: 2;
-  min-width: 650px; /* Importante para que no se aplaste en móvil y obligue a hacer scroll */
+  min-width: 650px;
 }
 
 .timeline-node {
@@ -495,84 +552,103 @@ $font-family: 'Montserrat', sans-serif;
   flex-direction: column;
   align-items: center;
   position: relative;
-  width: 110px;
+  width: 140px;
 
+  /* CONTENEDOR DEL ICONO (Caja superior/inferior) */
   .node-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: #f1f5f9;
-    color: #94a3b8;
+    width: 45px;
+    height: 45px;
+    border-radius: 14px;
+    background: #1e293b; // Fondo azul noche profundo
+    color: #64748b; // Icono apagado por defecto
+    border: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    font-size: 18px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
-    @media (min-width: 768px) {
-      width: 50px;
-      height: 50px;
-      font-size: 20px;
+    i {
+      filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
     }
   }
 
+  /* EL PUNTO SOBRE LA LÍNEA */
   .node-point {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    background: white;
-    border: 3px solid #94a3b8;
-    margin-bottom: 15px;
-    transition: all 0.3s;
+    background: #1e293b;
+    border: 2px solid #64748b;
+    margin-bottom: 20px;
+    z-index: 5;
+    transition: all 0.3s ease;
   }
 
+  /* TEXTO INFORMATIVO */
   .node-info {
     text-align: center;
     .year {
       display: block;
       font-weight: 800;
-      font-size: 13px;
-      color: $dark-navy-banner;
-      @media (min-width: 768px) {
-        font-size: 15px;
-      }
+      font-size: 15px;
+      color: #f8f9fa; // Año en blanco brillante
     }
     .title {
       display: block;
-      font-size: 11px;
-      color: $text-gray;
+      font-size: 12px;
+      color: #94a3b8; // Gris azulado suave
       line-height: 1.3;
-      margin-top: 6px;
+      margin-top: 4px;
     }
   }
 
+  /* === ESTADO COMPLETADO (NEÓN VERDE) === */
   &.is-completed {
     .node-icon {
-      background: $accent-green;
-      color: white;
-      box-shadow: 0 5px 15px rgba(55, 223, 140, 0.3);
+      background: #20c997; // Tu verde teal
+      color: #0f172a; // Icono oscuro para contraste
+      box-shadow: 0 0 20px rgba(32, 201, 151, 0.4);
+      transform: translateY(-5px); // Pequeña elevación
     }
     .node-point {
-      border-color: $accent-green;
-      background: $accent-green;
+      border-color: #20c997;
+      background: #20c997;
+      box-shadow: 0 0 10px rgba(32, 201, 151, 0.6);
+    }
+    .node-info .year {
+      color: #20c997; // El año también se ilumina
     }
   }
 
+  /* === DISEÑO ZIG-ZAG (Abajo) === */
   &.down {
     flex-direction: column-reverse;
     .node-icon {
       margin-bottom: 0;
-      margin-top: 15px;
+      margin-top: 20px;
     }
     .node-point {
       margin-bottom: 0;
-      margin-top: 15px;
+      margin-top: 20px;
     }
     .node-info {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
+    }
+    
+    &.is-completed .node-icon {
+      transform: translateY(5px); // Elevación hacia abajo
     }
   }
+}
+
+/* El tick verde al lado del texto */
+.tick-success {
+  color: #20c997 !important;
+  margin-left: 5px;
+  font-size: 0.9rem;
 }
 
 /* --- EQUIPAMIENTO DESTACADO --- */

@@ -21,7 +21,9 @@
               formControlName="brandName"
               list="marcasList"
               placeholder="Escribe o selecciona marca..."
-              [class.is-invalid]="carForm.get('brandName')?.invalid && carForm.get('brandName')?.touched"
+              [class.is-invalid]="
+                carForm.get('brandName')?.invalid && carForm.get('brandName')?.touched
+              "
             />
             <datalist id="marcasList">
               @for (marca of marcasSugeridas; track marca) {
@@ -31,10 +33,10 @@
           </div>
           <div class="form-group">
             <label><i class="icon">🏷️</i> Modelo <span class="text-danger">*</span></label>
-            <input 
-              type="text" 
-              formControlName="model" 
-              placeholder="Ej: Clase A 200d" 
+            <input
+              type="text"
+              formControlName="model"
+              placeholder="Ej: Clase A 200d"
               [class.is-invalid]="carForm.get('model')?.invalid && carForm.get('model')?.touched"
             />
           </div>
@@ -43,15 +45,34 @@
         <div class="form-grid-3">
           <div class="form-group">
             <label><i class="icon">📅</i> Año <span class="text-danger">*</span></label>
-            <input type="number" formControlName="year" placeholder="2024" [class.is-invalid]="carForm.get('year')?.invalid && carForm.get('year')?.touched"/>
+            <input
+              type="number"
+              formControlName="year"
+              placeholder="2024"
+              [class.is-invalid]="carForm.get('year')?.invalid && carForm.get('year')?.touched"
+            />
           </div>
           <div class="form-group">
             <label><i class="icon">💶</i> Precio (€) <span class="text-danger">*</span></label>
-            <input type="number" formControlName="price" placeholder="35000" [class.is-invalid]="carForm.get('price')?.invalid && carForm.get('price')?.touched"/>
+            <input
+              type="number"
+              formControlName="price"
+              placeholder="35000"
+              [class.is-invalid]="carForm.get('price')?.invalid && carForm.get('price')?.touched"
+            />
           </div>
           <div class="form-group">
-            <label><i class="icon">⏱️</i> Kilometraje (km) <span class="text-danger">*</span></label>
-            <input type="number" formControlName="mileage" placeholder="15000" [class.is-invalid]="carForm.get('mileage')?.invalid && carForm.get('mileage')?.touched"/>
+            <label
+              ><i class="icon">⏱️</i> Kilometraje (km) <span class="text-danger">*</span></label
+            >
+            <input
+              type="number"
+              formControlName="mileage"
+              placeholder="15000"
+              [class.is-invalid]="
+                carForm.get('mileage')?.invalid && carForm.get('mileage')?.touched
+              "
+            />
           </div>
         </div>
       </section>
@@ -66,28 +87,40 @@
               formControlName="fuelTypeName"
               list="fuelList"
               placeholder="Ej: Híbrido"
-              [class.is-invalid]="carForm.get('fuelTypeName')?.invalid && carForm.get('fuelTypeName')?.touched"
+              [class.is-invalid]="
+                carForm.get('fuelTypeName')?.invalid && carForm.get('fuelTypeName')?.touched
+              "
             />
             <datalist id="fuelList">
               @for (fuel of combustiblesSugeridos; track fuel) {
-                <option [value]="fuel"></option>
+                <option [value]="fuel | titlecase"></option>
               }
             </datalist>
           </div>
 
           <div class="form-group">
             <label><i class="icon">⚙️</i> Transmisión <span class="text-danger">*</span></label>
-            <select formControlName="transmission" [class.is-invalid]="carForm.get('transmission')?.invalid && carForm.get('transmission')?.touched">
+            <select
+              formControlName="transmission"
+              [class.is-invalid]="
+                carForm.get('transmission')?.invalid && carForm.get('transmission')?.touched
+              "
+            >
               <option value="" disabled>Selecciona...</option>
               @for (trans of transmissions; track trans) {
-                <option [value]="trans">{{ trans  }}</option>
+                <option [value]="trans">{{ trans | titlecase }}</option>
               }
             </select>
           </div>
 
           <div class="form-group">
             <label><i class="icon">🐎</i> Potencia (CV) <span class="text-danger">*</span></label>
-            <input type="number" formControlName="power" placeholder="150" [class.is-invalid]="carForm.get('power')?.invalid && carForm.get('power')?.touched"/>
+            <input
+              type="number"
+              formControlName="power"
+              placeholder="150"
+              [class.is-invalid]="carForm.get('power')?.invalid && carForm.get('power')?.touched"
+            />
           </div>
 
           <div class="form-group">
@@ -97,7 +130,9 @@
               formControlName="bodyTypeName"
               list="bodyList"
               placeholder="Ej: SUV"
-              [class.is-invalid]="carForm.get('bodyTypeName')?.invalid && carForm.get('bodyTypeName')?.touched"
+              [class.is-invalid]="
+                carForm.get('bodyTypeName')?.invalid && carForm.get('bodyTypeName')?.touched
+              "
             />
             <datalist id="bodyList">
               @for (body of carroceriasSugeridas; track body) {
@@ -109,63 +144,85 @@
 
         <div class="form-grid-4" style="margin-top: 15px">
           <div class="form-group">
-            <label><i class="icon">📉</i> Consumo (L/100km) <span class="text-danger">*</span></label>
-            <input type="text" formControlName="consumption" placeholder="4.5" [class.is-invalid]="carForm.get('consumption')?.invalid && carForm.get('consumption')?.touched"/>
+            <label
+              ><i class="icon">📉</i> Consumo (L/100km) <span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              formControlName="consumption"
+              placeholder="4.5"
+              [class.is-invalid]="
+                carForm.get('consumption')?.invalid && carForm.get('consumption')?.touched
+              "
+            />
           </div>
         </div>
       </section>
 
       <section class="form-section">
-  <h3 class="section-title">Multimedia del Vehículo <span class="text-danger">*</span></h3>
-  
-  <div class="gallery-upload-wrapper">
-    <div class="upload-group main-photo">
-      <label class="sub-label">Imagen de Portada (Principal)</label>
-      <div class="upload-zone portrait" [class.has-preview]="previewPortada">
-        @if (previewPortada) {
-          <img [src]="previewPortada" class="img-preview">
-          <button type="button" class="btn-delete-img" (click)="removePortada()">×</button>
-        } @else {
-          <div class="upload-content">
-            <span class="upload-icon">📸</span>
-            <p>Subir Portada</p>
-          </div>
-        }
-        <input type="file" (change)="onPortadaSelected($event)" accept="image/*">
-      </div>
-    </div>
+        <h3 class="section-title">Multimedia del Vehículo <span class="text-danger">*</span></h3>
 
-    <div class="upload-group gallery-photos">
-      <label class="sub-label">Galería de Imágenes (Opcionales)</label>
-      <div class="upload-zone">
-        <div class="upload-content">
-          <div class="upload-icon">⬆️</div>
-          <p>Arrastra las imágenes aquí o <span class="highlight">haz clic para explorar</span></p>
-          <input type="file" multiple (change)="onGallerySelected($event)" accept="image/*">
-        </div>
-      </div>
-
-      @if (previewsGaleria.length > 0) {
-        <div class="gallery-previews-container">
-          @for (img of previewsGaleria; track $index) {
-            <div class="gallery-item">
-              <img [src]="img">
-              <button type="button" class="btn-delete-mini" (click)="removeFromGallery($index)">×</button>
+        <div class="gallery-upload-wrapper">
+          <div class="upload-group main-photo">
+            <label class="sub-label">Imagen de Portada (Principal)</label>
+            <div class="upload-zone portrait" [class.has-preview]="previewPortada">
+              @if (previewPortada) {
+                <img [src]="previewPortada" class="img-preview" />
+                <button type="button" class="btn-delete-img" (click)="removePortada()">×</button>
+              } @else {
+                <div class="upload-content">
+                  <span class="upload-icon">📸</span>
+                  <p>Subir Portada</p>
+                </div>
+              }
+              <input type="file" (change)="onPortadaSelected($event)" accept="image/*" />
             </div>
-          }
+          </div>
+
+          <div class="upload-group gallery-photos">
+            <label class="sub-label">Galería de Imágenes (Opcionales)</label>
+            <div class="upload-zone">
+              <div class="upload-content">
+                <div class="upload-icon">⬆️</div>
+                <p>
+                  Arrastra las imágenes aquí o <span class="highlight">haz clic para explorar</span>
+                </p>
+                <input type="file" multiple (change)="onGallerySelected($event)" accept="image/*" />
+              </div>
+            </div>
+
+            @if (previewsGaleria.length > 0) {
+              <div class="gallery-previews-container">
+                @for (img of previewsGaleria; track $index) {
+                  <div class="gallery-item">
+                    <img [src]="img" />
+                    <button
+                      type="button"
+                      class="btn-delete-mini"
+                      (click)="removeFromGallery($index)"
+                    >
+                      ×
+                    </button>
+                  </div>
+                }
+              </div>
+              <p class="upload-count">{{ fotosGaleria.length }} fotos adicionales seleccionadas.</p>
+            }
+          </div>
         </div>
-        <p class="upload-count">{{ fotosGaleria.length }} fotos adicionales seleccionadas.</p>
-      }
-    </div>
-  </div>
-</section>
+      </section>
 
       <section class="form-section">
         <h3 class="section-title">Etiquetas y Detalles</h3>
         <div class="form-grid-3">
           <div class="form-group">
             <label><i class="icon">🎨</i> Color Exterior <span class="text-danger">*</span></label>
-            <input type="text" formControlName="color" placeholder="Ej: Blanco Polar" [class.is-invalid]="carForm.get('color')?.invalid && carForm.get('color')?.touched" />
+            <input
+              type="text"
+              formControlName="color"
+              placeholder="Ej: Blanco Polar"
+              [class.is-invalid]="carForm.get('color')?.invalid && carForm.get('color')?.touched"
+            />
           </div>
           <div class="form-group">
             <label><i class="icon">🎖️</i> Distintivo</label>
@@ -184,7 +241,9 @@
               rows="1"
               placeholder="Breve descripción..."
               (input)="autoGrow(descArea)"
-              [class.is-invalid]="carForm.get('description')?.invalid && carForm.get('description')?.touched"
+              [class.is-invalid]="
+                carForm.get('description')?.invalid && carForm.get('description')?.touched
+              "
             ></textarea>
           </div>
         </div>
@@ -213,24 +272,53 @@
               + Añadir Evento
             </button>
           </div>
-          <div formArrayName="history" class="dynamic-list">
-            @for (event of history.controls; track $index) {
-              <div class="dynamic-row history-card" [formGroupName]="$index">
-                <span class="event-icon-preview">🔧</span>
-                <input type="number" formControlName="year" class="input-year" placeholder="Año" />
-                <input
-                  type="text"
-                  formControlName="title"
-                  placeholder="Descripción del evento"
-                  class="input-event"
-                />
-                <label class="checkbox-custom">
-                  <input type="checkbox" formControlName="isCompleted" />
-                  <span class="check-text">Completado</span>
-                </label>
-                <button type="button" class="btn-remove" (click)="removeHistoryEvent($index)">
-                  🗑️
-                </button>
+          <div formArrayName="history" class="history-list-container">
+            @for (item of history.controls; track item; let i = $index) {
+              <div [formGroupName]="i" class="history-card-item">
+                <div class="row-top">
+                  <div class="icon-selector-block">
+                    <div class="icon-preview-box">
+                      <i class="fa-solid" [class]="item.get('icon')?.value || 'fa-wrench'"></i>
+                    </div>
+                    <select formControlName="icon" class="minimal-select">
+                      @for (icon of iconosDisponibles; track icon.value) {
+                        <option [value]="icon.value">{{ icon.label }}</option>
+                      }
+                    </select>
+                  </div>
+
+                  <div class="year-field">
+                    <input
+                      type="number"
+                      formControlName="year"
+                      placeholder="Año"
+                      class="dark-input-compact"
+                    />
+                  </div>
+
+                  <div class="check-field">
+                    <input
+                      type="checkbox"
+                      formControlName="isCompleted"
+                      [id]="'check-' + i"
+                      class="dark-checkbox"
+                    />
+                    <label [for]="'check-' + i">Completado</label>
+                  </div>
+
+                  <button type="button" class="btn-remove-compact" (click)="removeHistoryEvent(i)">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </div>
+
+                <div class="row-bottom">
+                  <input
+                    type="text"
+                    formControlName="title"
+                    placeholder="Descripción detallada del hito..."
+                    class="dark-input-compact"
+                  />
+                </div>
               </div>
             }
           </div>
@@ -240,7 +328,7 @@
       <div class="form-actions">
         <button type="button" class="btn-cancel" routerLink="/coches">Cancelar</button>
         <button type="submit" class="btn-submit" [disabled]="isSubmitting">
-          {{ isSubmitting ? 'Guardando...' : 'Guardar Ficha' }}
+          {{ isSubmitting ? 'Procesando...' : isEditMode ? 'Actualizar Ficha' : 'Guardar Ficha' }}
         </button>
       </div>
     </form>

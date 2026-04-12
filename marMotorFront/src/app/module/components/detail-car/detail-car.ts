@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, OnInit, Renderer2, inject, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit, Renderer2, inject, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CarDetail } from '../../../@types/interface/car-details.interface';
 import { CarServiceBBDD } from '../../services/car-service-bbdd';
 import { AuthServiceBBDD } from '../../services/auth-service';
@@ -9,11 +9,12 @@ import { UserRoles } from '../../../@types/enums/roles.enums';
 @Component({
   selector: 'detail-car',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './detail-car.html',
   styleUrls: ['./detail-car.scss'],
 })
 export class DetailCar implements OnInit, OnDestroy {
+  private platformId = inject(PLATFORM_ID);
   // Inyecciones
   constructor(private carsService: CarServiceBBDD, private authService: AuthServiceBBDD) {
     const navigation = this.router.getCurrentNavigation();
@@ -66,6 +67,8 @@ export class DetailCar implements OnInit, OnDestroy {
             this.car.transmission= this.car.transmission.toLowerCase()
             this.car.bodyType= this.car.bodyType?.toLocaleLowerCase() ?? null;
 
+            console.log(this.car)
+
             // Si carIds está vacío (acceso directo por URL), lo inicializamos con el actual
             if (this.carIds.length === 0) {
               this.carIds = [data.id];
@@ -104,7 +107,6 @@ export class DetailCar implements OnInit, OnDestroy {
 
   private navegarAId(id: number): void {
     const encodedId = btoa(id.toString());
-    // Pasamos de nuevo el estado de los IDs para que no se pierda la lista al navegar
     this.router.navigate(['/detail-car', encodedId], {
       state: { listaFiltrada: this.carIds.map((id) => ({ id })) },
     });
@@ -133,6 +135,7 @@ export class DetailCar implements OnInit, OnDestroy {
 
   // --- ZOOM Y UI ---
   toggleZoom(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     this.isZoomed = !this.isZoomed;
     const navHeader = document.querySelector('.autoflow-header');
 
@@ -154,12 +157,20 @@ export class DetailCar implements OnInit, OnDestroy {
     }
   }
 
+  navigateToEdit(){
+    if(this.car){
+      const idCoded= btoa(this.car.id.toString())
+      this.router.navigate(['/coches/editar-coche', idCoded])
+    }
+  }
   ngOnDestroy(): void {
     // Limpieza de estilos al salir del componente
-    this.renderer.removeStyle(document.body, 'overflow');
-    if (this.isZoomed) {
-      const navHeader = document.querySelector('.autoflow-header');
-      if (navHeader) this.renderer.setStyle(navHeader, 'display', 'flex');
+    if (isPlatformBrowser(this.platformId)) {
+      this.renderer.removeStyle(document.body, 'overflow');
+      if (this.isZoomed) {
+        const navHeader = document.querySelector('.autoflow-header');
+        if (navHeader) this.renderer.setStyle(navHeader, 'display', 'flex');
+      }
     }
   }
 }

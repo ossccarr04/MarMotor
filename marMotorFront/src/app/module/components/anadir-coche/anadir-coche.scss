@@ -14,7 +14,6 @@ $font-family: 'Montserrat', sans-serif;
 
 /* RESET Y WRAPPER */
 .page-wrapper {
-
   background-color: $bg-page;
   min-height: 100vh;
   padding: 40px 20px;
@@ -47,7 +46,55 @@ $font-family: 'Montserrat', sans-serif;
   color: $text-main;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
+.history-item-row {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #eee;
 
+  .row-inputs {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+  }
+}
+
+.select-with-preview {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  .icon-box {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: #3b82f6; // Azul corporativo
+  }
+}
+
+.icon-field {
+  flex: 0 0 200px;
+}
+.year-field {
+  flex: 0 0 100px;
+}
+.title-field {
+  flex: 1;
+}
+.check-field {
+  flex: 0 0 80px;
+  text-align: center;
+  input {
+    transform: scale(1.3);
+  }
+}
 .form-header {
   margin-bottom: 30px;
   border-bottom: 1px solid $border-color;
@@ -145,12 +192,12 @@ $font-family: 'Montserrat', sans-serif;
     transition: $transition;
     box-sizing: border-box;
     width: 100% !important;
-    max-width: 100%;        // Evita que crezca más que el padre
+    max-width: 100%; // Evita que crezca más que el padre
     box-sizing: border-box; // Incluye el padding en el cálculo del ancho
-    overflow: hidden;       
-    text-overflow: ellipsis; 
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
-    
+
     /* Para que el menú no sea más ancho que el input */
     min-width: 0;
 
@@ -202,10 +249,10 @@ $font-family: 'Montserrat', sans-serif;
   opacity: 0.7;
 }
 .text-danger {
-    color: #ff4757;
-    margin-right: 15px;
-    font-size: 14px;
-  }
+  color: #ff4757;
+  margin-right: 15px;
+  font-size: 14px;
+}
 
 .gallery-upload-wrapper {
   display: grid;
@@ -551,72 +598,222 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
+.history-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
 
-/* ==========================================================================
+.history-card-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+
+  /* FILA SUPERIOR */
+  .row-top {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
+
+    .icon-selector-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #0b131d; // Fondo oscuro igual que tus otros inputs
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      flex: 0 0 auto;
+
+      .icon-preview-box {
+        color: #4ade80;
+        font-size: 1.1rem;
+        min-width: 20px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .minimal-select {
+        background: transparent;
+        border: none;
+        color: #f8f9fa; // Color del texto seleccionado
+        font-size: 0.9rem;
+        cursor: pointer;
+        outline: none;
+        width: 180px; // ANCHO AUMENTADO para que quepa "Motor/Caja de cambios"
+
+        /* Estilo para las opciones cuando el menú se abre */
+        option {
+          background-color: #121d2b !important; // Fondo oscuro para el desplegable
+          color: #f8f9fa !important; // Texto claro para el desplegable
+          padding: 10px;
+        }
+
+        /* Quitar estilos por defecto en algunos navegadores */
+        &:focus {
+          outline: none;
+        }
+      }
+
+      .year-field {
+        width: 90px !important;
+
+        input {
+          text-align: center;
+          letter-spacing: 1px;
+        }
+      }
+
+      .check-field {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.8rem;
+        color: #8c9baf;
+        margin-left: auto; // Empuja el check y el botón a la derecha
+      }
+
+      .btn-remove-compact {
+        background: transparent !important;
+        border: none !important;
+        padding: 5px !important;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: $transition;
+
+        i {
+          color: #ff4757 !important; // ROJO intenso
+          font-size: 1.1rem;
+          filter: drop-shadow(0 0 2px rgba(255, 71, 87, 0.2));
+        }
+
+        &:hover {
+          transform: scale(1.15);
+          i {
+            color: #ff6b81 !important; // Un rojo un poco más claro al pasar el ratón
+            filter: drop-shadow(0 0 5px rgba(255, 71, 87, 0.5));
+          }
+        }
+      }
+    }
+
+    /* FILA INFERIOR */
+    .row-bottom {
+      width: 100%;
+
+      input {
+        width: 100%;
+        background: #0b131d;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #f8f9fa;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        box-sizing: border-box;
+        outline: none;
+
+        &:focus {
+          border-color: #20c997;
+        }
+      }
+    }
+  }
+
+  /* Checkbox Verde */
+  .dark-checkbox {
+    accent-color: #4ade80;
+    cursor: pointer;
+  }
+
+  /* Reset de inputs para que no hereden márgenes extra */
+  .dark-input-compact {
+    background: #0b131d;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f8f9fa;
+    padding: 6px 10px;
+    border-radius: 6px;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* ==========================================================================
    RESPONSIVE
    ========================================================================== */
-@media (max-width: 900px) {
-  .form-grid-3,
-  .form-grid-4 {
-    grid-template-columns: 1fr 1fr;
-  }
-  .dynamic-sections-wrapper {
-    grid-template-columns: 1fr;
-  }
-  .gallery-upload-wrapper {
-    grid-template-columns: 1fr;
-  }
-}
-@media (max-width: 768px) {
-  .page-wrapper {
-    padding: 10px; // Menos espacio exterior para ganar pantalla
-  }
-
-  .form-container {
-    padding: 20px;
-    border-radius: 0; // Opcional: quitar redondeado para ganar espacio lateral
-  }
-
-  /* Forzamos que todos los GRIDS pasen a ser de 1 sola columna */
-  .form-grid-2, 
-  .form-grid-3, 
-  .form-grid-4 {
-    grid-template-columns: 1fr !important; 
-    gap: 15px;
-  }
-
-  /* Ajuste para las secciones dinámicas (Equipamiento e Historial) */
-  .dynamic-sections-wrapper {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* Importante: Ajuste de la fila del Historial para que no desborde */
-  .dynamic-row {
-    flex-wrap: wrap; // Permite que si no cabe, baje a la siguiente línea
-    padding: 10px;
-    gap: 8px;
-
-    input {
-      font-size: 16px; // Evita el zoom automático en iOS
+  @media (max-width: 900px) {
+    .form-grid-3,
+    .form-grid-4 {
+      grid-template-columns: 1fr 1fr;
+    }
+    .dynamic-sections-wrapper {
+      grid-template-columns: 1fr;
+    }
+    .gallery-upload-wrapper {
+      grid-template-columns: 1fr;
     }
   }
-  select {
-    font-size: 16px; // Evita el zoom automático en iPhone que causa desbordamientos
-  }
-
-  .history-card {
-    .input-year {
-      flex: 0 0 50px !important; // Año más estrecho en móvil
-      border-right: none !important;
+  @media (max-width: 768px) {
+    .page-wrapper {
+      padding: 10px; // Menos espacio exterior para ganar pantalla
     }
-    .input-event {
-      width: 100%; // La descripción ocupa todo si es necesario
-      order: 2;    // La mandamos abajo si no cabe al lado del icono
-    }
-  }
 
-  /* Ajuste para el wrapper de imágenes */
-  .gallery-upload-wrapper {
-    grid-template-columns: 1fr !important;
+    .form-container {
+      padding: 20px;
+      border-radius: 0; // Opcional: quitar redondeado para ganar espacio lateral
+    }
+
+    /* Forzamos que todos los GRIDS pasen a ser de 1 sola columna */
+    .form-grid-2,
+    .form-grid-3,
+    .form-grid-4 {
+      grid-template-columns: 1fr !important;
+      gap: 15px;
+    }
+
+    /* Ajuste para las secciones dinámicas (Equipamiento e Historial) */
+    .dynamic-sections-wrapper {
+      grid-template-columns: 1fr !important;
+    }
+
+    /* Importante: Ajuste de la fila del Historial para que no desborde */
+    .dynamic-row {
+      flex-wrap: wrap; // Permite que si no cabe, baje a la siguiente línea
+      padding: 10px;
+      gap: 8px;
+
+      input {
+        font-size: 16px; // Evita el zoom automático en iOS
+      }
+    }
+    select {
+      font-size: 16px; // Evita el zoom automático en iPhone que causa desbordamientos
+    }
+
+    .history-card {
+      .input-year {
+        flex: 0 0 50px !important; // Año más estrecho en móvil
+        border-right: none !important;
+      }
+      .input-event {
+        width: 100%; // La descripción ocupa todo si es necesario
+        order: 2; // La mandamos abajo si no cabe al lado del icono
+      }
+    }
+
+    /* Ajuste para el wrapper de imágenes */
+    .gallery-upload-wrapper {
+      grid-template-columns: 1fr !important;
+    }
   }
 }

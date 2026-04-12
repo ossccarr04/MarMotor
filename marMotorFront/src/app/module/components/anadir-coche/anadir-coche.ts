@@ -1,5 +1,12 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormArray,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CarServiceBBDD } from '../../services/car-service-bbdd';
 import { CommonModule } from '@angular/common';
@@ -10,6 +17,7 @@ import { BodyTypeServiceBBDD } from '../../services/bodyType-service-bbdd';
 import { BrandDTO } from '../../../@types/interface/brand.interface';
 import { BodyTypeDTO } from '../../../@types/interface/bodyType.interface';
 import { Transmission } from '../../../@types/enums/transmission.enum';
+import { HistoryIcon, HistoryIconLabel } from '../../../@types/enums/history-icon.enum';
 
 @Component({
   selector: 'app-anadir-coche',
@@ -30,7 +38,7 @@ export class AnadirCoche implements OnInit {
 
   carForm!: FormGroup;
   isSubmitting = false;
-  
+
   // Lógica de Edición
   isEditMode = false;
   carId: string | null = null;
@@ -45,6 +53,11 @@ export class AnadirCoche implements OnInit {
   combustiblesSugeridos = Object.values(FuelType).filter((v) => typeof v === 'string');
   transmissions = Object.values(Transmission).filter((v) => typeof v === 'string');
 
+  iconosDisponibles = Object.entries(HistoryIcon).map(([key, value]) => ({
+    label: HistoryIconLabel.get(value) || key,
+    value: value
+  }));
+  
   ngOnInit() {
     this.cargarSugerencias();
     this.initForm();
@@ -65,10 +78,10 @@ export class AnadirCoche implements OnInit {
       power: ['', Validators.required],
       mileage: ['', Validators.required],
       consumption: ['', Validators.required],
-      transmission: ['MANUAL', Validators.required],
+      transmission: ['Manual', Validators.required],
       brandName: ['', Validators.required],
       fuelTypeName: ['', Validators.required],
-      bodyTypeName: ['', Validators.required],
+      bodyTypeName: [null],
       color: ['', Validators.required],
       badge: [null],
       description: ['', Validators.required],
@@ -78,7 +91,8 @@ export class AnadirCoche implements OnInit {
   }
 
   cargarDatosParaEditar(id: string) {
-    this.carService.getCarById(id).subscribe({
+    const idDecoded = atob(id);
+    this.carService.getCarsDetails(idDecoded).subscribe({
       next: (car) => {
         // Rellenar campos simples
         this.carForm.patchValue({
@@ -94,7 +108,7 @@ export class AnadirCoche implements OnInit {
           bodyTypeName: car.bodyType,
           color: car.color,
           badge: car.badge,
-          description: car.description
+          description: car.description,
         });
 
         // Rellenar Equipamiento (FormArray)
@@ -104,12 +118,14 @@ export class AnadirCoche implements OnInit {
 
         // Rellenar Historial (FormArray)
         car.history?.forEach((h: any) => {
-          this.history.push(this.fb.group({
-            year: [h.year, Validators.required],
-            title: [h.title, Validators.required],
-            icon: [h.icon || '🔧'],
-            isCompleted: [h.isCompleted]
-          }));
+          this.history.push(
+            this.fb.group({
+              year: [h.year, Validators.required],
+              title: [h.title, Validators.required],
+              icon: [h.icon || '🔧'],
+              isCompleted: [h.isCompleted],
+            }),
+          );
         });
 
         // Mostrar imágenes actuales como preview
@@ -117,29 +133,41 @@ export class AnadirCoche implements OnInit {
           this.previewPortada = car.imagesAlbum[0];
           this.previewsGaleria = car.imagesAlbum.slice(1);
         }
-        
+
         this.cdr.detectChanges();
       },
-      error: () => this.toast.error('No se pudieron cargar los datos del vehículo')
+      error: () => this.toast.error('No se pudieron cargar los datos del vehículo'),
     });
   }
 
   // --- GETTERS Y MÉTODOS DINÁMICOS ---
-  get features(): FormArray { return this.carForm.get('features') as FormArray; }
-  get history(): FormArray { return this.carForm.get('history') as FormArray; }
+  get features(): FormArray {
+    return this.carForm.get('features') as FormArray;
+  }
+  get history(): FormArray {
+    return this.carForm.get('history') as FormArray;
+  }
 
-  addFeature() { this.features.push(this.fb.control('', Validators.required)); }
-  removeFeature(i: number) { this.features.removeAt(i); }
+  addFeature() {
+    this.features.push(this.fb.control('', Validators.required));
+  }
+  removeFeature(i: number) {
+    this.features.removeAt(i);
+  }
 
   addHistoryEvent() {
-    this.history.push(this.fb.group({
-      year: [new Date().getFullYear(), Validators.required],
-      title: ['', Validators.required],
-      icon: ['🔧'],
-      isCompleted: [true],
-    }));
+    this.history.push(
+      this.fb.group({
+        year: [new Date().getFullYear(), Validators.required],
+        title: ['', Validators.required],
+        icon: [HistoryIcon.MANTENIMIENTO], // Usas el enum aquí
+        isCompleted: [false],
+      }),
+    );
   }
-  removeHistoryEvent(i: number) { this.history.removeAt(i); }
+  removeHistoryEvent(i: number) {
+    this.history.removeAt(i);
+  }
 
   // --- GESTIÓN DE IMÁGENES (Mantienes tu lógica rápida con URL.createObjectURL) ---
   onPortadaSelected(event: any) {
@@ -154,7 +182,7 @@ export class AnadirCoche implements OnInit {
   onGallerySelected(event: any) {
     const files: File[] = Array.from(event.target.files);
     this.fotosGaleria = [...this.fotosGaleria, ...files];
-    const nuevasPreviews = files.map(file => URL.createObjectURL(file));
+    const nuevasPreviews = files.map((file) => URL.createObjectURL(file));
     this.previewsGaleria = [...this.previewsGaleria, ...nuevasPreviews];
     this.cdr.detectChanges();
     event.target.value = '';
@@ -173,40 +201,72 @@ export class AnadirCoche implements OnInit {
   }
 
   // --- ENVÍO ---
-  onSubmit() {
-    // Al editar, la foto de portada puede no ser un File nuevo (si mantiene la anterior)
-    if (this.carForm.invalid || (!this.fotoPortada && !this.isEditMode)) {
-      this.toast.warning('Completa los campos obligatorios');
-      this.carForm.markAllAsTouched();
-      return;
+onSubmit() {
+  const formRawValue = this.carForm.getRawValue();
+
+  // Filtramos las imágenes que se quedan (las que ya tienen URL de Cloudinary)
+  const currentExistingImages: string[] = [];
+  
+  // Si la portada actual es de Cloudinary (no es un blob local), se queda
+  if (this.previewPortada && this.previewPortada.startsWith('http')) {
+    currentExistingImages.push(this.previewPortada);
+  }
+  
+  // Lo mismo con la galería
+  this.previewsGaleria.forEach(url => {
+    if (url.startsWith('http')) {
+      currentExistingImages.push(url);
     }
+  });
 
-    this.isSubmitting = true;
-    const formData = new FormData();
-    formData.append('carData', JSON.stringify(this.carForm.value));
+  const carData = {
+    ...formRawValue,
+    existingImages: currentExistingImages, // Mandamos la lista de "sobrevivientes"
+    clearImages: currentExistingImages.length === 0 && !this.fotoPortada && this.fotosGaleria.length === 0,
+    history: formRawValue.history.map((h: any) => ({
+      ...h,
+      isCompleted: !!h.isCompleted,
+    })),
+  };
 
-    if (this.fotoPortada) formData.append('images', this.fotoPortada);
-    this.fotosGaleria.forEach(f => formData.append('images', f));
+  const formData = new FormData();
+  formData.append('carData', JSON.stringify(carData));
 
-    // Decidir si llamar a UPDATE o CREATE
-    const request = this.isEditMode 
-      ? this.carService.updateCar(this.carId!, formData) // Debes tener este método en tu service
+  // Solo adjuntamos los archivos FÍSICOS nuevos
+  if (this.fotoPortada) formData.append('images', this.fotoPortada);
+  this.fotosGaleria.forEach((f) => formData.append('images', f));
+
+
+    // 5. LLAMADA AL SERVICIO
+    const idDecoded = atob(this.carId!);
+    const request = this.isEditMode
+      ? this.carService.updateCar(idDecoded!, formData)
       : this.carService.createCarWithImages(formData);
 
     request.subscribe({
       next: () => {
-        this.toast.success(this.isEditMode ? 'Actualizado' : 'Creado');
+        this.toast.success(this.isEditMode ? 'Vehículo actualizado.' : 'Vehículo creado.');
         this.router.navigate(['/coches']);
       },
-      error: () => {
+      error: (err) => {
         this.isSubmitting = false;
-        this.toast.error('Error al guardar');
-      }
+        console.error('Error Backend:', err);
+        this.toast.error('Error al guardar. Revisa la consola o los datos.');
+      },
     });
   }
 
+  autoGrow(element: any) {
+    element.style.height = 'auto'; // Resetea la altura para recalcular
+    element.style.height = element.scrollHeight + 'px'; // Ajusta a la altura del texto
+  }
+
   cargarSugerencias() {
-    this.brandService.getBrands().subscribe(d => this.marcasSugeridas = d.map(b => b.name));
-    this.bodyTypeService.getBodyTypes().subscribe(d => this.carroceriasSugeridas = d.map(bt => bt.name));
+    this.brandService
+      .getBrands()
+      .subscribe((d) => (this.marcasSugeridas = d.map((b: BrandDTO) => b.name)));
+    this.bodyTypeService
+      .getBodyTypes()
+      .subscribe((d) => (this.carroceriasSugeridas = d.map((bt: BodyTypeDTO) => bt.name)));
   }
 }
