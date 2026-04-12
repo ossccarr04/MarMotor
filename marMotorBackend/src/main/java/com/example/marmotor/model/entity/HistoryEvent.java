@@ -17,6 +17,8 @@ public class HistoryEvent {
     private String icon;
     private boolean isCompleted;
 
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id")
     private CarDetail car;

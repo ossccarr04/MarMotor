@@ -31,5 +31,8 @@ public class CarCreateDTO {
     // Listas dinámicas
     private List<String> features; // ["Techo solar", "Asientos cuero"...]
     private List<HistoryEventDTO> history; // Lista de objetos del historial
+    private List<String> existingImages;
+    private boolean clearImages;
+
 }
 

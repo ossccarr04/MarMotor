@@ -11,10 +11,12 @@ INSERT INTO brands (id, name) VALUES (9, 'Aston Martin');
 INSERT INTO brands (id, name) VALUES (10, 'Land Rover');
 
 -- COMBUSTIBLES
-INSERT INTO fuel_types (id, name) VALUES (1, 'GASOLINE');
+INSERT INTO fuel_types (id, name) VALUES (1, 'GASOLINA');
 INSERT INTO fuel_types (id, name) VALUES (2, 'DIESEL');
-INSERT INTO fuel_types (id, name) VALUES (3, 'ELECTRIC');
-INSERT INTO fuel_types (id, name) VALUES (4, 'HYBRID');
+INSERT INTO fuel_types (id, name) VALUES (3, 'ELECTRICO');
+INSERT INTO fuel_types (id, name) VALUES (4, 'HIBRIDO');
+INSERT INTO fuel_types (id, name) VALUES (5, 'HIBRIDO ENCHUFABLE');
+INSERT INTO fuel_types (id, name) VALUES (6, 'GAS NATURAL');
 
 -- CARROCERÍAS
 INSERT INTO body_types (id, name) VALUES (1, 'COMPACT');

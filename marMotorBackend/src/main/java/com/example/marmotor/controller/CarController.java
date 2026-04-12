@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tools.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -73,9 +74,17 @@ public class CarController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CarDTO> updateCar(@PathVariable Long id, @RequestBody CarCreateDTO carDto) {
-        return carService.updateCar(id, carDto)
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CarDTO> updateCar(
+            @PathVariable Long id,
+            @RequestPart("carData") String carDataJson, // Recibimos el JSON como String para parsearlo
+            @RequestPart(value = "images", required = false) MultipartFile[] images) throws IOException {
+
+        // Convertir el String JSON a DTO (Usa ObjectMapper)
+        ObjectMapper objectMapper = new ObjectMapper();
+        CarCreateDTO carDto = objectMapper.readValue(carDataJson, CarCreateDTO.class);
+
+        return carService.updateCar(id, carDto, images)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

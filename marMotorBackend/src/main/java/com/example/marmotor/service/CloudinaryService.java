@@ -24,4 +24,10 @@ public class CloudinaryService {
         // Devolvemos la URL segura (https) que nos genera Cloudinary
         return uploadResult.get("secure_url").toString();
     }
+
+    public void deleteFile(String url) throws IOException {
+        // Extraer el public_id de la URL (ej: de http://res.cloudinary.com/.../v1/abcde.jpg extrae abcde)
+        String publicId = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
+        cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+    }
 }
