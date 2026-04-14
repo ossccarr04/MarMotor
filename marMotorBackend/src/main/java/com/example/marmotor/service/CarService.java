@@ -18,10 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -126,6 +124,11 @@ public class CarService {
         }
 
         car.setDetail(detail);
+        car.setCreatedAt(LocalDateTime.now());
+
+        if(Objects.equals(car.getBadge(), Status.SOLD.toString())){
+            car.setSoldAt(LocalDateTime.now());
+        }
         Car savedCar = carRepository.save(car);
         return convertToDto(savedCar);
     }
@@ -201,6 +204,11 @@ public class CarService {
                 }
             }
 
+            if(Objects.equals(car.getBadge(), Status.SOLD.toString().toLowerCase())){
+                car.setSoldAt(LocalDateTime.now());
+            }else{
+                car.setSoldAt(null);
+            }
             return convertToDto(carRepository.save(car));
         });
     }

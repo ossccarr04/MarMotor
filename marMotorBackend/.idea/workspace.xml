@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Modificado para editar vehiculos y correccion de eliminar imagenes">
+    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Añadido buscador para administrador">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/CarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/CarController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/HistoryEventDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/HistoryEventDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/CarRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/CarRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/Car.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/CarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/CarService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/CarController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/CarController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/HistoryEventDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/HistoryEventDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/CarService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/CarService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/import.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/import.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +37,10 @@
     &quot;accountId&quot;: &quot;bfb8c803-4fa1-4208-9de2-658c83702258&quot;
   }
 }</component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -54,35 +54,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;Spring Boot.MarMotorBackendApplication.executor&quot;: &quot;Run&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;backend__funcional&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Salvavidas/Documents/GitHub/TFGDAM/marMotorBackend/pom.xml&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.14835948&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.resources.mysql-db: Compose Deployment.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.MarMotorBackendApplication.executor": "Run",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "backend__funcional",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Salvavidas/Documents/GitHub/TFGDAM/marMotorBackend/pom.xml",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.14835948",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager">
+}]]></component>
+  <component name="RunManager" selected="Spring Boot.MarMotorBackendApplication">
     <configuration name="MarMotorBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="marmotor" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.marmotor.MarMotorBackendApplication" />
@@ -90,6 +91,28 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml" />
+      <method v="2" />
+    </configuration>
+    <configuration name="resources.mysql-db: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="mysql-db" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="src/main/resources/docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Docker.resources.mysql-db: Compose Deployment" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -113,7 +136,9 @@
       <workItem from="1775817594199" duration="3000" />
       <workItem from="1775896777681" duration="9804000" />
       <workItem from="1775919983528" duration="6192000" />
-      <workItem from="1775980194204" duration="6776000" />
+      <workItem from="1775980194204" duration="6827000" />
+      <workItem from="1776087550685" duration="486000" />
+      <workItem from="1776148368098" duration="3478000" />
     </task>
     <task id="LOCAL-00001" summary="Añadido la creacion de vehiculos y guardar la imagen">
       <option name="closed" value="true" />
@@ -131,7 +156,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775980266793</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Añadido buscador para administrador">
+      <option name="closed" value="true" />
+      <created>1775991540685</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1775991540685</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -141,6 +174,7 @@
     <MESSAGE value="Modificaciones en todo el apartado de car e incremento de prueba de coches" />
     <MESSAGE value="Añadido la creacion de vehiculos y guardar la imagen" />
     <MESSAGE value="Modificado para editar vehiculos y correccion de eliminar imagenes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modificado para editar vehiculos y correccion de eliminar imagenes" />
+    <MESSAGE value="Añadido buscador para administrador" />
+    <option name="LAST_COMMIT_MESSAGE" value="Añadido buscador para administrador" />
   </component>
 </project>
