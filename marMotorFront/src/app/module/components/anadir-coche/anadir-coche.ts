@@ -18,6 +18,7 @@ import { BrandDTO } from '../../../@types/interface/brand.interface';
 import { BodyTypeDTO } from '../../../@types/interface/bodyType.interface';
 import { Transmission } from '../../../@types/enums/transmission.enum';
 import { HistoryIcon, HistoryIconLabel } from '../../../@types/enums/history-icon.enum';
+import { BadgeLabel, BadgeType } from '../../../@types/enums/badge.enum';
 
 @Component({
   selector: 'app-anadir-coche',
@@ -52,6 +53,8 @@ export class AnadirCoche implements OnInit {
   carroceriasSugeridas: string[] = [];
   combustiblesSugeridos = Object.values(FuelType).filter((v) => typeof v === 'string');
   transmissions = Object.values(Transmission).filter((v) => typeof v === 'string');
+  badges= Object.values(BadgeType)
+  badgeLabels= BadgeLabel
 
   iconosDisponibles = Object.entries(HistoryIcon).map(([key, value]) => ({
     label: HistoryIconLabel.get(value) || key,
@@ -81,13 +84,13 @@ export class AnadirCoche implements OnInit {
       price: ['', [Validators.required, Validators.min(1)]],
       power: ['', [Validators.required, Validators.min(1), Validators.max(2000)]],
       mileage: ['', [Validators.required, Validators.min(0)]],
-      consumption: ['', [Validators.required, Validators.pattern(/^[0-9](\.[0-9]+)?$/)]],
+      consumption: ['', [Validators.required, Validators.pattern(/^[0-9]+(\.[0-9]+)?$/)]],
       transmission: ['Manual', Validators.required],
       brandName: ['', Validators.required],
       fuelTypeName: ['', Validators.required],
       bodyTypeName: [null],
       color: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
-      badge: [null],
+      badge: [BadgeType.NONE],
       description: [
         '',
         [
@@ -236,17 +239,17 @@ cargarDatosParaEditar(id: string) {
   onSubmit() {
     if (this.carForm.invalid) {
       this.carForm.markAllAsTouched();
-      this.toast.error('Revisa los campos marcados.', "Error de validación.");
+      this.toast.warning('Revisa los campos marcados.', "Error de validación.");
       return;
     }
 
     if (!this.fotoPortada && !this.previewPortada) {
-      this.toast.error('Por favor, selecciona una portada.');
+      this.toast.warning('Por favor, selecciona una portada.',"Error en la imagen");
       return;
     }
 
     if (!this.combustiblesSugeridos.includes(this.carForm.get('fuelTypeName')?.value)) {
-      this.toast.error('Por favor, selecciona un tipo de combustible válido.');
+      this.toast.warning('Por favor, selecciona un tipo de combustible válido.', "Error de combustible");
       return;
     }
 
@@ -268,10 +271,12 @@ cargarDatosParaEditar(id: string) {
         currentExistingImages.push(url);
       }
     });
+    const rawConsumption = formRawValue.consumption.replace(',', '.');
 
     const carData = {
       ...formRawValue,
       transmission: formRawValue.transmission.toUpperCase(),
+      consumption: rawConsumption.includes('.') ? rawConsumption : `${rawConsumption}.0`,
       existingImages: currentExistingImages, // Mandamos la lista de "sobrevivientes"
       clearImages:
         currentExistingImages.length === 0 && !this.fotoPortada && this.fotosGaleria.length === 0,
@@ -296,14 +301,14 @@ cargarDatosParaEditar(id: string) {
 
     request.subscribe({
       next: (car: any) => {
-        this.toast.success(this.isEditMode ? 'Vehículo actualizado.' : 'Vehículo creado.');
+        this.toast.success(this.isEditMode ? 'Vehículo actualizado.' : 'Vehículo creado.', "Éxito");
         const idNavegacion = this.isEditMode ? this.carId : btoa(car.id.toString());
         this.router.navigate(['/detail-car', idNavegacion]);
       },
       error: (err) => {
         this.isSubmitting = false;
         console.error('Error Backend:', err);
-        this.toast.error('Error al guardar. Revisa la consola o los datos.');
+        this.toast.error('Error al guardar. Revisa la consola o los datos.', "Error al guardar");
       },
     });
   }

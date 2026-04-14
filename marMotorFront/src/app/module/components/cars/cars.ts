@@ -5,6 +5,7 @@ import { Filters } from '../common/filters/filters';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CarDTO } from '../../../@types/interface/car.interface';
 import { ToastrService } from 'ngx-toastr';
+import { BadgeLabel, BadgeType } from '../../../@types/enums/badge.enum';
 
 @Component({
   selector: 'app-cars',
@@ -22,6 +23,8 @@ export class Cars {
   private cdr = inject(ChangeDetectorRef);
   private toast= inject(ToastrService)
 
+  badgeLabel= BadgeLabel
+  badgeType= BadgeType
   filtrosSeleccionados: any = {};
   cochesFiltrados: CarDTO[] = [];
   cochesVisibles: CarDTO[] = [];
@@ -42,48 +45,62 @@ export class Cars {
     });
   }
 
+  getBadgeText(badge: any): string {
+    if (!badge) return '';
+    const key = badge.toString().toUpperCase() as keyof typeof BadgeType;
+    const badgeValue = BadgeType[key];
+    return badgeValue ? this.badgeLabel[badgeValue] : badge.toString();
+  }
+
   cargarCoches(filtrosNuevos: any = {}) {
-    if (filtrosNuevos['q']) {
-      const queryTerm = atob(filtrosNuevos['q']); // Desencriptamos el modelo/marca
+  if (filtrosNuevos['search']) {
+    const queryTerm = atob(filtrosNuevos['search']);
 
-      this.carService.getCarsByModel(queryTerm).subscribe({
-        next: (data) => {
-          this.cochesFiltrados = data || [];
-          if(this.cochesFiltrados.length === 0){
-            this.toast.warning("No se han encontrado coches con ese modelo/marca", "Atención")
-          }
-          console.log(this.cochesFiltrados)
-          this.paginaActual = 1;
-          this.actualizarVista();
-          this.cdr.detectChanges();
-        },
-        error: (err) => console.error('Error en búsqueda admin:', err),
-      });
-      return; 
-    }
-
-    // 2. LÓGICA DE FILTROS NORMALES (Lo que ya tenías)
-    const filtrosLimpios: any = {};
-    Object.keys(filtrosNuevos).forEach((key) => {
-      const valor = filtrosNuevos[key];
-      if (valor !== 'all' && valor !== null && valor !== undefined && valor !== '') {
-        filtrosLimpios[atob(key)] = atob(valor);
-      }
-    });
-
-    this.carService.getCarsByFilters(filtrosLimpios).subscribe({
+    this.carService.getCarsByModel(queryTerm).subscribe({
       next: (data) => {
-        this.cochesFiltrados = data || [];
+        this.cochesFiltrados = (data || []).filter(coche => coche.badge !== BadgeType.SOLD);
+        
+        // --- NUEVA LÍNEA: Guardamos los IDs actuales ---
+        this.carService.setCarIds(this.cochesFiltrados.map(c => c.id));
+        // ----------------------------------------------
+
         if(this.cochesFiltrados.length === 0){
-            this.toast.warning("No se han encontrado coches con esos filtros", "Atención")
-          }
+          this.toast.warning("No se han encontrado coches con ese modelo/marca", "Atención")
+        }
         this.paginaActual = 1;
         this.actualizarVista();
         this.cdr.detectChanges();
       },
-      error: (err) => console.error('Error:', err),
+      error: (err) => console.error('Error en búsqueda admin:', err),
     });
+    return; 
   }
+
+  // 2. LÓGICA DE FILTROS NORMALES
+  const filtrosLimpios: any = {};
+  Object.keys(filtrosNuevos).forEach((key) => {
+    const valor = filtrosNuevos[key];
+    if (valor !== 'all' && valor !== null && valor !== undefined && valor !== '') {
+      filtrosLimpios[atob(key)] = atob(valor);
+    }
+  });
+
+  this.carService.getCarsByFilters(filtrosLimpios).subscribe({
+    next: (data) => {
+      this.cochesFiltrados = (data || []).filter(coche => coche.badge !== BadgeType.SOLD);
+
+      this.carService.setCarIds(this.cochesFiltrados.map(c => c.id));
+      
+      if(this.cochesFiltrados.length === 0){
+          this.toast.warning("No se han encontrado coches con esos filtros", "Atención")
+      }
+      this.paginaActual = 1;
+      this.actualizarVista();
+      this.cdr.detectChanges();
+    },
+    error: (err) => console.error('Error:', err),
+  });
+}
 
   
 

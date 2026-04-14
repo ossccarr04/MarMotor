@@ -1,24 +1,32 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { CarDTO } from '../../@types/interface/car.interface';
 import { environment } from '../../../environments/environment.development';
 import { CarDetail } from '../../@types/interface/car-details.interface';
-
 
 @Injectable({
   providedIn: 'root',
 })
 export class CarServiceBBDD {
   private http = inject(HttpClient);
-  
 
   private readonly URL = `${environment.apiUrl}/cars`;
 
-  getCarsByModel(query: string): Observable<CarDTO[]> {
+  private carIdsSource = new BehaviorSubject<number[]>([]);
+  currentCarIds = this.carIdsSource.asObservable();
 
-    return this.http.get<CarDTO[]>(`${this.URL}/search/admin`,{
-      params: {query}
+  setCarIds(ids: number[]) {
+    this.carIdsSource.next(ids);
+  }
+
+  getCarIds() {
+    return this.carIdsSource.value;
+  }
+
+  getCarsByModel(query: string): Observable<CarDTO[]> {
+    return this.http.get<CarDTO[]>(`${this.URL}/search/admin`, {
+      params: { query },
     });
   }
 
@@ -26,18 +34,16 @@ export class CarServiceBBDD {
     return this.http.get<CarDTO[]>(this.URL);
   }
 
-
   getCarsByFilters(filtros: any | null): Observable<any[]> {
     let params = new HttpParams();
 
-  if (filtros) {
-    Object.keys(filtros).forEach(key => {
+    if (filtros) {
+      Object.keys(filtros).forEach((key) => {
+        params = params.append(key, filtros[key]);
+      });
+    }
 
-      params = params.append(key, filtros[key]);
-    });
-  }
-
-  return this.http.get<any[]>(`${this.URL}/filters`, { params });
+    return this.http.get<any[]>(`${this.URL}/filters`, { params });
   }
 
   getCarsByCategory(categoria: string): Observable<any[]> {
@@ -53,7 +59,6 @@ export class CarServiceBBDD {
   }
 
   updateCar(id: string, formData: FormData): Observable<CarDTO> {
-    
     return this.http.put<CarDTO>(`${this.URL}/${id}`, formData);
   }
 }

@@ -3,7 +3,7 @@ import { Component, ElementRef, inject, Inject, ViewChild } from '@angular/core'
 import { Router, RouterModule } from '@angular/router';
 import { CarDTO } from '../../../../@types/interface/car.interface';
 import { CarServiceBBDD } from '../../../services/car-service-bbdd';
-import { Badge, BadgeType } from '../../../../@types/enums/badge.enum';
+import { BadgeLabel, BadgeType } from '../../../../@types/enums/badge.enum';
 
 @Component({
   selector: 'app-galery-dynamic',
@@ -18,8 +18,9 @@ export class GaleryDynamic {
 
   @ViewChild('carrusel') carrusel!: ElementRef;
 
-  BadgeType = Badge;
-  filtroSeleccionado: Badge = Badge.ALL;
+  BadgeType = BadgeType;
+  badgeLabel= BadgeLabel
+  filtroSeleccionado: BadgeType = BadgeType.NONE;
   cochesOriginal: CarDTO[] = [];
   coches: CarDTO[] = [];
   cochesFiltradoDetail: CarDTO[] = [];
@@ -39,6 +40,13 @@ export class GaleryDynamic {
         console.error('Error de conexión o de API:', err);
       },
     });
+  }
+
+    getBadgeText(badge: any): string {
+    if (!badge) return '';
+    const key = badge.toString().toUpperCase() as keyof typeof BadgeType;
+    const badgeValue = BadgeType[key];
+    return badgeValue ? this.badgeLabel[badgeValue] : badge.toString();
   }
 
   toggleGuardar(coche: CarDTO) {
@@ -169,11 +177,11 @@ private applyInertia() {
   }
 }
 
-  setFiltro(tipo: Badge) {
+  setFiltro(tipo: BadgeType) {
     const elemento = this.carrusel.nativeElement;
 
     this.filtroSeleccionado = tipo;
-    if (tipo === Badge.ALL) {
+    if (tipo === BadgeType.NONE) {
       this.coches = [...this.cochesOriginal];
     } else {
       this.coches = this.cochesOriginal.filter(

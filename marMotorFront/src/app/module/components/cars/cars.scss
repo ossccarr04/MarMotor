@@ -3,6 +3,7 @@ $dark-background: #0b1624;
 $white-results: #ffffff;
 $card-stock-bg: #fdfdfd;
 $accent-green: #37df8c;
+$green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
 $text-dark: #051121;
 $text-gray: #718096;
 $font-family: 'Montserrat', sans-serif;
@@ -236,6 +237,18 @@ $font-family: 'Montserrat', sans-serif;
     }
   }
 }
+.badge {
+          position: absolute;
+          top: 15px;
+          left: 15px;
+          padding: 6px 14px;
+          border-radius: 20px;
+          font-size: 10px;
+          font-weight: 800;
+          color: white;
+          background: $green-gradient;
+          text-transform: uppercase;
+        }
 
 .results-info-bar {
   display: flex;

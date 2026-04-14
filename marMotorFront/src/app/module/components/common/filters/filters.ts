@@ -309,7 +309,7 @@ export class Filters implements OnInit {
     }
 
     this.route.navigate(['/cars'], {
-    queryParams: { q: btoa(term) }
+    queryParams: { search: btoa(term) }
   });
   }
 

@@ -1,4 +1,4 @@
-import { Badge, BadgeType } from "../enums/badge.enum";
+import { BadgeType } from "../enums/badge.enum";
 import { CarDetail } from "./car-details.interface";
 
 export interface CarDTO {
@@ -14,7 +14,7 @@ export interface CarDTO {
   power: number; // cv
   mileage: number; // km
   consumption: string;
-  badge: Badge | null
+  badge: BadgeType | null
   badgeType?: BadgeType | null;
   isSaved: boolean
 }

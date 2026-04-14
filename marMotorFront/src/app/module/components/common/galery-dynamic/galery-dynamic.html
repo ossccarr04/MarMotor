@@ -4,8 +4,8 @@
 
     <div class="badge-filters">
       <button
-        [class.active]="filtroSeleccionado === BadgeType.ALL"
-        (click)="setFiltro(BadgeType.ALL)"
+        [class.active]="filtroSeleccionado === BadgeType.NONE"
+        (click)="setFiltro(BadgeType.NONE)"
       >
         TODOS
       </button>
@@ -20,6 +20,12 @@
         (click)="setFiltro(BadgeType.FEATURED)"
       >
         DESTACADOS
+      </button>
+      <button
+        [class.active]="filtroSeleccionado === BadgeType.OFFER"
+        (click)="setFiltro(BadgeType.OFFER)"
+      >
+        OFERTAS
       </button>
     </div>
 
@@ -43,13 +49,10 @@
       <div class="car-card">
         <div class="car-image-container">
           @if (coche.badge) {
-            <span
-              class="badge"
-              [ngClass]="coche.badgeType === 'featured' ? 'badge-featured' : 'badge-new'"
-            >
-              {{ coche.badge }}
-            </span>
-          }
+                <span class="badge" [ngClass]="'badge-' + coche.badge.toLowerCase()">
+                  {{ getBadgeText(coche.badge) }}
+                </span>
+              }
 
           <span class="heart-icon" [class.is-liked]="coche.isSaved" (click)="toggleGuardar(coche)">
             {{ coche.isSaved ? '❤️' : '♡' }}
@@ -75,7 +78,7 @@
               <span class="stat-label">Motor</span>
             </div>
             <div class="stat">
-              <span class="stat-value">{{ coche.consumption }}</span>
+              <span class="stat-value">{{ coche.consumption }} L/100km</span>
               <span class="stat-label">Consumo</span>
             </div>
             <div class="stat">

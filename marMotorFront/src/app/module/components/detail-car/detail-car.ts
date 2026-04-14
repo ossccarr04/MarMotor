@@ -5,6 +5,7 @@ import { CarDetail } from '../../../@types/interface/car-details.interface';
 import { CarServiceBBDD } from '../../services/car-service-bbdd';
 import { AuthServiceBBDD } from '../../services/auth-service';
 import { UserRoles } from '../../../@types/enums/roles.enums';
+import { BadgeLabel, BadgeType } from '../../../@types/enums/badge.enum';
 
 @Component({
   selector: 'detail-car',
@@ -30,6 +31,8 @@ export class DetailCar implements OnInit, OnDestroy {
   private renderer = inject(Renderer2);
 
   // Estado del componente
+  badgeLabel= BadgeLabel
+  badgeType= BadgeType
   car: CarDetail | null = null;
   carIds: number[] = []; // Solo guardamos IDs para navegación Next/Prev
   currentIndex: number = 0;
@@ -39,6 +42,8 @@ export class DetailCar implements OnInit, OnDestroy {
   private scrollPosition: number = 0;
 
   ngOnInit(): void {
+    this.carIds= this.carsService.getCarIds();
+    
     if(this.authService.isLoggedIn()) {
           const user = this.authService.getCurrentUser();
           if(user) {
