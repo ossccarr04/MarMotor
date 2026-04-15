@@ -3,6 +3,7 @@ package com.example.marmotor.model.DTO;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -21,6 +22,8 @@ public class CarDTO {
     private String badge;
     private String badgeType;
     private boolean isSaved;
+    private LocalDateTime createdAt;
+    private LocalDateTime soldAt;
 
     private String transmission;
     private String status;

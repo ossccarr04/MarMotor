@@ -295,6 +295,8 @@ public class CarService {
         dto.setBadge(car.getBadge());
         dto.setBadgeType(car.getBadgeType());
         dto.setSaved(car.isSaved());
+        dto.setCreatedAt(car.getCreatedAt());
+        dto.setSoldAt(car.getSoldAt());
 
         if (car.getFuelType() != null) dto.setFuelType(car.getFuelType().getName());
         if (car.getBodyType() != null) dto.setBodyType(car.getBodyType().getName());
@@ -330,6 +332,8 @@ public class CarService {
         dto.setStatus(basic.getStatus());
         dto.setBadge(basic.getBadge());
         dto.setBadgeType(basic.getBadgeType());
+        dto.setCreatedAt(basic.getCreatedAt());
+        dto.setSoldAt(basic.getSoldAt());
 
         if (detail != null) {
             dto.setColor(detail.getColor());
