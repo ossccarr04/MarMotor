@@ -21,10 +21,12 @@ export class Cars {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
-  private toast= inject(ToastrService)
+  private toast = inject(ToastrService);
+  private quiereVendidos = this.carService.mantenerVendidosActivo;
 
-  badgeLabel= BadgeLabel
-  badgeType= BadgeType
+  public cargando: boolean = false;
+  badgeLabel = BadgeLabel;
+  badgeType = BadgeType;
   filtrosSeleccionados: any = {};
   cochesFiltrados: CarDTO[] = [];
   cochesVisibles: CarDTO[] = [];
@@ -32,16 +34,20 @@ export class Cars {
   itemsPorPagina = 12;
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
-      if (Object.keys(params).length > 0) {
+    this.carService.recargarCoches$.subscribe(() => {
+      const params = this.route.snapshot.queryParams;
+      if (params && Object.keys(params).length > 0) {
         this.filtrosSeleccionados = { ...params };
-
         this.cargarCoches(params);
         window.scrollTo({ top: 600, behavior: 'smooth' });
       } else {
-        // Si no hay parámetros (vengo de un menú directo), cargamos todo
+        this.filtrosSeleccionados = {};
         this.cargarCoches({});
       }
+    });
+
+    this.route.queryParams.subscribe((params) => {
+      this.cargarCoches(params);
     });
   }
 
@@ -53,56 +59,121 @@ export class Cars {
   }
 
   cargarCoches(filtrosNuevos: any = {}) {
-  if (filtrosNuevos['search']) {
-    const queryTerm = atob(filtrosNuevos['search']);
+    this.cargando = true;
+    this.cochesFiltrados = [];
+    // 1. LA ÚNICA REGLA: ¿Qué dice el interruptor de Admin ahora mismo?
+    const quiereVerVendidos = this.carService.mantenerVendidosActivo;
 
-    this.carService.getCarsByModel(queryTerm).subscribe({
+    // 2. Decodificamos TODOS los filtros UNA SOLA VEZ
+    const filtrosLimpios: any = {};
+    Object.keys(filtrosNuevos).forEach((key) => {
+      const valor = filtrosNuevos[key];
+      if (valor !== 'all' && valor !== null && valor !== undefined && valor !== '') {
+        filtrosLimpios[atob(key)] = atob(valor);
+      }
+    });
+
+    // --- FUNCIÓN AUXILIAR (Totalmente limpia de rutas) ---
+    const aplicarFiltroVendidos = (data: any[]) => {
+      // Guardamos la palabra exacta en mayúsculas ("SOLD")
+      const VALOR_VENDIDO = String(this.badgeType.SOLD).toUpperCase();
+
+      return (data || []).filter((coche) => {
+        const badgeSeguro = coche.badge ? coche.badge.trim().toUpperCase() : 'NONE';
+        return quiereVerVendidos ? badgeSeguro === VALOR_VENDIDO : badgeSeguro !== VALOR_VENDIDO;
+      });
+    };
+
+    // 3. LÓGICA DE BÚSQUEDA RÁPIDA (Search por texto)
+    if (filtrosLimpios['search']) {
+      const queryTerm = filtrosLimpios['search'];
+
+      this.carService.getCarsByModel(queryTerm).subscribe({
+        next: (data) => {
+          this.cochesFiltrados = aplicarFiltroVendidos(data);
+          
+          this.carService.setCarIds(this.cochesFiltrados.map((c) => c.id));
+
+          if (this.cochesFiltrados.length === 0 && this.cargando) {
+            const mensaje = quiereVerVendidos
+              ? 'No se han encontrado vehículos vendidos con ese modelo/marca'
+              : 'No se han encontrado vehículos disponibles con ese modelo/marca';
+            this.toast.warning(mensaje, 'Atención');
+          }
+          this.cargando = false;
+          this.paginaActual = 1;
+          this.actualizarVista();
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Error en búsqueda admin:', err);
+          this.cargando = false;
+        },
+      });
+
+      return; // Salimos de la función
+    }
+
+    // 4. LÓGICA DE FILTROS NORMALES (Desplegables)
+    this.carService.getCarsByFilters(filtrosLimpios).subscribe({
       next: (data) => {
-        this.cochesFiltrados = (data || []).filter(coche => coche.badge !== BadgeType.SOLD);
-        
-        // --- NUEVA LÍNEA: Guardamos los IDs actuales ---
-        this.carService.setCarIds(this.cochesFiltrados.map(c => c.id));
-        // ----------------------------------------------
+        this.cochesFiltrados = aplicarFiltroVendidos(data);
+       
+        this.carService.setCarIds(this.cochesFiltrados.map((c) => c.id));
 
-        if(this.cochesFiltrados.length === 0){
-          this.toast.warning("No se han encontrado coches con ese modelo/marca", "Atención")
+        if (this.cochesFiltrados.length === 0 && this.cargando) {
+          const mensaje = quiereVerVendidos
+            ? 'No se han encontrado vehículos vendidos con esos filtros'
+            : 'No se han encontrado vehículos disponibles con esos filtros';
+          this.toast.warning(mensaje, 'Atención');
         }
+        this.cargando = false;
         this.paginaActual = 1;
         this.actualizarVista();
         this.cdr.detectChanges();
       },
-      error: (err) => console.error('Error en búsqueda admin:', err),
+      error: (err) => {
+        console.error('Error con los filtros:', err);
+        this.cargando = false;
+      },
     });
-    return; 
+
+    // 4. LÓGICA DE FILTROS NORMALES (Desplegables)
+
+    this.carService.getCarsByFilters(filtrosLimpios).subscribe({
+      next: (data) => {
+        this.cochesFiltrados = aplicarFiltroVendidos(data);
+        
+        this.carService.setCarIds(this.cochesFiltrados.map((c) => c.id));
+
+        if (this.cochesFiltrados.length === 0 && this.cargando) {
+          const mensaje = quiereVerVendidos
+            ? 'No se han encontrado vehículos vendidos con esos filtros'
+            : 'No se han encontrado vehículos disponibles con esos filtros';
+          this.toast.warning(mensaje, 'Atención');
+        }
+        this.cargando = false;
+        this.paginaActual = 1;
+        this.actualizarVista();
+        this.cdr.detectChanges();
+        
+      },
+      error: (err) => {
+        console.error('Error con los filtros:', err);
+        this.cargando = false;
+      },
+    });
   }
 
-  // 2. LÓGICA DE FILTROS NORMALES
-  const filtrosLimpios: any = {};
-  Object.keys(filtrosNuevos).forEach((key) => {
-    const valor = filtrosNuevos[key];
-    if (valor !== 'all' && valor !== null && valor !== undefined && valor !== '') {
-      filtrosLimpios[atob(key)] = atob(valor);
-    }
-  });
+  alCambiarInterruptor() {
+    this.carService.mantenerVendidosActivo = this.quiereVendidos;
 
-  this.carService.getCarsByFilters(filtrosLimpios).subscribe({
-    next: (data) => {
-      this.cochesFiltrados = (data || []).filter(coche => coche.badge !== BadgeType.SOLD);
-
-      this.carService.setCarIds(this.cochesFiltrados.map(c => c.id));
-      
-      if(this.cochesFiltrados.length === 0){
-          this.toast.warning("No se han encontrado coches con esos filtros", "Atención")
-      }
-      this.paginaActual = 1;
-      this.actualizarVista();
-      this.cdr.detectChanges();
-    },
-    error: (err) => console.error('Error:', err),
-  });
-}
-
-  
+    this.route.queryParams
+      .subscribe((params) => {
+        this.cargarCoches(params);
+      })
+      .unsubscribe(); // Nos desuscribimos al instante para que no se quede escuchando
+  }
 
   // Este método recibe los cambios del componente Filters
   aplicarFiltros(filtrosNuevos: any) {

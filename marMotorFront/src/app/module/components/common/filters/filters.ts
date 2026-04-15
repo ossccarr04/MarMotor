@@ -59,18 +59,21 @@ export class Filters implements OnInit {
   @Output() resultadosEncontrados = new EventEmitter<CarDTO[]>();
   @Output() filterChange = new EventEmitter<any>();
 
+  private cdr = inject(ChangeDetectorRef)
+
   constructor(
     private route: Router,
+    private carService: CarServiceBBDD,
     private brandService: BrandServiceBBDD,
     private bodyTypeService: BodyTypeServiceBBDD,
     private fuelTypeService: FuelTypeServiceBBDD,
     @Inject(PLATFORM_ID) private platformId: Object,
+    
   ) {}
 
   marcas: BrandDTO[] = [];
   carrocerias: BodyTypeDTO[] = [];
   combustibles: FuelDTO[] = [];
-
   isModalMarcasOpen = false;
   terminoBusqueda = '';
   marcaBusqueda = '+';
@@ -84,27 +87,14 @@ export class Filters implements OnInit {
   isDragging = false;
   busquedaAdmin: string = '';
   resultadosAdmin: any[] = [];
-  isAdmin: boolean = true; //! Cambiar a true
+  isAdmin: boolean = true; //! Cambiar a false
 
   @ViewChild('sliderElement') sliderElement!: ElementRef;
 
   ngOnInit(): void {
     // 1. Cargar Marcas
-    this.brandService.getBrands().subscribe({
-      next: (data) => {
-        this.marcas = data;
-        this.marcas.forEach((item) => {
-          item.name = item.name.toUpperCase();
-          item.selected = false;
-        });
+    this.cargarMarcasSegunEstado();
 
-        // PROTECCIÓN SSR: Usamos el método seguro getParamFromUrl
-        const brandFromUrl = this.getParamFromUrl('brand');
-        if (brandFromUrl) {
-          this.seleccionarMarca({ name: brandFromUrl });
-        }
-      },
-    });
 
     // 2. Cargar Carrocerías
     this.bodyTypeService.getBodyTypes().subscribe({
@@ -132,6 +122,32 @@ export class Filters implements OnInit {
       },
     });
   }
+
+  cargarMarcasSegunEstado() {
+  // 1. Decidimos qué servicio llamar según el interruptor
+  const mostrarVendidos = this.carService.mantenerVendidosActivo;
+  
+  const peticion = mostrarVendidos 
+    ? this.brandService.getBrandsSold() 
+    : this.brandService.getBrands();
+
+  peticion.subscribe({
+    next: (data) => {
+      this.marcas = data;
+      this.marcas.forEach((item) => {
+        item.name = item.name.toUpperCase();
+        item.selected = false;
+      });
+
+      // PROTECCIÓN SSR: Solo ejecutamos la selección por URL si hay marcas cargadas
+      const brandFromUrl = this.getParamFromUrl('brand');
+      if (brandFromUrl) {
+        this.seleccionarMarca({ name: brandFromUrl });
+      }
+    },
+    error: (err) => console.error('Error cargando marcas dinámicas:', err)
+  });
+}
 
   // Métodos de selección y lógica de negocio
   seleccionarCarroceriaPorNombre(nombre: string) {
@@ -248,12 +264,16 @@ export class Filters implements OnInit {
 
   // Navegación
   buscarTodos() {
-    this.limpiarMarca();
-    this.limpiarCarroceria();
-    this.limpiarCombustible();
-    this.precioActual = 0;
-    this.precioModificado = false;
-    this.route.navigate(['/cars']);
+   this.limpiarMarca();
+  this.limpiarCarroceria();
+  this.limpiarCombustible();
+  this.precioActual = 0;
+  this.precioModificado = false;
+  this.route.navigate(['/cars'], { queryParams: {} }).then(() => {
+    // Recargamos las marcas para que vuelvan a salir las de coches disponibles
+    this.cargarMarcasSegunEstado(); 
+    this.carService.recargarCoches$.next();
+  });
   }
 
   buscarConFiltros() {
@@ -272,17 +292,12 @@ export class Filters implements OnInit {
   seleccionarOpcion(lista: any[], index: number) {
     if (!lista || !lista[index]) return;
 
-    // 1. Si la opción ya estaba seleccionada, la desmarcamos (opcional, por si quieres poder "des-filtrar")
     if (lista[index].selected) {
       lista[index].selected = false;
     } else {
-      // 2. Desmarcamos todas las demás y marcamos la nueva
       lista.forEach((item) => (item.selected = false));
       lista[index].selected = true;
     }
-
-    // 3. (Opcional) Si quieres que filtre al instante sin dar al botón "Buscar"
-    // this.emitirCambios();
   }
 
   // Método centralizado y seguro para la URL
@@ -307,10 +322,26 @@ export class Filters implements OnInit {
       this.resultadosAdmin = [];
       return;
     }
+    const queryParams: any = {};
+    queryParams[btoa('search')] = btoa(term);
 
-    this.route.navigate(['/cars'], {
-    queryParams: { search: btoa(term) }
-  });
+      this.route.navigate(['/cars'], {
+        queryParams,
+      });
   }
 
+  alCambiarInterruptor() {
+
+  this.carService.mantenerVendidosActivo = this.buscarEnVendidos;
+  this.cargarMarcasSegunEstado();
+  this.carService.recargarCoches$.next(); 
+}
+
+  get buscarEnVendidos(): boolean {
+    return this.carService.mantenerVendidosActivo;
+  }
+  set buscarEnVendidos(valor: boolean) {
+    this.cdr.detectChanges();
+    this.carService.mantenerVendidosActivo = valor;
+  }
 }

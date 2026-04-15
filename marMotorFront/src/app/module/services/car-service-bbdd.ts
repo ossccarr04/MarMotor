@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { CarDTO } from '../../@types/interface/car.interface';
 import { environment } from '../../../environments/environment.development';
 import { CarDetail } from '../../@types/interface/car-details.interface';
@@ -12,8 +12,10 @@ export class CarServiceBBDD {
   private http = inject(HttpClient);
 
   private readonly URL = `${environment.apiUrl}/cars`;
-
+  mantenerVendidosActivo: boolean = false;
   private carIdsSource = new BehaviorSubject<number[]>([]);
+  public recargarCoches$ = new Subject<void>();
+
   currentCarIds = this.carIdsSource.asObservable();
 
   setCarIds(ids: number[]) {

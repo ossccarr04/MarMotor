@@ -14,15 +14,44 @@ $font-family: 'Montserrat', sans-serif;
   font-family: $font-family;
 }
 
+@media (max-width: 768px) {
+  .stock-page-wrapper { padding-top: 0; } // Ajusta si el header es fijo y causa un doble padding
+}
+
 .container-mx {
   max-width: 1600px;
   margin: 0 auto;
   padding: 0 30px;
 }
 
+.loading-state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 0;
+  color: #10b981; // El verde de tu diseño
+  
+  i {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+  }
+  
+  p {
+    font-size: 1.1rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+}
+
 /* --- SECCIÓN DE FILTROS --- */
 .filters-section-wrapper {
   padding: 60px 0 80px 0; // Más padding abajo para el solape
+}
+@media (max-width: 768px) {
+  .filters-section-wrapper {
+    padding: 40px 0 60px 0; // Padding ligeramente menor para móvil
+  }
 }
 
 /* --- CONTENEDOR BLANCO --- */
@@ -35,6 +64,12 @@ $font-family: 'Montserrat', sans-serif;
   margin-top: -40px; // Solape visual sobre el fondo oscuro
   position: relative;
   z-index: 5;
+}
+@media (max-width: 768px) {
+  .results-wrapper {
+    padding: 30px 0; // Padding reducido
+    margin-top: -20px; // Menor solapamiento
+  }
 }
 
 .results-info-bar {
@@ -53,6 +88,41 @@ $font-family: 'Montserrat', sans-serif;
     font-weight: 800;
     margin-left: 5px;
     font-size: 18px;
+  }
+}
+@media (max-width: 768px) {
+  .results-info-bar {
+    flex-direction: column; // Apila el contador de encontrados y los controles
+    align-items: flex-start; // Alinea los elementos al inicio (izquierda)
+    gap: 15px; // Espacio menor entre elementos apilados
+    margin-bottom: 30px; // Margen reducido
+    padding-bottom: 15px; // Padding reducido
+
+    .found-count {
+      font-size: 18px; // Fuente ligeramente más pequeña
+    }
+
+    .results-controls {
+      flex-direction: column; // Apila el selector de orden y el contador de mostrados
+      align-items: flex-start; // Alinea los elementos al inicio (izquierda)
+      gap: 15px; // Espacio menor
+      width: 100%; // Ocupa todo el ancho para alinear correctamente
+
+      .sort-wrapper {
+        width: 100%; // Ocupa todo el ancho
+        justify-content: space-between; // Mantiene la etiqueta y el selector separados
+        
+        label {
+          font-size: 13px;
+        }
+        select {
+          width: auto; // Permite que el selector se ajuste naturalmente
+          font-size: 13px;
+          padding: 6px 10px;
+        }
+      }
+      .showing-count { font-size: 15px; } // Fuente ligeramente más pequeña
+    }
   }
 }
 
@@ -237,6 +307,52 @@ $font-family: 'Montserrat', sans-serif;
     }
   }
 }
+
+@media (max-width: 768px) {
+  .stock-grid {
+    gap: 20px; // Espacio menor entre tarjetas
+  }
+
+  .car-card {
+    .car-image-container {
+      height: 180px; // Altura de imagen menor
+    }
+
+    .car-details {
+      padding: 20px; // Padding reducido
+
+      .title-price-row {
+        h3 {
+          font-size: 16px; // Título más pequeño
+        }
+        .car-price {
+          font-size: 18px; // Precio más pequeño
+        }
+      }
+
+      .car-subtitle {
+        font-size: 12px;
+        margin-bottom: 20px;
+      }
+
+      .car-stats-row {
+        flex-wrap: wrap; // Permite que las estadísticas se envuelvan si hay muchas
+        gap: 10px; // Espacio entre estadísticas
+        .stat {
+          flex: 1 1 auto; // Permite que las estadísticas crezcan/encojan
+          min-width: 45%; // Asegura al menos dos estadísticas por fila
+          text-align: center; // Centra el texto de las estadísticas
+          .stat-value { font-size: 13px; }
+          .stat-label { font-size: 10px; }
+        }
+      }
+    }
+    .hover-btn-container {
+      height: 60px; // Altura menor para el contenedor del botón
+      .btn-details { height: 40px; font-size: 12px; padding: 0 15px; }
+    }
+  }
+}
 .badge {
           position: absolute;
           top: 15px;
@@ -352,6 +468,30 @@ $font-family: 'Montserrat', sans-serif;
     }
   }
 }
+@media (max-width: 768px) {
+  .no-results-container {
+    padding: 50px 0; // Padding vertical reducido
+    .no-results-content {
+      i {
+        font-size: 50px;
+      }
+      h2 {
+        font-size: 24px;
+      }
+      p {
+        font-size: 14px;
+      }
+      .btn-reset-filters {
+        padding: 10px 25px;
+        font-size: 13px;
+      }
+    }
+  }
+  .container-mx {
+    padding: 0 15px; // Padding reducido para pantallas pequeñas
+  }
+}
+
 
 /* --- BOTÓN CARGAR MÁS --- */
 .load-more-section {
@@ -377,6 +517,14 @@ $font-family: 'Montserrat', sans-serif;
       background: $accent-green;
       transform: translateY(-5px);
       box-shadow: 0 10px 30px rgba($accent-green, 0.3);
+    }
+  }
+}
+@media (max-width: 768px) {
+  .load-more-section {
+    margin-top: 50px; // Margen reducido
+    .btn-load-more {
+      padding: 15px 40px; font-size: 13px; gap: 10px;
     }
   }
 }

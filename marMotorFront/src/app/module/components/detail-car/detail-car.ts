@@ -25,11 +25,11 @@ export class DetailCar implements OnInit, OnDestroy {
       this.carIds = listaEntrante.map((c: any) => c.id);
     }
   }
+  
   private cdr = inject(ChangeDetectorRef);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private renderer = inject(Renderer2);
-
   // Estado del componente
   badgeLabel= BadgeLabel
   badgeType= BadgeType
@@ -135,6 +135,10 @@ export class DetailCar implements OnInit, OnDestroy {
   onImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
     img.src = 'assets/placeholder-car.jpg'; // Imagen por defecto si falla el servidor
+  }
+
+  isRouteSold(){
+    return this.car?.badge === BadgeType.SOLD
   }
 
   // --- ZOOM Y UI ---

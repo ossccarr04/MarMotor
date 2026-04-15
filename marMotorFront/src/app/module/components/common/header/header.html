@@ -48,7 +48,13 @@
       (click)="isMenuOpen = false"
       >Inicio</a
     >
-    <a routerLink="/cars" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" (click)="isMenuOpen = false">Coches</a>
+    <a
+      routerLink="/cars"
+      routerLinkActive="active-link"
+      [routerLinkActiveOptions]="{ exact: true }"
+      (click)="isMenuOpen = false"
+      >Coches</a
+    >
     <a routerLink="/compañia" routerLinkActive="active-link" (click)="isMenuOpen = false"
       >Compañia</a
     >

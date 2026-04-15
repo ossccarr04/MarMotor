@@ -95,6 +95,11 @@
               <span>Etiqueta:</span> <strong>{{ badgeLabel[car.badge] | titlecase }}</strong>
             </li>
           }
+          @if(isRouteSold()){
+            <li>
+              <span>Fecha de Venta:</span> <strong>{{ car.soldAt | date:'dd/MM/yyyy HH:mm' }}</strong>
+            </li>
+          }
         </ul>
       </section>
 

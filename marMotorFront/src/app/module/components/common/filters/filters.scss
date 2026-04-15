@@ -559,31 +559,98 @@ $text-dark: #333;
   position: relative; // Necesario para que el buscador flote dentro
 }
 
-.admin-quick-search {
-position: absolute;
-  // Movemos más a la izquierda y más abajo
-  top: 35px; 
-  right: 40px; 
+.admin-control-bar {
+  // 1. Posicionamiento (antes estaba en .admin-quick-search)
+  position: absolute;
+  top: 35px;
+  right: 40px;
   z-index: 100;
-  width: 280px;
 
-  .search-box {
-display: flex;
+  // 2. Alineación Flexbox para poner el switch y el buscador en línea
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+  min-width: 450px; // Anchura mínima para que no se aplasten los elementos
+
+  /* --- SECCIÓN 1: EL INTERRUPTOR (SWITCH) --- */
+  .toggle-vendidos {
+    display: flex;
     align-items: center;
-    // Fondo más oscuro y con desenfoque para que resalte sobre el fondo
+    gap: 8px;
+    cursor: pointer;
+
+    .label-text {
+      font-size: 0.85rem;
+      // Si tu fondo es oscuro, te sugiero cambiar este color a blanco (#fff) o gris (#cbd5e1)
+      color: #000000; 
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 36px;
+      height: 20px;
+
+      input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-color: rgba(15, 23, 42, 0.4); // Gris oscuro de fondo
+        border: 1px solid rgba(16, 185, 129, 0.2); // Borde esmeralda muy suave
+        border-radius: 34px;
+        transition: .4s;
+
+        &:before {
+          position: absolute;
+          content: "";
+          height: 12px;
+          width: 12px;
+          left: 3px;
+          bottom: 2px; // Ajustado para que quede perfectamente centrado
+          background-color: #f8fafc;
+          border-radius: 50%;
+          transition: .4s;
+        }
+      }
+
+      /* Cuando se marca, usa el verde esmeralda de tu diseño */
+      input:checked + .slider {
+        background-color: rgba(16, 185, 129, 0.8);
+        border-color: #10b981;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(16px);
+      }
+    }
+  }
+
+  /* --- SECCIÓN 2: LA CAJA DE BÚSQUEDA --- */
+  .search-box {
+    flex: 1; // Ocupa el resto del espacio disponible
+    display: flex;
+    align-items: center;
     background: rgba(15, 23, 42, 0.9);
-    // Borde sutil que combine con tu botón "Buscar con filtros"
-    border: 1px solid rgba(16, 185, 129, 0.4); 
-    border-radius: 50px; // Forma de píldora para un look más moderno
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    border-radius: 50px;
     padding: 8px 18px;
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
 
-    &:hover, &:focus-within {
+    &:hover,
+    &:focus-within {
       border-color: #10b981;
       box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
-      transform: translateY(-2px); // Pequeña elevación
+      transform: translateY(-2px);
     }
 
     .admin-icon {
@@ -606,7 +673,7 @@ display: flex;
       }
     }
 
-    button {
+    .btn-search {
       background: transparent;
       border: none;
       color: #10b981;
@@ -615,34 +682,47 @@ display: flex;
       padding: 5px;
       display: flex;
       align-items: center;
-      
+
       &:hover {
         color: #34d399;
       }
     }
   }
 }
-.admin-results-dropdown {
-  margin-top: 10px;
-  border-radius: 20px !important;
-  border: 1px solid rgba(16, 185, 129, 0.4) !important;
-  overflow: hidden;
-  background: rgba(15, 23, 42, 0.95) !important;
-}
+
 
 // Responsive: en móviles lo movemos para que no tape el título
 @media (max-width: 768px) {
-  .admin-quick-search {
-    position: relative;
-    top: 0;
-    right: 0;
-    margin-bottom: 20px;
+  .admin-control-bar {
+    position: static; /* Asegura que el elemento esté en el flujo normal del documento */
+    top: auto; /* Resetea la posición absoluta */
+    right: auto; /* Resetea la posición absoluta */
+    margin-bottom: 30px; /* Espacio debajo de la barra de control */
+    min-width: 0;
+    flex-direction: column;
+    align-items: center; /* Centra los elementos horizontalmente */
+    gap: 20px; /* Añade espacio entre el interruptor y el buscador */
+    width: 100%;
+    padding: 15px 20px; /* Añade padding interno a la barra de control */
+    box-sizing: border-box; /* Asegura que el padding no aumente el ancho total */
+    background-color: #f0f4f8; /* Un fondo ligeramente diferente para destacarlo */
+    border-bottom: 1px solid #e2e8f0; /* Separador visual */
+    border-radius: 0; /* Elimina bordes redondeados si los tuviera */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Sombra sutil */
 
     .search-box {
       width: 100%;
-      input {
-        width: 100%;
-      }
+      max-width: 300px; /* Limita el ancho del buscador para que no sea demasiado grande */
     }
+
+    .toggle-vendidos {
+      width: 100%; /* Asegura que el toggle ocupe el ancho completo para centrar su contenido */
+      justify-content: center; /* Centra el texto y el switch dentro del toggle */
+    }
+  }
+
+  .visual-filter-section h2 {
+    margin-top: 20px; /* Añade un margen superior al título para separarlo de la barra de control */
+    text-align: center; /* Mantiene el título centrado en móvil */
   }
 }

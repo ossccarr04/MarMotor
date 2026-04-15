@@ -1,9 +1,16 @@
 <section class="visual-filter-section">
   @if (isAdmin) {
-    <div class="admin-quick-search">
+    <div class="admin-control-bar">
+      <label class="toggle-vendidos">
+        <div class="switch">
+          <input type="checkbox" [(ngModel)]="buscarEnVendidos" (change)="alCambiarInterruptor()" />
+          <span class="slider"></span>
+        </div>
+        <span class="label-text">Mostrar vendidos</span>
+      </label>
+
       <div class="search-box">
         <i class="fa-solid fa-user-gear admin-icon"></i>
-
         <input
           type="text"
           [(ngModel)]="busquedaAdmin"
@@ -11,7 +18,7 @@
           (keyup.enter)="buscarAdmin()"
         />
         @if (busquedaAdmin.length > 0) {
-          <button (click)="buscarAdmin()" >
+          <button (click)="buscarAdmin()" class="btn-search">
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
         }

@@ -16,4 +16,8 @@ export class BrandServiceBBDD {
   getBrands(): Observable<any> {
     return this.http.get<any>(this.URL);
   }
+
+  getBrandsSold(): Observable<any> {
+    return this.http.get<any>(`${this.URL}/sold`);
+  }
 }

@@ -14,6 +14,8 @@ export interface CarDTO {
   power: number; // cv
   mileage: number; // km
   consumption: string;
+  createdAt: string;
+  soldAt: string;
   badge: BadgeType | null
   badgeType?: BadgeType | null;
   isSaved: boolean
