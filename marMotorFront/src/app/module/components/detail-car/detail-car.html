@@ -95,9 +95,10 @@
               <span>Etiqueta:</span> <strong>{{ badgeLabel[car.badge] | titlecase }}</strong>
             </li>
           }
-          @if(isRouteSold()){
+          @if (isRouteSold()) {
             <li>
-              <span>Fecha de Venta:</span> <strong>{{ car.soldAt | date:'dd/MM/yyyy HH:mm' }}</strong>
+              <span>Fecha de Venta:</span>
+              <strong>{{ car.soldAt | date: 'dd/MM/yyyy HH:mm' }}</strong>
             </li>
           }
         </ul>
@@ -165,16 +166,50 @@
           <button class="btn-contact">CONTACTAR VENDEDOR</button>
         </section>
       } @else {
-        <section class="card reserve-card status-unavailable">
-          <div class="reserve-icon"><i class="fa-solid fa-lock"></i></div>
+        <section
+          class="card reserve-card status-unavailable"
+          [class.is-sold]="car.badge === badgeType.SOLD"
+        >
+          <div class="reserve-icon">
+            <i
+              class="fa-solid"
+              [ngClass]="car.badge === badgeType.RESERVED ? 'fa-lock' : 'fa-trash-can'"
+            ></i>
+          </div>
+
           <h3 class="reserve-title">
             {{ car.badge === badgeType.RESERVED ? 'VEHÍCULO RESERVADO' : 'VEHÍCULO VENDIDO' }}
           </h3>
+
           <p class="reserve-subtitle">Este vehículo ya no está disponible para reserva</p>
-          <div class="final-price" style="text-decoration: line-through; opacity: 0.6">
-            {{ car.price | currency: 'EUR' : 'symbol' : '1.0-0' }}
+
+          <div class="final-price-wrapper">
+            <span class="price-strikethrough">
+              {{ car.price | currency: 'EUR' : 'symbol' : '1.0-0' }}
+            </span>
           </div>
-          <button class="btn-contact disabled" disabled>NO DISPONIBLE</button>
+
+          @if (car.badge === badgeType.SOLD) {
+            <div class="delete-actions-container">
+              @if (!confirmandoBorrado) {
+                <button class="btn-delete-car" (click)="prepararEliminacion()">
+                  <i class="fa-solid fa-trash"></i> ELIMINAR DEL STOCK
+                </button>
+              } @else {
+                <div class="confirm-box">
+                  <p class="confirm-text">¿Confirmas la eliminación permanente?</p>
+                  <div class="confirm-btns">
+                    <button class="btn-confirm-yes" (click)="ejecutarEliminacion(car.id)">
+                      SÍ, ELIMINAR
+                    </button>
+                    <button class="btn-confirm-no" (click)="cancelarEliminacion()">CANCELAR</button>
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <button class="btn-contact disabled" disabled>NO DISPONIBLE</button>
+          }
         </section>
       }
     </div>

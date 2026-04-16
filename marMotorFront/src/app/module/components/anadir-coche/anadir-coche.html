@@ -82,20 +82,19 @@
         <div class="form-grid-4">
           <div class="form-group">
             <label><i class="icon">⛽</i> Combustible <span class="text-danger">*</span></label>
-            <input
-              type="text"
+            <select
               formControlName="fuelTypeName"
-              list="fuelList"
-              placeholder="Ej: Híbrido"
               [class.is-invalid]="
                 carForm.get('fuelTypeName')?.invalid && carForm.get('fuelTypeName')?.touched
               "
-            />
-            <datalist id="fuelList">
+              class="form-select"
+            >
+              <option value="" disabled selected>Selecciona...</option>
               @for (fuel of combustiblesSugeridos; track fuel) {
-                <option [value]="fuel | titlecase"></option>
+                <option [value]="fuel">{{ fuel | titlecase }}</option>
               }
-            </datalist>
+            </select>
+
           </div>
 
           <div class="form-group">
@@ -136,7 +135,7 @@
             />
             <datalist id="bodyList">
               @for (body of carroceriasSugeridas; track body) {
-                <option [value]="body"></option>
+                <option [value]="body | titlecase"></option>
               }
             </datalist>
           </div>
@@ -227,8 +226,8 @@
           <div class="form-group">
             <label><i class="icon">🎖️</i> Distintivo</label>
             <select formControlName="badge">
-              @for( type of badges; track type){
-                <option [value]="type">{{badgeLabels[type]}}</option>
+              @for (type of badges; track type) {
+                <option [value]="type">{{ badgeLabels[type] }}</option>
               }
             </select>
           </div>
@@ -240,7 +239,7 @@
               rows="1"
               placeholder="Breve descripción..."
               (input)="autoGrow(descArea)"
-              style="overflow:hidden; display:block; width:100%; white-space: pre-wrap;"
+              style="overflow: hidden; display: block; width: 100%; white-space: pre-wrap"
               [class.is-invalid]="
                 carForm.get('description')?.invalid && carForm.get('description')?.touched
               "

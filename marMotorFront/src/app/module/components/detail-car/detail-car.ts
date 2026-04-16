@@ -1,4 +1,12 @@
-import { ChangeDetectorRef, Component, OnInit, Renderer2, inject, OnDestroy, PLATFORM_ID } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  Renderer2,
+  inject,
+  OnDestroy,
+  PLATFORM_ID,
+} from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CarDetail } from '../../../@types/interface/car-details.interface';
@@ -6,6 +14,7 @@ import { CarServiceBBDD } from '../../services/car-service-bbdd';
 import { AuthServiceBBDD } from '../../services/auth-service';
 import { UserRoles } from '../../../@types/enums/roles.enums';
 import { BadgeLabel, BadgeType } from '../../../@types/enums/badge.enum';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'detail-car',
@@ -17,7 +26,10 @@ import { BadgeLabel, BadgeType } from '../../../@types/enums/badge.enum';
 export class DetailCar implements OnInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
   // Inyecciones
-  constructor(private carsService: CarServiceBBDD, private authService: AuthServiceBBDD) {
+  constructor(
+    private carsService: CarServiceBBDD,
+    private authService: AuthServiceBBDD,
+  ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state && navigation.extras.state['listaFiltrada']) {
       const listaEntrante = navigation.extras.state['listaFiltrada'];
@@ -25,31 +37,32 @@ export class DetailCar implements OnInit, OnDestroy {
       this.carIds = listaEntrante.map((c: any) => c.id);
     }
   }
-  
+  private toast = inject(ToastrService);
   private cdr = inject(ChangeDetectorRef);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private renderer = inject(Renderer2);
   // Estado del componente
-  badgeLabel= BadgeLabel
-  badgeType= BadgeType
+  confirmandoBorrado: boolean = false;
+  badgeLabel = BadgeLabel;
+  badgeType = BadgeType;
   car: CarDetail | null = null;
   carIds: number[] = []; // Solo guardamos IDs para navegación Next/Prev
   currentIndex: number = 0;
   currentImageIndex: number = 0;
   isZoomed: boolean = false;
-  isAdmin: boolean= true //! Cambiar a false
+  isAdmin: boolean = true; //! Cambiar a false
   private scrollPosition: number = 0;
 
   ngOnInit(): void {
-    this.carIds= this.carsService.getCarIds();
-    
-    if(this.authService.isLoggedIn()) {
-          const user = this.authService.getCurrentUser();
-          if(user) {
-            this.isAdmin = atob(user.rol) === UserRoles.ADMIN; 
-          }
-        }
+    this.carIds = this.carsService.getCarIds();
+
+    if (this.authService.isLoggedIn()) {
+      const user = this.authService.getCurrentUser();
+      if (user) {
+        this.isAdmin = atob(user.rol) === UserRoles.ADMIN;
+      }
+    }
 
     this.route.paramMap.subscribe((params) => {
       const encodedId = params.get('id');
@@ -68,10 +81,10 @@ export class DetailCar implements OnInit, OnDestroy {
         this.carsService.getCarsDetails(idNumerico).subscribe({
           next: (data) => {
             this.car = data;
-            this.car.fuelType= this.car.fuelType.toLowerCase()
-            this.car.transmission= this.car.transmission.toLowerCase()
-            this.car.bodyType= this.car.bodyType?.toLocaleLowerCase() ?? null;
-
+            this.car.badge = (this.car.badge?.toLowerCase() as BadgeType) ?? null;
+            this.car.fuelType = this.car.fuelType.toLowerCase();
+            this.car.transmission = this.car.transmission.toLowerCase();
+            this.car.bodyType = this.car.bodyType?.toLocaleLowerCase() ?? null;
 
             // Si carIds está vacío (acceso directo por URL), lo inicializamos con el actual
             if (this.carIds.length === 0) {
@@ -137,8 +150,8 @@ export class DetailCar implements OnInit, OnDestroy {
     img.src = 'assets/placeholder-car.jpg'; // Imagen por defecto si falla el servidor
   }
 
-  isRouteSold(){
-    return this.car?.badge === BadgeType.SOLD
+  isRouteSold() {
+    return this.car?.badge === BadgeType.SOLD;
   }
 
   // --- ZOOM Y UI ---
@@ -165,10 +178,28 @@ export class DetailCar implements OnInit, OnDestroy {
     }
   }
 
-  navigateToEdit(){
-    if(this.car){
-      const idCoded= btoa(this.car.id.toString())
-      this.router.navigate(['/cars/edit-car', idCoded])
+  prepararEliminacion() {
+    this.confirmandoBorrado = true;
+  }
+
+  cancelarEliminacion() {
+    this.confirmandoBorrado = false;
+  }
+
+  ejecutarEliminacion(id: number) {
+    this.carsService.deleteCar(id).subscribe({
+      next: () => {
+        this.toast.success('Vehículo eliminado con éxito de la base de datos', 'Exito');
+        this.router.navigate(['/cars']);
+      },
+      error: () => this.toast.error('Error al eliminar', 'Error'),
+    });
+  }
+
+  navigateToEdit() {
+    if (this.car) {
+      const idCoded = btoa(this.car.id.toString());
+      this.router.navigate(['/cars/edit-car', idCoded]);
     }
   }
   ngOnDestroy(): void {

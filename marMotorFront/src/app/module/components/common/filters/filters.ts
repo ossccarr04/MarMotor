@@ -59,7 +59,7 @@ export class Filters implements OnInit {
   @Output() resultadosEncontrados = new EventEmitter<CarDTO[]>();
   @Output() filterChange = new EventEmitter<any>();
 
-  private cdr = inject(ChangeDetectorRef)
+  private cdr = inject(ChangeDetectorRef);
 
   constructor(
     private route: Router,
@@ -68,7 +68,6 @@ export class Filters implements OnInit {
     private bodyTypeService: BodyTypeServiceBBDD,
     private fuelTypeService: FuelTypeServiceBBDD,
     @Inject(PLATFORM_ID) private platformId: Object,
-    
   ) {}
 
   marcas: BrandDTO[] = [];
@@ -92,9 +91,9 @@ export class Filters implements OnInit {
   @ViewChild('sliderElement') sliderElement!: ElementRef;
 
   ngOnInit(): void {
+    this.limpiezaFiltros();
     // 1. Cargar Marcas
     this.cargarMarcasSegunEstado();
-
 
     // 2. Cargar Carrocerías
     this.bodyTypeService.getBodyTypes().subscribe({
@@ -110,13 +109,23 @@ export class Filters implements OnInit {
     });
 
     // 3. Cargar Combustibles
-    this.fuelTypeService.getFuels().subscribe({
+    this.actualizarCombustiblesDinamicos();
+  }
+
+  actualizarCombustiblesDinamicos() {
+    const mostrarVendidos = this.carService.mantenerVendidosActivo;
+
+
+    const combustiblePreviamenteSeleccionado = this.combustibles.find((f) => f.selected);
+
+    this.fuelTypeService.getFuels(mostrarVendidos).subscribe({
       next: (data) => {
-        this.combustibles = data;
-        this.combustibles.forEach((item) => {
-          item.name = item.name.toUpperCase();
-          item.selected = false;
-        });
+        this.combustibles = data.map((f: any) => ({
+          ...f,
+          name: f.name.toUpperCase(),
+          value: f.name,
+          selected: f.name === combustiblePreviamenteSeleccionado,
+        }));
         const fuelFromUrl = this.getParamFromUrl('fuelType');
         if (fuelFromUrl) this.seleccionarCombustiblePorNombre(fuelFromUrl);
       },
@@ -124,30 +133,30 @@ export class Filters implements OnInit {
   }
 
   cargarMarcasSegunEstado() {
-  // 1. Decidimos qué servicio llamar según el interruptor
-  const mostrarVendidos = this.carService.mantenerVendidosActivo;
-  
-  const peticion = mostrarVendidos 
-    ? this.brandService.getBrandsSold() 
-    : this.brandService.getBrands();
+    // 1. Decidimos qué servicio llamar según el interruptor
+    const mostrarVendidos = this.carService.mantenerVendidosActivo;
 
-  peticion.subscribe({
-    next: (data) => {
-      this.marcas = data;
-      this.marcas.forEach((item) => {
-        item.name = item.name.toUpperCase();
-        item.selected = false;
-      });
+    const peticion = mostrarVendidos
+      ? this.brandService.getBrandsSold()
+      : this.brandService.getBrands();
 
-      // PROTECCIÓN SSR: Solo ejecutamos la selección por URL si hay marcas cargadas
-      const brandFromUrl = this.getParamFromUrl('brand');
-      if (brandFromUrl) {
-        this.seleccionarMarca({ name: brandFromUrl });
-      }
-    },
-    error: (err) => console.error('Error cargando marcas dinámicas:', err)
-  });
-}
+    peticion.subscribe({
+      next: (data) => {
+        this.marcas = data;
+        this.marcas.forEach((item) => {
+          item.name = item.name.toUpperCase();
+          item.selected = false;
+        });
+
+        // PROTECCIÓN SSR: Solo ejecutamos la selección por URL si hay marcas cargadas
+        const brandFromUrl = this.getParamFromUrl('brand');
+        if (brandFromUrl) {
+          this.seleccionarMarca({ name: brandFromUrl });
+        }
+      },
+      error: (err) => console.error('Error cargando marcas dinámicas:', err),
+    });
+  }
 
   // Métodos de selección y lógica de negocio
   seleccionarCarroceriaPorNombre(nombre: string) {
@@ -264,16 +273,13 @@ export class Filters implements OnInit {
 
   // Navegación
   buscarTodos() {
-   this.limpiarMarca();
-  this.limpiarCarroceria();
-  this.limpiarCombustible();
-  this.precioActual = 0;
-  this.precioModificado = false;
-  this.route.navigate(['/cars'], { queryParams: {} }).then(() => {
-    // Recargamos las marcas para que vuelvan a salir las de coches disponibles
-    this.cargarMarcasSegunEstado(); 
-    this.carService.recargarCoches$.next();
-  });
+    this.limpiezaFiltros();
+    this.precioModificado = false;
+    this.route.navigate(['/cars'], { queryParams: {} }).then(() => {
+      // Recargamos las marcas para que vuelvan a salir las de coches disponibles
+      this.cargarMarcasSegunEstado();
+      this.carService.recargarCoches$.next();
+    });
   }
 
   buscarConFiltros() {
@@ -315,6 +321,15 @@ export class Filters implements OnInit {
     return null;
   }
 
+  limpiezaFiltros() {
+    this.limpiarMarca();
+    this.limpiarCarroceria();
+    this.limpiarCombustible();
+    this.precioActual = 0;
+    this.precioModificado = false;
+    this.resultadosAdmin = [];
+    this.busquedaAdmin = '';
+  }
   buscarAdmin() {
     const term = this.busquedaAdmin.trim();
 
@@ -325,17 +340,19 @@ export class Filters implements OnInit {
     const queryParams: any = {};
     queryParams[btoa('search')] = btoa(term);
 
-      this.route.navigate(['/cars'], {
-        queryParams,
-      });
+    this.route.navigate(['/cars'], {
+      queryParams,
+    });
   }
 
   alCambiarInterruptor() {
+    this.limpiezaFiltros();
 
-  this.carService.mantenerVendidosActivo = this.buscarEnVendidos;
-  this.cargarMarcasSegunEstado();
-  this.carService.recargarCoches$.next(); 
-}
+    this.carService.mantenerVendidosActivo = this.buscarEnVendidos;
+    this.actualizarCombustiblesDinamicos();
+    this.cargarMarcasSegunEstado();
+    this.carService.recargarCoches$.next();
+  }
 
   get buscarEnVendidos(): boolean {
     return this.carService.mantenerVendidosActivo;

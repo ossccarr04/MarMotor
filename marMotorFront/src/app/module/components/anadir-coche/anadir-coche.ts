@@ -51,10 +51,10 @@ export class AnadirCoche implements OnInit {
 
   marcasSugeridas: string[] = [];
   carroceriasSugeridas: string[] = [];
-  combustiblesSugeridos = Object.values(FuelType).filter((v) => typeof v === 'string');
+  combustiblesSugeridos = Object.values(FuelType).filter((v) => typeof v === 'string');;
   transmissions = Object.values(Transmission).filter((v) => typeof v === 'string');
-  badges= Object.values(BadgeType)
-  badgeLabels= BadgeLabel
+  badges = Object.values(BadgeType);
+  badgeLabels = BadgeLabel;
 
   iconosDisponibles = Object.entries(HistoryIcon).map(([key, value]) => ({
     label: HistoryIconLabel.get(value) || key,
@@ -104,72 +104,71 @@ export class AnadirCoche implements OnInit {
     });
   }
 
-cargarDatosParaEditar(id: string) {
-  const idDecoded = atob(id);
-  this.carService.getCarsDetails(idDecoded).subscribe({
-    next: (car) => {
-      // 1. Rellenar campos simples
-      this.carForm.patchValue({
-        model: car.model,
-        year: car.year,
-        price: car.price,
-        power: car.power,
-        mileage: car.mileage,
-        consumption: car.consumption,
-        transmission: car.transmission ? 
-        car.transmission.charAt(0).toUpperCase() + car.transmission.slice(1).toLowerCase() : 'Manual',
-        brandName: car.make, 
-        fuelTypeName: car.fuelType,
-        bodyTypeName: car.bodyType,
-        color: car.color,
-        badge: car.badge,
-        description: car.description,
-      });
-
-      // 2. Limpiar FormArrays antes de cargar (evita duplicados si entras/sales)
-      this.features.clear();
-      this.history.clear();
-
-      // 3. Rellenar Equipamiento
-      car.features?.forEach((f: string) => {
-        this.features.push(this.fb.control(f, Validators.required));
-      });
-
-      // 4. Rellenar Historial (Aseguramos los nombres de campos)
-      if (car.history && car.history.length > 0) {
-        car.history.forEach((h: any) => {
-          this.history.push(
-            this.fb.group({
-              // IMPORTANTE: Verifica si en tu BBDD el campo es 'year' o 'año'
-              year: [h.year, [
-                Validators.required, 
-                Validators.min(1900), 
-                Validators.max(new Date().getFullYear())
-              ]],
-              title: [h.title, Validators.required],
-              icon: [h.icon || '🔧'],
-              // IMPORTANTE: Asegúrate de que el nombre sea 'isCompleted' o 'completed' según tu DTO
-              isCompleted: [!!h.isCompleted], 
-            })
-          );
+  cargarDatosParaEditar(id: string) {
+    const idDecoded = atob(id);
+    this.carService.getCarsDetails(idDecoded).subscribe({
+      next: (car) => {
+        // 1. Rellenar campos simples
+        this.carForm.patchValue({
+          model: car.model,
+          year: car.year,
+          price: car.price,
+          power: car.power,
+          mileage: car.mileage,
+          consumption: car.consumption,
+          transmission: car.transmission
+            ? car.transmission.charAt(0).toUpperCase() + car.transmission.slice(1).toLowerCase()
+            : 'Manual',
+          brandName: car.make,
+          fuelTypeName: car.fuelType ? car.fuelType.charAt(0).toUpperCase() + car.fuelType.slice(1).toLowerCase() : '',
+          bodyTypeName: car.bodyType ? car.bodyType.charAt(0).toUpperCase() + car.bodyType.slice(1).toLowerCase() : null,
+          color: car.color,
+          badge: car.badge,
+          description: car.description,
         });
-      }
 
-      // 5. Imágenes
-      if (car.imagesAlbum && car.imagesAlbum.length > 0) {
-        this.previewPortada = car.imagesAlbum[0];
-        this.previewsGaleria = car.imagesAlbum.slice(1);
-      }
+        // 2. Limpiar FormArrays antes de cargar (evita duplicados si entras/sales)
+        this.features.clear();
+        this.history.clear();
 
-      this.cdr.detectChanges();
-    },
-    error: () => this.toast.error('No se pudieron cargar los datos del vehículo'),
-  });
-}
+        // 3. Rellenar Equipamiento
+        car.features?.forEach((f: string) => {
+          this.features.push(this.fb.control(f, Validators.required));
+        });
 
-  private formatToTitleCase(text: string): string {
-    if (!text) return '';
-    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+        // 4. Rellenar Historial (Aseguramos los nombres de campos)
+        if (car.history && car.history.length > 0) {
+          car.history.forEach((h: any) => {
+            this.history.push(
+              this.fb.group({
+                // IMPORTANTE: Verifica si en tu BBDD el campo es 'year' o 'año'
+                year: [
+                  h.year,
+                  [
+                    Validators.required,
+                    Validators.min(1900),
+                    Validators.max(new Date().getFullYear()),
+                  ],
+                ],
+                title: [h.title, Validators.required],
+                icon: [h.icon || '🔧'],
+                // IMPORTANTE: Asegúrate de que el nombre sea 'isCompleted' o 'completed' según tu DTO
+                isCompleted: [!!h.isCompleted],
+              }),
+            );
+          });
+        }
+
+        // 5. Imágenes
+        if (car.imagesAlbum && car.imagesAlbum.length > 0) {
+          this.previewPortada = car.imagesAlbum[0];
+          this.previewsGaleria = car.imagesAlbum.slice(1);
+        }
+
+        this.cdr.detectChanges();
+      },
+      error: () => this.toast.error('No se pudieron cargar los datos del vehículo'),
+    });
   }
 
   // --- GETTERS Y MÉTODOS DINÁMICOS ---
@@ -239,17 +238,20 @@ cargarDatosParaEditar(id: string) {
   onSubmit() {
     if (this.carForm.invalid) {
       this.carForm.markAllAsTouched();
-      this.toast.warning('Revisa los campos marcados.', "Error de validación.");
+      this.toast.warning('Revisa los campos marcados.', 'Error de validación.');
       return;
     }
 
     if (!this.fotoPortada && !this.previewPortada) {
-      this.toast.warning('Por favor, selecciona una portada.',"Error en la imagen");
+      this.toast.warning('Por favor, selecciona una portada.', 'Error en la imagen');
       return;
     }
 
     if (!this.combustiblesSugeridos.includes(this.carForm.get('fuelTypeName')?.value)) {
-      this.toast.warning('Por favor, selecciona un tipo de combustible válido.', "Error de combustible");
+      this.toast.warning(
+        'Por favor, selecciona un tipo de combustible válido.',
+        'Error de combustible',
+      );
       return;
     }
 
@@ -275,15 +277,17 @@ cargarDatosParaEditar(id: string) {
 
     const carData = {
       ...formRawValue,
-      transmission: formRawValue.transmission.toUpperCase(),
+      transmission: this.carForm.value.transmission.toUpperCase() === 'AUTOMATICA' ? 'AUTOMATICA' : 'MANUAL',
       consumption: rawConsumption.includes('.') ? rawConsumption : `${rawConsumption}.0`,
       existingImages: currentExistingImages, // Mandamos la lista de "sobrevivientes"
       clearImages:
         currentExistingImages.length === 0 && !this.fotoPortada && this.fotosGaleria.length === 0,
-      history: formRawValue.history.map((h: any) => ({
-        ...h,
-        isCompleted: !!h.isCompleted,
-      })).sort((a: any, b: any) => a.year - b.year),
+      history: formRawValue.history
+        .map((h: any) => ({
+          ...h,
+          isCompleted: !!h.isCompleted,
+        }))
+        .sort((a: any, b: any) => a.year - b.year),
     };
 
     const formData = new FormData();
@@ -301,14 +305,14 @@ cargarDatosParaEditar(id: string) {
 
     request.subscribe({
       next: (car: any) => {
-        this.toast.success(this.isEditMode ? 'Vehículo actualizado.' : 'Vehículo creado.', "Éxito");
+        this.toast.success(this.isEditMode ? 'Vehículo actualizado.' : 'Vehículo creado.', 'Éxito');
         const idNavegacion = this.isEditMode ? this.carId : btoa(car.id.toString());
         this.router.navigate(['/detail-car', idNavegacion]);
       },
       error: (err) => {
         this.isSubmitting = false;
         console.error('Error Backend:', err);
-        this.toast.error('Error al guardar. Revisa la consola o los datos.', "Error al guardar");
+        this.toast.error('Error al guardar. Revisa la consola o los datos.', 'Error al guardar');
       },
     });
   }
@@ -324,6 +328,6 @@ cargarDatosParaEditar(id: string) {
       .subscribe((d) => (this.marcasSugeridas = d.map((b: BrandDTO) => b.name)));
     this.bodyTypeService
       .getBodyTypes()
-      .subscribe((d) => (this.carroceriasSugeridas = d.map((bt: BodyTypeDTO) => bt.name)));
+      .subscribe((d) => (this.carroceriasSugeridas = d.map((bt: BodyTypeDTO) => bt.name.toLowerCase())));
   }
 }

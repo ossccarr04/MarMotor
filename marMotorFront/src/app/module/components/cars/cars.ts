@@ -34,6 +34,7 @@ export class Cars {
   itemsPorPagina = 12;
 
   ngOnInit() {
+
     this.carService.recargarCoches$.subscribe(() => {
       const params = this.route.snapshot.queryParams;
       if (params && Object.keys(params).length > 0) {
@@ -85,6 +86,7 @@ export class Cars {
     };
 
     // 3. LÓGICA DE BÚSQUEDA RÁPIDA (Search por texto)
+    
     if (filtrosLimpios['search']) {
       const queryTerm = filtrosLimpios['search'];
 
@@ -122,10 +124,9 @@ export class Cars {
         this.carService.setCarIds(this.cochesFiltrados.map((c) => c.id));
 
         if (this.cochesFiltrados.length === 0 && this.cargando) {
-          const mensaje = quiereVerVendidos
-            ? 'No se han encontrado vehículos vendidos con esos filtros'
-            : 'No se han encontrado vehículos disponibles con esos filtros';
-          this.toast.warning(mensaje, 'Atención');
+          if(filtrosLimpios){
+            this.toast.warning('No se han encontrado vehículos', 'Atención');
+          }
         }
         this.cargando = false;
         this.paginaActual = 1;
