@@ -3,11 +3,9 @@ package com.example.marmotor.controller;
 import com.example.marmotor.model.DTO.FuelTypeDTO;
 import com.example.marmotor.service.FuelTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,8 +16,8 @@ public class FuelTypeController {
     @Autowired
     private FuelTypeService fuelTypeService;
 
-    @GetMapping
-    public ResponseEntity<List<FuelTypeDTO>> getFuelTypes() {
-        return ResponseEntity.ok(fuelTypeService.getAllFuelTypes());
+    @GetMapping("/active")
+    public ResponseEntity<List<FuelTypeDTO>> getFuelTypes(@RequestParam(name = "isSold", defaultValue = "false") boolean isSold) {
+        return ResponseEntity.ok(fuelTypeService.getAllFuelTypes(isSold));
     }
 }

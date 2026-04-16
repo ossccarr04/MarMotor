@@ -13,8 +13,8 @@ public class FuelTypeService {
     @Autowired
     private FuelTypeRepository repository;
 
-    public List<FuelTypeDTO> getAllFuelTypes() {
-        return repository.findAll().stream().map(ft -> {
+    public List<FuelTypeDTO> getAllFuelTypes(boolean isSold) {
+        return repository.findFuelTypesByCarStatus(isSold).stream().map(ft -> {
             FuelTypeDTO dto = new FuelTypeDTO();
             dto.setId(ft.getId());
             dto.setName(ft.getName());

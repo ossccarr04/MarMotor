@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Añadido fecha venta y fecha creacion">
+    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Añadido endpoints para mostrar los datos de coches vendidos">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/BrandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/BrandController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/CarDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/CarDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/BrandRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/BrandRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/BrandService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/BrandService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/FuelTypeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/FuelTypeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/FuelTypeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/FuelTypeRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/CarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/CarService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/CarService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/CarService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/FuelTypeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/FuelTypeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,7 +143,9 @@
       <workItem from="1775980194204" duration="6827000" />
       <workItem from="1776087550685" duration="486000" />
       <workItem from="1776148368098" duration="3541000" />
-      <workItem from="1776238766693" duration="4290000" />
+      <workItem from="1776238766693" duration="4345000" />
+      <workItem from="1776249071703" duration="1394000" />
+      <workItem from="1776323189323" duration="2557000" />
     </task>
     <task id="LOCAL-00001" summary="Añadido la creacion de vehiculos y guardar la imagen">
       <option name="closed" value="true" />
@@ -178,7 +179,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776162773445</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Añadido endpoints para mostrar los datos de coches vendidos">
+      <option name="closed" value="true" />
+      <created>1776248912156</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1776248912156</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -190,6 +199,7 @@
     <MESSAGE value="Modificado para editar vehiculos y correccion de eliminar imagenes" />
     <MESSAGE value="Añadido buscador para administrador" />
     <MESSAGE value="Añadido fecha venta y fecha creacion" />
-    <option name="LAST_COMMIT_MESSAGE" value="Añadido fecha venta y fecha creacion" />
+    <MESSAGE value="Añadido endpoints para mostrar los datos de coches vendidos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Añadido endpoints para mostrar los datos de coches vendidos" />
   </component>
 </project>

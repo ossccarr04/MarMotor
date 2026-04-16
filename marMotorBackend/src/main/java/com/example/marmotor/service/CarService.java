@@ -35,6 +35,8 @@ public class CarService {
     private BodyTypeRepository bodyTypeRepository;
     @Autowired
     private CloudinaryService cloudinaryService;
+    @Autowired
+    private BrandService brandService;
 
     /* ==========================================================================
        MÉTODOS DE CONSULTA
@@ -214,7 +216,16 @@ public class CarService {
     }
 
     public void deleteCar(Long id) {
+        Car car= carRepository.findById(id).orElseThrow();
+        Long brandId= car.getBrand().getId();
+
         carRepository.deleteById(id);
+
+        if(!carRepository.existsByBrandId(brandId)){
+            brandService.deleteBrand(brandId);
+        }
+
+
     }
 
     /* ==========================================================================
