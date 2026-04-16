@@ -25,7 +25,10 @@
           <button class="arrow" (click)="nextCar()">›</button>
         </div>
       </header>
-
+      <section class="car-intro-text" [class.opacity-0]="isZoomed">
+  <div class="quote-line"></div>
+  <p class="description-text">{{ car.description }}</p>
+</section>
       <section class="gallery-viewport">
         <div class="gallery-container">
           <div class="main-photo-card" [class.is-zoomed]="isZoomed">
@@ -89,6 +92,9 @@
           </li>
           <li>
             <span>Consumo:</span> <strong>{{ car.consumption }} L/100km</strong>
+          </li>
+          <li>
+            <span>Color:</span> <strong>{{ car.color }}</strong>
           </li>
           @if (car.badge && car.badge !== badgeType.NONE) {
             <li>

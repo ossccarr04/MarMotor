@@ -733,22 +733,80 @@ $font-family: 'Montserrat', sans-serif;
         background: #dc2626;
         color: white;
         border: none;
-        &:hover { background: #b91c1c; }
+        &:hover {
+          background: #b91c1c;
+        }
       }
 
       .btn-confirm-no {
         background: transparent;
         color: #ffffff;
         border: 1px solid #475569;
-        &:hover { background: linear-gradient(135deg, $vibrant-teal, $vibrant-green, $deep-emerald); color: white; }
+        &:hover {
+          background: linear-gradient(135deg, $vibrant-teal, $vibrant-green, $deep-emerald);
+          color: white;
+        }
       }
     }
   }
 }
 
+.car-intro-text {
+  max-width: 800px;
+  margin: 0 auto 30px auto;
+  text-align: center;
+  position: relative;
+  transition: opacity 0.3s ease;
+
+  .quote-line {
+    width: 40px;
+    height: 3px;
+    background: #cc0000; // El rojo de tu marca
+    margin: 0 auto 15px auto;
+  }
+
+  .description-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #f0f0f0; // Suponiendo fondo oscuro por tu "hero-gradient"
+    font-style: italic;
+    font-weight: 300;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  }
+}
+
+.specs-list {
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+
+    i {
+      margin-right: 8px;
+      color: #cc0000;
+      width: 20px;
+      text-align: center;
+    }
+    
+    span {
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 /* El tick verde al lado del texto */
 .tick-success {
