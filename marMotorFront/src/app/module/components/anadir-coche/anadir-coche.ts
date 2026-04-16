@@ -37,6 +37,7 @@ export class AnadirCoche implements OnInit {
   private brandService = inject(BrandServiceBBDD);
   private bodyTypeService = inject(BodyTypeServiceBBDD);
 
+  
   carForm!: FormGroup;
   isSubmitting = false;
 
@@ -51,10 +52,27 @@ export class AnadirCoche implements OnInit {
 
   marcasSugeridas: string[] = [];
   carroceriasSugeridas: string[] = [];
-  combustiblesSugeridos = Object.values(FuelType).filter((v) => typeof v === 'string');;
+  combustiblesSugeridos = Object.values(FuelType).filter((v) => typeof v === 'string');
   transmissions = Object.values(Transmission).filter((v) => typeof v === 'string');
   badges = Object.values(BadgeType);
   badgeLabels = BadgeLabel;
+
+  nombresEnEspanol: { [key: string]: string } = {
+  model: 'Modelo',
+  year: 'Año',
+  price: 'Precio',
+  power: 'Potencia',
+  mileage: 'Kilometraje',
+  consumption: 'Consumo',
+  transmission: 'Transmisión',
+  brandName: 'Marca',
+  fuelTypeName: 'Combustible',
+  bodyTypeName: 'Carrocería',
+  color: 'Color',
+  description: 'Descripción',
+  features: 'Características',
+  history: 'Historial'
+};
 
   iconosDisponibles = Object.entries(HistoryIcon).map(([key, value]) => ({
     label: HistoryIconLabel.get(value) || key,
@@ -89,14 +107,14 @@ export class AnadirCoche implements OnInit {
       brandName: ['', Validators.required],
       fuelTypeName: ['', Validators.required],
       bodyTypeName: [null],
-      color: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
+      color: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\-\.\#]+$/)]],
       badge: [BadgeType.NONE],
       description: [
         '',
         [
           Validators.required,
           Validators.minLength(10),
-          Validators.pattern(/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,!¡?¿]+$/),
+          Validators.pattern(/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,!¡?¿\-]+$/),
         ],
       ],
       features: this.fb.array([]),
@@ -120,8 +138,12 @@ export class AnadirCoche implements OnInit {
             ? car.transmission.charAt(0).toUpperCase() + car.transmission.slice(1).toLowerCase()
             : 'Manual',
           brandName: car.make,
-          fuelTypeName: car.fuelType ? car.fuelType.charAt(0).toUpperCase() + car.fuelType.slice(1).toLowerCase() : '',
-          bodyTypeName: car.bodyType ? car.bodyType.charAt(0).toUpperCase() + car.bodyType.slice(1).toLowerCase() : null,
+          fuelTypeName: car.fuelType
+            ? car.fuelType.charAt(0).toUpperCase() + car.fuelType.slice(1).toLowerCase()
+            : '',
+          bodyTypeName: car.bodyType
+            ? car.bodyType.charAt(0).toUpperCase() + car.bodyType.slice(1).toLowerCase()
+            : null,
           color: car.color,
           badge: car.badge,
           description: car.description,
@@ -237,6 +259,14 @@ export class AnadirCoche implements OnInit {
   // --- ENVÍO ---
   onSubmit() {
     if (this.carForm.invalid) {
+      Object.keys(this.carForm.controls).forEach((key) => {
+        const controlErrors = this.carForm.get(key)?.errors;
+        if (controlErrors != null) {
+          this.toast.error(
+            'Error en el campo ' + this.nombresEnEspanol[key],'Error'
+          );
+        }
+      });
       this.carForm.markAllAsTouched();
       this.toast.warning('Revisa los campos marcados.', 'Error de validación.');
       return;
@@ -277,7 +307,8 @@ export class AnadirCoche implements OnInit {
 
     const carData = {
       ...formRawValue,
-      transmission: this.carForm.value.transmission.toUpperCase() === 'AUTOMATICA' ? 'AUTOMATICA' : 'MANUAL',
+      transmission:
+        this.carForm.value.transmission.toUpperCase() === 'AUTOMATICA' ? 'AUTOMATICA' : 'MANUAL',
       consumption: rawConsumption.includes('.') ? rawConsumption : `${rawConsumption}.0`,
       existingImages: currentExistingImages, // Mandamos la lista de "sobrevivientes"
       clearImages:
@@ -328,6 +359,8 @@ export class AnadirCoche implements OnInit {
       .subscribe((d) => (this.marcasSugeridas = d.map((b: BrandDTO) => b.name)));
     this.bodyTypeService
       .getBodyTypes()
-      .subscribe((d) => (this.carroceriasSugeridas = d.map((bt: BodyTypeDTO) => bt.name.toLowerCase())));
+      .subscribe(
+        (d) => (this.carroceriasSugeridas = d.map((bt: BodyTypeDTO) => bt.name.toLowerCase())),
+      );
   }
 }
