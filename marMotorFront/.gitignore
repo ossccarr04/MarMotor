@@ -1,46 +1,48 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+# ##########################################################################
+# MAR MOTOR - ANGULAR GITIGNORE DEFINITIVO
+# ##########################################################################
 
-# Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
+# Dependencias (NUNCA SUBIR ESTO)
+node_modules/
+.angular/
 
-# Node
-/node_modules
-npm-debug.log
-yarn-error.log
+# Salidas de compilación
+dist/
+tmp/
+out-tsc/
+bazel-out/
 
-# IDEs and editors
+# IDEs y Editores (Configuraciones personales)
 .idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# Visual Studio Code
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.history/*
-*.development.ts
-*.prod.ts
-/assets
+.history/
+*.iml
+*.iws
+*.ipr
 
-# Miscellaneous
-/.angular/cache
+# Logs y Temporales
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+runtime.log
 .sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
-__screenshots__/
 
-# System files
+# Testing
+/coverage
+/testem.log
+/typings
+
+# Secretos y Entornos (Solo si no quieres subirlos)
+# Si necesitas que el proyecto compile en GitHub Actions, comenta la siguiente línea
+src/environments/environment.prod.ts
+src/environments/environment.development.ts
+
+# Sistema
 .DS_Store
 Thumbs.db
