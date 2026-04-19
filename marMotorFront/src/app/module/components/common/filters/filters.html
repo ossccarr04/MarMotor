@@ -44,7 +44,7 @@
           class="filter-option"
           *ngFor="let item of marcasPrincipales; let i = index"
           [ngClass]="{ selected: item.selected }"
-          (click)="seleccionarOpcion(marcas, i)"
+          (click)="seleccionarOpcion(marcas, i, true)"
         >
           {{ item.name }}
         </div>

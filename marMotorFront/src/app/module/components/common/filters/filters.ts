@@ -183,6 +183,7 @@ export class Filters implements OnInit {
   }
 
   abrirModalMarcas() {
+    this.limpiarMarca();
     this.isModalMarcasOpen = true;
   }
   cerrarModalMarcas() {
@@ -295,7 +296,11 @@ export class Filters implements OnInit {
   }
 
   // Seleccionar una opción de una lista (Carrocerías o Combustibles)
-  seleccionarOpcion(lista: any[], index: number) {
+  seleccionarOpcion(lista: any[], index: number, isBrand:boolean = false) {
+    
+    if(this.limiteMarcas < 10 && isBrand){
+    this.limpiarMarca();
+    }
     if (!lista || !lista[index]) return;
 
     if (lista[index].selected) {
