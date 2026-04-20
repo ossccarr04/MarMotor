@@ -17,9 +17,6 @@ public class Brand {
     @Column(unique = true, nullable = false, length = 100)
     private String name;
 
-    @Column(length = 50)
-    private String country;
-
     @OneToMany(mappedBy = "brand")
     private List<Car> cars = new ArrayList<>();
 }

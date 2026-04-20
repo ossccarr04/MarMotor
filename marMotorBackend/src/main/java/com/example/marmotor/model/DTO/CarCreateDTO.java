@@ -18,6 +18,7 @@ public class CarCreateDTO {
     private String transmission;
     private String badge;
     private String badgeType;
+    private String label;
 
     // Cambiamos IDs por Names para la lógica de "Buscar o Crear"
     private String brandName;

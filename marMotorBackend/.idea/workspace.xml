@@ -5,12 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Añadido endpoints para mostrar los datos de coches vendidos">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/enums/Label.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/FuelTypeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/FuelTypeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/FuelTypeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/FuelTypeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/CarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/CarService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/FuelTypeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/FuelTypeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/BrandDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/BrandDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/CarCreateDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/CarCreateDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/CarDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/CarDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/Brand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/Brand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/Car.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +22,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -125,6 +127,9 @@
         <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.31033.145" />
       </set>
     </attachedChunks>
+  </component>
+  <component name="StructureViewState">
+    <option name="selectedTab" value="Logical" />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

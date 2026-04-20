@@ -21,6 +21,7 @@ public class CarDTO {
 
     private String badge;
     private String badgeType;
+    private String label;
     private boolean isSaved;
     private LocalDateTime createdAt;
     private LocalDateTime soldAt;
