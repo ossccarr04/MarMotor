@@ -16,7 +16,6 @@ public class CarCreateDTO {
     private Integer mileage;
     private String consumption;
     private String transmission;
-    private String label;
     private String badge;
     private String badgeType;
     private String label;

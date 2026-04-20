@@ -4,14 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Añadido endpoints para mostrar los datos de coches vendidos">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/enums/Label.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/BrandDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/BrandDTO.java" afterDir="false" />
+    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Añadido todo lo de etiquetas corregido">
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/CarCreateDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/CarCreateDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/CarDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/CarDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/Brand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/Brand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/Car.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/Brand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/Car.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/FuelType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/HistoryEvent.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/User$Role.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/enums/Transmission.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/BodyTypeRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/BrandRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/CarRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/FuelTypeRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/UserRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/BodyTypeService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/BrandService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/CarService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/FuelTypeService.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -192,7 +202,23 @@
       <option name="project" value="LOCAL" />
       <updated>1776248912156</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Añadido todo lo de etiquetas corregido">
+      <option name="closed" value="true" />
+      <created>1776690718801</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1776690718801</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Añadido todo lo de etiquetas corregido">
+      <option name="closed" value="true" />
+      <created>1776690824381</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1776690824381</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -205,6 +231,7 @@
     <MESSAGE value="Añadido buscador para administrador" />
     <MESSAGE value="Añadido fecha venta y fecha creacion" />
     <MESSAGE value="Añadido endpoints para mostrar los datos de coches vendidos" />
-    <option name="LAST_COMMIT_MESSAGE" value="Añadido endpoints para mostrar los datos de coches vendidos" />
+    <MESSAGE value="Añadido todo lo de etiquetas corregido" />
+    <option name="LAST_COMMIT_MESSAGE" value="Añadido todo lo de etiquetas corregido" />
   </component>
 </project>
