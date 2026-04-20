@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Añadido endpoints para mostrar los datos de coches vendidos">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/FuelTypeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/FuelTypeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/FuelTypeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/FuelTypeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/CarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/CarService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/FuelTypeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/FuelTypeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;oscdaw202401&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/oscdaw202401/TFGDAM.git&quot;,
+    &quot;accountId&quot;: &quot;bfb8c803-4fa1-4208-9de2-658c83702258&quot;
+  }
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="3BGKnMAf45uqaRVp3vppOLs4BtX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Docker.resources.mysql-db: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.MarMotorBackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;backend__funcional&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Salvavidas/Documents/GitHub/TFGDAM/marMotorBackend/pom.xml&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.14835948&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager" selected="Spring Boot.MarMotorBackendApplication">
+    <configuration name="MarMotorBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="marmotor" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.marmotor.MarMotorBackendApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="resources.mysql-db: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="mysql-db" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="src/main/resources/docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Docker.resources.mysql-db: Compose Deployment" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.31033.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.31033.145" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="" />
+      <created>1775396325227</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1775396325227</updated>
+      <workItem from="1775396331499" duration="106000" />
+      <workItem from="1775396443557" duration="2635000" />
+      <workItem from="1775557763654" duration="3000" />
+      <workItem from="1775558180995" duration="404000" />
+      <workItem from="1775817594199" duration="3000" />
+      <workItem from="1775896777681" duration="9804000" />
+      <workItem from="1775919983528" duration="6192000" />
+      <workItem from="1775980194204" duration="6827000" />
+      <workItem from="1776087550685" duration="486000" />
+      <workItem from="1776148368098" duration="3541000" />
+      <workItem from="1776238766693" duration="4345000" />
+      <workItem from="1776249071703" duration="1394000" />
+      <workItem from="1776323189323" duration="2557000" />
+    </task>
+    <task id="LOCAL-00001" summary="Añadido la creacion de vehiculos y guardar la imagen">
+      <option name="closed" value="true" />
+      <created>1775909327458</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1775909327459</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Modificado para editar vehiculos y correccion de eliminar imagenes">
+      <option name="closed" value="true" />
+      <created>1775980266792</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1775980266793</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Añadido buscador para administrador">
+      <option name="closed" value="true" />
+      <created>1775991540685</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1775991540685</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Añadido fecha venta y fecha creacion">
+      <option name="closed" value="true" />
+      <created>1776162773444</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1776162773445</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Añadido endpoints para mostrar los datos de coches vendidos">
+      <option name="closed" value="true" />
+      <created>1776248912156</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1776248912156</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Modificaciones en todo el apartado de car e incremento de prueba de coches" />
+    <MESSAGE value="Añadido la creacion de vehiculos y guardar la imagen" />
+    <MESSAGE value="Modificado para editar vehiculos y correccion de eliminar imagenes" />
+    <MESSAGE value="Añadido buscador para administrador" />
+    <MESSAGE value="Añadido fecha venta y fecha creacion" />
+    <MESSAGE value="Añadido endpoints para mostrar los datos de coches vendidos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Añadido endpoints para mostrar los datos de coches vendidos" />
+  </component>
+</project>

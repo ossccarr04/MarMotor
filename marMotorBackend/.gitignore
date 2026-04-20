@@ -32,4 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 .env
+application.properties
 application-prod.properties
+node_modules/
+**/node_modules/

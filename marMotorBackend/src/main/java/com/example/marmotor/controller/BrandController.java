@@ -22,6 +22,11 @@ public class BrandController {
         return ResponseEntity.ok(brandService.getAllBrands());
     }
 
+    @GetMapping("/sold")
+    public ResponseEntity<List<BrandDTO>> getAllBrandsSold() {
+        return ResponseEntity.ok(brandService.getAllBrandsSold());
+    }
+
     @PostMapping
     public ResponseEntity<Brand> createBrand(@RequestBody Brand brand) {
         return ResponseEntity.ok(brandService.saveBrand(brand));

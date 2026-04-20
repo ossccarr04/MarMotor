@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +57,12 @@ public class Car {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @Column(name = "fecha_creacion")
+    private LocalDateTime  createdAt;
+
+    @Column(name = "fecha_venta")
+    private LocalDateTime soldAt;
 
     @Column(columnDefinition = "TEXT")
     private String description;

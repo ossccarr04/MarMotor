@@ -20,7 +20,14 @@ public class BrandService {
     private CarRepository carRepository;
 
     public List<BrandDTO> getAllBrands() {
-        return brandRepository.findAll()
+        return brandRepository.findBrandsWithAvailableCars()
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<BrandDTO> getAllBrandsSold() {
+        return brandRepository.findBrandsWithSoldCars()
                 .stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());

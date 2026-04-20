@@ -8,20 +8,22 @@ import com.example.marmotor.model.entity.Car;
 import com.example.marmotor.model.entity.CarDetail;
 import com.example.marmotor.model.entity.CarImage;
 import com.example.marmotor.model.enums.Label;
+import com.example.marmotor.model.entity.*;
 import com.example.marmotor.model.enums.Status;
 import com.example.marmotor.model.enums.Transmission;
 import com.example.marmotor.repository.BodyTypeRepository;
 import com.example.marmotor.repository.BrandRepository;
 import com.example.marmotor.repository.CarRepository;
 import com.example.marmotor.repository.FuelTypeRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,10 +37,24 @@ public class CarService {
     private FuelTypeRepository fuelTypeRepository;
     @Autowired
     private BodyTypeRepository bodyTypeRepository;
+    @Autowired
+    private CloudinaryService cloudinaryService;
+    @Autowired
+    private BrandService brandService;
+
+    /* ==========================================================================
+       MÉTODOS DE CONSULTA
+       ========================================================================== */
 
     public List<CarDTO> getAllCars() {
         return carRepository.findAll().stream()
                 .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<CarDetailDTO> getAllCarsDetailed() {
+        return carRepository.findAll().stream()
+                .map(this::convertToDetailDto)
                 .collect(Collectors.toList());
     }
 
@@ -50,27 +66,189 @@ public class CarService {
         return carRepository.findById(id).map(this::convertToDetailDto);
     }
 
+    public List<CarDTO> searchByBrandOrModel(String query) {
+
+        if (query == null || query.trim().isEmpty()) return Collections.emptyList();
+
+        // Reemplaza múltiples espacios por uno solo: "Porsche    911" -> "Porsche 911"
+        String cleanedQuery = query.trim().replaceAll("\\s+", " ");
+
+        return carRepository.findByFullSearch(cleanedQuery)
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    /* ==========================================================================
+       OPERACIONES DE PERSISTENCIA (CREATE / UPDATE / DELETE)
+       ========================================================================== */
+
     @Transactional
-    public CarDTO createCar(CarCreateDTO dto) {
+    public CarDTO createCarWithImages(CarCreateDTO dto, MultipartFile[] images) throws IOException {
         Car car = new Car();
         mapDtoToEntity(dto, car);
+
         if (car.getStatus() == null) {
             car.setStatus(Status.AVAILABLE);
         }
-        return convertToDto(carRepository.save(car));
-    }
 
-    public void deleteCar(Long id) {
-        carRepository.deleteById(id);
+        // 1. Subida de imágenes inicial
+        if (images != null && images.length > 0) {
+            List<CarImage> carImages = new ArrayList<>();
+            for (int i = 0; i < images.length; i++) {
+                if (images[i] != null && !images[i].isEmpty()) {
+                    String url = cloudinaryService.uploadFile(images[i]);
+                    CarImage imgEntity = new CarImage();
+                    imgEntity.setUrl(url);
+                    imgEntity.setIsMain(i == 0);
+                    imgEntity.setCar(car);
+                    carImages.add(imgEntity);
+                }
+            }
+            car.setImages(carImages);
+        }
+
+        // 2. Crear CarDetail y Equipamiento
+        CarDetail detail = new CarDetail();
+        detail.setColor(dto.getColor());
+        detail.setDescription(dto.getDescription());
+        detail.setFeatures(dto.getFeatures());
+        detail.setCar(car);
+
+        // 3. Mapear Historial (Usando FontAwesome Class)
+        if (dto.getHistory() != null) {
+            List<HistoryEvent> historyEvents = dto.getHistory().stream().map(hDto -> {
+                HistoryEvent event = new HistoryEvent();
+                event.setYear(hDto.getYear());
+                event.setTitle(hDto.getTitle());
+                event.setIcon(hDto.getIcon() != null ? hDto.getIcon() : "fa-wrench");
+                event.setCompleted(hDto.isCompleted());
+                event.setCar(detail);
+                return event;
+            }).collect(Collectors.toList());
+            detail.setHistory(historyEvents);
+        }
+
+        car.setDetail(detail);
+        car.setCreatedAt(LocalDateTime.now());
+
+        if(Objects.equals(car.getBadge(), Status.SOLD.toString())){
+            car.setSoldAt(LocalDateTime.now());
+        }
+        Car savedCar = carRepository.save(car);
+        return convertToDto(savedCar);
     }
 
     @Transactional
-    public Optional<CarDTO> updateCar(Long id, CarCreateDTO dto) {
-        return carRepository.findById(id).map(existingCar -> {
-            mapDtoToEntity(dto, existingCar);
-            return convertToDto(carRepository.save(existingCar));
+    public Optional<CarDTO> updateCar(Long id, CarCreateDTO dto, MultipartFile[] images) throws IOException {
+        return carRepository.findById(id).map(car -> {
+            // 1. Mapear datos básicos
+            mapDtoToEntity(dto, car);
+
+            // 2. Actualizar CarDetail e Historial
+            CarDetail detail = car.getDetail();
+            if (detail == null) {
+                detail = new CarDetail();
+                detail.setCar(car);
+            }
+            detail.setColor(dto.getColor());
+            detail.setDescription(dto.getDescription());
+            detail.setFeatures(dto.getFeatures());
+
+            // Limpiar historial antiguo para evitar duplicados
+            if (detail.getHistory() != null) {
+                detail.getHistory().clear();
+            } else {
+                detail.setHistory(new ArrayList<>());
+            }
+
+            if (dto.getHistory() != null) {
+                for (HistoryEventDTO hDto : dto.getHistory()) {
+                    HistoryEvent event = new HistoryEvent();
+                    event.setYear(hDto.getYear());
+                    event.setTitle(hDto.getTitle());
+                    event.setIcon(hDto.getIcon() != null ? hDto.getIcon() : "fa-wrench");
+                    event.setCompleted(hDto.isCompleted());
+                    event.setCar(detail);
+                    detail.getHistory().add(event);
+                }
+            }
+            car.setDetail(detail);
+
+            // 3. Gestión de imágenes (Sincronización Cloudinary)
+            List<CarImage> aBorrar = car.getImages().stream()
+                    .filter(img -> dto.getExistingImages() == null || !dto.getExistingImages().contains(img.getUrl()))
+                    .collect(Collectors.toList());
+
+            for (CarImage img : aBorrar) {
+                try {
+                    cloudinaryService.deleteFile(img.getUrl());
+                } catch (Exception e) {
+                    System.err.println("Error al borrar de Cloudinary: " + e.getMessage());
+                }
+                car.getImages().remove(img);
+                img.setCar(null);
+            }
+
+            carRepository.saveAndFlush(car); // Sincroniza borrados antes de añadir nuevas
+
+            // 4. Añadir fotos nuevas
+            if (images != null && images.length > 0) {
+                for (int i = 0; i < images.length; i++) {
+                    if (images[i] != null && !images[i].isEmpty()) {
+                        try {
+                            String url = cloudinaryService.uploadFile(images[i]);
+                            CarImage newImg = new CarImage();
+                            newImg.setUrl(url);
+                            newImg.setIsMain(!hasMainImage(car.getImages()) && i == 0);
+                            newImg.setCar(car);
+                            car.getImages().add(newImg);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+
+            if(Objects.equals(car.getBadge(), Status.SOLD.toString().toLowerCase())){
+                car.setSoldAt(LocalDateTime.now());
+            }else{
+                car.setSoldAt(null);
+            }
+            return convertToDto(carRepository.save(car));
         });
     }
+
+    public void deleteCar(Long id) {
+        Car car= carRepository.findById(id).orElseThrow();
+        Long brandId= car.getBrand().getId();
+
+        carRepository.deleteById(id);
+
+        if(!carRepository.existsByBrandId(brandId)){
+            brandService.deleteBrand(brandId);
+        }
+
+
+    }
+
+    /* ==========================================================================
+       LÓGICA DE BÚSQUEDA Y FILTRADO
+       ========================================================================== */
+
+    public List<CarDTO> searchCars(String brand, String fuel, String body, String maxPrice) {
+        return carRepository.findAll().stream()
+                .filter(c -> isNullOrEmpty(brand) || (c.getBrand() != null && c.getBrand().getName().equalsIgnoreCase(brand)))
+                .filter(c -> isNullOrEmpty(fuel) || (c.getFuelType() != null && c.getFuelType().getName().equalsIgnoreCase(fuel)))
+                .filter(c -> isNullOrEmpty(body) || (c.getBodyType() != null && c.getBodyType().getName().equalsIgnoreCase(body)))
+                .filter(c -> isNullOrEmpty(maxPrice) || (c.getPrice() != null && c.getPrice().compareTo(new BigDecimal(maxPrice)) <= 0))
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    /* ==========================================================================
+       MÉTODOS AUXILIARES DE CONVERSIÓN (ENTITY <-> DTO)
+       ========================================================================== */
 
     private void mapDtoToEntity(CarCreateDTO dto, Car car) {
         car.setModel(dto.getModel());
@@ -88,22 +266,35 @@ public class CarService {
             car.setTransmission(Transmission.valueOf(dto.getTransmission().toUpperCase()));
         }
 
-        car.setBrand(brandRepository.findById(dto.getBrandId())
-                .orElseThrow(() -> new EntityNotFoundException("Marca no encontrada")));
-        car.setFuelType(fuelTypeRepository.findById(dto.getFuelTypeId())
-                .orElseThrow(() -> new EntityNotFoundException("Tipo de combustible no encontrado")));
-        car.setBodyType(bodyTypeRepository.findById(dto.getBodyTypeId())
-                .orElseThrow(() -> new EntityNotFoundException("Tipo de carrocería no encontrado")));
-    }
+        // Buscar o crear Marca
+        if (dto.getBrandName() != null) {
+            car.setBrand(brandRepository.findByNameIgnoreCase(dto.getBrandName())
+                    .orElseGet(() -> {
+                        Brand newBrand = new Brand();
+                        newBrand.setName(dto.getBrandName()); // Usamos el setter
+                        return brandRepository.save(newBrand);
+                    }));
+        }
 
-    public List<CarDTO> searchCars(String brand, String fuelTypeName, String bodyTypeName, BigDecimal maxPrice) {
-        return carRepository.findAll().stream()
-                .filter(car -> brand == null || (car.getBrand() != null && car.getBrand().getName().equalsIgnoreCase(brand)))
-                .filter(car -> fuelTypeName == null || (car.getFuelType() != null && car.getFuelType().getName().equalsIgnoreCase(fuelTypeName)))
-                .filter(car -> bodyTypeName == null || (car.getBodyType() != null && car.getBodyType().getName().equalsIgnoreCase(bodyTypeName)))
-                .filter(car -> maxPrice == null || car.getPrice().compareTo(maxPrice) <= 0)
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+// --- LÓGICA DE BUSCAR O CREAR (COMBUSTIBLE) ---
+        if (dto.getFuelTypeName() != null) {
+            car.setFuelType(fuelTypeRepository.findByNameIgnoreCase(dto.getFuelTypeName())
+                    .orElseGet(() -> {
+                        FuelType newFuel = new FuelType();
+                        newFuel.setName(dto.getFuelTypeName()); // Usamos el setter
+                        return fuelTypeRepository.save(newFuel);
+                    }));
+        }
+
+// --- LÓGICA DE BUSCAR O CREAR (CARROCERÍA) ---
+        if (dto.getBodyTypeName() != null) {
+            car.setBodyType(bodyTypeRepository.findByNameIgnoreCase(dto.getBodyTypeName())
+                    .orElseGet(() -> {
+                        BodyType newBody = new BodyType();
+                        newBody.setName(dto.getBodyTypeName()); // Usamos el setter
+                        return bodyTypeRepository.save(newBody);
+                    }));
+        }
     }
 
     public CarDTO convertToDto(Car car) {
@@ -118,8 +309,11 @@ public class CarService {
         dto.setTransmission(car.getTransmission() != null ? car.getTransmission().name() : null);
         dto.setStatus(car.getStatus() != null ? car.getStatus().name() : null);
         dto.setDescription(car.getDescription());
-
+        dto.setBadge(car.getBadge());
+        dto.setBadgeType(car.getBadgeType());
         dto.setSaved(car.isSaved());
+        dto.setCreatedAt(car.getCreatedAt());
+        dto.setSoldAt(car.getSoldAt());
 
         dto.setLabel(car.getLabel() != null ? car.getLabel().getDescription() : null);
 
@@ -141,14 +335,15 @@ public class CarService {
         CarDetailDTO dto = new CarDetailDTO();
         CarDTO basic = convertToDto(car);
 
+        // Copiar campos básicos
         dto.setId(basic.getId());
         dto.setMake(basic.getMake());
         dto.setModel(basic.getModel());
         dto.setYear(basic.getYear());
         dto.setPrice(basic.getPrice());
-        dto.setImageUrl(basic.getImageUrl());
         dto.setPower(basic.getPower());
         dto.setMileage(basic.getMileage());
+        dto.setImageUrl(basic.getImageUrl());
         dto.setConsumption(basic.getConsumption());
         dto.setTransmission(basic.getTransmission());
         dto.setFuelType(basic.getFuelType());
@@ -166,7 +361,7 @@ public class CarService {
                 hDto.setYear(h.getYear());
                 hDto.setTitle(h.getTitle());
                 hDto.setIcon(h.getIcon());
-                hDto.setCompleted(h.isCompleted());
+                hDto.setIsCompleted(h.isCompleted());
                 return hDto;
             }).collect(Collectors.toList()));
         }
@@ -179,18 +374,25 @@ public class CarService {
         return dto;
     }
 
-    public List<CarDetailDTO> getAllCarsDetailed() {
-        return carRepository.findAll().stream()
-                .map(this::convertToDetailDto)
-                .collect(Collectors.toList());
-    }
-
     public List<CarDetailDTO> searchCarsDetailed(String brand, String fuelTypeName, String bodyTypeName, BigDecimal maxPrice) {
         return carRepository.findAll().stream()
-                .filter(car -> brand == null || (car.getBrand() != null && car.getBrand().getName().equalsIgnoreCase(brand)))
-                .filter(car -> fuelTypeName == null || (car.getFuelType() != null && car.getFuelType().getName().equalsIgnoreCase(fuelTypeName)))
-                .filter(car -> bodyTypeName == null || (car.getBodyType() != null && car.getBodyType().getName().equalsIgnoreCase(bodyTypeName)))
-                .filter(car -> maxPrice == null || car.getPrice().compareTo(maxPrice) <= 0)
+                // Filtro por Marca (ignora mayúsculas/minúsculas)
+                .filter(car -> isNullOrEmpty(brand) ||
+                        (car.getBrand() != null && car.getBrand().getName().equalsIgnoreCase(brand)))
+
+                // Filtro por Combustible
+                .filter(car -> isNullOrEmpty(fuelTypeName) ||
+                        (car.getFuelType() != null && car.getFuelType().getName().equalsIgnoreCase(fuelTypeName)))
+
+                // Filtro por Carrocería
+                .filter(car -> isNullOrEmpty(bodyTypeName) ||
+                        (car.getBodyType() != null && car.getBodyType().getName().equalsIgnoreCase(bodyTypeName)))
+
+                // Filtro por Precio Máximo (solo si el precio es > 0)
+                .filter(car -> maxPrice == null || maxPrice.compareTo(BigDecimal.ZERO) <= 0 ||
+                        (car.getPrice() != null && car.getPrice().compareTo(maxPrice) <= 0))
+
+                // Convertimos a Detail DTO para enviar toda la info (historial, etc.)
                 .map(this::convertToDetailDto)
                 .collect(Collectors.toList());
     }
@@ -201,5 +403,12 @@ public class CarService {
                 .limit(10)
                 .map(this::convertToDetailDto)
                 .collect(Collectors.toList());
+    }
+    private boolean hasMainImage(List<CarImage> images) {
+        return images.stream().anyMatch(img -> img.getIsMain() != null && img.getIsMain());
+    }
+
+    private boolean isNullOrEmpty(String str) {
+        return str == null || str.trim().isEmpty() || str.equalsIgnoreCase("all");
     }
 }
