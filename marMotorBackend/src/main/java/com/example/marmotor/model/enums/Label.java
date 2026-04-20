@@ -1,11 +1,11 @@
 package com.example.marmotor.model.enums;
 
 public enum Label {
-    ZERO("0"),
+    ZERO("0 Emisiones"),
     ECO("ECO"),
     C("C"),
     B("B"),
-    NONE("Sin etiqueta");
+    NONE("Sin Etiqueta");
 
     private final String description;
 

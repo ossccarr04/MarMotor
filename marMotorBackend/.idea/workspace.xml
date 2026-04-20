@@ -4,16 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Añadido todo lo de etiquetas corregido">
+    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Todo el backend corregido">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/Car.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/enums/Transmission.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/enums/Transmission.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/CarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/CarService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/import.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/import.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/Car.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/Car.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/enums/Transmission.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/enums/Transmission.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/CarService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/CarService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/enums/Label.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/enums/Label.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -226,7 +219,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776691636131</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Todo el backend corregido">
+      <option name="closed" value="true" />
+      <created>1776694289494</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1776694289494</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -240,6 +241,7 @@
     <MESSAGE value="Añadido fecha venta y fecha creacion" />
     <MESSAGE value="Añadido endpoints para mostrar los datos de coches vendidos" />
     <MESSAGE value="Añadido todo lo de etiquetas corregido" />
-    <option name="LAST_COMMIT_MESSAGE" value="Añadido todo lo de etiquetas corregido" />
+    <MESSAGE value="Todo el backend corregido" />
+    <option name="LAST_COMMIT_MESSAGE" value="Todo el backend corregido" />
   </component>
 </project>
