@@ -2,9 +2,10 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { environment } from '../../../environments/environment.development';
+
 import { jwtDecode } from 'jwt-decode';
 import { LoggedUserDTO, RegisterDTO } from '../../@types/interface/user.interface';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
