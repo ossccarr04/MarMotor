@@ -41,9 +41,6 @@ public class Car {
     @Column(name = "label")
     private Label label;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "label")
-    private Label label;
 
     @Transient
     private boolean isSaved;
