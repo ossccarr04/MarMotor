@@ -132,7 +132,7 @@ public class CarService {
         car.setDetail(detail);
         car.setCreatedAt(LocalDateTime.now());
 
-        if(Objects.equals(car.getBadge(), Status.SOLD.toString())){
+        if(car.getLabel() != null && car.getLabel().name().equalsIgnoreCase(Status.SOLD.toString())){
             car.setSoldAt(LocalDateTime.now());
         }
         Car savedCar = carRepository.save(car);
@@ -210,9 +210,9 @@ public class CarService {
                 }
             }
 
-            if(Objects.equals(car.getBadge(), Status.SOLD.toString().toLowerCase())){
+            if(car.getLabel() != null && car.getLabel().name().equalsIgnoreCase(Status.SOLD.toString())){
                 car.setSoldAt(LocalDateTime.now());
-            }else{
+            } else {
                 car.setSoldAt(null);
             }
             return convertToDto(carRepository.save(car));
@@ -309,8 +309,6 @@ public class CarService {
         dto.setTransmission(car.getTransmission() != null ? car.getTransmission().name() : null);
         dto.setStatus(car.getStatus() != null ? car.getStatus().name() : null);
         dto.setDescription(car.getDescription());
-        dto.setBadge(car.getBadge());
-        dto.setBadgeType(car.getBadgeType());
         dto.setSaved(car.isSaved());
         dto.setCreatedAt(car.getCreatedAt());
         dto.setSoldAt(car.getSoldAt());
