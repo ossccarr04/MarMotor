@@ -7,6 +7,7 @@ import com.example.marmotor.model.DTO.HistoryEventDTO;
 import com.example.marmotor.model.entity.Car;
 import com.example.marmotor.model.entity.CarDetail;
 import com.example.marmotor.model.entity.CarImage;
+import com.example.marmotor.model.enums.Label;
 import com.example.marmotor.model.enums.Status;
 import com.example.marmotor.model.enums.Transmission;
 import com.example.marmotor.repository.BodyTypeRepository;
@@ -79,8 +80,9 @@ public class CarService {
         car.setMileage(dto.getMileage());
         car.setConsumption(dto.getConsumption());
         car.setDescription(dto.getDescription());
-        car.setBadge(dto.getBadge());
-        car.setBadgeType(dto.getBadgeType());
+        if (dto.getLabel() != null) {
+            car.setLabel(Label.valueOf(dto.getLabel().toUpperCase()));
+        }
 
         if (dto.getTransmission() != null) {
             car.setTransmission(Transmission.valueOf(dto.getTransmission().toUpperCase()));
@@ -116,9 +118,10 @@ public class CarService {
         dto.setTransmission(car.getTransmission() != null ? car.getTransmission().name() : null);
         dto.setStatus(car.getStatus() != null ? car.getStatus().name() : null);
         dto.setDescription(car.getDescription());
-        dto.setBadge(car.getBadge());
-        dto.setBadgeType(car.getBadgeType());
+
         dto.setSaved(car.isSaved());
+
+        dto.setLabel(car.getLabel() != null ? car.getLabel().getDescription() : null);
 
         if (car.getFuelType() != null) dto.setFuelType(car.getFuelType().getName());
         if (car.getBodyType() != null) dto.setBodyType(car.getBodyType().getName());
@@ -151,8 +154,7 @@ public class CarService {
         dto.setFuelType(basic.getFuelType());
         dto.setBodyType(basic.getBodyType());
         dto.setStatus(basic.getStatus());
-        dto.setBadge(basic.getBadge());
-        dto.setBadgeType(basic.getBadgeType());
+        dto.setLabel(basic.getLabel());
         dto.setSaved(basic.isSaved());
 
         if (detail != null) {
@@ -193,9 +195,9 @@ public class CarService {
                 .collect(Collectors.toList());
     }
 
-    public List<CarDetailDTO> getTop10ByBadge(String badge) {
+    public List<CarDetailDTO> getTop10ByBadge(String label) {
         return carRepository.findAll().stream()
-                .filter(car -> car.getBadge() != null && car.getBadge().equalsIgnoreCase(badge))
+                .filter(car -> car.getLabel() != null && car.getLabel().name().equalsIgnoreCase(label))
                 .limit(10)
                 .map(this::convertToDetailDto)
                 .collect(Collectors.toList());

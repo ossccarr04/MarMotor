@@ -25,7 +25,7 @@ public class FavoriteService {
     @Transactional(readOnly = true)
     public List<CarDTO> getUserFavorites(String username) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         return user.getFavoriteCars().stream()
                 .map(car -> {
@@ -39,9 +39,9 @@ public class FavoriteService {
     @Transactional
     public void addFavorite(String username, Long carId) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         Car car = carRepository.findById(carId)
-                .orElseThrow(() -> new RuntimeException("Car not found"));
+                .orElseThrow(() -> new RuntimeException("Coche no encontrado"));
 
         user.getFavoriteCars().add(car);
         userRepository.save(user);
@@ -50,9 +50,9 @@ public class FavoriteService {
     @Transactional
     public void removeFavorite(String username, Long carId) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         Car car = carRepository.findById(carId)
-                .orElseThrow(() -> new RuntimeException("Car not found"));
+                .orElseThrow(() -> new RuntimeException("Coche no encontrado"));
 
         user.getFavoriteCars().remove(car);
         userRepository.save(user);

@@ -6,5 +6,5 @@ import lombok.Data;
 public class BrandDTO {
     private Long id;
     private String name;
-    private String country;
+
 }

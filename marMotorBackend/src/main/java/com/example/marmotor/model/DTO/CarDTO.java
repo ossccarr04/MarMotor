@@ -18,8 +18,7 @@ public class CarDTO {
     private Integer mileage; //km
     private String consumption;
 
-    private String badge;
-    private String badgeType;
+    private String label;
     private boolean isSaved;
 
     private String transmission;

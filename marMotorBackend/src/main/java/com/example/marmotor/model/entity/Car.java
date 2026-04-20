@@ -1,5 +1,6 @@
 package com.example.marmotor.model.entity;
 
+import com.example.marmotor.model.enums.Label;
 import com.example.marmotor.model.enums.Status;
 import com.example.marmotor.model.enums.Transmission;
 import jakarta.persistence.*;
@@ -34,8 +35,10 @@ public class Car {
     private Integer power;
     private Integer mileage;
     private String consumption;
-    private String badge;
-    private String badgeType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "label")
+    private Label label;
 
     @Transient
     private boolean isSaved;
