@@ -36,8 +36,10 @@ public class Car {
     private Integer power;
     private Integer mileage;
     private String consumption;
-    private String badge;
-    private String badgeType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "label")
+    private Label label;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "label")

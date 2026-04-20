@@ -36,7 +36,6 @@ public class BrandService {
     public Optional<BrandDTO> updateBrand(Long id, Brand updatedBrand) {
         return brandRepository.findById(id).map(existingBrand -> {
             existingBrand.setName(updatedBrand.getName());
-            existingBrand.setCountry(updatedBrand.getCountry());
 
             Brand saved = brandRepository.save(existingBrand);
 
@@ -59,7 +58,6 @@ public class BrandService {
         BrandDTO dto = new BrandDTO();
         dto.setId(brand.getId());
         dto.setName(brand.getName());
-        dto.setCountry(brand.getCountry());
         return dto;
     }
 }

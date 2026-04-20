@@ -15,10 +15,14 @@ public class AuthService {
 
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     public User register(User user) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new RuntimeException("El nombre de usuario ya está en uso");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         if (user.getRole() == null) user.setRole(User.Role.USER);
         return userRepository.save(user);
@@ -28,8 +32,9 @@ public class AuthService {
         return userRepository.findByUsername(request.getUsername())
                 .filter(user -> passwordEncoder.matches(request.getPassword(), user.getPassword()))
                 .map(user -> {
-                    String token = "fake-jwt-token-for-" + user.getUsername();
-                    return new AuthResponse(token, user.getUsername(), user.getRole().name());
+                    // Token temporal para que funcione sin librerías externas
+                    String fakeToken = "dummy-token-for-" + user.getUsername();
+                    return new AuthResponse(fakeToken, user.getUsername(), user.getRole().name());
                 });
     }
 }

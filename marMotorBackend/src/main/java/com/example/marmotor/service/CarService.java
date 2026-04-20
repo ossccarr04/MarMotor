@@ -4,6 +4,10 @@ import com.example.marmotor.model.DTO.CarCreateDTO;
 import com.example.marmotor.model.DTO.CarDTO;
 import com.example.marmotor.model.DTO.CarDetailDTO;
 import com.example.marmotor.model.DTO.HistoryEventDTO;
+import com.example.marmotor.model.entity.Car;
+import com.example.marmotor.model.entity.CarDetail;
+import com.example.marmotor.model.entity.CarImage;
+import com.example.marmotor.model.enums.Label;
 import com.example.marmotor.model.entity.*;
 import com.example.marmotor.model.enums.Status;
 import com.example.marmotor.model.enums.Transmission;
@@ -128,7 +132,7 @@ public class CarService {
         car.setDetail(detail);
         car.setCreatedAt(LocalDateTime.now());
 
-        if(Objects.equals(car.getBadge(), Status.SOLD.toString())){
+        if(car.getLabel() != null && car.getLabel().name().equalsIgnoreCase(Status.SOLD.toString())){
             car.setSoldAt(LocalDateTime.now());
         }
         Car savedCar = carRepository.save(car);
@@ -206,9 +210,9 @@ public class CarService {
                 }
             }
 
-            if(Objects.equals(car.getBadge(), Status.SOLD.toString().toLowerCase())){
+            if(car.getLabel() != null && car.getLabel().name().equalsIgnoreCase(Status.SOLD.toString())){
                 car.setSoldAt(LocalDateTime.now());
-            }else{
+            } else {
                 car.setSoldAt(null);
             }
             return convertToDto(carRepository.save(car));
@@ -254,8 +258,9 @@ public class CarService {
         car.setMileage(dto.getMileage());
         car.setConsumption(dto.getConsumption());
         car.setDescription(dto.getDescription());
-        car.setBadge(dto.getBadge());
-        car.setBadgeType(dto.getBadgeType());
+        if (dto.getLabel() != null) {
+            car.setLabel(Label.valueOf(dto.getLabel().toUpperCase()));
+        }
 
         if (dto.getTransmission() != null) {
             car.setTransmission(Transmission.valueOf(dto.getTransmission().toUpperCase()));
@@ -303,11 +308,12 @@ public class CarService {
         dto.setConsumption(car.getConsumption());
         dto.setTransmission(car.getTransmission() != null ? car.getTransmission().name() : null);
         dto.setStatus(car.getStatus() != null ? car.getStatus().name() : null);
-        dto.setBadge(car.getBadge());
-        dto.setBadgeType(car.getBadgeType());
+        dto.setDescription(car.getDescription());
         dto.setSaved(car.isSaved());
         dto.setCreatedAt(car.getCreatedAt());
         dto.setSoldAt(car.getSoldAt());
+
+        dto.setLabel(car.getLabel() != null ? car.getLabel().getDescription() : null);
 
         if (car.getFuelType() != null) dto.setFuelType(car.getFuelType().getName());
         if (car.getBodyType() != null) dto.setBodyType(car.getBodyType().getName());
@@ -341,10 +347,8 @@ public class CarService {
         dto.setFuelType(basic.getFuelType());
         dto.setBodyType(basic.getBodyType());
         dto.setStatus(basic.getStatus());
-        dto.setBadge(basic.getBadge());
-        dto.setBadgeType(basic.getBadgeType());
-        dto.setCreatedAt(basic.getCreatedAt());
-        dto.setSoldAt(basic.getSoldAt());
+        dto.setLabel(basic.getLabel());
+        dto.setSaved(basic.isSaved());
 
         if (detail != null) {
             dto.setColor(detail.getColor());
@@ -391,11 +395,9 @@ public class CarService {
                 .collect(Collectors.toList());
     }
 
-    public List<CarDetailDTO> getTop10ByBadge(String badge) {
+    public List<CarDetailDTO> getTop10ByBadge(String label) {
         return carRepository.findAll().stream()
-                // Filtramos por el "Badge" (Etiqueta de categoría)
-                .filter(car -> car.getBadge() != null && car.getBadge().equalsIgnoreCase(badge))
-                // Limitamos los resultados para no sobrecargar la vista inicial
+                .filter(car -> car.getLabel() != null && car.getLabel().name().equalsIgnoreCase(label))
                 .limit(10)
                 .map(this::convertToDetailDto)
                 .collect(Collectors.toList());
