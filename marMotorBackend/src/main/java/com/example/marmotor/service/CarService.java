@@ -257,13 +257,16 @@ public class CarService {
         car.setPower(dto.getPower());
         car.setMileage(dto.getMileage());
         car.setConsumption(dto.getConsumption());
+        car.setBadge(dto.getBadge());
+        car.setBadgeType(dto.getBadgeType());
         car.setDescription(dto.getDescription());
         if (dto.getLabel() != null) {
             car.setLabel(Label.valueOf(dto.getLabel().toUpperCase()));
         }
 
         if (dto.getTransmission() != null) {
-            car.setTransmission(Transmission.valueOf(dto.getTransmission().toUpperCase()));
+            // Usamos nuestro método seguro del Enum
+            car.setTransmission(Transmission.fromString(dto.getTransmission()));
         }
 
         // Buscar o crear Marca
@@ -302,6 +305,8 @@ public class CarService {
         dto.setId(car.getId());
         dto.setModel(car.getModel());
         dto.setYear(car.getYear());
+        dto.setBadge(car.getBadge());
+        dto.setBadgeType(car.getBadgeType());
         dto.setPrice(car.getPrice());
         dto.setPower(car.getPower());
         dto.setMileage(car.getMileage());
@@ -348,6 +353,8 @@ public class CarService {
         dto.setBodyType(basic.getBodyType());
         dto.setStatus(basic.getStatus());
         dto.setLabel(basic.getLabel());
+        dto.setBadge(basic.getBadge());
+        dto.setBadgeType(basic.getBadgeType());
         dto.setSaved(basic.isSaved());
 
         if (detail != null) {
@@ -397,7 +404,7 @@ public class CarService {
 
     public List<CarDetailDTO> getTop10ByBadge(String label) {
         return carRepository.findAll().stream()
-                .filter(car -> car.getLabel() != null && car.getLabel().name().equalsIgnoreCase(label))
+                .filter(car -> car.getBadge() != null && car.getBadge().equalsIgnoreCase(label))
                 .limit(10)
                 .map(this::convertToDetailDto)
                 .collect(Collectors.toList());

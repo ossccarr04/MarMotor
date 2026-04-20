@@ -37,10 +37,18 @@ public class Car {
     private Integer mileage;
     private String consumption;
 
+    // ETIQUETA DGT (0, ECO, C...)
     @Enumerated(EnumType.STRING)
     @Column(name = "label")
     private Label label;
 
+    // ETIQUETA COMERCIAL (New, Featured, Offer...)
+    @Column(name = "badge")
+    private String badge;
+
+    // ESTILO VISUAL (success, warning, danger...)
+    @Column(name = "badge_type")
+    private String badgeType;
 
     @Transient
     private boolean isSaved;
@@ -60,7 +68,7 @@ public class Car {
     private Status status;
 
     @Column(name = "fecha_creacion")
-    private LocalDateTime  createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "fecha_venta")
     private LocalDateTime soldAt;
@@ -70,5 +78,4 @@ public class Car {
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CarImage> images = new ArrayList<>();
-
 }
