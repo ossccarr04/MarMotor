@@ -4,6 +4,7 @@
 
 # Dependencias (NUNCA SUBIR ESTO)
 node_modules/
+dist/
 .angular/
 
 # Salidas de compilación
@@ -23,6 +24,8 @@ bazel-out/
 *.iml
 *.iws
 *.ipr
+.vscode/
+*.log
 
 # Logs y Temporales
 logs
