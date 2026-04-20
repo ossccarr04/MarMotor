@@ -62,11 +62,11 @@ export class Filters implements OnInit {
   private cdr = inject(ChangeDetectorRef);
 
   constructor(
-    private route: Router,
-    private carService: CarServiceBBDD,
-    private brandService: BrandServiceBBDD,
-    private bodyTypeService: BodyTypeServiceBBDD,
-    private fuelTypeService: FuelTypeServiceBBDD,
+    @Inject(Router) private route: Router,
+    @Inject(CarServiceBBDD) private carService: CarServiceBBDD,
+    @Inject(BrandServiceBBDD) private brandService: BrandServiceBBDD,
+    @Inject(BodyTypeServiceBBDD) private bodyTypeService: BodyTypeServiceBBDD,
+    @Inject(FuelTypeServiceBBDD) private fuelTypeService: FuelTypeServiceBBDD,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
@@ -354,9 +354,12 @@ export class Filters implements OnInit {
     this.limpiezaFiltros();
 
     this.carService.mantenerVendidosActivo = this.buscarEnVendidos;
+    this.route.navigate(['/cars'], { queryParams: {} }).then(() => {
+    // 4. Recargamos los datos una vez que la URL está limpia
     this.actualizarCombustiblesDinamicos();
     this.cargarMarcasSegunEstado();
     this.carService.recargarCoches$.next();
+  });
   }
 
   get buscarEnVendidos(): boolean {

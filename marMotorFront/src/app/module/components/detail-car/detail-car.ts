@@ -5,6 +5,7 @@ import {
   Renderer2,
   inject,
   OnDestroy,
+  Inject,
   PLATFORM_ID,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -27,8 +28,8 @@ export class DetailCar implements OnInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
   // Inyecciones
   constructor(
-    private carsService: CarServiceBBDD,
-    private authService: AuthServiceBBDD,
+    @Inject(CarServiceBBDD) private carsService: CarServiceBBDD,
+    @Inject(AuthServiceBBDD) private authService: AuthServiceBBDD,
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state && navigation.extras.state['listaFiltrada']) {

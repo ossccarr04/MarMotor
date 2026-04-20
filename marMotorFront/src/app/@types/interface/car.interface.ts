@@ -16,6 +16,7 @@ export interface CarDTO {
   consumption: string;
   createdAt: string;
   soldAt: string;
+  label: string;
   badge: BadgeType | null
   badgeType?: BadgeType | null;
   isSaved: boolean

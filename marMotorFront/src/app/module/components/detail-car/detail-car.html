@@ -26,9 +26,9 @@
         </div>
       </header>
       <section class="car-intro-text" [class.opacity-0]="isZoomed">
-  <div class="quote-line"></div>
-  <p class="description-text">{{ car.description }}</p>
-</section>
+        <div class="quote-line"></div>
+        <p class="description-text">{{ car.description }}</p>
+      </section>
       <section class="gallery-viewport">
         <div class="gallery-container">
           <div class="main-photo-card" [class.is-zoomed]="isZoomed">
@@ -95,6 +95,22 @@
           </li>
           <li>
             <span>Color:</span> <strong>{{ car.color }}</strong>
+          </li>
+          <li>
+            <span>Distintivo Ambiental:</span>
+            <div class="dgt-label-container">
+  @if (car.label.toLowerCase().includes('0') || car.label.toLowerCase().includes('zero')) {
+    <span class="dgt-badge badge-zero">0</span>
+  } 
+  @else if (car.label.toLowerCase().includes('none') || car.label.toLowerCase().includes('sin')) {
+    <span class="dgt-badge badge-none">SIN ETIQUETA</span>
+  } 
+  @else {
+    <span class="dgt-badge" [ngClass]="'badge-' + car.label.toLowerCase().trim()">
+      {{ car.label }}
+    </span>
+  }
+</div>
           </li>
           @if (car.badge && car.badge !== badgeType.NONE) {
             <li>

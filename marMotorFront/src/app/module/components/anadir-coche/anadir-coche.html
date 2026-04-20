@@ -94,7 +94,6 @@
                 <option [value]="fuel">{{ fuel | titlecase }}</option>
               }
             </select>
-
           </div>
 
           <div class="form-group">
@@ -215,6 +214,20 @@
         <h3 class="section-title">Etiquetas y Detalles</h3>
         <div class="form-grid-3">
           <div class="form-group">
+            <label><i class="icon">🍃</i> Etiqueta Ambiental <span class="text-danger">*</span></label>
+  <select 
+    formControlName="label" 
+    class="form-select"
+    [class.is-invalid]="carForm.get('label')?.invalid && carForm.get('label')?.touched"
+  >
+    <option value="" disabled selected>Selecciona etiqueta...</option>
+    @for (option of labelOptions; track option.value) {
+      <option [value]="option.value">{{ option.label }}</option>
+    }
+  </select>
+          </div>
+
+          <div class="form-group">
             <label><i class="icon">🎨</i> Color Exterior <span class="text-danger">*</span></label>
             <input
               type="text"
@@ -255,9 +268,13 @@
             <button type="button" class="btn-add" (click)="addFeature()">+ Añadir Extra</button>
           </div>
           <div formArrayName="features" class="dynamic-list">
-            @for (feature of features.controls; track $index) {
+            @for (feature of features.controls; track feature) {
               <div class="dynamic-row">
-                <input type="text" [formControlName]="$index" placeholder="Ej: Techo panorámico" />
+                <input
+                  type="text"
+                  [formControl]="$any(feature)"
+                  placeholder="Ej: Techo panorámico"
+                />
                 <button type="button" class="btn-remove" (click)="removeFeature($index)">🗑️</button>
               </div>
             }

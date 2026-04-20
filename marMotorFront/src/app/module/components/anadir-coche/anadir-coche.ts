@@ -19,6 +19,7 @@ import { BodyTypeDTO } from '../../../@types/interface/bodyType.interface';
 import { Transmission } from '../../../@types/enums/transmission.enum';
 import { HistoryIcon, HistoryIconLabel } from '../../../@types/enums/history-icon.enum';
 import { BadgeLabel, BadgeType } from '../../../@types/enums/badge.enum';
+import { LabelDescriptions, Labels } from '../../../@types/enums/label.enum';
 
 @Component({
   selector: 'app-anadir-coche',
@@ -37,7 +38,6 @@ export class AnadirCoche implements OnInit {
   private brandService = inject(BrandServiceBBDD);
   private bodyTypeService = inject(BodyTypeServiceBBDD);
 
-  
   carForm!: FormGroup;
   isSubmitting = false;
 
@@ -55,24 +55,29 @@ export class AnadirCoche implements OnInit {
   combustiblesSugeridos = Object.values(FuelType).filter((v) => typeof v === 'string');
   transmissions = Object.values(Transmission).filter((v) => typeof v === 'string');
   badges = Object.values(BadgeType);
+  public labelOptions = Object.values(Labels).map((key) => ({
+    value: key,
+    label: LabelDescriptions[key],
+  }));
   badgeLabels = BadgeLabel;
 
   nombresEnEspanol: { [key: string]: string } = {
-  model: 'Modelo',
-  year: 'Año',
-  price: 'Precio',
-  power: 'Potencia',
-  mileage: 'Kilometraje',
-  consumption: 'Consumo',
-  transmission: 'Transmisión',
-  brandName: 'Marca',
-  fuelTypeName: 'Combustible',
-  bodyTypeName: 'Carrocería',
-  color: 'Color',
-  description: 'Descripción',
-  features: 'Características',
-  history: 'Historial'
-};
+    model: 'Modelo',
+    year: 'Año',
+    price: 'Precio',
+    power: 'Potencia',
+    mileage: 'Kilometraje',
+    consumption: 'Consumo',
+    transmission: 'Transmisión',
+    brandName: 'Marca',
+    label: 'Etiqueta',
+    fuelTypeName: 'Combustible',
+    bodyTypeName: 'Carrocería',
+    color: 'Color',
+    description: 'Descripción',
+    features: 'Características',
+    history: 'Historial',
+  };
 
   iconosDisponibles = Object.entries(HistoryIcon).map(([key, value]) => ({
     label: HistoryIconLabel.get(value) || key,
@@ -109,6 +114,7 @@ export class AnadirCoche implements OnInit {
       bodyTypeName: [null],
       color: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\-\.\#]+$/)]],
       badge: [BadgeType.NONE],
+      label: ['', Validators.required],
       description: [
         '',
         [
@@ -126,6 +132,13 @@ export class AnadirCoche implements OnInit {
     const idDecoded = atob(id);
     this.carService.getCarsDetails(idDecoded).subscribe({
       next: (car) => {
+        const labelValue = car.label.toUpperCase();
+        let labelToForm = 'NONE';
+
+        if (labelValue.includes('ZERO') || labelValue.includes('0')) labelToForm = 'ZERO';
+        else if (labelValue.includes('ECO')) labelToForm = 'ECO';
+        else if (labelValue.includes('C')) labelToForm = 'C';
+        else if (labelValue.includes('B')) labelToForm = 'B';
         // 1. Rellenar campos simples
         this.carForm.patchValue({
           model: car.model,
@@ -134,6 +147,7 @@ export class AnadirCoche implements OnInit {
           power: car.power,
           mileage: car.mileage,
           consumption: car.consumption,
+          label: labelToForm,
           transmission: car.transmission
             ? car.transmission.charAt(0).toUpperCase() + car.transmission.slice(1).toLowerCase()
             : 'Manual',
@@ -204,8 +218,12 @@ export class AnadirCoche implements OnInit {
   addFeature() {
     this.features.push(this.fb.control('', Validators.required));
   }
-  removeFeature(i: number) {
-    this.features.removeAt(i);
+  removeFeature(index: number) {
+    // Obtenemos la referencia directa y eliminamos por índice
+    this.features.removeAt(index);
+
+    // Forzamos a Angular a que se entere del cambio (opcional pero recomendado con ChangeDetectorRef)
+    this.cdr.detectChanges();
   }
 
   addHistoryEvent() {
@@ -262,9 +280,7 @@ export class AnadirCoche implements OnInit {
       Object.keys(this.carForm.controls).forEach((key) => {
         const controlErrors = this.carForm.get(key)?.errors;
         if (controlErrors != null) {
-          this.toast.error(
-            'Error en el campo ' + this.nombresEnEspanol[key],'Error'
-          );
+          this.toast.error('Error en el campo ' + this.nombresEnEspanol[key], 'Error');
         }
       });
       this.carForm.markAllAsTouched();
@@ -288,7 +304,7 @@ export class AnadirCoche implements OnInit {
     this.isSubmitting = true;
 
     const formRawValue = this.carForm.getRawValue();
-
+    console.log(formRawValue);
     // Filtramos las imágenes que se quedan (las que ya tienen URL de Cloudinary)
     const currentExistingImages: string[] = [];
 

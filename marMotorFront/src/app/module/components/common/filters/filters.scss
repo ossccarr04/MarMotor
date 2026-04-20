@@ -376,20 +376,19 @@ $text-dark: #333;
   /* Listado de marcas en el modal */
   .modal-brands-list {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); // 2 columnas en móvil
+    // Usamos auto-fill con un ancho fijo para que las opciones mantengan su tamaño de "cuadro"
+    // y no se estiren horizontalmente cuando hay menos elementos. Además, flex-grow: 1 gestiona la altura.
+    grid-template-columns: repeat(auto-fill, 155px); // Aumentado el ancho de cada opción
     gap: 12px;
-    min-height: 200px;
     overflow-y: auto;
     padding-right: 5px;
     margin-bottom: 10px;
-
-    @media (min-width: 480px) {
-      grid-template-columns: repeat(3, 1fr);
-    } // 3 columnas en PC
+    flex-grow: 1; // Permite que la lista ocupe el espacio vertical restante y se desplace si es necesario.
 
     /* Personalización del scroll */
+    justify-content: center; // Centra las opciones horizontalmente.
     &::-webkit-scrollbar {
-      width: 6px;
+      width: 8px;
     }
     &::-webkit-scrollbar-track {
       background: #f1f5f9;
@@ -429,20 +428,17 @@ $text-dark: #333;
   }
 
   .no-results {
-    /* Forzamos que ocupe todo el ancho del contenedor */
-    width: 100%;
-
-    /* Centrado de texto */
-    text-align: center;
-    margin-left: 110%;
+    /* Hacemos que ocupe todo el ancho del grid para centrarse correctamente */
+    grid-column: 1 / -1;
 
     /* Estilo visual */
     color: #94a3b8;
     font-style: italic;
     font-size: 15px;
     min-height: 100px;
+    text-align: center;
 
-    /* Si el padre es flex, esto asegura el centrado */
+    /* Centra el texto <p> interior */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -479,13 +475,10 @@ $text-dark: #333;
   }
 
   .btn-primary {
-    // --- TUS COLORES ORIGINALES ---
     background-color: $accent-green;
     color: $text-light;
-
-    // --- MEJORA DE VISIBILIDAD ---
     border: none;
-    font-weight: 700; // Un poco más de grosor para que el blanco destaque
+    font-weight: 700;
     padding: 12px 28px;
     border-radius: 30px;
     cursor: pointer;
@@ -493,15 +486,11 @@ $text-dark: #333;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-
     box-shadow: 0 4px 14px 0 rgba(55, 223, 140, 0.39);
 
     &:hover {
-      // En el hover, aumentamos un poco la sombra para que "flote"
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(55, 223, 140, 0.6);
-
-      // Le damos un pelín de brillo al fondo sin cambiar el color base
       filter: brightness(1.05);
     }
 
@@ -511,10 +500,10 @@ $text-dark: #333;
     }
   }
   .btn-secondary {
-    background-color: rgba(255, 255, 255, 0.9); // Blanco casi sólido para que destaque
-    color: #0a1f33; // Usamos tu azul primario para la letra (máximo contraste)
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #0a1f33;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    font-weight: 700; // Negrita para que la letra se lea mejor
+    font-weight: 700;
     transition: all 0.3s ease;
 
     &:hover {
@@ -689,7 +678,6 @@ $text-dark: #333;
     }
   }
 }
-
 
 // Responsive: en móviles lo movemos para que no tape el título
 @media (max-width: 768px) {
