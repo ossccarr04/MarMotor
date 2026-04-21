@@ -1,5 +1,6 @@
 package com.example.marmotor.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.marmotor.model.DTO.CarCreateDTO;
 import com.example.marmotor.model.DTO.CarDTO;
 import com.example.marmotor.model.DTO.CarDetailDTO;
@@ -9,8 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import tools.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;

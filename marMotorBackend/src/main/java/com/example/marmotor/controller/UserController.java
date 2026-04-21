@@ -1,6 +1,7 @@
 package com.example.marmotor.controller;
 
 import com.example.marmotor.model.entity.User;
+import com.example.marmotor.service.AuthService; // Importar AuthService
 import com.example.marmotor.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,13 +13,16 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private AuthService authService; // Usar AuthService para el registro
+    // private UserService userService; // Si UserService tiene otras responsabilidades, mantenlo
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {
-        if (userService.existsByUsername(user.getUsername())) {
+        try {
+            return ResponseEntity.ok(authService.register(user));
+        } catch (RuntimeException e) {
+            // El servicio ya lanza una excepción si el usuario existe
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(userService.registerUser(user));
     }
 }
