@@ -5,6 +5,8 @@ import { Register } from './module/components/auth/register/register';
 import { DetailCar } from './module/components/detail-car/detail-car';
 import { Cars } from './module/components/cars/cars';
 import { AnadirCoche } from './module/components/anadir-coche/anadir-coche';
+import { Profile } from './module/components/profile/profile';
+import { adminGuard } from './guards/admin-guard';
 
 export const routes: Routes = [
   {
@@ -20,6 +22,14 @@ export const routes: Routes = [
     component: Register,
   },
   {
+    path: 'detail-car/:id',
+    component: DetailCar,
+  },
+  {
+    path:'users/me/profile',
+    component: Profile
+  },
+  {
     path: 'cars',
     children: [
       {
@@ -29,17 +39,16 @@ export const routes: Routes = [
       {
         path: 'create-car',
         component: AnadirCoche,
+        canActivate: [adminGuard]
       },
       {
         path: 'edit-car/:id',
-        component: AnadirCoche
+        component: AnadirCoche,
+        canActivate: [adminGuard]
       }
     ],
   },
-  {
-    path: 'detail-car/:id',
-    component: DetailCar,
-  },
+  
   {
     path: '**',
     redirectTo: '',

@@ -1,0 +1,88 @@
+<div class="profile-page-container">
+  <header class="profile-header">
+    <div class="header-content">
+      <h1>Mi Perfil</h1>
+      <p>Gestiona tu cuenta y revisa tu garaje de favoritos</p>
+    </div>
+  </header>
+
+  <div class="profile-grid">
+    <aside class="profile-card info-section">
+      <div class="card-header">
+        <div class="user-avatar-large">
+          <span>{{ userInitial }}</span>
+          <div class="online-indicator"></div>
+        </div>
+        <div class="header-text">
+          <h2>Información Personal</h2>
+          <span class="account-type">Cliente Verificado</span>
+        </div>
+      </div>
+
+      <div class="info-body">
+        <div class="info-group">
+          <label><span class="mini-icon">👤</span> Nombre Completo</label>
+          <p>{{ userName || 'Prueba Cliente' }}</p>
+        </div>
+
+        <div class="info-group">
+          <label><span class="mini-icon">✉️</span> Correo Electrónico</label>
+          <p>{{ userEmail }}</p>
+        </div>
+
+        <div class="user-stats">
+          <div class="stat-item">
+            <span class="stat-value">{{ favoriteCars.length }}</span>
+            <span class="stat-label">Guardados</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-value">2</span>
+            <span class="stat-label">Consultas</span>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="security-section">
+          <h3>Configuración de Seguridad</h3>
+          <button class="btn-premium-outline">
+            <span class="icon">🔒</span> Cambiar Contraseña
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="profile-card favorites-section">
+      <div class="card-header-favs">
+        <h2>Mis Favoritos <span class="badge">{{ favoriteCars.length }}</span></h2>
+      </div>
+
+      <div class="favorites-grid">
+        @for (car of favoriteCars; track car.id) {
+          <div class="car-mini-card">
+            <div class="img-container">
+              <img [src]="car.imageUrl" [alt]="car.model">
+              <button class="btn-unlike-floating" (click)="removeFavorite(car.id)">
+                ❤️
+              </button>
+            </div>
+            <div class="car-info">
+              <div class="brand-info">
+                <span class="make">{{ car.make }}</span>
+                <h4>{{ car.model }}</h4>
+              </div>
+              <button class="btn-view" (click)="showDetails(car.id)">Ver detalles</button>
+            </div>
+          </div>
+        } @empty {
+          <div class="no-favorites">
+            <div class="empty-icon">🏎️</div>
+            <p>Tu garaje está vacío.</p>
+            <button class="btn-premium" routerLink="/cars">Explorar Catálogo</button>
+          </div>
+        }
+      </div>
+    </main>
+  </div>
+</div>

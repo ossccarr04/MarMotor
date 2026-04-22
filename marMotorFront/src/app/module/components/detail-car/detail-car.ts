@@ -52,7 +52,7 @@ export class DetailCar implements OnInit, OnDestroy {
   currentIndex: number = 0;
   currentImageIndex: number = 0;
   isZoomed: boolean = false;
-  isAdmin: boolean = true; //! Cambiar a false
+  isAdmin: boolean = false; 
   private scrollPosition: number = 0;
 
   ngOnInit(): void {
@@ -61,7 +61,7 @@ export class DetailCar implements OnInit, OnDestroy {
     if (this.authService.isLoggedIn()) {
       const user = this.authService.getCurrentUser();
       if (user) {
-        this.isAdmin = atob(user.rol) === UserRoles.ADMIN;
+        this.isAdmin = atob(user.role) === UserRoles.ADMIN.toUpperCase();
       }
     }
 

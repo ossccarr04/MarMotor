@@ -39,7 +39,7 @@ export class Login {
 
   onSubmit() {
   if (this.loginForm.valid) {
-    /* this.authService.login(this.loginForm.value).subscribe({
+     this.authService.login(this.loginForm.value).subscribe({
       next: (response) => {
         // ÉXITO: Guardamos token y avisamos
         this.toast.success('Sesión iniciada correctamente', '¡Bienvenido de nuevo!');
@@ -50,6 +50,7 @@ export class Login {
         }, 1500);
       },
       error: (err) => {
+        console.error(err)
         // ERROR: Manejo de credenciales incorrectas
         if (err.status === 401 || err.status === 403) {
           this.toast.error('Correo o contraseña incorrectos', 'Error de acceso');
@@ -59,7 +60,7 @@ export class Login {
           this.toast.error('Servidor no disponible. Inténtalo más tarde', 'Error de red');
         }
       }
-    }); */
+    }); 
   } else {
     // Si el formulario no es válido al pulsar el botón
     this.toast.error('Por favor, introduce tus credenciales', 'Formulario incompleto');

@@ -23,6 +23,8 @@ import { BodyTypeServiceBBDD } from '../../../services/bodyType-service-bbdd';
 import { CarServiceBBDD } from '../../../services/car-service-bbdd';
 import { ToastrService } from 'ngx-toastr';
 import { CarDTO } from '../../../../@types/interface/car.interface';
+import { AuthServiceBBDD } from '../../../services/auth-service';
+import { UserRoles } from '../../../../@types/enums/roles.enums';
 
 @Component({
   selector: 'app-filters',
@@ -62,6 +64,7 @@ export class Filters implements OnInit {
   private cdr = inject(ChangeDetectorRef);
 
   constructor(
+    @Inject(AuthServiceBBDD) private authService: AuthServiceBBDD,
     @Inject(Router) private route: Router,
     @Inject(CarServiceBBDD) private carService: CarServiceBBDD,
     @Inject(BrandServiceBBDD) private brandService: BrandServiceBBDD,
@@ -86,11 +89,12 @@ export class Filters implements OnInit {
   isDragging = false;
   busquedaAdmin: string = '';
   resultadosAdmin: any[] = [];
-  isAdmin: boolean = true; //! Cambiar a false
+  isAdminV: boolean = false; 
 
   @ViewChild('sliderElement') sliderElement!: ElementRef;
 
   ngOnInit(): void {
+    this.isAdmin()
     this.limpiezaFiltros();
     // 1. Cargar Marcas
     this.cargarMarcasSegunEstado();
@@ -326,6 +330,14 @@ export class Filters implements OnInit {
     return null;
   }
 
+  isAdmin(){
+    if (this.authService.isLoggedIn()) {
+          const user = this.authService.getCurrentUser();
+          if (user) {
+            this.isAdminV = atob(user.role) === UserRoles.ADMIN.toUpperCase();
+          }
+        }
+  }
   limpiezaFiltros() {
     this.limpiarMarca();
     this.limpiarCarroceria();

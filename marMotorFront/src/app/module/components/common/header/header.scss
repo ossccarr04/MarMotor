@@ -61,6 +61,7 @@ $font-family: 'Montserrat', sans-serif;
     }
   }
 
+  
 
   .menu-toggle {
     display: flex;
@@ -161,6 +162,7 @@ $font-family: 'Montserrat', sans-serif;
   }
 }
 
+
 /* --- BOTONES Y RESTO (Sin cambios) --- */
 .btn {
   font-family: $font-family;
@@ -220,4 +222,29 @@ body[style*='overflow: hidden'] {
   height: 100%;
   touch-action: none;
   -webkit-overflow-scrolling: none;
+}
+
+@media (max-width: 1023px) {
+  .profile-desktop-only {
+    display: none !important; /* Desaparece por completo de la derecha del logo */
+  }
+
+.profile-mobile-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+}
+}
+
+/* En escritorio (1024px o más) */
+@media (min-width: 1024px) {
+  .profile-mobile-container {
+    display: none !important; /* Desaparece del menú hamburguesa */
+  }
+
+  .profile-desktop-only {
+    display: block !important; /* Aparece en la derecha */
+  }
 }

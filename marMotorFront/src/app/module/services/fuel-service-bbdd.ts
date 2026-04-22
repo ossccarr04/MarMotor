@@ -12,7 +12,7 @@ export class FuelTypeServiceBBDD {
   private http = inject(HttpClient);
   
 
-  private readonly URL = `${environment.apiUrl}/fuel-types`;
+  private readonly URL = `${environment.apiUrl}/api/fuel-types`;
 
   getFuels(isSold?: boolean): Observable<any> {
   // Si isSold es true o false, lo añadimos como parámetro a la URL

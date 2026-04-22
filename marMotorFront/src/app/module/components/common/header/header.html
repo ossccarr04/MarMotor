@@ -63,6 +63,7 @@
         >Añadir vehiculo</a
       >
     }
+    @if(!isLogged){
     <button
       class="btn btn-outline btn-login-mobile"
       [routerLink]="['/auth/login']"
@@ -70,9 +71,20 @@
     >
       Login
     </button>
+  }@else {
+      <div class="profile-mobile-container" (click)="isMenuOpen = false">
+        <app-menu-profile></app-menu-profile>
+      </div>
+    }
   </nav>
 
   <div class="header-actions">
-    <button class="btn btn-outline btn-login-desktop" [routerLink]="['/auth/login']">Login</button>
+    @if (!isLogged) {
+      <button class="btn btn-outline btn-login-desktop" [routerLink]="['/auth/login']">Login</button>
+    } @else {
+     <div class="profile-desktop-only">
+      <app-menu-profile></app-menu-profile>
+    </div>
+    }
   </div>
 </header>

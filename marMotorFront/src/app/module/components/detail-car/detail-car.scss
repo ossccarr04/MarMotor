@@ -775,6 +775,122 @@ $font-family: 'Montserrat', sans-serif;
   }
 }
 
+/* --- RESERVA --- */
+.reserve-card {
+  background: linear-gradient(135deg, $vibrant-teal, $vibrant-green, $deep-emerald);
+  background-size: 200% 200%;
+  animation: shine-gradient 5s infinite;
+  border-radius: 20px;
+  padding: 25px 20px; /* Padding reducido para móviles */
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  color: #051121;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media (min-width: 768px) {
+    padding: 40px 30px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: rotate(45deg);
+    animation: reflection 3s infinite;
+  }
+
+  .reserve-icon {
+    width: 36px;
+    height: 36px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: $deep-emerald;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 5;
+
+    @media (min-width: 768px) {
+      width: 45px;
+      height: 45px;
+      font-size: 20px;
+    }
+  }
+
+  h3.reserve-title {
+    color: #051121;
+    font-size: 18px;
+    margin-bottom: 5px;
+    font-weight: 900;
+    position: relative;
+    z-index: 5;
+    @media (min-width: 768px) {
+      font-size: 22px;
+    }
+  }
+
+  .reserve-subtitle {
+    font-size: 11px;
+    color: rgba(5, 17, 33, 0.7);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 600;
+    position: relative;
+    z-index: 5;
+    @media (min-width: 768px) {
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .final-price {
+    font-size: 32px; /* Mucho más pequeño en móvil para que no rompa la pantalla */
+    font-weight: 900;
+    margin: 5px 0 15px 0;
+    position: relative;
+    z-index: 5;
+
+    @media (min-width: 768px) {
+      font-size: 42px;
+      margin-bottom: 25px;
+    }
+  }
+
+  .btn-contact {
+    background: #051121;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    width: 100%;
+    border-radius: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    position: relative;
+    z-index: 5;
+    transition: transform 0.2s;
+    font-size: 14px;
+
+    @media (min-width: 768px) {
+      font-size: 16px;
+      padding: 15px 40px;
+    }
+    &:hover {
+      transform: translateY(-3px);
+    }
+  }
+}
+
 .specs-list {
   li {
     display: flex;
@@ -816,13 +932,13 @@ $font-family: 'Montserrat', sans-serif;
         border-radius: 50%;
         font-size: 1.1rem;
 
-       &.badge-zero {
-      background-color: #00a1df;
-      color: #ffffff;
-      font-size: 1.5rem; // Tamaño grande para el "0"
-      line-height: 1;
-      padding-bottom: 2px; // Ajuste óptico para centrar el círculo del 0
-    }
+        &.badge-zero {
+          background-color: #00a1df;
+          color: #ffffff;
+          font-size: 1.5rem; // Tamaño grande para el "0"
+          line-height: 1;
+          padding-bottom: 2px; // Ajuste óptico para centrar el círculo del 0
+        }
 
         &.badge-eco {
           // Rectángulo redondeado para que quepa "ECO"
@@ -872,152 +988,6 @@ $font-family: 'Montserrat', sans-serif;
     vertical-align: middle;
   }
 
-  /* --- EQUIPAMIENTO DESTACADO --- */
-  .features-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-
-    @media (min-width: 768px) {
-      gap: 10px;
-    }
-
-    .feature-tag {
-      background: #f1f5f9;
-      padding: 8px 12px;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-
-      @media (min-width: 768px) {
-        padding: 10px 15px;
-        font-size: 13px;
-      }
-      i {
-        color: $accent-green;
-      }
-    }
-  }
-
-  /* --- RESERVA --- */
-  .reserve-card {
-    background: linear-gradient(135deg, $vibrant-teal, $vibrant-green, $deep-emerald);
-    background-size: 200% 200%;
-    animation: shine-gradient 5s infinite;
-    border-radius: 20px;
-    padding: 25px 20px; /* Padding reducido para móviles */
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    color: #051121;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    @media (min-width: 768px) {
-      padding: 40px 30px;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transform: rotate(45deg);
-      animation: reflection 3s infinite;
-    }
-
-    .reserve-icon {
-      width: 36px;
-      height: 36px;
-      background: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      color: $deep-emerald;
-      margin-bottom: 10px;
-      position: relative;
-      z-index: 5;
-
-      @media (min-width: 768px) {
-        width: 45px;
-        height: 45px;
-        font-size: 20px;
-      }
-    }
-
-    h3.reserve-title {
-      color: #051121;
-      font-size: 18px;
-      margin-bottom: 5px;
-      font-weight: 900;
-      position: relative;
-      z-index: 5;
-      @media (min-width: 768px) {
-        font-size: 22px;
-      }
-    }
-
-    .reserve-subtitle {
-      font-size: 11px;
-      color: rgba(5, 17, 33, 0.7);
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      font-weight: 600;
-      position: relative;
-      z-index: 5;
-      @media (min-width: 768px) {
-        font-size: 14px;
-        margin-bottom: 20px;
-      }
-    }
-
-    .final-price {
-      font-size: 32px; /* Mucho más pequeño en móvil para que no rompa la pantalla */
-      font-weight: 900;
-      margin: 5px 0 15px 0;
-      position: relative;
-      z-index: 5;
-
-      @media (min-width: 768px) {
-        font-size: 42px;
-        margin-bottom: 25px;
-      }
-    }
-
-    .btn-contact {
-      background: #051121;
-      color: white;
-      border: none;
-      padding: 15px 20px;
-      width: 100%;
-      border-radius: 12px;
-      font-weight: 800;
-      cursor: pointer;
-      position: relative;
-      z-index: 5;
-      transition: transform 0.2s;
-      font-size: 14px;
-
-      @media (min-width: 768px) {
-        font-size: 16px;
-        padding: 15px 40px;
-      }
-      &:hover {
-        transform: translateY(-3px);
-      }
-    }
-  }
-
   /* Animations */
   @keyframes shine-gradient {
     0% {
@@ -1036,6 +1006,36 @@ $font-family: 'Montserrat', sans-serif;
     }
     100% {
       transform: translateX(100%) rotate(45deg);
+    }
+  }
+}
+
+/* --- EQUIPAMIENTO DESTACADO --- */
+.features-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  @media (min-width: 768px) {
+    gap: 10px;
+  }
+
+  .feature-tag {
+    background: #f1f5f9;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    @media (min-width: 768px) {
+      padding: 10px 15px;
+      font-size: 13px;
+    }
+    i {
+      color: $accent-green;
     }
   }
 }

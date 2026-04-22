@@ -5,19 +5,20 @@ import { isPlatformBrowser, CommonModule } from '@angular/common'; // Importante
 import { AuthServiceBBDD } from '../../../services/auth-service';
 import { ToastrService } from 'ngx-toastr';
 import { UserRoles } from '../../../../@types/enums/roles.enums';
+import { Profile } from "../menu-profile/menu-profile";
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLinkActive, RouterLink, RouterModule],
+  imports: [CommonModule, RouterLinkActive, RouterLink, RouterModule, Profile],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
 export class Header {
   isMenuOpen = false;
   isLogoZoomed: boolean = false;
-  isAdmin: boolean = true; //! Cambiarlo a False cuando este hecho el Login
-
+  isAdmin: boolean = false; 
+  isLogged: boolean = false;
   
   constructor(
     private renderer: Renderer2, 
@@ -34,10 +35,15 @@ export class Header {
   }
 
   ngOnInit(): void {
+    this.authService.authStatus$.subscribe(status => {
+      this.isLogged = status;
+    });
+    
     if(this.authService.isLoggedIn()) {
+      this.isLogged = true;
       const user = this.authService.getCurrentUser();
       if(user) {
-        this.isAdmin = atob(user.rol) === UserRoles.ADMIN; 
+        this.isAdmin = atob(user.role) === UserRoles.ADMIN.toUpperCase(); 
       }
     }
     

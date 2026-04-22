@@ -304,7 +304,6 @@ export class AnadirCoche implements OnInit {
     this.isSubmitting = true;
 
     const formRawValue = this.carForm.getRawValue();
-    console.log(formRawValue);
     // Filtramos las imágenes que se quedan (las que ya tienen URL de Cloudinary)
     const currentExistingImages: string[] = [];
 

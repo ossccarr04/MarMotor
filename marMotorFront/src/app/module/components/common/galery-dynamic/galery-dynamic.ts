@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, inject, Inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, Inject, ViewChild } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CarDTO } from '../../../../@types/interface/car.interface';
 import { CarServiceBBDD } from '../../../services/car-service-bbdd';
 import { BadgeLabel, BadgeType } from '../../../../@types/enums/badge.enum';
+import { FavoriteServiceBBDD } from '../../../services/favorite-service-bbdd';
 
 @Component({
   selector: 'app-galery-dynamic',
@@ -14,6 +15,8 @@ import { BadgeLabel, BadgeType } from '../../../../@types/enums/badge.enum';
 })
 export class GaleryDynamic {
   private carservice = inject(CarServiceBBDD);
+  private cdr = inject(ChangeDetectorRef);
+  private favoriteService = inject(FavoriteServiceBBDD);
   private router = inject(Router);
 
   @ViewChild('carrusel') carrusel!: ElementRef;
@@ -49,8 +52,29 @@ export class GaleryDynamic {
     return badgeValue ? this.badgeLabel[badgeValue] : badge.toString();
   }
 
-  toggleGuardar(coche: CarDTO) {
+  toggleGuardar(coche: any, event: Event) {
+    event.stopPropagation();
     coche.isSaved = !coche.isSaved;
+
+    if (!coche.isSaved) {
+      this.favoriteService.addFavorite(coche.id).subscribe({
+        next: () => {
+          coche.isSaved = true;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Error al guardar favorito', err);
+        },
+      });
+    } else {
+      this.favoriteService.removeFavorite(coche.id).subscribe({
+        next: () => {
+          coche.isSaved = false;
+          this.cdr.detectChanges();
+        },
+        error: (err) => console.error('Error al eliminar favorito', err),
+      });
+    }
   }
 
   moverCarrusel(direccion: number) {

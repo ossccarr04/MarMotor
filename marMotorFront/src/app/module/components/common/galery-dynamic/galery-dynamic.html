@@ -54,7 +54,7 @@
                 </span>
               }
 
-          <span class="heart-icon" [class.is-liked]="coche.isSaved" (click)="toggleGuardar(coche)">
+          <span class="heart-icon" [class.is-liked]="coche.isSaved" (click)="toggleGuardar(coche, $event)">
             {{ coche.isSaved ? '❤️' : '♡' }}
           </span>
 

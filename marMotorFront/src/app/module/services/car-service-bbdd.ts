@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environment.development';
 export class CarServiceBBDD {
   private http = inject(HttpClient);
 
-  private readonly URL = `${environment.apiUrl}/cars`;
+  private readonly URL = `${environment.apiUrl}/api/cars`;
   mantenerVendidosActivo: boolean = false;
   private carIdsSource = new BehaviorSubject<number[]>([]);
   public recargarCoches$ = new Subject<void>();

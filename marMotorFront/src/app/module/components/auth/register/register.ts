@@ -6,8 +6,6 @@ import { environment } from '../../../../../environments/environment.development
 import { AuthServiceBBDD } from '../../../services/auth-service';
 import { ToastrService } from 'ngx-toastr';
 import { RegisterDTO } from '../../../../@types/interface/user.interface';
-// Si usas un entorno de configuración tipo environment.ts:
-// import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +15,6 @@ import { RegisterDTO } from '../../../../@types/interface/user.interface';
   styleUrl: './register.scss',
 })
 export class Register {
-
   registerForm: FormGroup;
   
   // Corregido: Las Regex en pattern() no deben ir entre comillas como string si quieres que funcionen bien
@@ -86,11 +83,12 @@ export class Register {
       next: (data) => {
         this.toast.success('Registro exitoso. ¡Bienvenido a MarMotor!', '¡Enhorabuena!');
         setTimeout(() => {
-          this.router.navigate(['/login']);
+          this.router.navigate(['/auth/login']);
         }, 2500);
       },
       error: (err) => {
-        if (err.status === 403 || err.error?.code === 'EMAIL_PROTECTED') {
+
+        if (err.status === 403 || err.error?.code === environment.PROTECTED_EMAILS) {
           this.toast.error('Este correo electrónico está reservado.', 'Error de Seguridad');
           this.registerForm.get('email')?.setErrors({ emailProtegido: true });
         } else if (err.status === 409) {
@@ -101,7 +99,7 @@ export class Register {
       }
     });
   } else {
-    this.toast.warning('Por favor, revisa los campos en rojo.', 'Formulario inválido');
+    this.toast.error('Por favor, revisa los campos en rojo.', 'Formulario inválido');
     this.registerForm.markAllAsTouched();
   }
 }

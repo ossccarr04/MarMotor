@@ -22,6 +22,7 @@ export interface RegisterDTO {
 }
 
 export interface LoggedUserDTO {
-    id: string;
-    rol: string;
+    user: string;
+    correo: string;
+    role: string;
 }

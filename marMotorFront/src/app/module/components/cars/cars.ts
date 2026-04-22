@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CarDTO } from '../../../@types/interface/car.interface';
 import { ToastrService } from 'ngx-toastr';
 import { BadgeLabel, BadgeType } from '../../../@types/enums/badge.enum';
+import { FavoriteServiceBBDD } from '../../services/favorite-service-bbdd';
 
 @Component({
   selector: 'app-cars',
@@ -22,6 +23,7 @@ export class Cars {
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
   private toast = inject(ToastrService);
+  private favoriteService = inject(FavoriteServiceBBDD);
   private quiereVendidos = this.carService.mantenerVendidosActivo;
 
   public cargando: boolean = false;
@@ -34,7 +36,6 @@ export class Cars {
   itemsPorPagina = 12;
 
   ngOnInit() {
-
     this.carService.recargarCoches$.subscribe(() => {
       const params = this.route.snapshot.queryParams;
       if (params && Object.keys(params).length > 0) {
@@ -86,14 +87,14 @@ export class Cars {
     };
 
     // 3. LÓGICA DE BÚSQUEDA RÁPIDA (Search por texto)
-    
+
     if (filtrosLimpios['search']) {
       const queryTerm = filtrosLimpios['search'];
 
       this.carService.getCarsByModel(queryTerm).subscribe({
         next: (data) => {
           this.cochesFiltrados = aplicarFiltroVendidos(data);
-          
+
           this.carService.setCarIds(this.cochesFiltrados.map((c) => c.id));
 
           if (this.cochesFiltrados.length === 0 && this.cargando) {
@@ -120,11 +121,11 @@ export class Cars {
     this.carService.getCarsByFilters(filtrosLimpios).subscribe({
       next: (data) => {
         this.cochesFiltrados = aplicarFiltroVendidos(data);
-       
+
         this.carService.setCarIds(this.cochesFiltrados.map((c) => c.id));
 
         if (this.cochesFiltrados.length === 0 && this.cargando) {
-          if(filtrosLimpios){
+          if (filtrosLimpios) {
             this.toast.warning('No se han encontrado vehículos', 'Atención');
           }
         }
@@ -144,7 +145,7 @@ export class Cars {
     this.carService.getCarsByFilters(filtrosLimpios).subscribe({
       next: (data) => {
         this.cochesFiltrados = aplicarFiltroVendidos(data);
-        
+
         this.carService.setCarIds(this.cochesFiltrados.map((c) => c.id));
 
         if (this.cochesFiltrados.length === 0 && this.cargando) {
@@ -157,7 +158,6 @@ export class Cars {
         this.paginaActual = 1;
         this.actualizarVista();
         this.cdr.detectChanges();
-        
       },
       error: (err) => {
         console.error('Error con los filtros:', err);
@@ -259,7 +259,25 @@ export class Cars {
   toggleGuardar(coche: any, event: Event) {
     event.stopPropagation();
     coche.isSaved = !coche.isSaved;
-    this.cdr.detectChanges();
+    if (!coche.isSaved) {
+      this.favoriteService.addFavorite(coche.id).subscribe({
+        next: () => {
+          coche.isSaved = true;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Error al guardar favorito', err);
+        },
+      });
+    } else {
+      this.favoriteService.removeFavorite(coche.id).subscribe({
+        next: () => {
+          coche.isSaved = false;
+          this.cdr.detectChanges();
+        },
+        error: (err) => console.error('Error al eliminar favorito', err),
+      });
+    }
   }
 
   showDetails(id: number) {

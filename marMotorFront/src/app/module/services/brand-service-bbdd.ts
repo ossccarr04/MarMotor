@@ -12,7 +12,7 @@ export class BrandServiceBBDD {
   private http = inject(HttpClient);
   
 
-  private readonly URL = `${environment.apiUrl}/brands`;
+  private readonly URL = `${environment.apiUrl}/api/brands`;
 
   getBrands(): Observable<any> {
     return this.http.get<any>(this.URL);
