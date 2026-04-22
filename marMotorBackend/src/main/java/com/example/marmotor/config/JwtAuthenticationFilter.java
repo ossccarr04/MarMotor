@@ -26,7 +26,7 @@ import java.security.Key;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private AuthService authService; // Usamos AuthService para cargar UserDetails
+    private AuthService authService;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
-        final String username;
+        final String userEmail;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -50,10 +50,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         jwt = authHeader.substring(7);
-        username = extractUsername(jwt); // Extraer el username del token
+        userEmail = extractEmail(jwt);
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.authService.loadUserByUsername(username);
+        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+            UserDetails userDetails = this.authService.loadUserByUsername(userEmail);
 
             if (isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
@@ -68,13 +69,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String extractUsername(String token) {
-        return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody().getSubject();
+    private String extractEmail(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 
     private boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        Claims claims = Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody();
-        return (username.equals(userDetails.getUsername())) && !claims.getExpiration().before(new Date());
+        final String emailFromToken = extractEmail(token);
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        // Comparamos el email del token con el "username" (email) del UserDetails
+        return (emailFromToken.equalsIgnoreCase(userDetails.getUsername()))
+                && !claims.getExpiration().before(new Date());
     }
 }

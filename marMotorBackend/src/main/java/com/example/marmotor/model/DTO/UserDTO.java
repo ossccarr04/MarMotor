@@ -1,7 +1,10 @@
 package com.example.marmotor.model.DTO;
 
+import com.example.marmotor.model.entity.Car;
 import com.example.marmotor.model.entity.User;
 import lombok.Data;
+
+import java.util.Set;
 
 @Data
 public class UserDTO {

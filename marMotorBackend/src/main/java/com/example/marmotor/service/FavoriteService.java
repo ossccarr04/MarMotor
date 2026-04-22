@@ -23,9 +23,11 @@ public class FavoriteService {
     private CarService carService;
 
     @Transactional(readOnly = true)
-    public List<CarDTO> getUserFavorites(String username) {
-        User user = userRepository.findByUsername(username)
+    public List<CarDTO> getUserFavorites(String email) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        int size = user.getFavoriteCars().size();
 
         return user.getFavoriteCars().stream()
                 .map(car -> {
@@ -37,8 +39,8 @@ public class FavoriteService {
     }
 
     @Transactional
-    public void addFavorite(String username, Long carId) {
-        User user = userRepository.findByUsername(username)
+    public void addFavorite(String email, Long carId) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         Car car = carRepository.findById(carId)
                 .orElseThrow(() -> new RuntimeException("Coche no encontrado"));
@@ -48,8 +50,8 @@ public class FavoriteService {
     }
 
     @Transactional
-    public void removeFavorite(String username, Long carId) {
-        User user = userRepository.findByUsername(username)
+    public void removeFavorite(String email, Long carId) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         Car car = carRepository.findById(carId)
                 .orElseThrow(() -> new RuntimeException("Coche no encontrado"));

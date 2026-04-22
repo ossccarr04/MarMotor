@@ -2,7 +2,6 @@ package com.example.marmotor.controller;
 
 import com.example.marmotor.model.entity.User;
 import com.example.marmotor.service.AuthService; // Importar AuthService
-import com.example.marmotor.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
