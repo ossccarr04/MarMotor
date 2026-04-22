@@ -16,6 +16,7 @@ import { AuthServiceBBDD } from '../../services/auth-service';
 import { UserRoles } from '../../../@types/enums/roles.enums';
 import { BadgeLabel, BadgeType } from '../../../@types/enums/badge.enum';
 import { ToastrService } from 'ngx-toastr';
+import { FavoriteServiceBBDD } from '../../services/favorite-service-bbdd';
 
 @Component({
   selector: 'detail-car',
@@ -43,6 +44,7 @@ export class DetailCar implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private renderer = inject(Renderer2);
+  private favoriteService = inject(FavoriteServiceBBDD);
   // Estado del componente
   confirmandoBorrado: boolean = false;
   badgeLabel = BadgeLabel;
@@ -56,7 +58,10 @@ export class DetailCar implements OnInit, OnDestroy {
   private scrollPosition: number = 0;
 
   ngOnInit(): void {
-    this.carIds = this.carsService.getCarIds();
+
+    if (this.carIds.length === 0) {
+      this.carIds = this.carsService.getCarIds();
+    }
 
     if (this.authService.isLoggedIn()) {
       const user = this.authService.getCurrentUser();
@@ -87,6 +92,24 @@ export class DetailCar implements OnInit, OnDestroy {
             this.car.transmission = this.car.transmission.toLowerCase();
             this.car.bodyType = this.car.bodyType?.toLocaleLowerCase() ?? null;
 
+            // Comprobar si es favorito
+            if (this.authService.isLoggedIn() && this.car) {
+              this.favoriteService.getMyFavorites().subscribe({
+                next: (favs) => {
+                  if (this.car) { // Doble chequeo por asincronía
+                    this.car.isSaved = favs.some(favCar => favCar.id === this.car!.id);
+                    this.cdr.detectChanges();
+                  }
+                },
+                // Si falla la carga de favoritos, asumimos que no lo es.
+                error: () => {
+                  if (this.car) this.car.isSaved = false;
+                  this.cdr.detectChanges();
+                }
+              });
+            } else if (this.car) {
+              this.car.isSaved = false;
+            }
             // Si carIds está vacío (acceso directo por URL), lo inicializamos con el actual
             if (this.carIds.length === 0) {
               this.carIds = [data.id];
@@ -173,11 +196,40 @@ export class DetailCar implements OnInit, OnDestroy {
   }
 
   toggleSave(): void {
-    if (this.car) {
-      this.car.isSaved = !this.car.isSaved;
-      // TODO: Aquí deberías llamar a un servicio para persistir el favorito en la BBDD
+    if (!this.car) return;
+
+    if (!this.authService.isLoggedIn()) {
+      this.toast.info('Debes iniciar sesión para guardar favoritos', 'Acción requerida');
+      this.router.navigate(['/login']);
+      return;
     }
-  }
+
+    const estadoAnterior = this.car.isSaved;
+
+    // 1. Actualización optimista de la UI
+    this.car.isSaved = !estadoAnterior;
+    this.cdr.detectChanges();
+
+    const peticion = estadoAnterior
+      ? this.favoriteService.removeFavorite(this.car.id)
+      : this.favoriteService.addFavorite(this.car.id);
+
+    peticion.subscribe({
+      // 2. En caso de éxito, no hacemos nada porque la UI ya está actualizada.
+      next: () => {},
+      // 3. En caso de error, revertimos el cambio en la UI y notificamos al usuario.
+      error: (err) => {
+        console.error(estadoAnterior ? 'Error al eliminar:' : 'Error al guardar:', err);
+        if (this.car) {
+          this.car.isSaved = estadoAnterior; // Revertimos al estado original
+        }
+        this.cdr.detectChanges();
+        this.toast.error(
+          'No se pudo completar la acción. Por favor, inténtalo de nuevo.',
+          'Error de conexión'
+        );
+      },
+    });  }
 
   prepararEliminacion() {
     this.confirmandoBorrado = true;

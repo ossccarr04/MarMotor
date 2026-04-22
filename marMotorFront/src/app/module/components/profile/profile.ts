@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef, NgZone } from '@angular/core';
 import { AuthServiceBBDD } from '../../services/auth-service';
 import { CarDTO } from '../../../@types/interface/car.interface';
 import { Router, RouterLink } from '@angular/router';
@@ -13,36 +13,63 @@ import { CommonModule } from '@angular/common';
   styleUrl: './profile.scss',
 })
 export class Profile {
-
-  private favoriteService= inject(FavoriteServiceBBDD);
+  private favoriteService = inject(FavoriteServiceBBDD);
   private authService = inject(AuthServiceBBDD);
   private router = inject(Router);
   private toast = inject(ToastrService);
+  private cdr = inject(ChangeDetectorRef);
+  private zone = inject(NgZone);
+
 
   favoriteCars: CarDTO[] = [];
-  
-
 
   ngOnInit(): void {
-    this.loadFavorites();
+    this.authService.authStatus$.subscribe(user => {
+      if (user) {
+        this.loadFavorites();
+      }
+    });
   }
 
   loadFavorites() {
     this.favoriteService.getMyFavorites().subscribe({
       next: (cars) => {
-        this.favoriteCars = cars;
+        this.zone.run(() => {
+          this.favoriteCars = cars.map(car => ({
+            ...car,
+            isSaved: true 
+          }));
+          
+          // Y por si acaso, le damos el doble toque de confirmación
+          this.cdr.detectChanges(); 
+        });
       },
-      error: (err) => console.error('Error cargando favoritos', err)
+      error: (err) => {
+        console.error('Error cargando favoritos', err);
+      }
     });
   }
 
   removeFavorite(carId: number) {
+    // Guardamos el estado original por si la petición falla
+    const originalFavoriteCars = [...this.favoriteCars];
+
+    // 1. Actualización optimista: quitamos el coche de la lista local inmediatamente
+    this.favoriteCars = this.favoriteCars.filter((car) => car.id !== carId);
+
+    // 2. Llamamos al servicio
     this.favoriteService.removeFavorite(carId).subscribe({
-      next: () => {
-        // Optimistic update: lo quitamos del array local para que sea instantáneo
-        this.favoriteCars = this.favoriteCars.filter(car => car.id !== carId);
+      // En caso de éxito, no es necesario hacer nada porque la UI ya está actualizada.
+      next: () => {},
+      // 3. En caso de error, revertimos la UI a su estado original y notificamos
+      error: (err) => {
+        console.error('No se pudo eliminar de favoritos', err);
+        this.favoriteCars = originalFavoriteCars; // Revertimos
+        this.toast.error(
+          'No se pudo eliminar el vehículo de favoritos. Inténtalo de nuevo.',
+          'Error',
+        );
       },
-      error: (err) => console.error('No se pudo eliminar de favoritos', err)
     });
   }
 
@@ -51,6 +78,10 @@ export class Profile {
   }
 
   get userEmail(): string {
+    return this.userData ? atob(this.userData.correo) : '';
+  }
+
+  get userContact(): string {
     return this.userData ? atob(this.userData.correo) : '';
   }
 

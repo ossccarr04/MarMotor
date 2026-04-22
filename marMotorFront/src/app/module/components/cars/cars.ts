@@ -7,6 +7,7 @@ import { CarDTO } from '../../../@types/interface/car.interface';
 import { ToastrService } from 'ngx-toastr';
 import { BadgeLabel, BadgeType } from '../../../@types/enums/badge.enum';
 import { FavoriteServiceBBDD } from '../../services/favorite-service-bbdd';
+import { AuthServiceBBDD } from '../../services/auth-service';
 
 @Component({
   selector: 'app-cars',
@@ -24,6 +25,7 @@ export class Cars {
   private cdr = inject(ChangeDetectorRef);
   private toast = inject(ToastrService);
   private favoriteService = inject(FavoriteServiceBBDD);
+  private authService = inject(AuthServiceBBDD);
   private quiereVendidos = this.carService.mantenerVendidosActivo;
 
   public cargando: boolean = false;
@@ -35,22 +37,36 @@ export class Cars {
   paginaActual = 1;
   itemsPorPagina = 12;
 
-  ngOnInit() {
-    this.carService.recargarCoches$.subscribe(() => {
-      const params = this.route.snapshot.queryParams;
-      if (params && Object.keys(params).length > 0) {
-        this.filtrosSeleccionados = { ...params };
-        this.cargarCoches(params);
-        window.scrollTo({ top: 600, behavior: 'smooth' });
-      } else {
-        this.filtrosSeleccionados = {};
-        this.cargarCoches({});
-      }
-    });
+  private misFavoritosIds: number[] = [];
 
-    this.route.queryParams.subscribe((params) => {
-      this.cargarCoches(params);
+  ngOnInit(): void {
+    // Combina la carga de favoritos y la carga de coches basada en los parámetros de la URL.
+    this.route.queryParams.subscribe(params => {
+      this.filtrosSeleccionados = { ...params };
+      this.cargarFavoritosYCoches(params);
     });
+  }
+
+  /**
+   * Carga primero los IDs de los coches favoritos del usuario (si está logueado)
+   * y luego procede a cargar la lista de coches aplicando esos favoritos.
+   */
+  private cargarFavoritosYCoches(params: any): void {
+    if (this.authService.isLoggedIn()) {
+      this.favoriteService.getMyFavorites().subscribe({
+        next: (favs) => {
+          this.misFavoritosIds = favs.map(c => c.id);
+          this.cargarCoches(params); // Carga coches después de tener los favoritos
+        },
+        error: () => {
+          this.misFavoritosIds = []; // En caso de error, lista de favoritos vacía
+          this.cargarCoches(params); // Aún así cargamos los coches
+        }
+      });
+    } else {
+      this.misFavoritosIds = []; // Usuario no logueado, no hay favoritos
+      this.cargarCoches(params);
+    }
   }
 
   getBadgeText(badge: any): string {
@@ -58,6 +74,15 @@ export class Cars {
     const key = badge.toString().toUpperCase() as keyof typeof BadgeType;
     const badgeValue = BadgeType[key];
     return badgeValue ? this.badgeLabel[badgeValue] : badge.toString();
+  }
+
+  /**
+   * Mapea la lista de coches para marcar cuáles son favoritos.
+   * @param coches La lista de coches a mapear.
+   * @returns La lista de coches con el estado `isSaved` actualizado.
+   */
+  private aplicarEstadoFavoritos(coches: CarDTO[]): CarDTO[] {
+    return coches.map(coche => ({ ...coche, isSaved: this.misFavoritosIds.includes(coche.id) }));
   }
 
   cargarCoches(filtrosNuevos: any = {}) {
@@ -93,7 +118,8 @@ export class Cars {
 
       this.carService.getCarsByModel(queryTerm).subscribe({
         next: (data) => {
-          this.cochesFiltrados = aplicarFiltroVendidos(data);
+          const dataConFavoritos = this.aplicarEstadoFavoritos(data);
+          this.cochesFiltrados = aplicarFiltroVendidos(dataConFavoritos);
 
           this.carService.setCarIds(this.cochesFiltrados.map((c) => c.id));
 
@@ -120,31 +146,8 @@ export class Cars {
     // 4. LÓGICA DE FILTROS NORMALES (Desplegables)
     this.carService.getCarsByFilters(filtrosLimpios).subscribe({
       next: (data) => {
-        this.cochesFiltrados = aplicarFiltroVendidos(data);
-
-        this.carService.setCarIds(this.cochesFiltrados.map((c) => c.id));
-
-        if (this.cochesFiltrados.length === 0 && this.cargando) {
-          if (filtrosLimpios) {
-            this.toast.warning('No se han encontrado vehículos', 'Atención');
-          }
-        }
-        this.cargando = false;
-        this.paginaActual = 1;
-        this.actualizarVista();
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error con los filtros:', err);
-        this.cargando = false;
-      },
-    });
-
-    // 4. LÓGICA DE FILTROS NORMALES (Desplegables)
-
-    this.carService.getCarsByFilters(filtrosLimpios).subscribe({
-      next: (data) => {
-        this.cochesFiltrados = aplicarFiltroVendidos(data);
+        const dataConFavoritos = this.aplicarEstadoFavoritos(data);
+        this.cochesFiltrados = aplicarFiltroVendidos(dataConFavoritos);
 
         this.carService.setCarIds(this.cochesFiltrados.map((c) => c.id));
 
@@ -171,7 +174,7 @@ export class Cars {
 
     this.route.queryParams
       .subscribe((params) => {
-        this.cargarCoches(params);
+        this.cargarFavoritosYCoches(params);
       })
       .unsubscribe(); // Nos desuscribimos al instante para que no se quede escuchando
   }
@@ -238,14 +241,14 @@ export class Cars {
   }
 
   resetFilters() {
-    if (this.filtroComponent) {
+    
       this.filtroComponent.limpiarMarca();
       this.filtroComponent.limpiarCarroceria();
       this.filtroComponent.limpiarCombustible();
       this.filtroComponent.precioActual = 0;
       this.filtroComponent.precioModificado = false;
       this.filtroComponent.busquedaAdmin = '';
-    }
+    
 
     // 2. Navegamos a la ruta limpia (esto resetea los coches en pantalla)
     this.router.navigate([], {
@@ -256,28 +259,47 @@ export class Cars {
     this.paginaActual = 1;
   }
 
-  toggleGuardar(coche: any, event: Event) {
+  toggleGuardar(coche: CarDTO, event: Event) {
     event.stopPropagation();
-    coche.isSaved = !coche.isSaved;
-    if (!coche.isSaved) {
-      this.favoriteService.addFavorite(coche.id).subscribe({
-        next: () => {
-          coche.isSaved = true;
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          console.error('Error al guardar favorito', err);
-        },
-      });
-    } else {
-      this.favoriteService.removeFavorite(coche.id).subscribe({
-        next: () => {
-          coche.isSaved = false;
-          this.cdr.detectChanges();
-        },
-        error: (err) => console.error('Error al eliminar favorito', err),
-      });
+
+    if (!this.authService.isLoggedIn()) {
+      this.toast.info('Debes iniciar sesión para guardar favoritos', 'Acción requerida');
+      this.router.navigate(['/login']);
+      return;
     }
+
+    const estadoAnterior = coche.isSaved;
+
+    // 1. Actualización optimista de la UI
+    coche.isSaved = !estadoAnterior;
+    this.cdr.detectChanges();
+
+    const peticion = estadoAnterior
+      ? this.favoriteService.removeFavorite(coche.id)
+      : this.favoriteService.addFavorite(coche.id);
+
+    peticion.subscribe({
+      // 2. En caso de éxito, no hacemos nada porque la UI ya está actualizada.
+      next: () => {
+        // Opcional: Toast de éxito silencioso.
+        // Actualizamos nuestra lista de IDs localmente para consistencia
+        if (estadoAnterior) {
+          this.misFavoritosIds = this.misFavoritosIds.filter(id => id !== coche.id);
+        } else {
+          this.misFavoritosIds.push(coche.id);
+        }
+      },
+      // 3. En caso de error, revertimos el cambio en la UI y notificamos al usuario.
+      error: (err) => {
+        console.error(estadoAnterior ? 'Error al eliminar:' : 'Error al guardar:', err);
+        coche.isSaved = estadoAnterior; // Revertimos al estado original
+        this.cdr.detectChanges();
+        this.toast.error(
+          'No se pudo completar la acción. Por favor, inténtalo de nuevo.',
+          'Error de conexión'
+        );
+      },
+    });
   }
 
   showDetails(id: number) {

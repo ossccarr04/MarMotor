@@ -16,12 +16,16 @@ export class FavoriteServiceBBDD {
 
 
   getMyFavorites(): Observable<CarDTO[]> {
+    const favoriteCars= this.http.get<CarDTO[]>(this.URL);
+    return favoriteCars;
+  }
+
+  getCars(): Observable<CarDTO[]> {
     return this.http.get<CarDTO[]>(this.URL);
   }
 
   // Añadir un coche a favoritos
   addFavorite(carId: number): Observable<void> {
-
     return this.http.post<void>(`${this.URL}/${carId}`, {});
   }
 

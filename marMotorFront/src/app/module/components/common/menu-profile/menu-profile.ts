@@ -45,6 +45,11 @@ export class Profile {
     this.authService.logout();
     this.isMenuOpen= false
     this.toast.success('Sesión cerrada correctamente', '¡Hasta pronto!');
-    this.router.navigate(['/home']);
+    this.router.navigate(['/home']).then(() => {
+      setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      
+    });
   }
 }

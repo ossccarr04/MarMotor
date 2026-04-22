@@ -19,6 +19,6 @@ export interface CarDTO {
   label: string;
   badge: BadgeType | null
   badgeType?: BadgeType | null;
-  isSaved: boolean
+  isSaved?: boolean
 }
 

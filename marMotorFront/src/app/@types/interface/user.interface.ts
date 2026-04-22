@@ -1,4 +1,5 @@
 import { identity } from "rxjs";
+import { CarDTO } from "./car.interface";
 
 export interface UserDTO {
     id: number;
@@ -6,6 +7,8 @@ export interface UserDTO {
     email: string;
     password: string;
     roles: string[];
+    favorites: CarDTO[];
+    contacts: number;
     createdAt: string;
     updatedAt: string;
 }

@@ -5,6 +5,8 @@ import { CarDTO } from '../../../../@types/interface/car.interface';
 import { CarServiceBBDD } from '../../../services/car-service-bbdd';
 import { BadgeLabel, BadgeType } from '../../../../@types/enums/badge.enum';
 import { FavoriteServiceBBDD } from '../../../services/favorite-service-bbdd';
+import { AuthServiceBBDD } from '../../../services/auth-service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-galery-dynamic',
@@ -18,6 +20,8 @@ export class GaleryDynamic {
   private cdr = inject(ChangeDetectorRef);
   private favoriteService = inject(FavoriteServiceBBDD);
   private router = inject(Router);
+  private authService = inject(AuthServiceBBDD);
+  private toast = inject(ToastrService);
 
   @ViewChild('carrusel') carrusel!: ElementRef;
 
@@ -27,17 +31,46 @@ export class GaleryDynamic {
   cochesOriginal: CarDTO[] = [];
   coches: CarDTO[] = [];
   cochesFiltradoDetail: CarDTO[] = [];
+  private misFavoritosIds: number[] = [];
 
   ngOnInit(): void {
+    this.cargarFavoritosYCoches();
+  }
+
+  private cargarFavoritosYCoches(): void {
+    if (this.authService.isLoggedIn()) {
+      this.favoriteService.getMyFavorites().subscribe({
+        next: (favs) => {
+          this.misFavoritosIds = favs.map((c) => c.id);
+          this.cargarCochesGaleria();
+        },
+        error: () => {
+          this.misFavoritosIds = [];
+          this.cargarCochesGaleria();
+        },
+      });
+    } else {
+      this.misFavoritosIds = [];
+      this.cargarCochesGaleria();
+    }
+  }
+
+  private aplicarEstadoFavoritos(coches: CarDTO[]): CarDTO[] {
+    return coches.map((coche) => ({ ...coche, isSaved: this.misFavoritosIds.includes(coche.id) }));
+  }
+
+  private cargarCochesGaleria(): void {
     this.carservice.getCars().subscribe({
       next: (data) => {
-        this.cochesOriginal = data;
+        const dataConFavoritos = this.aplicarEstadoFavoritos(data);
+        this.cochesOriginal = dataConFavoritos;
 
-        this.coches = data
+        this.coches = dataConFavoritos
           .filter((c) => c.badge && c.badge.trim() !== '') // Solo con etiqueta
           .slice(0, 10); // Máximo 10
 
         this.cochesFiltradoDetail = [...this.coches];
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error de conexión o de API:', err);
@@ -52,29 +85,46 @@ export class GaleryDynamic {
     return badgeValue ? this.badgeLabel[badgeValue] : badge.toString();
   }
 
-  toggleGuardar(coche: any, event: Event) {
+  toggleGuardar(coche: CarDTO, event: Event) {
     event.stopPropagation();
-    coche.isSaved = !coche.isSaved;
 
-    if (!coche.isSaved) {
-      this.favoriteService.addFavorite(coche.id).subscribe({
-        next: () => {
-          coche.isSaved = true;
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          console.error('Error al guardar favorito', err);
-        },
-      });
-    } else {
-      this.favoriteService.removeFavorite(coche.id).subscribe({
-        next: () => {
-          coche.isSaved = false;
-          this.cdr.detectChanges();
-        },
-        error: (err) => console.error('Error al eliminar favorito', err),
-      });
+    if (!this.authService.isLoggedIn()) {
+      this.toast.info('Debes iniciar sesión para guardar favoritos', 'Acción requerida');
+      this.router.navigate(['/login']);
+      return;
     }
+
+    const estadoAnterior = coche.isSaved;
+
+    // 1. Actualización optimista de la UI
+    coche.isSaved = !estadoAnterior;
+    this.cdr.detectChanges();
+
+    const peticion = estadoAnterior
+      ? this.favoriteService.removeFavorite(coche.id)
+      : this.favoriteService.addFavorite(coche.id);
+
+    peticion.subscribe({
+      // 2. En caso de éxito, no hacemos nada.
+      next: () => {
+        // Actualizamos nuestra lista de IDs localmente para consistencia
+        if (estadoAnterior) {
+          this.misFavoritosIds = this.misFavoritosIds.filter((id) => id !== coche.id);
+        } else {
+          this.misFavoritosIds.push(coche.id);
+        }
+      },
+      // 3. En caso de error, revertimos el cambio y notificamos.
+      error: (err) => {
+        console.error(estadoAnterior ? 'Error al eliminar de favoritos:' : 'Error al guardar en favoritos:', err);
+        coche.isSaved = estadoAnterior; // Revertir
+        this.cdr.detectChanges();
+        this.toast.error(
+          'No se pudo completar la acción. Por favor, inténtalo de nuevo.',
+          'Error de conexión'
+        );
+      },
+    });
   }
 
   moverCarrusel(direccion: number) {
@@ -206,13 +256,15 @@ private applyInertia() {
 
     this.filtroSeleccionado = tipo;
     if (tipo === BadgeType.NONE) {
-      this.coches = [...this.cochesOriginal];
+      this.coches = this.cochesOriginal
+        .filter((c) => c.badge && c.badge.trim() !== '')
+        .slice(0, 10);
     } else {
       this.coches = this.cochesOriginal.filter(
         (c) =>
           c.badge &&
           c.badge.charAt(0).toUpperCase() + c.badge.slice(1).toLowerCase() ===
-            tipo.charAt(0).toUpperCase() + tipo.slice(1).toLowerCase(),
+            tipo.charAt(0).toUpperCase() + tipo.slice(1).toLowerCase()
       );
     }
     this.cochesFiltradoDetail = this.coches;
