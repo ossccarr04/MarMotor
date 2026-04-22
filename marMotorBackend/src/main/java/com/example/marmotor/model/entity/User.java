@@ -2,6 +2,8 @@ package com.example.marmotor.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +23,11 @@ public class User {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
+
+    private int contContact;
+    @EqualsAndHashCode.Exclude
     @ManyToMany
+    @ToString.Exclude
     @JoinTable(
             name = "favorites",
             joinColumns = @JoinColumn(name = "user_id"),

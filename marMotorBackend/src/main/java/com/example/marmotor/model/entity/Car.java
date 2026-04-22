@@ -5,6 +5,8 @@ import com.example.marmotor.model.enums.Status;
 import com.example.marmotor.model.enums.Transmission;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -21,9 +23,13 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private CarDetail detail;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
@@ -56,10 +62,14 @@ public class Car {
     @Enumerated(EnumType.STRING)
     private Transmission transmission;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne
     @JoinColumn(name = "fuel_type_id")
     private FuelType fuelType;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne
     @JoinColumn(name = "body_type_id")
     private BodyType bodyType;
@@ -76,6 +86,8 @@ public class Car {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CarImage> images = new ArrayList<>();
 }

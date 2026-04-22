@@ -19,11 +19,14 @@ public class FavoriteController {
 
     @GetMapping
     public ResponseEntity<List<CarDTO>> getMyFavorites(Authentication authentication) {
-        return ResponseEntity.ok(favoriteService.getUserFavorites(authentication.getName()));
+
+        List<CarDTO> favoriteCars= favoriteService.getUserFavorites(authentication.getName());
+        return ResponseEntity.ok(favoriteCars);
     }
 
     @PostMapping("/{carId}")
     public ResponseEntity<Void> addFavorite(@PathVariable Long carId, Authentication authentication) {
+
         favoriteService.addFavorite(authentication.getName(), carId);
         return ResponseEntity.ok().build();
     }
