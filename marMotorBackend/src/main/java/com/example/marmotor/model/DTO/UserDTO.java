@@ -2,15 +2,19 @@ package com.example.marmotor.model.DTO;
 
 import com.example.marmotor.model.entity.Car;
 import com.example.marmotor.model.entity.User;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
-    private Long id;
     private String email;
-    private String password;
     private String username;
-    private User.Role role;
+    private LocalDateTime createdAt;
+    private int contContacts;
 }

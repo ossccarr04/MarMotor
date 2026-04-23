@@ -3,6 +3,7 @@ package com.example.marmotor.service;
 import com.example.marmotor.config.PasswordEncoderConfig;
 import com.example.marmotor.model.DTO.AuthDTO.AuthResponse;
 import com.example.marmotor.model.DTO.AuthDTO.LoginRequest;
+import com.example.marmotor.model.DTO.UserDTO;
 import com.example.marmotor.model.entity.User;
 import com.example.marmotor.repository.UserRepository;
 import io.jsonwebtoken.io.Decoders;
@@ -17,8 +18,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Key;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
@@ -46,6 +49,8 @@ public class AuthService implements UserDetailsService {
         }
         user.setPassword(passwordEncoderConfig.passwordEncoder().encode(user.getPassword()));
         if (user.getRole() == null) user.setRole(User.Role.USER);
+        user.setCreatedAt(LocalDateTime.now());
+        user.setContContact(0);
         return userRepository.save(user);
     }
 
@@ -71,6 +76,8 @@ public class AuthService implements UserDetailsService {
         return new AuthResponse(token, user.getEmail(), user.getRole().name());
     }
 
+
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
@@ -83,4 +90,6 @@ public class AuthService implements UserDetailsService {
                 .roles(user.getRole().name())
                 .build();
     }
+
+
 }

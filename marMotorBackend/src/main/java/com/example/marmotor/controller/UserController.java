@@ -1,10 +1,16 @@
 package com.example.marmotor.controller;
 
+import com.example.marmotor.model.DTO.UserDTO;
 import com.example.marmotor.model.entity.User;
 import com.example.marmotor.service.AuthService; // Importar AuthService
+import com.example.marmotor.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -12,16 +18,23 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private AuthService authService; // Usar AuthService para el registro
-    // private UserService userService; // Si UserService tiene otras responsabilidades, mantenlo
+    private UserService userService;
 
-    @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
-        try {
-            return ResponseEntity.ok(authService.register(user));
-        } catch (RuntimeException e) {
-            // El servicio ya lanza una excepción si el usuario existe
-            return ResponseEntity.badRequest().build();
-        }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserDTO> getMyProfile(Authentication authentication) {
+        UserDTO profile = this.userService.getMyProfile(authentication.getName());
+        return ResponseEntity.ok(profile);
     }
+
+    @DeleteMapping("/me")
+    public ResponseEntity<Map<String, String>> deleteMyAccount(Authentication authentication) {
+        userService.deactivateMyAccount(authentication.getName());
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Cuenta eliminada correctamente");
+
+        return ResponseEntity.ok(response);
+    }
+
 }

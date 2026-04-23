@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +26,7 @@ public class User {
     private Role role = Role.USER;
 
     private int contContact;
+
     @EqualsAndHashCode.Exclude
     @ManyToMany
     @ToString.Exclude
@@ -35,6 +37,9 @@ public class User {
 
     )
     private Set<Car> favoriteCars = new HashSet<>();
+
+    private LocalDateTime createdAt;
+    private LocalDateTime deletedAt;
 
     public enum Role {
         USER, ADMIN
