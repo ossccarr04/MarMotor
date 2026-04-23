@@ -17,7 +17,7 @@ export class AuthServiceBBDD {
 
   private authStatus = new BehaviorSubject<boolean>(this.isLoggedIn());
   authStatus$ = this.authStatus.asObservable();
-  
+
   getCurrentUser(): LoggedUserDTO | null {
     const token = this.cookieService.get('access_token'); 
 

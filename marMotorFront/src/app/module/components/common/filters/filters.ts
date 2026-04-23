@@ -3,7 +3,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
   Input,
   Output,
   PLATFORM_ID,
@@ -62,16 +61,13 @@ export class Filters implements OnInit {
   @Output() filterChange = new EventEmitter<any>();
 
   private cdr = inject(ChangeDetectorRef);
-
-  constructor(
-    @Inject(AuthServiceBBDD) private authService: AuthServiceBBDD,
-    @Inject(Router) private route: Router,
-    @Inject(CarServiceBBDD) private carService: CarServiceBBDD,
-    @Inject(BrandServiceBBDD) private brandService: BrandServiceBBDD,
-    @Inject(BodyTypeServiceBBDD) private bodyTypeService: BodyTypeServiceBBDD,
-    @Inject(FuelTypeServiceBBDD) private fuelTypeService: FuelTypeServiceBBDD,
-    @Inject(PLATFORM_ID) private platformId: Object,
-  ) {}
+  private authService = inject(AuthServiceBBDD);
+  private route = inject(Router);
+  private carService = inject(CarServiceBBDD);
+  private brandService = inject(BrandServiceBBDD);
+  private bodyTypeService = inject(BodyTypeServiceBBDD);
+  private fuelTypeService = inject(FuelTypeServiceBBDD);
+  private platformId: Object = inject(PLATFORM_ID);
 
   marcas: BrandDTO[] = [];
   carrocerias: BodyTypeDTO[] = [];
@@ -109,6 +105,7 @@ export class Filters implements OnInit {
         });
         const bodyFromUrl = this.getParamFromUrl('bodyType');
         if (bodyFromUrl) this.seleccionarCarroceriaPorNombre(bodyFromUrl);
+        this.cdr.detectChanges();
       },
     });
 
@@ -132,6 +129,7 @@ export class Filters implements OnInit {
         }));
         const fuelFromUrl = this.getParamFromUrl('fuelType');
         if (fuelFromUrl) this.seleccionarCombustiblePorNombre(fuelFromUrl);
+        this.cdr.detectChanges();
       },
     });
   }
@@ -157,6 +155,7 @@ export class Filters implements OnInit {
         if (brandFromUrl) {
           this.seleccionarMarca({ name: brandFromUrl });
         }
+        this.cdr.detectChanges();
       },
       error: (err) => console.error('Error cargando marcas dinámicas:', err),
     });
@@ -365,13 +364,16 @@ export class Filters implements OnInit {
   alCambiarInterruptor() {
     this.limpiezaFiltros();
 
-    this.carService.mantenerVendidosActivo = this.buscarEnVendidos;
-    this.route.navigate(['/cars'], { queryParams: {} }).then(() => {
-    // 4. Recargamos los datos una vez que la URL está limpia
+    // El ngModel ya ha actualizado el servicio a través del setter 'buscarEnVendidos'.
+    // this.carService.mantenerVendidosActivo = this.buscarEnVendidos;
+
+    // Actualizamos las fuentes de datos para los desplegables (marcas, combustibles).
     this.actualizarCombustiblesDinamicos();
     this.cargarMarcasSegunEstado();
+
+    // Emitimos una señal para que el componente padre (Cars) se encargue de recargar.
+    // El padre limpiará la URL y recargará la lista de coches.
     this.carService.recargarCoches$.next();
-  });
   }
 
   get buscarEnVendidos(): boolean {

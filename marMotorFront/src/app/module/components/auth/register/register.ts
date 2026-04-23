@@ -84,7 +84,7 @@ export class Register {
         this.toast.success('Registro exitoso. ¡Bienvenido a MarMotor!', '¡Enhorabuena!');
         setTimeout(() => {
           this.router.navigate(['/auth/login']);
-        }, 2500);
+        }, 800);
       },
       error: (err) => {
 

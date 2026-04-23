@@ -47,7 +47,7 @@ export class Login {
         // Redirigimos al Home o Dashboard
         setTimeout(() => {
           this.router.navigate(['/home']);
-        }, 1500);
+        }, 800);
       },
       error: (err) => {
         console.error(err)

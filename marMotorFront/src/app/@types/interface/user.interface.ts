@@ -10,7 +10,7 @@ export interface UserDTO {
     favorites: CarDTO[];
     contacts: number;
     createdAt: string;
-    updatedAt: string;
+    deletedAt: string;
 }
 
 export interface LoginDTO {

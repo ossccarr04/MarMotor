@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CarServiceBBDD } from '../../services/car-service-bbdd';
 import { Filters } from '../common/filters/filters';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BadgeLabel, BadgeType } from '../../../@types/enums/badge.enum';
 import { FavoriteServiceBBDD } from '../../services/favorite-service-bbdd';
 import { AuthServiceBBDD } from '../../services/auth-service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-cars',
@@ -16,7 +17,8 @@ import { AuthServiceBBDD } from '../../services/auth-service';
   templateUrl: './cars.html',
   styleUrl: './cars.scss',
 })
-export class Cars {
+export class Cars implements OnInit, OnDestroy {
+  
   @ViewChild(Filters) filtroComponent!: Filters;
 
   private carService = inject(CarServiceBBDD);
@@ -38,13 +40,38 @@ export class Cars {
   itemsPorPagina = 12;
 
   private misFavoritosIds: number[] = [];
+  private destroy$ = new Subject<void>();
 
   ngOnInit(): void {
     // Combina la carga de favoritos y la carga de coches basada en los parámetros de la URL.
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       this.filtrosSeleccionados = { ...params };
       this.cargarFavoritosYCoches(params);
     });
+
+    // Escucha el evento de recarga desde el interruptor "Vendidos" en Filters.
+    this.carService.recargarCoches$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      // Si hay filtros en la URL, navegamos para limpiarla.
+      // Esta navegación disparará el `queryParams.subscribe` de arriba, que recargará los coches.
+      if (Object.keys(this.route.snapshot.queryParams).length > 0) {
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {},
+        });
+      } else {
+        // Si la URL ya está limpia, la navegación no haría nada.
+        // Forzamos la recarga de coches manualmente para evitar el fallo.
+        this.cargarFavoritosYCoches({});
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    // Este método se ejecuta cuando el componente se destruye.
+    // Enviamos una señal para que todas las suscripciones activas (con takeUntil)
+    // se cancelen automáticamente, evitando fugas de memoria.
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   /**

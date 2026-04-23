@@ -5,7 +5,6 @@ import {
   Renderer2,
   inject,
   OnDestroy,
-  Inject,
   PLATFORM_ID,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -27,11 +26,16 @@ import { FavoriteServiceBBDD } from '../../services/favorite-service-bbdd';
 })
 export class DetailCar implements OnInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
-  // Inyecciones
-  constructor(
-    @Inject(CarServiceBBDD) private carsService: CarServiceBBDD,
-    @Inject(AuthServiceBBDD) private authService: AuthServiceBBDD,
-  ) {
+  private carsService = inject(CarServiceBBDD);
+  private authService = inject(AuthServiceBBDD);
+  private toast = inject(ToastrService);
+  private cdr = inject(ChangeDetectorRef);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private renderer = inject(Renderer2);
+  private favoriteService = inject(FavoriteServiceBBDD);
+
+  constructor() {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state && navigation.extras.state['listaFiltrada']) {
       const listaEntrante = navigation.extras.state['listaFiltrada'];
@@ -39,12 +43,7 @@ export class DetailCar implements OnInit, OnDestroy {
       this.carIds = listaEntrante.map((c: any) => c.id);
     }
   }
-  private toast = inject(ToastrService);
-  private cdr = inject(ChangeDetectorRef);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private renderer = inject(Renderer2);
-  private favoriteService = inject(FavoriteServiceBBDD);
+
   // Estado del componente
   confirmandoBorrado: boolean = false;
   badgeLabel = BadgeLabel;
@@ -86,11 +85,17 @@ export class DetailCar implements OnInit, OnDestroy {
         // 3. Pedimos el objeto DETAIL completo a la base de datos
         this.carsService.getCarsDetails(idNumerico).subscribe({
           next: (data) => {
-            this.car = data;
-            this.car.badge = (this.car.badge?.toLowerCase() as BadgeType) ?? null;
-            this.car.fuelType = this.car.fuelType.toLowerCase();
-            this.car.transmission = this.car.transmission.toLowerCase();
-            this.car.bodyType = this.car.bodyType?.toLocaleLowerCase() ?? null;
+            if (!data) {
+              this.router.navigate(['/home']);
+              return;
+            }
+            // Transformamos los datos ANTES de asignarlos para evitar errores en el template
+            const processedCar = { ...data };
+            processedCar.badge = data.badge ? (data.badge.toLowerCase() as BadgeType) : null;
+            processedCar.fuelType = data.fuelType ? data.fuelType.toLowerCase() : '';
+            processedCar.transmission = data.transmission ? data.transmission.toLowerCase() : '';
+            processedCar.bodyType = data.bodyType ? data.bodyType.toLowerCase() : null;
+            this.car = processedCar;
 
             // Comprobar si es favorito
             if (this.authService.isLoggedIn() && this.car) {
@@ -112,11 +117,11 @@ export class DetailCar implements OnInit, OnDestroy {
             }
             // Si carIds está vacío (acceso directo por URL), lo inicializamos con el actual
             if (this.carIds.length === 0) {
-              this.carIds = [data.id];
+              this.carIds = [this.car.id];
             }
 
             // Calculamos en qué posición estamos dentro de la lista de navegación
-            this.currentIndex = this.carIds.indexOf(data.id);
+            this.currentIndex = this.carIds.indexOf(this.car.id);
 
             // Forzamos el renderizado inmediato para evitar el lag de "cargando"
             this.cdr.detectChanges();

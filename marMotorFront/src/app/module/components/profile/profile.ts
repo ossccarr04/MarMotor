@@ -1,10 +1,13 @@
-import { Component, inject, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, inject, ChangeDetectorRef, NgZone, OnInit, OnDestroy } from '@angular/core';
 import { AuthServiceBBDD } from '../../services/auth-service';
 import { CarDTO } from '../../../@types/interface/car.interface';
 import { Router, RouterLink } from '@angular/router';
 import { FavoriteServiceBBDD } from '../../services/favorite-service-bbdd';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
+import { UserServiceBBDD } from '../../services/user-service-bbdd';
+import { UserDTO } from '../../../@types/interface/user.interface';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -12,22 +15,60 @@ import { CommonModule } from '@angular/common';
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })
-export class Profile {
+export class Profile implements OnInit, OnDestroy {
   private favoriteService = inject(FavoriteServiceBBDD);
   private authService = inject(AuthServiceBBDD);
+  private userService = inject(UserServiceBBDD);
   private router = inject(Router);
   private toast = inject(ToastrService);
   private cdr = inject(ChangeDetectorRef);
   private zone = inject(NgZone);
 
-
   favoriteCars: CarDTO[] = [];
+  public profileData: UserDTO | null = null;
+  public isConfirmingDelete: boolean = false;
+  private deleteConfirmTimeout: any;
+  private destroy$ = new Subject<void>();
 
   ngOnInit(): void {
-    this.authService.authStatus$.subscribe(user => {
-      if (user) {
-        this.loadFavorites();
+    // 1. Carga inicial: Si el usuario ya está logueado al llegar a la página.
+    if (this.authService.isLoggedIn()) {
+      this.loadFavorites();
+      this.loadProfile();
+    }
+
+    // 2. Escucha de cambios: Reacciona si el estado de autenticación cambia (ej. logout).
+    this.authService.authStatus$.pipe(takeUntil(this.destroy$)).subscribe((isLoggedIn) => {
+      if (!isLoggedIn) {
+        // Si el usuario cierra sesión, limpiamos los datos y lo redirigimos.
+        this.profileData = null;
+        this.favoriteCars = [];
+        this.router.navigate(['/login']);
       }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    if (this.deleteConfirmTimeout) {
+      clearTimeout(this.deleteConfirmTimeout);
+    }
+  }
+
+  loadProfile() {
+    this.userService.getMyProfile().subscribe({
+      next: (data) => {
+        this.profileData = data;
+        if (this.profileData && (this.profileData.contacts === undefined || this.profileData.contacts === null)) {
+          this.profileData.contacts = 0;
+        }
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al cargar el perfil del usuario:', err);
+        this.toast.error('No se pudo cargar la información del perfil.', 'Error de conexión');
+      },
     });
   }
 
@@ -35,18 +76,17 @@ export class Profile {
     this.favoriteService.getMyFavorites().subscribe({
       next: (cars) => {
         this.zone.run(() => {
-          this.favoriteCars = cars.map(car => ({
+          this.favoriteCars = cars.map((car) => ({
             ...car,
-            isSaved: true 
+            isSaved: true,
           }));
-          
-          // Y por si acaso, le damos el doble toque de confirmación
-          this.cdr.detectChanges(); 
+
+          this.cdr.detectChanges();
         });
       },
       error: (err) => {
         console.error('Error cargando favoritos', err);
-      }
+      },
     });
   }
 
@@ -73,24 +113,46 @@ export class Profile {
     });
   }
 
-  get userData() {
-    return this.authService.getCurrentUser();
+  onDeleteAccount() {
+    // Primer clic: entra en modo de confirmación
+    if (!this.isConfirmingDelete) {
+      this.isConfirmingDelete = true;
+      // Revierte el botón automáticamente después de 4 segundos
+      this.deleteConfirmTimeout = setTimeout(() => {
+        this.zone.run(() => this.cancelDelete());
+      }, 3000);
+      return;
+    }
+
+    // Segundo clic (confirmación): procede a eliminar
+    if (this.deleteConfirmTimeout) {
+      clearTimeout(this.deleteConfirmTimeout);
+    }
+
+    this.userService.deleteAccount().subscribe({
+      next: () => {
+        this.toast.success('Tu cuenta ha sido eliminada correctamente.', 'Cuenta eliminada');
+        this.authService.logout();
+        this.router.navigate(['/home']);
+      },
+      error: (err) => {
+        console.error('Error al eliminar cuenta', err);
+        this.toast.error('Hubo un problema al intentar eliminar tu cuenta.', 'Error');
+        // Resetea el botón en caso de error
+        this.isConfirmingDelete = false;
+      },
+    });
   }
 
-  get userEmail(): string {
-    return this.userData ? atob(this.userData.correo) : '';
-  }
-
-  get userContact(): string {
-    return this.userData ? atob(this.userData.correo) : '';
-  }
-
-  get userName(): string {
-    return this.userData ? atob(this.userData.user) : '';
+  cancelDelete() {
+    this.isConfirmingDelete = false;
+    if (this.deleteConfirmTimeout) {
+      clearTimeout(this.deleteConfirmTimeout);
+    }
   }
 
   get userInitial(): string {
-    return this.userEmail ? this.userEmail.charAt(0).toUpperCase() : 'U';
+    return this.profileData?.email ? this.profileData.email.charAt(0).toUpperCase() : 'U';
   }
 
   showDetails(id: number) {

@@ -22,18 +22,27 @@
       <div class="info-body">
         <div class="info-group">
           <label><span class="mini-icon">👤</span> Nombre Completo</label>
-          <p>{{ userName || 'Prueba Cliente' }}</p>
+          <p>{{ profileData?.username }}</p>
         </div>
 
         <div class="info-group">
           <label><span class="mini-icon">✉️</span> Correo Electrónico</label>
-          <p>{{ userEmail }}</p>
+          <p>{{ profileData?.email }}</p>
         </div>
 
         <div class="user-stats">
           <div class="stat-item">
-            <span class="stat-value">{{ favoriteCars.length }}</span>
-            <span class="stat-label">Guardados</span>
+            <span class="stat-value">
+              {{ profileData?.createdAt | date: 'dd/MM/yyyy' }}
+            </span>
+            <span class="stat-label">Miembro desde</span>
+          </div>
+          <div class="divider"></div>
+          <div class="stat-item">
+            <span class="stat-value">
+              {{ profileData?.contacts }}
+            </span>
+            <span class="stat-label">Contactos</span>
           </div>
         </div>
 
@@ -44,6 +53,39 @@
           <button class="btn-premium-outline">
             <span class="icon">🔒</span> Cambiar Contraseña
           </button>
+        </div>
+      </div>
+
+      <div class="danger-zone" *ngIf="profileData">
+        <div class="danger-header">
+          <h3><i class="fa-solid fa-triangle-exclamation"></i> Zona de Peligro</h3>
+        </div>
+
+        <div class="danger-content">
+          <div class="danger-text">
+            <h4>Eliminar cuenta permanentemente</h4>
+            <p>
+              Una vez que elimines tu cuenta, no hay vuelta atrás. Se borrarán tus favoritos,
+              historial de contactos y perderás el acceso inmediatamente.
+            </p>
+          </div>
+          <div class="danger-action">
+            <!-- Botón inicial -->
+            <button *ngIf="!isConfirmingDelete" class="btn-delete-account" (click)="onDeleteAccount()">
+              <span>Eliminar mi cuenta</span>
+            </button>
+
+            <!-- Grupo de confirmación -->
+            <div *ngIf="isConfirmingDelete" class="confirm-delete-group">
+              <button class="btn-delete-account confirming" (click)="onDeleteAccount()">
+                <span>Confirmar eliminación</span>
+              </button>
+              <div class="confirm-divider"></div>
+              <button class="btn-cancel-delete" (click)="cancelDelete()">
+                <span>Cancelar</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </aside>
