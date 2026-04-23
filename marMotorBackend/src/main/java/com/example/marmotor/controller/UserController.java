@@ -1,5 +1,6 @@
 package com.example.marmotor.controller;
 
+import com.example.marmotor.model.DTO.ChangePasswordRequest;
 import com.example.marmotor.model.DTO.UserDTO;
 import com.example.marmotor.model.entity.User;
 import com.example.marmotor.service.AuthService; // Importar AuthService
@@ -27,9 +28,15 @@ public class UserController {
         return ResponseEntity.ok(profile);
     }
 
+    @PatchMapping("/me/password")
+    public ResponseEntity<UserDTO> updatePassword(Authentication authentication, @RequestBody ChangePasswordRequest passwords) {
+    return ResponseEntity.ok(this.userService.updatePassword(authentication.getName(),passwords.getCurrentPassword(),
+            passwords.getNewPassword()));
+    }
+
     @DeleteMapping("/me")
     public ResponseEntity<Map<String, String>> deleteMyAccount(Authentication authentication) {
-        userService.deactivateMyAccount(authentication.getName());
+        userService.desactivateMyAccount(authentication.getName());
 
         Map<String, String> response = new HashMap<>();
         response.put("message", "Cuenta eliminada correctamente");
