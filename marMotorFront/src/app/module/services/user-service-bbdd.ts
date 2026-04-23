@@ -18,6 +18,10 @@ export class UserServiceBBDD {
     return this.http.get<any>(`${this.URL}/me`);
   }
 
+  changePassword(passwords: { currentPassword: string, newPassword: string }): Observable<any> {
+    return this.http.patch<any>(`${this.URL}/me/password`, passwords);
+  }
+
   deleteAccount(): Observable<any> {
     return this.http.delete<any>(`${this.URL}/me`);
   }

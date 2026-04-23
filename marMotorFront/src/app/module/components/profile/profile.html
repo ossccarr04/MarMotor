@@ -50,7 +50,7 @@
 
         <div class="security-section">
           <h3>Configuración de Seguridad</h3>
-          <button class="btn-premium-outline">
+          <button class="btn-premium-outline" (click)="openChangePasswordModal()">
             <span class="icon">🔒</span> Cambiar Contraseña
           </button>
         </div>
@@ -122,4 +122,8 @@
       </div>
     </main>
   </div>
+
+  @if (isChangePasswordModalOpen) {
+    <app-change-password (close)="closeChangePasswordModal()"></app-change-password>
+  }
 </div>

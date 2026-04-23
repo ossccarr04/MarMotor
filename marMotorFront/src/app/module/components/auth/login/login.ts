@@ -50,12 +50,11 @@ export class Login {
         }, 800);
       },
       error: (err) => {
-        console.error(err)
-        // ERROR: Manejo de credenciales incorrectas
-        if (err.status === 401 || err.status === 403) {
+        if (err.status === 401 || err.status === 403 || err.status === 409) {
           this.toast.error('Correo o contraseña incorrectos', 'Error de acceso');
         } else if (err.status === 404) {
-          this.toast.warning('Este usuario no existe', 'Usuario no encontrado');
+          // Aunque por seguridad no es ideal, se maneja el 404 como "usuario no encontrado".
+          this.toast.error('El usuario no se encuentra registrado.', 'Error de acceso');
         } else {
           this.toast.error('Servidor no disponible. Inténtalo más tarde', 'Error de red');
         }

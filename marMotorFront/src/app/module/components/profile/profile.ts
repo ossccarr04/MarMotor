@@ -8,10 +8,11 @@ import { CommonModule } from '@angular/common';
 import { UserServiceBBDD } from '../../services/user-service-bbdd';
 import { UserDTO } from '../../../@types/interface/user.interface';
 import { Subject, takeUntil } from 'rxjs';
+import { ChangePassword } from '../change-password/change-password';
 
 @Component({
   selector: 'app-profile',
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, ChangePassword],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })
@@ -27,6 +28,7 @@ export class Profile implements OnInit, OnDestroy {
   favoriteCars: CarDTO[] = [];
   public profileData: UserDTO | null = null;
   public isConfirmingDelete: boolean = false;
+  public isChangePasswordModalOpen = false;
   private deleteConfirmTimeout: any;
   private destroy$ = new Subject<void>();
 
@@ -166,5 +168,13 @@ export class Profile implements OnInit, OnDestroy {
     this.authService.logout();
     this.toast.success('Sesión cerrada correctamente', '¡Hasta pronto!');
     this.router.navigate(['/home']);
+  }
+
+  openChangePasswordModal() {
+    this.isChangePasswordModalOpen = true;
+  }
+
+  closeChangePasswordModal() {
+    this.isChangePasswordModalOpen = false;
   }
 }

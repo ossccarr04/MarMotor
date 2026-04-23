@@ -33,7 +33,7 @@ export class Register {
         Validators.email, 
         this.emailProtegidoValidator.bind(this) // Añadimos el validador de seguridad
       ]],
-      password: ['', [Validators.required, Validators.pattern(this.regexPassword)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(this.regexPassword)]],
       confirmPassword: ['', [Validators.required]]
     }, { 
       validators: [this.passwordsCoincidenValidator] 
