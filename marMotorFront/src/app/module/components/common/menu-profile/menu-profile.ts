@@ -1,8 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, HostListener, inject } from '@angular/core';
 import { AuthServiceBBDD } from '../../../services/auth-service';
 import { Router, RouterLink } from '@angular/router';
-import { FavoriteServiceBBDD } from '../../../services/favorite-service-bbdd';
-import { CarDTO } from '../../../../@types/interface/car.interface';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 
@@ -17,6 +15,7 @@ export class Profile {
     private authService = inject(AuthServiceBBDD);
   private router = inject(Router);
   private toast = inject(ToastrService);
+  private elementRef = inject(ElementRef);
   
   isMenuOpen = false;
 
@@ -36,6 +35,13 @@ export class Profile {
     return this.userEmail ? this.userEmail.charAt(0).toUpperCase() : 'U';
   }
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    if (this.isMenuOpen && !this.elementRef.nativeElement.contains(event.target)) {
+      this.isMenuOpen = false;
+    }
+  }
+
   toggleMenu(event: Event) {
     event.stopPropagation();
     this.isMenuOpen = !this.isMenuOpen;
@@ -48,7 +54,7 @@ export class Profile {
     this.router.navigate(['/home']).then(() => {
       setTimeout(() => {
           window.location.reload();
-        }, 500);
+        }, 800);
       
     });
   }

@@ -163,7 +163,7 @@ export class DetailCar implements OnInit, OnDestroy {
 
             // Calculamos en qué posición estamos dentro de la lista de navegación
             this.currentIndex = this.carIds.indexOf(this.car.id);
-            console.log(this.car)
+           
             // Forzamos el renderizado inmediato para evitar el lag de "cargando"
             this.cdr.detectChanges();
           },
@@ -246,7 +246,6 @@ export class DetailCar implements OnInit, OnDestroy {
 
     if (!this.authService.isLoggedIn()) {
       this.toast.info('Debes iniciar sesión para guardar favoritos', 'Acción requerida');
-      this.router.navigate(['/login']);
       return;
     }
 

@@ -213,14 +213,14 @@
             {{ car.badge === badgeType.RESERVED ? 'VEHÍCULO RESERVADO' : 'VEHÍCULO VENDIDO' }}
           </h3>
 
-          <p class="reserve-subtitle">Este vehículo ya no está disponible para reserva</p>
+          <p class="reserve-subtitle">Este vehículo ya no está disponible para reserva, aunque se puede contactar con el vendedor para más información.</p>
 
           <div class="final-price-wrapper">
             <span class="price-strikethrough">
               {{ car.price | currency: 'EUR' : 'symbol' : '1.0-0' }}
             </span>
           </div>
-
+          
           @if (car.badge === badgeType.SOLD) {
             <div class="delete-actions-container">
               @if (!confirmandoBorrado) {
@@ -240,7 +240,7 @@
               }
             </div>
           } @else {
-            <button class="btn-contact disabled" disabled>NO DISPONIBLE</button>
+            <button class="btn-contact" (click)="openContactSellerModal()">CONTACTAR VENDEDOR</button>
           }
         </section>
       }

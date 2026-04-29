@@ -100,7 +100,6 @@ export class GaleryDynamic {
 
     if (!this.authService.isLoggedIn()) {
       this.toast.info('Debes iniciar sesión para guardar favoritos', 'Acción requerida');
-      this.router.navigate(['/login']);
       return;
     }
 
