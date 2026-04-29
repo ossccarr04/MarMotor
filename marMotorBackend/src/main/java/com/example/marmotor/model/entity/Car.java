@@ -77,10 +77,8 @@ public class Car {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(name = "fecha_creacion")
     private LocalDateTime createdAt;
 
-    @Column(name = "fecha_venta")
     private LocalDateTime soldAt;
 
     @Column(columnDefinition = "TEXT")

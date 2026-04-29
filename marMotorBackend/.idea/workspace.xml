@@ -4,13 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Añadido eliminacion de cuentas y obtener datos de usuario">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/ChangePasswordRequest.java" afterDir="false" />
+    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Añadido cambio de contraseña y mas seguridad al eliminar un usuario">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/Car.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/CarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/CarService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/import.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/import.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/Car.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/Car.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/CarService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/CarService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,7 +153,8 @@
       <workItem from="1776323189323" duration="2557000" />
       <workItem from="1776839561520" duration="11531000" />
       <workItem from="1776887662540" duration="3889000" />
-      <workItem from="1776928187293" duration="9207000" />
+      <workItem from="1776928187293" duration="9302000" />
+      <workItem from="1777444896747" duration="4631000" />
     </task>
     <task id="LOCAL-00001" summary="Añadido la creacion de vehiculos y guardar la imagen">
       <option name="closed" value="true" />
@@ -267,7 +268,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776935041982</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Añadido cambio de contraseña y mas seguridad al eliminar un usuario">
+      <option name="closed" value="true" />
+      <created>1776950678600</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1776950678600</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -286,6 +295,7 @@
     <MESSAGE value="Añadida proteccion de rutas, modificacion de metodos de auth" />
     <MESSAGE value="Añadido todo lo de favorito" />
     <MESSAGE value="Añadido eliminacion de cuentas y obtener datos de usuario" />
-    <option name="LAST_COMMIT_MESSAGE" value="Añadido eliminacion de cuentas y obtener datos de usuario" />
+    <MESSAGE value="Añadido cambio de contraseña y mas seguridad al eliminar un usuario" />
+    <option name="LAST_COMMIT_MESSAGE" value="Añadido cambio de contraseña y mas seguridad al eliminar un usuario" />
   </component>
 </project>

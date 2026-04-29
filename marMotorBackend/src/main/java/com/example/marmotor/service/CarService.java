@@ -209,10 +209,10 @@ public class CarService {
                     }
                 }
             }
-
-            if(car.getLabel() != null && car.getLabel().name().equalsIgnoreCase(Status.SOLD.toString())){
+            if(car.getBadge() != null && car.getBadge().toUpperCase().equalsIgnoreCase(Status.SOLD.toString())){
                 car.setSoldAt(LocalDateTime.now());
             } else {
+                // Si el coche se marca como NO vendido, eliminamos la fecha de venta.
                 car.setSoldAt(null);
             }
             return convertToDto(carRepository.save(car));
@@ -356,6 +356,8 @@ public class CarService {
         dto.setBadge(basic.getBadge());
         dto.setBadgeType(basic.getBadgeType());
         dto.setSaved(basic.isSaved());
+        dto.setCreatedAt(basic.getCreatedAt());
+        dto.setSoldAt(basic.getSoldAt());
 
         if (detail != null) {
             dto.setColor(detail.getColor());
