@@ -16,11 +16,13 @@ import { UserRoles } from '../../../@types/enums/roles.enums';
 import { BadgeLabel, BadgeType } from '../../../@types/enums/badge.enum';
 import { ToastrService } from 'ngx-toastr';
 import { FavoriteServiceBBDD } from '../../services/favorite-service-bbdd';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { environment } from '../../../../environments/environment.development';
 
 @Component({
   selector: 'detail-car',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule],
   templateUrl: './detail-car.html',
   styleUrls: ['./detail-car.scss'],
 })
@@ -34,6 +36,7 @@ export class DetailCar implements OnInit, OnDestroy {
   private router = inject(Router);
   private renderer = inject(Renderer2);
   private favoriteService = inject(FavoriteServiceBBDD);
+  private fb = inject(FormBuilder);
 
   constructor() {
     const navigation = this.router.getCurrentNavigation();
@@ -56,7 +59,34 @@ export class DetailCar implements OnInit, OnDestroy {
   isAdmin: boolean = false; 
   private scrollPosition: number = 0;
 
+  // Contact Seller properties
+  showContactSellerModal: boolean = false;
+  contactForm!: FormGroup;
+  sellerEmail: string[] = []; // Ahora es un array de strings
+  sellerPhone: string[] = []; // Ahora es un array de strings
+  isLoggedInUser: boolean = false; // Nueva propiedad para almacenar el estado de login
+
   ngOnInit(): void {
+    // Initialize contact details from environment
+    this.sellerEmail = environment.EMAIL_CONTACT
+    this.sellerPhone = environment.NUMBER_CONTACT
+
+    // Initialize contact form
+    let userName = '';
+    let userEmail = '';
+    this.isLoggedInUser = this.authService.isLoggedIn(); // Establecer el estado de login inicialmente
+    if (this.isLoggedInUser) {
+      const currentUser = this.authService.getCurrentUser();
+      if (currentUser) {
+        userName = currentUser.user || '';
+        userEmail = currentUser.correo || '';
+      }
+    }
+
+    this.contactForm = this.fb.group({
+      name: [userName, Validators.required],
+      email: [userEmail, [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+    });
 
     if (this.carIds.length === 0) {
       this.carIds = this.carsService.getCarIds();
@@ -268,6 +298,74 @@ export class DetailCar implements OnInit, OnDestroy {
         const navHeader = document.querySelector('.autoflow-header');
         if (navHeader) this.renderer.setStyle(navHeader, 'display', 'flex');
       }
+    }
+  }
+
+  // --- Contact Seller Modal methods ---
+  openContactSellerModal(): void {
+    this.isLoggedInUser = this.authService.isLoggedIn(); // Actualizar el estado de login al abrir el modal
+    this.showContactSellerModal = true;
+
+    // Si no está logueado, asegurar que los campos del formulario estén vacíos o reseteados
+    if (!this.isLoggedInUser) {
+      this.contactForm.reset({ name: '', email: '' });
+    } else {
+      // Si está logueado, asegurar que los campos estén pre-rellenados
+      const currentUser = this.authService.getCurrentUser();
+      if (currentUser) {
+        this.contactForm.patchValue({
+          name: currentUser.user || '',
+          email: currentUser.correo || ''
+        });
+      }
+    }
+
+    // Opcional: Resetear el formulario al cerrar el modal si no está logueado
+    if (!this.isLoggedInUser) {
+      this.contactForm.reset();
+    }
+    // Si estaba logueado, los campos ya estaban pre-rellenados, no es necesario resetear
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.renderer.removeStyle(document.body, 'overflow');
+    }
+  }
+
+  // El método onSubmitContactForm() ha sido eliminado ya que no hay un botón de envío
+  // y la funcionalidad principal es generar el mailto link.
+
+
+  getMailtoLinkForEmail(email: string): string { // Nuevo método que acepta el email como argumento
+    if (!this.car) return `mailto:${email}`;
+
+    let name = this.contactForm.get('name')?.value || '[Tu Nombre]'; // Usar valor del formulario
+    let userEmail = this.contactForm.get('email')?.value || '[Tu Email]'; // Usar valor del formulario
+    if(this.authService.isLoggedIn()){
+    name = atob(this.contactForm.get('name')?.value) || '[Tu Nombre]'; // Usar valor del formulario
+    userEmail = atob(this.contactForm.get('email')?.value) || '[Tu Email]'; // Usar valor del formulario
+
+    }
+    const subject = encodeURIComponent(`Consulta sobre el coche: ${this.car.make} ${this.car.model} (${this.car.year})`);
+    const body = encodeURIComponent(
+      `Hola, estoy interesado en el coche ${this.car.make} ${this.car.model} (${this.car.year}). ` +
+      `Me gustaría obtener más información. Mi nombre es ${name} y mi email es ${userEmail}.`
+    );
+    return `mailto:${email}?subject=${subject}&body=${body}`;
+  }
+
+  isEmailContactEnabled(): boolean {
+    // Si el usuario está logueado, los campos están pre-rellenados y válidos, así que el enlace está activo.
+    if (this.isLoggedInUser) {
+      return true;
+    }
+    // Si no está logueado, el enlace está activo solo si los campos de nombre y email son válidos.
+    return !!(this.contactForm.get('name')?.valid && this.contactForm.get('email')?.valid);
+  }
+
+  closeContactSellerModal(): void {
+    this.showContactSellerModal = false;
+    if (isPlatformBrowser(this.platformId)) {
+      this.renderer.removeStyle(document.body, 'overflow');
     }
   }
 }

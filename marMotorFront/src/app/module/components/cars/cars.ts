@@ -98,9 +98,13 @@ export class Cars implements OnInit, OnDestroy {
 
   getBadgeText(badge: any): string {
     if (!badge) return '';
-    const key = badge.toString().toUpperCase() as keyof typeof BadgeType;
-    const badgeValue = BadgeType[key];
-    return badgeValue ? this.badgeLabel[badgeValue] : badge.toString();
+    // Convertir el badge a minúsculas para que coincida con las claves del enum BadgeType (que ahora son en español minúsculas)
+    const badgeKey = badge ? String(badge).trim().toLowerCase() as BadgeType : BadgeType.NONE;
+    // Asegurarse de que la clave exista en BadgeType antes de acceder a BadgeLabel
+    if (Object.values(this.badgeType).includes(badgeKey)) {
+      return this.badgeLabel[badgeKey as BadgeType];
+    }
+    return badge ? badge.toString() : ''; // Fallback si no se encuentra en el enum
   }
 
   /**
@@ -134,7 +138,8 @@ export class Cars implements OnInit, OnDestroy {
 
       return (data || []).filter((coche) => {
         const badgeSeguro = coche.badge ? coche.badge.trim().toUpperCase() : 'NONE';
-        return quiereVerVendidos ? badgeSeguro === VALOR_VENDIDO : badgeSeguro !== VALOR_VENDIDO;
+        // Si quiere ver vendidos, solo muestra los vendidos. Si no, muestra los que NO son vendidos NI reservados.
+        return quiereVerVendidos ? badgeSeguro === VALOR_VENDIDO : (badgeSeguro !== VALOR_VENDIDO);
       });
     };
 

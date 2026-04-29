@@ -4,6 +4,7 @@ $bg-body-light: #f4f7fa;
 $accent-green: #37df8c;
 $accent-teal: #32d5a4;
 $text-gray: #718096;
+$text-dark: #051121;
 $vibrant-green: #37df8c;
 $vibrant-teal: #32d5a4;
 $deep-emerald: #0d5e4b;
@@ -1036,6 +1037,318 @@ $font-family: 'Montserrat', sans-serif;
     }
     i {
       color: $accent-green;
+    }
+  }
+}
+
+/* --- Contact Seller Modal Styles --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); // Darker overlay
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; // Higher z-index than other modals/elements
+  backdrop-filter: blur(8px); // Stronger blur
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content.contact-seller-modal {
+  background-color: #fff;
+  padding: 35px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto; // Allow scrolling if content is too long
+  position: relative;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  font-family: $font-family;
+  color: $text-dark; // Default text color for modal content
+
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #f1f5f9;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    &:hover {
+      background: #fee2e2;
+      color: #ef4444;
+    }
+  }
+
+  h3 {
+    font-size: 26px;
+    font-weight: 800;
+    color: $dark-navy-banner;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .modal-subtitle {
+    font-size: 15px;
+    color: $text-gray;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .contact-options-grid {
+    display: flex; // Cambiado a flex para organizar grupos lado a lado o apilados
+    flex-wrap: wrap; // Permitir que los grupos se envuelvan
+    gap: 20px;
+    justify-content: center; // Centra las tarjetas horizontalmente en el grid
+    margin-bottom: 30px;
+
+    .contact-group {
+      flex: 1 1 45%; // Permite que los grupos ocupen aproximadamente la mitad del ancho, o el ancho completo en pantallas pequeñas
+      min-width: 280px; // Ancho mínimo para un grupo
+      display: flex;
+      flex-direction: column;
+      align-items: center; // Centra el contenido dentro del grupo
+      text-align: center; // Centra el texto dentro del grupo
+
+      h4 {
+        font-size: 18px;
+        font-weight: 700;
+        color: $dark-navy-banner;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      .contact-cards-subgrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); // Grid responsivo para las tarjetas dentro de un grupo
+        gap: 15px;
+        justify-items: center; // Centra las tarjetas dentro de sus celdas de la cuadrícula
+        width: 100%; // Ocupa todo el ancho del grupo
+      }
+    }
+
+    .contact-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-direction: row; // Mostrar icono y texto en una fila
+      align-items: center; // Alinear elementos verticalmente
+      justify-content: flex-start; // Alinear contenido al inicio
+      padding: 20px;
+      border-radius: 15px;
+      background-color: #f8f9fa;
+      border: 1px solid #e2e8f0;
+      text-decoration: none;
+      color: $dark-navy-banner;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        border-color: $accent-green;
+      }
+
+      .icon-wrapper {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: rgba($accent-green, 0.1); // Fondo del icono
+        margin-bottom: 0; // Eliminar margen inferior
+        margin-right: 10px; // Añadir margen derecho
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        i {
+          color: $accent-green;
+          font-size: 24px;
+        }
+      }
+
+      .card-label {
+        display: block; // Asegura que el label esté en su propia línea
+        font-size: 13px;
+        color: $text-gray;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 2px; // Margen reducido
+      }
+      .card-details {
+        align-items: flex-start; // Alinear detalles de texto al inicio
+      }
+
+      .card-value {
+        font-size: 16px;
+        font-weight: 700;
+        color: $dark-navy-banner;
+        word-break: break-all; // Ensure long emails/numbers wrap
+      }
+
+      &.disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        pointer-events: none; // Evita que se pueda hacer clic
+        background-color: #f0f0f0; // Fondo más claro para el estado deshabilitado
+        border-color: #e0e0e0;
+        .icon-wrapper {
+          background-color: rgba($accent-green, 0.05); // Verde más claro para el icono
+          i {
+            color: rgba($accent-green, 0.5);
+          }
+        }
+        .card-label, .card-value {
+          color: #a0a0a0; // Texto más claro para el estado deshabilitado
+        }
+        font-size: 16px;
+        font-weight: 700;
+        color: $dark-navy-banner;
+        word-break: break-all; // Ensure long emails/numbers wrap
+      }
+    }
+  }
+
+  .modal-divider {
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 25px 0;
+  }
+
+  h4 {
+    font-size: 20px;
+    font-weight: 700;
+    color: $dark-navy-banner;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+
+      label {
+        font-size: 14px;
+        font-weight: 600;
+        color: $dark-navy-banner;
+        margin-bottom: 8px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 15px;
+        font-family: $font-family;
+        color: $dark-navy-banner;
+        background-color: #f8f9fa;
+        transition: all 0.3s ease;
+
+        &:focus {
+          outline: none;
+          border-color: $accent-green;
+          box-shadow: 0 0 0 3px rgba($accent-green, 0.2);
+          background-color: #fff;
+        }
+
+        &::placeholder {
+          color: #94a3b8;
+        }
+
+        &.is-invalid {
+          border-color: #ef4444;
+        }
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+
+      .error-text {
+        color: #ef4444;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+    }
+
+    .btn-submit-contact {
+      background-color: $accent-green;
+      color: #fff;
+      border: none;
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+
+      &:hover {
+        background-color: darken($accent-green, 10%);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba($accent-green, 0.3);
+      }
+
+      &:disabled {
+        background-color: #cbd5e1;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+/* Responsive adjustments for the modal */
+@media (max-width: 768px) {
+  .modal-content.contact-seller-modal {
+    padding: 25px;
+    h3 { font-size: 22px; } // Tamaño de fuente ajustado
+    .modal-subtitle { font-size: 14px; margin-bottom: 20px; } // Tamaño de fuente y margen ajustados
+    .contact-options-grid {
+      flex-direction: column; // Apilar grupos en pantallas pequeñas
+      .contact-group {
+        flex: 1 1 100%; // Cada grupo ocupa el ancho completo
+        min-width: unset; // Eliminar restricción de ancho mínimo
+      }
+      gap: 15px;
+    }
+    h4 { font-size: 18px; margin-bottom: 15px; }
+    .contact-form {
+      gap: 10px;
+      .form-group { margin-bottom: 5px; }
+      label { font-size: 13px; }
+      input, textarea { padding: 10px 12px; font-size: 14px; }
+      .error-text { font-size: 11px; }
+      .btn-submit-contact { padding: 12px 20px; font-size: 15px; }
+    }
+    .contact-card {
+      flex-direction: row; // Mantener la dirección de fila para las tarjetas
+      justify-content: flex-start;
     }
   }
 }

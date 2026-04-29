@@ -1,0 +1,247 @@
+/* --- VARIABLES --- */
+$dark-background: #0b1624; 
+$card-bg: #132235; // Azul oscuro premium para las tarjetas
+$card-border: rgba(255, 255, 255, 0.05);
+$accent-green: #37df8c;
+$accent-green-transparent: rgba(55, 223, 140, 0.1);
+$text-light: #f1f5f9;
+$text-muted: #94a3b8;
+$font-family: 'Montserrat', sans-serif;
+
+.company-page-wrapper {
+  background-color: $dark-background;
+  min-height: 100vh;
+  font-family: $font-family;
+  padding: 60px 0;
+  color: $text-light;
+}
+
+.container-mx {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+
+  @media (max-width: 768px) { padding: 0 20px; }
+}
+
+/* Cabecera */
+.page-header {
+  text-align: center;
+  margin-bottom: 50px;
+
+  h1 {
+    font-size: 38px;
+    font-weight: 800;
+    margin-bottom: 15px;
+  }
+  .header-divider {
+    width: 70px;
+    height: 4px;
+    background-color: $accent-green;
+    margin: 0 auto;
+    border-radius: 4px;
+  }
+}
+
+/* GRID PRINCIPAL: Izquierda (Historia) y Derecha (Contacto) */
+.company-content-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr; /* Izquierda un poco más ancha que la derecha */
+  gap: 40px;
+  align-items: start;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr; /* En móvil/tablet se pone uno encima del otro */
+  }
+}
+
+/* Cajas principales (Paneles) */
+.company-info-section,
+.contact-and-form-section {
+  background-color: $card-bg;
+  padding: 40px;
+  border-radius: 16px;
+  border: 1px solid $card-border;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid $card-border;
+    padding-bottom: 15px;
+
+    i { color: $accent-green; }
+  }
+}
+
+/* --- LADO IZQUIERDO: HISTORIA --- */
+.company-info-section {
+  .text-content p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: $text-muted;
+    margin-bottom: 20px;
+    text-align: justify;
+  }
+
+  .highlight-box {
+    margin-top: 35px;
+    background-color: $accent-green-transparent;
+    border-left: 4px solid $accent-green;
+    padding: 20px;
+    border-radius: 0 8px 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .highlight-icon {
+      font-size: 32px;
+      color: $accent-green;
+    }
+
+    .highlight-text {
+      margin: 0;
+      font-weight: 600;
+      color: $accent-green;
+      font-size: 17px;
+    }
+  }
+}
+
+/* --- LADO DERECHO: TARJETAS Y FORMULARIO --- */
+.contact-and-form-section {  
+  .contact-group {
+    margin-bottom: 30px; // Espacio entre el grupo de emails y el de teléfonos
+
+    h3 {
+      font-size: 20px;
+      font-weight: 600;
+      color: $text-light;
+      text-align: center; // Centra el título de cada grupo
+      margin-bottom: 20px;
+    }
+
+    .contact-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); // Grid responsivo para las tarjetas
+      gap: 15px;
+      justify-items: center; // Centra cada tarjeta dentro de su celda del grid
+      max-width: fit-content; // Permite que el grid se ajuste al contenido
+      margin: 0 auto; // Centra el grid completo si no ocupa todo el ancho
+
+      @media (max-width: 600px) {
+        grid-template-columns: 1fr; // Una columna en pantallas muy pequeñas
+      }
+    }
+  }
+
+  /* Tarjetas individuales */
+  .contact-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: rgba(255, 255, 255, 0.03);
+    padding: 15px 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.06);
+      border-color: rgba(55, 223, 140, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .icon-wrapper {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background-color: $accent-green-transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      i { color: $accent-green; font-size: 20px; }
+    }
+
+    .card-details {
+      display: flex;
+      flex-direction: column;
+      .card-label { font-size: 12px; color: $text-muted; }
+      .card-value { font-size: 15px; color: $text-light; font-weight: 500; }
+    }
+  }
+
+  /* Formulario de Dudas arreglado */
+  .doubts-form-section {
+    border-top: 1px solid $card-border;
+    padding-top: 30px;
+
+    h3 {
+      font-size: 18px;
+      color: $text-light;
+      margin-bottom: 20px;
+    }
+
+    .doubts-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+
+      .form-row {
+        display: flex;
+        gap: 15px;
+        @media (max-width: 600px) { flex-direction: column; }
+      }
+
+      /* Fix de los inputs rotos de tu captura */
+      input, textarea {
+        width: 100%;
+        box-sizing: border-box; /* Fundamental para que no se desborden */
+        background-color: rgba(0, 0, 0, 0.2); /* Fondo oscuro para el input */
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 14px;
+        border-radius: 8px;
+        color: $text-light;
+        font-family: inherit;
+        font-size: 14px;
+        transition: all 0.3s ease;
+
+        &::placeholder { color: rgba(255,255,255,0.3); }
+
+        &:focus {
+          outline: none;
+          border-color: $accent-green;
+          background-color: rgba(0, 0, 0, 0.4);
+        }
+      }
+
+      textarea {
+        resize: vertical; /* Solo permite estirar hacia abajo */
+      }
+
+      .btn-submit {
+        background-color: $accent-green;
+        color: #0b1624; /* Texto oscuro para contrastar con el botón verde */
+        border: none;
+        padding: 14px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 5px;
+
+        &:hover {
+          background-color: darken(#37df8c, 10%);
+          transform: translateY(-2px);
+        }
+      }
+    }
+  }
+}

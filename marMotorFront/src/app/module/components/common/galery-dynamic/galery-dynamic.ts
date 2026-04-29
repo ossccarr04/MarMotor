@@ -62,12 +62,18 @@ export class GaleryDynamic {
   private cargarCochesGaleria(): void {
     this.carservice.getCars().subscribe({
       next: (data) => {
+        const SOLD_UPPER = this.BadgeType.SOLD.toUpperCase(); // "VENDIDO"
+        const RESERVED_UPPER = this.BadgeType.RESERVED.toUpperCase(); // "RESERVADO"
+
         const dataConFavoritos = this.aplicarEstadoFavoritos(data);
         this.cochesOriginal = dataConFavoritos;
 
-        this.coches = dataConFavoritos
-          .filter((c) => c.badge && c.badge.trim() !== '') // Solo con etiqueta
-          .slice(0, 10); // Máximo 10
+        // Por defecto, mostrar todos los coches que NO estén vendidos ni reservados
+        const cochesDisponiblesInicial = this.cochesOriginal.filter((c) => {
+          const processedBadge = c.badge ? String(c.badge).trim().toUpperCase() : 'NONE'; // Aseguramos que sea string
+          return processedBadge !== SOLD_UPPER && processedBadge !== RESERVED_UPPER;
+        });
+        this.coches = cochesDisponiblesInicial.slice(0, 10); // Máximo 10
 
         this.cochesFiltradoDetail = [...this.coches];
         this.cdr.detectChanges();
@@ -80,9 +86,13 @@ export class GaleryDynamic {
 
     getBadgeText(badge: any): string {
     if (!badge) return '';
-    const key = badge.toString().toUpperCase() as keyof typeof BadgeType;
-    const badgeValue = BadgeType[key];
-    return badgeValue ? this.badgeLabel[badgeValue] : badge.toString();
+    // Convertir el badge a minúsculas para que coincida con las claves del enum BadgeType (que ahora son en español minúsculas)
+    const badgeKey = badge ? String(badge).trim().toLowerCase() as BadgeType : BadgeType.NONE;
+    // Asegurarse de que la clave exista en BadgeType antes de acceder a BadgeLabel
+    if (Object.values(this.BadgeType).includes(badgeKey)) {
+      return this.badgeLabel[badgeKey as BadgeType];
+    }
+    return badge ? badge.toString() : ''; // Fallback si no se encuentra en el enum
   }
 
   toggleGuardar(coche: CarDTO, event: Event) {
@@ -127,6 +137,7 @@ export class GaleryDynamic {
     });
   }
 
+  // Lógica de arrastre del carrusel (se mantiene igual)
   moverCarrusel(direccion: number) {
     if (this.carrusel) {
       const elemento = this.carrusel.nativeElement;
@@ -255,16 +266,23 @@ private applyInertia() {
     const elemento = this.carrusel.nativeElement;
 
     this.filtroSeleccionado = tipo;
+    // Paso 1: Filtrar siempre los coches que NO estén vendidos ni reservados de la lista original
+    const cochesDisponibles = this.cochesOriginal.filter((c) => {
+      const processedBadge = c.badge ? String(c.badge).trim().toUpperCase() : 'NONE';
+      const SOLD_UPPER = this.BadgeType.SOLD.toUpperCase();
+      const RESERVED_UPPER = this.BadgeType.RESERVED.toUpperCase();
+      return processedBadge !== SOLD_UPPER && processedBadge !== RESERVED_UPPER;
+    });
+
     if (tipo === BadgeType.NONE) {
-      this.coches = this.cochesOriginal
-        .filter((c) => c.badge && c.badge.trim() !== '')
-        .slice(0, 10);
+      // Si el filtro es NONE, mostramos los primeros 10 coches disponibles
+      this.coches = cochesDisponibles
+        .slice(0, 10); // Máximo 10
     } else {
-      this.coches = this.cochesOriginal.filter(
+      // Si hay un filtro de tipo (NEW_ARRIVALS, FEATURED, OFFER), lo aplicamos sobre los coches disponibles
+      this.coches = cochesDisponibles.filter(
         (c) =>
-          c.badge &&
-          c.badge.charAt(0).toUpperCase() + c.badge.slice(1).toLowerCase() ===
-            tipo.charAt(0).toUpperCase() + tipo.slice(1).toLowerCase()
+          c.badge && String(c.badge).trim().toUpperCase() === tipo.toUpperCase()
       );
     }
     this.cochesFiltradoDetail = this.coches;

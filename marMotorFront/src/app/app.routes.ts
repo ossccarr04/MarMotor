@@ -7,6 +7,7 @@ import { Cars } from './module/components/cars/cars';
 import { AnadirCoche } from './module/components/anadir-coche/anadir-coche';
 import { Profile } from './module/components/profile/profile';
 import { adminGuard } from './guards/admin-guard';
+import { Company } from './module/components/company/company';
 
 export const routes: Routes = [
   {
@@ -28,6 +29,10 @@ export const routes: Routes = [
   {
     path:'users/me/profile',
     component: Profile
+  },
+  {
+    path: 'company',
+    component: Company
   },
   {
     path: 'cars',
