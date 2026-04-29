@@ -6,6 +6,8 @@ import {
   inject,
   OnDestroy,
   PLATFORM_ID,
+  ElementRef,
+  ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
@@ -38,6 +40,7 @@ export class DetailCar implements OnInit, OnDestroy {
   private favoriteService = inject(FavoriteServiceBBDD);
   private fb = inject(FormBuilder);
 
+  @ViewChild('timelineContainer') timelineContainer!: ElementRef; // ViewChild para el contenedor del historial
   constructor() {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state && navigation.extras.state['listaFiltrada']) {
@@ -66,6 +69,13 @@ export class DetailCar implements OnInit, OnDestroy {
   sellerPhone: string[] = []; // Ahora es un array de strings
   isLoggedInUser: boolean = false; // Nueva propiedad para almacenar el estado de login
 
+  // Drag-to-scroll properties para el historial
+  isDraggingTimeline = false;
+  startXTimeline: number = 0;
+  scrollLeftStartTimeline = 0;
+  velocityTimeline = 0;
+  rafIdTimeline: number | null = null;
+
   ngOnInit(): void {
     // Initialize contact details from environment
     this.sellerEmail = environment.EMAIL_CONTACT
@@ -80,6 +90,7 @@ export class DetailCar implements OnInit, OnDestroy {
       if (currentUser) {
         userName = currentUser.user || '';
         userEmail = currentUser.correo || '';
+
       }
     }
 
@@ -152,7 +163,7 @@ export class DetailCar implements OnInit, OnDestroy {
 
             // Calculamos en qué posición estamos dentro de la lista de navegación
             this.currentIndex = this.carIds.indexOf(this.car.id);
-
+            console.log(this.car)
             // Forzamos el renderizado inmediato para evitar el lag de "cargando"
             this.cdr.detectChanges();
           },
@@ -344,15 +355,16 @@ export class DetailCar implements OnInit, OnDestroy {
     name = atob(this.contactForm.get('name')?.value) || '[Tu Nombre]'; // Usar valor del formulario
     userEmail = atob(this.contactForm.get('email')?.value) || '[Tu Email]'; // Usar valor del formulario
 
-    }
-    const subject = encodeURIComponent(`Consulta sobre el coche: ${this.car.make} ${this.car.model} (${this.car.year})`);
+    
+  }
+  const subject = encodeURIComponent(`Consulta sobre el coche: ${this.car.make} ${this.car.model} (${this.car.year})`);
     const body = encodeURIComponent(
       `Hola, estoy interesado en el coche ${this.car.make} ${this.car.model} (${this.car.year}). ` +
       `Me gustaría obtener más información. Mi nombre es ${name} y mi email es ${userEmail}.`
     );
     return `mailto:${email}?subject=${subject}&body=${body}`;
-  }
 
+}
   isEmailContactEnabled(): boolean {
     // Si el usuario está logueado, los campos están pre-rellenados y válidos, así que el enlace está activo.
     if (this.isLoggedInUser) {
@@ -366,6 +378,62 @@ export class DetailCar implements OnInit, OnDestroy {
     this.showContactSellerModal = false;
     if (isPlatformBrowser(this.platformId)) {
       this.renderer.removeStyle(document.body, 'overflow');
+    }
+  }
+
+  // --- Drag-to-scroll methods para el historial ---
+  onTimelineMouseDown(e: MouseEvent) {
+    if (!this.timelineContainer) return;
+    this.isDraggingTimeline = true;
+    const el = this.timelineContainer.nativeElement;
+
+    this.startXTimeline = e.pageX - el.offsetLeft;
+    this.scrollLeftStartTimeline = el.scrollLeft;
+
+    el.style.scrollBehavior = 'auto'; // Deshabilita el smooth scroll durante el arrastre
+    el.style.cursor = 'grabbing';
+
+    if (this.rafIdTimeline) cancelAnimationFrame(this.rafIdTimeline);
+  }
+
+  onTimelineMouseMove(e: MouseEvent) {
+    if (!this.isDraggingTimeline || !this.timelineContainer) return;
+    e.preventDefault(); // Previene la selección de texto
+
+    const el = this.timelineContainer.nativeElement;
+    const x = e.pageX - el.offsetLeft;
+    const walk = (x - this.startXTimeline) * 1.5; // Ajusta la sensibilidad si es necesario
+
+    const prevScrollLeft = el.scrollLeft;
+    el.scrollLeft = this.scrollLeftStartTimeline - walk;
+    this.velocityTimeline = el.scrollLeft - prevScrollLeft;
+  }
+
+  onTimelineMouseUp() {
+    if (!this.isDraggingTimeline || !this.timelineContainer) return;
+    this.isDraggingTimeline = false;
+    const el = this.timelineContainer.nativeElement;
+    el.style.cursor = 'grab';
+    this.applyTimelineInertia();
+  }
+
+  onTimelineMouseLeave() { // Añadido para detener el arrastre si el ratón sale del contenedor
+    if (this.isDraggingTimeline) {
+      this.onTimelineMouseUp();
+    }
+  }
+
+  private applyTimelineInertia() {
+    if (!this.timelineContainer) return;
+    const el = this.timelineContainer.nativeElement;
+
+    if (Math.abs(this.velocityTimeline) > 0.5) {
+      el.scrollLeft += this.velocityTimeline;
+      this.velocityTimeline *= 0.95; // Fricción
+      this.rafIdTimeline = requestAnimationFrame(() => this.applyTimelineInertia());
+    } else {
+      el.style.scrollBehavior = 'smooth'; // Reactiva el smooth scroll después de la inercia
+      this.rafIdTimeline = null;
     }
   }
 }

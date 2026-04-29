@@ -121,6 +121,10 @@
           }
           @if (isRouteSold()) {
             <li>
+              <span>Fecha de Creación:</span>
+              <strong>{{ car.createdAt | date: 'dd/MM/yyyy HH:mm' }}</strong>
+            </li>
+            <li>
               <span>Fecha de Venta:</span>
               <strong>{{ car.soldAt | date: 'dd/MM/yyyy HH:mm' }}</strong>
             </li>
@@ -130,7 +134,11 @@
 
       <section class="card history-card">
         <h3>HISTORIAL DEL VEHÍCULO VISUAL</h3>
-        <div class="timeline-container">
+        <div #timelineContainer class="timeline-container"
+             (mousedown)="onTimelineMouseDown($event)"
+             (mousemove)="onTimelineMouseMove($event)"
+             (mouseup)="onTimelineMouseUp()"
+             (mouseleave)="onTimelineMouseLeave()">
           @if (car.history && car.history.length > 0) {
             <div class="timeline-line"></div>
             <div class="timeline-items">

@@ -16,8 +16,8 @@ $font-family: 'Montserrat', sans-serif;
   font-family: $font-family;
   color: $dark-navy-banner;
   padding-bottom: 50px;
-  width: 100%;
-  overflow-x: hidden;
+  width: 100%; // Mantener el ancho
+  // overflow-x: hidden; // Eliminado para permitir el scroll horizontal en elementos internos
 
   &.no-scroll {
     overflow: hidden;
@@ -522,6 +522,15 @@ $font-family: 'Montserrat', sans-serif;
   padding: 80px 0; // Espacio suficiente para iconos arriba y abajo
   width: 100%;
   overflow-x: auto;
+  touch-action: pan-x; // Permite el arrastre horizontal en dispositivos táctiles
+  user-select: none; /* Evita la selección de texto al arrastrar */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE 10+ */
+  cursor: grab; /* Indica que es arrastrable */
+
+
+  // Las reglas !important se añadirán si es necesario para sobrescribir estilos globales de html, body
   -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar {
@@ -640,7 +649,25 @@ $font-family: 'Montserrat', sans-serif;
       .title {
         color: #000000;
       }
+      .node-info {
+        .year {
+          color: #10b981 !important; // Asegura que el año también sea verde
+        }
+      }
+
+      // Aseguramos que el tick dentro de un evento completado siempre sea verde
+      .title .tick-success {
+        color: #10b981 !important; // Sobrescribe cualquier color de .title
+      }
+
     }
+  }
+  // Aseguramos que los elementos internos también prevengan la selección de texto
+  .timeline-items, .timeline-node, .node-icon, .node-point, .node-info {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
   }
 
   /* === DISEÑO ZIG-ZAG (Abajo) === */
@@ -987,7 +1014,9 @@ $font-family: 'Montserrat', sans-serif;
     margin-left: 5px;
     font-size: 0.9rem;
     vertical-align: middle;
+    // La regla de color más específica para el tick se define dentro de .is-completed
   }
+
 
   /* Animations */
   @keyframes shine-gradient {
