@@ -20,6 +20,24 @@ $font-family: 'Montserrat', sans-serif;
   font-family: $font-family;
   padding: 20px;
 
+  .forgot-password-container {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    .forgot-password-link {
+      color: #37df8c; /* Tu $accent-green */
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+
+      &:hover {
+        color: lighten(#37df8c, 10%);
+        text-decoration: underline;
+      }
+    }
+  }
+
   /* La ola verde diagonal heredada del Home */
   &::before {
     content: '';
@@ -161,22 +179,22 @@ $font-family: 'Montserrat', sans-serif;
     .btn-submit {
       width: 100%;
       font-family: $font-family;
-      padding: 16px;
+      padding: 14px;
       margin-top: 15px;
       border: none;
       border-radius: 30px; // Botón estilo píldora como el Home
-      background: linear-gradient(90deg, $accent-teal, $accent-green);
+      background: linear-gradient(80deg, $accent-teal, $accent-green);
       color: #000000; // Texto negro para contraste máximo sobre verde
       font-size: 16px;
       font-weight: 800;
       text-transform: uppercase;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 10px 20px rgba(55, 223, 140, 0.3);
+      box-shadow: 0 0px 20px rgba(55, 223, 140, 0.3);
 
       &:hover:not(:disabled) {
         transform: translateY(-3px);
-        box-shadow: 0 15px 30px rgba(55, 223, 140, 0.5);
+        box-shadow: 0 5px 25px rgba(55, 223, 140, 0.5);
       }
 
       &:active {

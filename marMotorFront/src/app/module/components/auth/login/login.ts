@@ -4,18 +4,19 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthServiceBBDD } from '../../../services/auth-service';
+import { ForgotPassword } from '../../forgot-password/forgot-password';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, RouterModule, ForgotPassword],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
 export class Login {
 
   loginForm: FormGroup;
-
+  isForgotPasswordOpen = false;
   passwordVisible: boolean = false;
 
   togglePassword(): void {

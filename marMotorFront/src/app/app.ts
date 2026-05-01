@@ -17,8 +17,10 @@ export class App {
 
   get mostrarHeader(): boolean {
 
-    const rutasSinHeader = ['/auth/login', '/auth/register'];
+    const rutasSinHeader = ['/auth/login', '/auth/register', '/auth/reset-password'];
     
-    return !rutasSinHeader.includes(this.router.url);
+    const rutaActualLimpia = this.router.url.split('?')[0];
+    
+    return !rutasSinHeader.includes(rutaActualLimpia);
   }
 }

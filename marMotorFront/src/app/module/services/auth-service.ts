@@ -65,4 +65,11 @@ export class AuthServiceBBDD {
     this.authStatus.next(false);
   }
 
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post<any>(`${this.URL}/forgot-password`, { email });
+  }
+
+  resetPassword(token: string, newPassword: string): Observable<any> {
+    return this.http.post<any>(`${this.URL}/reset-password`, { token, newPassword });
+  }
 }

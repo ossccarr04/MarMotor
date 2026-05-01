@@ -8,6 +8,8 @@ import { AnadirCoche } from './module/components/anadir-coche/anadir-coche';
 import { Profile } from './module/components/profile/profile';
 import { adminGuard } from './guards/admin-guard';
 import { Company } from './module/components/company/company';
+import { ForgotPassword } from './module/components/forgot-password/forgot-password';
+import { ResetPassword } from './module/components/reset-password/reset-password';
 
 export const routes: Routes = [
   {
@@ -21,6 +23,10 @@ export const routes: Routes = [
   {
     path: 'auth/register',
     component: Register,
+  },
+  {
+    path: 'auth/reset-password',
+    component: ResetPassword
   },
   {
     path: 'detail-car/:id',
