@@ -6,9 +6,10 @@ import com.example.marmotor.model.entity.User;
 import com.example.marmotor.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-;
+;import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -26,5 +27,29 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
+        try {
+            authService.processForgotPassword(request.get("email"));
+            return ResponseEntity.ok(Map.of("message", "Si el correo existe, te hemos enviado un enlace."));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
+        try {
+            String token = request.get("token");
+            String newPassword = request.get("newPassword");
+
+            authService.processResetPassword(token, newPassword);
+
+            return ResponseEntity.ok(Map.of("message", "Contraseña actualizada con éxito."));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
 }

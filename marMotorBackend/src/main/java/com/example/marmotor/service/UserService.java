@@ -33,8 +33,7 @@ public class UserService {
         return new UserDTO(
                 user.getEmail(),
                 user.getUsername(),
-                user.getCreatedAt(),
-                user.getContContact()
+                user.getCreatedAt()
         );
     }
 
@@ -53,8 +52,7 @@ public class UserService {
         return new UserDTO(
                 user.getEmail(),
                 user.getUsername(),
-                user.getCreatedAt(),
-                user.getContContact()
+                user.getCreatedAt()
         );
     }
 
@@ -68,7 +66,6 @@ public class UserService {
         user.setDeletedAt(LocalDateTime.now());
         String uniqueSuffix = UUID.randomUUID().toString().substring(0, 8);
         user.setUsername("Eliminado_" + uniqueSuffix);
-        user.setContContact(0);
         String hashedEmail = passwordEncoder.encode(user.getEmail());
         user.setEmail("deleted_" + UUID.randomUUID().toString() + "_" + hashedEmail);
 
