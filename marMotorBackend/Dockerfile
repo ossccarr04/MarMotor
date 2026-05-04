@@ -2,7 +2,7 @@
 FROM eclipse-temurin:17-jdk-alpine
 
 # Exponemos el puerto interno del contenedor
-EXPOSE 808
+EXPOSE 8080
 
 # El volumen para que guarde datos temporales
 VOLUME /tmp
