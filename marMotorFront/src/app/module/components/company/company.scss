@@ -12,8 +12,12 @@ $font-family: 'Montserrat', sans-serif;
   background-color: $dark-background;
   min-height: 100vh;
   font-family: $font-family;
-  padding: 60px 0;
+  padding: 60px 0; // Padding vertical por defecto para escritorio.
   color: $text-light;
+
+  @media (max-width: 768px) {
+    padding: 40px 20px; // En móvil, el wrapper principal se encarga del padding horizontal.
+  }
 }
 
 .container-mx {
@@ -21,7 +25,7 @@ $font-family: 'Montserrat', sans-serif;
   margin: 0 auto;
   padding: 0 40px;
 
-  @media (max-width: 768px) { padding: 0 20px; }
+  @media (max-width: 768px) { padding: 0; } // En móvil, el padding ya lo gestiona el wrapper.
 }
 
 /* Cabecera */

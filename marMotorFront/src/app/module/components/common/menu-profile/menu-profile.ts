@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, inject } from '@angular/core';
 import { AuthServiceBBDD } from '../../../services/auth-service';
 import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -16,6 +16,7 @@ export class Profile {
   private router = inject(Router);
   private toast = inject(ToastrService);
   private elementRef = inject(ElementRef);
+  private cdr = inject(ChangeDetectorRef);
   
   isMenuOpen = false;
 
@@ -42,7 +43,26 @@ export class Profile {
     }
   }
 
+  @HostListener('mouseenter')
+  onMouseEnter(): void {
+    this.verificarSesion();
+  }
+
+  verificarSesion(): void {
+    // Si este componente está visible, se asume que la sesión estaba activa.
+    // Comprobamos el estado real de la cookie.
+    if (!this.authService.isLoggedIn()) {
+      // Si la cookie ya no existe, hay una desincronización.
+      // Forzamos el logout en el servicio. Esto notificará al Header
+      // para que actualice su estado 'isLogged' a false y oculte este componente.
+      console.log('Cookie no encontrada. Forzando actualización de estado.');
+      this.authService.logout();
+      this.cdr.detectChanges(); // Forzamos la detección de cambios para que la UI reaccione al instante.
+    }
+  }
+
   toggleMenu(event: Event) {
+    this.verificarSesion(); // También es buena idea comprobarlo al hacer clic
     event.stopPropagation();
     this.isMenuOpen = !this.isMenuOpen;
   }
