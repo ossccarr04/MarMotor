@@ -89,3 +89,46 @@ img {
   height: auto;
   display: block;
 }
+
+.server-warning-banner {
+  background-color: #3b82f6; /* Un azul profesional o naranja #f59e0b */
+  color: white;
+  padding: 1rem;
+  border-bottom: 4px solid #2563eb;
+  animation: slideIn 0.5s ease-out;
+}
+
+.warning-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.warning-content p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Spinner pequeño animado */
+.spinner-mini {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-top: 3px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}

@@ -18,6 +18,10 @@ export class AuthServiceBBDD {
   private authStatus = new BehaviorSubject<boolean>(this.isLoggedIn());
   authStatus$ = this.authStatus.asObservable();
 
+  checkServerHealth() {
+  return this.http.get(`${this.URL}/public/health`, { responseType: 'text' });
+}
+
   getCurrentUser(): LoggedUserDTO | null {
     const token = this.cookieService.get('access_token'); 
 
