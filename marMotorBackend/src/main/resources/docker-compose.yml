@@ -1,0 +1,17 @@
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: marmotor-mysql
+    restart: always
+    environment:
+      # MySQL creará esta base de datos al iniciar
+      - MYSQL_DATABASE=marmotor_db
+      # Usamos la contraseña de tu .env
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

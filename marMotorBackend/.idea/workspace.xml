@@ -1,8 +1,392 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 1
-}]]></component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Modificado Dockerfile">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/MarMotorBackendApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/config/SecurityConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/BodyTypeController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/BrandController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/CarController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/CarImageController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/FuelTypeController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/UserController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/BodyTypeDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/BrandDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/CarDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/CarDetailDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/CarImageDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/FuelTypeDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/HistoryEventDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/UserDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/BodyType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/Brand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/Car.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/CarDetail.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/CarImage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/FuelType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/HistoryEvent.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/User$Role.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/enums/Status.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/enums/Transmission.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/BodyTypeRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/BrandRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/CarImageRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/CarRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/FuelTypeRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/UserRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/BodyTypeService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/BrandService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/CarImageService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/CarService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/FuelTypeService.class" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;oscdaw202401&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/oscdaw202401/TFGDAM.git&quot;,
+    &quot;accountId&quot;: &quot;bfb8c803-4fa1-4208-9de2-658c83702258&quot;
+  }
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="3BGKnMAf45uqaRVp3vppOLs4BtX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Docker.resources.mysql-db: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.MarMotorBackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;backend__funcional&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Salvavidas/Documents/GitHub/TFGDAM/marMotorBackend/pom.xml&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.14835948&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager" selected="Spring Boot.MarMotorBackendApplication">
+    <configuration name="MarMotorBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="marmotor" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.marmotor.MarMotorBackendApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="resources.mysql-db: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="mysql-db" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="src/main/resources/docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Docker.resources.mysql-db: Compose Deployment" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.31033.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.31033.145" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="StructureViewState">
+    <option name="selectedTab" value="Logical" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="" />
+      <created>1775396325227</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1775396325227</updated>
+      <workItem from="1775396331499" duration="106000" />
+      <workItem from="1775396443557" duration="2635000" />
+      <workItem from="1775557763654" duration="3000" />
+      <workItem from="1775558180995" duration="404000" />
+      <workItem from="1775817594199" duration="3000" />
+      <workItem from="1775896777681" duration="9804000" />
+      <workItem from="1775919983528" duration="6192000" />
+      <workItem from="1775980194204" duration="6827000" />
+      <workItem from="1776087550685" duration="486000" />
+      <workItem from="1776148368098" duration="3541000" />
+      <workItem from="1776238766693" duration="4345000" />
+      <workItem from="1776249071703" duration="1394000" />
+      <workItem from="1776323189323" duration="2557000" />
+      <workItem from="1776839561520" duration="11531000" />
+      <workItem from="1776887662540" duration="3889000" />
+      <workItem from="1776928187293" duration="9302000" />
+      <workItem from="1777444896747" duration="5228000" />
+      <workItem from="1777493096715" duration="715000" />
+      <workItem from="1777529941032" duration="1314000" />
+      <workItem from="1777621375684" duration="9948000" />
+      <workItem from="1777884277311" duration="3630000" />
+    </task>
+    <task id="LOCAL-00001" summary="Añadido la creacion de vehiculos y guardar la imagen">
+      <option name="closed" value="true" />
+      <created>1775909327458</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1775909327459</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Modificado para editar vehiculos y correccion de eliminar imagenes">
+      <option name="closed" value="true" />
+      <created>1775980266792</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1775980266793</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Añadido buscador para administrador">
+      <option name="closed" value="true" />
+      <created>1775991540685</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1775991540685</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Añadido fecha venta y fecha creacion">
+      <option name="closed" value="true" />
+      <created>1776162773444</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1776162773445</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Añadido endpoints para mostrar los datos de coches vendidos">
+      <option name="closed" value="true" />
+      <created>1776248912156</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1776248912156</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Añadido todo lo de etiquetas corregido">
+      <option name="closed" value="true" />
+      <created>1776690718801</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1776690718801</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Añadido todo lo de etiquetas corregido">
+      <option name="closed" value="true" />
+      <created>1776690824381</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1776690824381</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Añadido todo lo de etiquetas corregido">
+      <option name="closed" value="true" />
+      <created>1776690993228</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1776690993228</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Añadido todo lo de etiquetas corregido">
+      <option name="closed" value="true" />
+      <created>1776691636131</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1776691636131</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Todo el backend corregido">
+      <option name="closed" value="true" />
+      <created>1776694289494</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1776694289494</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Todo el backend corregido con etiquetas ambientales">
+      <option name="closed" value="true" />
+      <created>1776699093926</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1776699093926</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Añadida proteccion de rutas, modificacion de metodos de auth">
+      <option name="closed" value="true" />
+      <created>1776858852800</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1776858852800</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Añadido todo lo de favorito">
+      <option name="closed" value="true" />
+      <created>1776892654497</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1776892654497</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Añadido eliminacion de cuentas y obtener datos de usuario">
+      <option name="closed" value="true" />
+      <created>1776935041982</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1776935041982</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Añadido cambio de contraseña y mas seguridad al eliminar un usuario">
+      <option name="closed" value="true" />
+      <created>1776950678600</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1776950678600</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Correccion de fechas y correccion del import">
+      <option name="closed" value="true" />
+      <created>1777457410723</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1777457410723</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Añadido envio de email y reestablecer contraseña y eliminacion de campos que no se utilizan">
+      <option name="closed" value="true" />
+      <created>1777641451708</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1777641451708</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Añadido Dockerfile">
+      <option name="closed" value="true" />
+      <created>1777888149774</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1777888149774</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Modificado Dockerfile">
+      <option name="closed" value="true" />
+      <created>1777888247823</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1777888247823</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Modificado Dockerfile">
+      <option name="closed" value="true" />
+      <created>1777888273745</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1777888273745</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Modificado Dockerfile">
+      <option name="closed" value="true" />
+      <created>1777888280666</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1777888280666</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Modificaciones en todo el apartado de car e incremento de prueba de coches" />
+    <MESSAGE value="Añadido la creacion de vehiculos y guardar la imagen" />
+    <MESSAGE value="Modificado para editar vehiculos y correccion de eliminar imagenes" />
+    <MESSAGE value="Añadido buscador para administrador" />
+    <MESSAGE value="Añadido fecha venta y fecha creacion" />
+    <MESSAGE value="Añadido endpoints para mostrar los datos de coches vendidos" />
+    <MESSAGE value="Añadido todo lo de etiquetas corregido" />
+    <MESSAGE value="Todo el backend corregido" />
+    <MESSAGE value="Todo el backend corregido con etiquetas ambientales" />
+    <MESSAGE value="Añadida proteccion de rutas, modificacion de metodos de auth" />
+    <MESSAGE value="Añadido todo lo de favorito" />
+    <MESSAGE value="Añadido eliminacion de cuentas y obtener datos de usuario" />
+    <MESSAGE value="Añadido cambio de contraseña y mas seguridad al eliminar un usuario" />
+    <MESSAGE value="Correccion de fechas y correccion del import" />
+    <MESSAGE value="Añadido envio de email y reestablecer contraseña y eliminacion de campos que no se utilizan" />
+    <MESSAGE value="Añadido Dockerfile" />
+    <MESSAGE value="Modificado Dockerfile" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modificado Dockerfile" />
+  </component>
 </project>
