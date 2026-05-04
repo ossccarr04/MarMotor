@@ -19,9 +19,11 @@ export class ChangePassword implements OnInit {
   private userService = inject(UserServiceBBDD);
 
   changePasswordForm!: FormGroup;
-  passwordVisible = false;
+  showCurrentPassword = false;
+  showNewPassword = false;
+  showConfirmPassword = false;
   isSubmitting = false;
-  regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
 
   ngOnInit(): void {
     this.changePasswordForm = this.fb.group({
@@ -43,10 +45,6 @@ export class ChangePassword implements OnInit {
 
   get f() {
     return this.changePasswordForm.controls;
-  }
-
-  togglePassword() {
-    this.passwordVisible = !this.passwordVisible;
   }
 
   onSubmit() {
