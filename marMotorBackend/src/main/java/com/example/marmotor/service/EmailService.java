@@ -61,9 +61,14 @@ public class EmailService {
         // 6. Enviar
         try {
             apiInstance.sendTransacEmail(sendSmtpEmail);
-            System.out.println("DEBUG: Email con diseño oscuro enviado con éxito vía Brevo API");
+            System.out.println("✅ DEBUG: Email enviado con éxito vía Brevo API");
+        } catch (sendinblue.ApiException e) {
+            // ESTO ES EL CHIVATO: Nos dirá el código exacto y el motivo del rechazo
+            System.err.println("❌ ERROR DE BREVO (CÓDIGO HTTP): " + e.getCode());
+            System.err.println("❌ ERROR DE BREVO (RESPUESTA): " + e.getResponseBody());
+            e.printStackTrace();
         } catch (Exception e) {
-            System.err.println("Error enviando con Brevo: " + e.getMessage());
+            System.err.println("❌ ERROR GENERAL DE JAVA: " + e.getMessage());
             e.printStackTrace();
         }
     }
