@@ -4,22 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Correccion de fechas y correccion del import">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/PasswordResetToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/PasswordResetTokenRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/EmailService.java" afterDir="false" />
+    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Añadido envio de email y reestablecer contraseña y eliminacion de campos que no se utilizan">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/MarMotorBackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/MarMotorBackendApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/UserDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/MarMotorBackendApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/MarMotorBackendApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/UserDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/UserDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/User$Role.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/User$Role.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/User.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,7 +154,8 @@
       <workItem from="1777444896747" duration="5228000" />
       <workItem from="1777493096715" duration="715000" />
       <workItem from="1777529941032" duration="1314000" />
-      <workItem from="1777621375684" duration="9902000" />
+      <workItem from="1777621375684" duration="9948000" />
+      <workItem from="1777884277311" duration="2361000" />
     </task>
     <task id="LOCAL-00001" summary="Añadido la creacion de vehiculos y guardar la imagen">
       <option name="closed" value="true" />
@@ -297,7 +285,15 @@
       <option name="project" value="LOCAL" />
       <updated>1777457410723</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Añadido envio de email y reestablecer contraseña y eliminacion de campos que no se utilizan">
+      <option name="closed" value="true" />
+      <created>1777641451708</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1777641451708</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -318,6 +314,7 @@
     <MESSAGE value="Añadido eliminacion de cuentas y obtener datos de usuario" />
     <MESSAGE value="Añadido cambio de contraseña y mas seguridad al eliminar un usuario" />
     <MESSAGE value="Correccion de fechas y correccion del import" />
-    <option name="LAST_COMMIT_MESSAGE" value="Correccion de fechas y correccion del import" />
+    <MESSAGE value="Añadido envio de email y reestablecer contraseña y eliminacion de campos que no se utilizan" />
+    <option name="LAST_COMMIT_MESSAGE" value="Añadido envio de email y reestablecer contraseña y eliminacion de campos que no se utilizan" />
   </component>
 </project>
