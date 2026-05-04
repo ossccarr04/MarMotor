@@ -1,0 +1,321 @@
+@if (car) {
+  <div class="detail-page-wrapper" [class.no-scroll]="isZoomed">
+    <div class="hero-gradient-section">
+      <header class="detail-header" [class.opacity-0]="isZoomed">
+        <div class="title-group">
+          <span class="brand-subtitle">HISTORIA INMERSIVA DEL VEHÍCULO</span>
+          <h1>
+            {{ car.make }} {{ car.model }}
+            @if (car.bodyType) {
+              - {{ car.bodyType | titlecase }}
+            }
+          </h1>
+        </div>
+
+        <div class="admin-actions">
+          @if (isAdmin) {
+            <button class="btn-edit" (click)="navigateToEdit()">
+              <i class="fa-solid fa-pen-to-square"></i> Editar Vehículo
+            </button>
+          }
+        </div>
+
+        <div class="nav-arrows">
+          <button class="arrow" (click)="prevCar()">‹</button>
+          <button class="arrow" (click)="nextCar()">›</button>
+        </div>
+      </header>
+      <section class="car-intro-text" [class.opacity-0]="isZoomed">
+        <div class="quote-line"></div>
+        <p class="description-text">{{ car.description }}</p>
+      </section>
+      <section class="gallery-viewport">
+        <div class="gallery-container">
+          <div class="main-photo-card" [class.is-zoomed]="isZoomed">
+            <span class="heart-icon-detail" [class.is-liked]="car.isSaved" (click)="toggleSave()">
+              {{ car.isSaved ? '❤️' : '♡' }}
+            </span>
+
+            <button class="zoom-btn-detail" (click)="toggleZoom()">🔍</button>
+
+            @if (car.imagesAlbum && car.imagesAlbum.length > 0) {
+              <img
+                [src]="car.imagesAlbum[currentImageIndex]"
+                [alt]="car.model"
+                (error)="onImageError($event)"
+              />
+            } @else {
+              <img src="assets/placeholder-car.jpg" alt="No image available" />
+            }
+
+            <button class="float-arrow left" (click)="prevImage()">‹</button>
+            <button class="float-arrow right" (click)="nextImage()">›</button>
+          </div>
+        </div>
+
+        <div class="thumbnail-strip" [class.opacity-0]="isZoomed">
+          @for (imgUrl of car.imagesAlbum; track imgUrl) {
+            <div
+              class="thumb-item"
+              [class.active]="$index === currentImageIndex"
+              (click)="setMainImage($index)"
+            >
+              <img [src]="imgUrl" alt="Thumbnail" (error)="onImageError($event)" />
+            </div>
+          }
+        </div>
+      </section>
+    </div>
+
+    <div class="content-grid" [class.opacity-0]="isZoomed">
+      <section class="card">
+        <h3>ESPECIFICACIONES CLAVE</h3>
+        <ul class="specs-list">
+          <li>
+            <span>Precio final:</span>
+            <strong>{{ car.price | currency: 'EUR' : 'symbol' : '1.0-0' }}</strong>
+          </li>
+          <li>
+            <span>Año:</span> <strong>{{ car.year }}</strong>
+          </li>
+          <li>
+            <span>Motorización:</span> <strong>{{ car.fuelType | titlecase }}</strong>
+          </li>
+          <li>
+            <span>Transmisión:</span> <strong>{{ car.transmission | titlecase }}</strong>
+          </li>
+          <li>
+            <span>Potencia:</span> <strong>{{ car.power }} cv</strong>
+          </li>
+          <li>
+            <span>Kilometraje:</span> <strong>{{ car.mileage | number }} km</strong>
+          </li>
+          <li>
+            <span>Consumo:</span> <strong>{{ car.consumption }} L/100km</strong>
+          </li>
+          <li>
+            <span>Color:</span> <strong>{{ car.color }}</strong>
+          </li>
+          <li>
+            <span>Distintivo Ambiental:</span>
+            <div class="dgt-label-container">
+              @if (
+                car.label.toLowerCase().includes('0') || car.label.toLowerCase().includes('zero')
+              ) {
+                <span class="dgt-badge badge-zero">0</span>
+              } @else if (
+                car.label.toLowerCase().includes('none') || car.label.toLowerCase().includes('sin')
+              ) {
+                <span class="dgt-badge badge-none">SIN ETIQUETA</span>
+              } @else {
+                <span class="dgt-badge" [ngClass]="'badge-' + car.label.toLowerCase().trim()">
+                  {{ car.label }}
+                </span>
+              }
+            </div>
+          </li>
+          @if (car.badge && car.badge !== badgeType.NONE) {
+            <li>
+              <span>Etiqueta:</span> <strong>{{ badgeLabel[car.badge] | titlecase }}</strong>
+            </li>
+          }
+          @if (isRouteSold()) {
+            <li>
+              <span>Fecha de Creación:</span>
+              <strong>{{ car.createdAt | date: 'dd/MM/yyyy HH:mm' }}</strong>
+            </li>
+            <li>
+              <span>Fecha de Venta:</span>
+              <strong>{{ car.soldAt | date: 'dd/MM/yyyy HH:mm' }}</strong>
+            </li>
+          }
+        </ul>
+      </section>
+
+      <section class="card history-card">
+        <h3>HISTORIAL DEL VEHÍCULO VISUAL</h3>
+        <div #timelineContainer class="timeline-container"
+             (mousedown)="onTimelineMouseDown($event)"
+             (mousemove)="onTimelineMouseMove($event)"
+             (mouseup)="onTimelineMouseUp()"
+             (mouseleave)="onTimelineMouseLeave()">
+          @if (car.history && car.history.length > 0) {
+            <div class="timeline-line"></div>
+            <div class="timeline-items">
+              @for (event of car.history; track event.year; let i = $index) {
+                <div
+                  class="timeline-node"
+                  [class.is-completed]="event.isCompleted"
+                  [class.down]="i % 2 !== 0"
+                >
+                  <div class="node-icon">
+                    <i class="fa-solid fa-fw" [ngClass]="event.icon ? event.icon : 'fa-wrench'"></i>
+                  </div>
+                  <div class="node-point"></div>
+                  <div class="node-info">
+                    <span class="year">{{ event.year }}</span>
+                    <span class="title">
+                      {{ event.title }}
+                      @if (event.isCompleted) {
+                        <i class="fa-solid fa-circle-check tick-success"></i>
+                      }
+                    </span>
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="no-history">
+              <div class="empty-icon"><i class="fa-solid fa-calendar-minus"></i></div>
+              <p>No hay eventos registrados en el historial de este vehículo.</p>
+            </div>
+          }
+        </div>
+      </section>
+
+      <section class="card features-card">
+        <h3>EQUIPAMIENTO DESTACADO</h3>
+        @if (car.features && car.features.length > 0) {
+          <div class="features-grid">
+            @for (f of car.features; track f) {
+              <div class="feature-tag"><i class="fa-solid fa-check"></i> {{ f }}</div>
+            }
+          </div>
+        } @else {
+          <div class="no-features">
+            <i class="fa-solid fa-circle-info"></i>
+            <p>No se ha especificado equipamiento adicional para este vehículo.</p>
+          </div>
+        }
+      </section>
+
+      @if (car.badge && car.badge !== badgeType.RESERVED && car.badge !== badgeType.SOLD) {
+        <section class="card reserve-card">
+          <div class="reserve-icon"><i class="fa-solid fa-check"></i></div>
+          <h3 class="reserve-title">RESERVAR AHORA</h3>
+          <p class="reserve-subtitle">- PRECIO FINAL -</p>
+          <div class="final-price">{{ car.price | currency: 'EUR' : 'symbol' : '1.0-0' }}</div>
+          <button class="btn-contact" (click)="openContactSellerModal()">CONTACTAR VENDEDOR</button>
+        </section>
+      } @else {
+        <section
+          class="card reserve-card status-unavailable"
+          [class.is-sold]="car.badge === badgeType.SOLD"
+        >
+          <div class="reserve-icon">
+            <i
+              class="fa-solid"
+              [ngClass]="car.badge === badgeType.RESERVED ? 'fa-lock' : 'fa-trash-can'"
+            ></i>
+          </div>
+
+          <h3 class="reserve-title">
+            {{ car.badge === badgeType.RESERVED ? 'VEHÍCULO RESERVADO' : 'VEHÍCULO VENDIDO' }}
+          </h3>
+
+          <p class="reserve-subtitle">Este vehículo ya no está disponible para reserva, aunque se puede contactar con el vendedor para más información.</p>
+
+          <div class="final-price-wrapper">
+            <span class="price-strikethrough">
+              {{ car.price | currency: 'EUR' : 'symbol' : '1.0-0' }}
+            </span>
+          </div>
+          
+          @if (car.badge === badgeType.SOLD) {
+            <div class="delete-actions-container">
+              @if (!confirmandoBorrado) {
+                <button class="btn-delete-car" (click)="prepararEliminacion()">
+                  <i class="fa-solid fa-trash"></i> ELIMINAR DEL STOCK
+                </button>
+              } @else {
+                <div class="confirm-box">
+                  <p class="confirm-text">¿Confirmas la eliminación permanente?</p>
+                  <div class="confirm-btns">
+                    <button class="btn-confirm-yes" (click)="ejecutarEliminacion(car.id)">
+                      SÍ, ELIMINAR
+                    </button>
+                    <button class="btn-confirm-no" (click)="cancelarEliminacion()">CANCELAR</button>
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <button class="btn-contact" (click)="openContactSellerModal()">CONTACTAR VENDEDOR</button>
+          }
+        </section>
+      }
+    </div>
+  </div>
+  <div>
+  @if (showContactSellerModal) {
+    <div class="modal-overlay" (click)="closeContactSellerModal()">
+      <div class="modal-content contact-seller-modal" (click)="$event.stopPropagation()">
+        <button class="close-btn" (click)="closeContactSellerModal()">×</button>
+        <h3>Contactar al Vendedor</h3>
+        <p class="modal-subtitle">¿Interesado en este vehículo? Ponte en contacto con nosotros.</p>
+
+        <div class="contact-options-grid">
+          <div class="contact-group">
+            <h4>Emails de Contacto</h4>
+            <div class="contact-cards-subgrid">
+              @for(email of sellerEmail; track email) {
+                <a [href]="isEmailContactEnabled() ? getMailtoLinkForEmail(email) : null"
+                   class="contact-card email-card"
+                   [class.disabled]="!isEmailContactEnabled()"
+                   target="_blank">
+                  <div class="icon-wrapper"><i class="fa-solid fa-envelope"></i></div>
+                  <div class="card-details">
+                    <span class="card-label">Email</span>
+                    <span class="card-value">{{ email }}</span>
+                  </div>
+                </a>
+              }
+            </div>
+          </div>
+
+          <div class="contact-group">
+            <h4>Teléfonos de Contacto</h4>
+            <div class="contact-cards-subgrid">
+              @for(number of sellerPhone; track number) {
+                <a href="tel:{{ number }}" class="contact-card phone-card">
+                  <div class="icon-wrapper"><i class="fa-solid fa-phone"></i></div>
+                  <div class="card-details">
+                    <span class="card-label">Teléfono</span>
+                    <span class="card-value">{{ number }}</span>
+                  </div>
+                </a>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulario simplificado para nombre y email, solo visible si el usuario NO está logueado -->
+        @if (!isLoggedInUser) {
+          <div class="modal-divider"></div>
+          <h4>Introduce tus datos para contactar</h4>
+          <form [formGroup]="contactForm" class="contact-form">
+            <div class="form-group">
+              <label for="contactName">Tu Nombre</label>
+              <input id="contactName" type="text" formControlName="name" placeholder="Ej: Juan Pérez" [class.is-invalid]="contactForm.get('name')?.invalid && contactForm.get('name')?.touched" />
+              @if (contactForm.get('name')?.invalid && contactForm.get('name')?.touched) {
+                <span class="error-text">El nombre es obligatorio.</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="contactEmail">Tu Email</label>
+              <input id="contactEmail" type="email" formControlName="email" placeholder="ejemplo@dominio.com" [class.is-invalid]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched" />
+              @if (contactForm.get('email')?.invalid && contactForm.get('email')?.touched) {
+                @if (contactForm.get('email')?.errors?.['required']) { <span class="error-text">El email es obligatorio.</span> }
+                @if (contactForm.get('email')?.errors?.['email']) { <span class="error-text">Introduce un email válido.</span> }
+              }
+            </div>
+          </form>
+        }
+      </div>
+    </div>
+  }
+</div>
+} @else {
+  <div class="loading-state">Cargando detalles del vehículo...</div>
+}

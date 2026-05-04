@@ -1,0 +1,232 @@
+/* --- VARIABLES HÍBRIDAS MARMOTOR --- */
+$bg-dark-blue: #081225;
+$bg-card-dark: #0c1a35;
+$bg-card-blue: #13274a;
+$accent-green: #37df8c;
+$accent-teal: #32d5a4;
+$text-light: #ffffff;
+$text-muted: #a0aec0;
+$error-red: #fc8181;
+$font-family: 'Montserrat', sans-serif;
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: $bg-dark-blue;
+  position: relative;
+  overflow: hidden;
+  font-family: $font-family;
+  padding: 20px;
+
+  .forgot-password-container {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    .forgot-password-link {
+      color: #37df8c; /* Tu $accent-green */
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+
+      &:hover {
+        color: lighten(#37df8c, 10%);
+        text-decoration: underline;
+      }
+    }
+  }
+
+  /* La ola verde diagonal heredada del Home */
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: -20%;
+    left: -10%;
+    width: 120%;
+    height: 60%;
+    background: linear-gradient(to right, #0d5e4b, $accent-green);
+    transform: rotate(-10deg);
+    z-index: 0;
+    opacity: 0.6; /* Un poco más sutil para no distraer del form */
+    border-radius: 50% 50% 0 0;
+  }
+
+  .auth-card {
+    background-color: $bg-card-dark; // Fondo oscuro como tus bloques del grid
+    padding: 50px 40px;
+    border-radius: 30px;
+    width: 100%;
+    max-width: 450px;
+    position: relative;
+    z-index: 1;
+    border: 1px solid rgba($accent-green, 0.2); // Borde sutil verde
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+
+    h2 {
+      text-align: center;
+      color: $text-light;
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    p {
+      text-align: center;
+      color: $text-muted;
+      margin-bottom: 35px;
+      font-size: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+
+      label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        color: $accent-green; // Labels en verde neón
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+      }
+
+      .input-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        input {
+          padding-right: 50px; // Dejamos espacio para que el texto no tape el ojo
+          -webkit-text-security: none; // Desactiva seguridad visual extra en algunos navegadores
+          font-family: $font-family;
+        }
+
+        &[type='password'] {
+          letter-spacing: 3px; // Los puntitos se ven mejor separados
+        }
+
+        &[type='text'] {
+          letter-spacing: normal; // El texto normal se ve bien así
+        }
+
+        .toggle-eye {
+          position: absolute;
+          right: 15px;
+          background: none;
+          border: none;
+          color: $accent-green;
+          cursor: pointer;
+          font-size: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0;
+          transition: transform 0.2s ease;
+
+          &:hover {
+            transform: scale(1.2);
+            color: $accent-teal;
+          }
+
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+
+      input {
+        width: 100%;
+        padding: 16px 20px;
+        background-color: $bg-card-blue; // Fondo azul profundo
+        border: 2px solid transparent;
+        border-radius: 16px;
+        color: $text-light;
+        font-family: $font-family;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+
+        &::placeholder {
+          color: rgba($text-light, 0.3);
+        }
+
+        &:focus {
+          outline: none;
+          border-color: $accent-green;
+          background-color: lighten($bg-card-blue, 5%);
+          box-shadow: 0 0 15px rgba(55, 223, 140, 0.2);
+        }
+
+        &.is-invalid {
+          border-color: $error-red;
+          background-color: rgba($error-red, 0.05);
+        }
+      }
+
+      .error-text {
+        color: $error-red;
+        font-size: 12px;
+        font-weight: 600;
+        margin-top: 8px;
+        display: block;
+      }
+    }
+
+    .btn-submit {
+      width: 100%;
+      font-family: $font-family;
+      padding: 14px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 30px; // Botón estilo píldora como el Home
+      background: linear-gradient(80deg, $accent-teal, $accent-green);
+      color: #000000; // Texto negro para contraste máximo sobre verde
+      font-size: 16px;
+      font-weight: 800;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0px 20px rgba(55, 223, 140, 0.3);
+
+      &:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 25px rgba(55, 223, 140, 0.5);
+      }
+
+      &:active {
+        transform: translateY(-1px);
+      }
+
+      &:disabled {
+        background: #2d3748;
+        color: #718096;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+    }
+
+    .auth-links {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 14px;
+      color: $text-muted;
+
+      a {
+        color: $accent-green;
+        text-decoration: none;
+        font-weight: 700;
+        margin-left: 5px;
+        transition: all 0.2s;
+
+        &:hover {
+          color: $accent-teal;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}

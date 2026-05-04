@@ -1,0 +1,434 @@
+/* --- VARIABLES --- */
+$primary-blue: #0a1f33;
+$accent-green: #37df8c;
+$text-dark: #1a202c;
+$green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
+$font-family: 'Montserrat', sans-serif;
+
+.car-gallery-section {
+  padding: 40px 0; // Eliminado padding lateral para que el scroll llegue al borde
+  font-family: $font-family;
+  background: linear-gradient(135deg, #051121 0%, #162b44 100%);
+  width: 100%;
+  overflow: hidden;
+
+  @media (min-width: 768px) {
+    padding: 60px 40px;
+  }
+
+  /* --- HEADER DE LA GALERÍA --- */
+  .gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 0 20px; // Padding solo para el texto y flechas
+
+    @media (min-width: 768px) {
+      margin-bottom: 40px;
+      padding: 0;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: bold;
+      color: #ffffff;
+      margin: 0;
+      @media (min-width: 768px) {
+        font-size: 24px;
+      }
+    }
+
+    .gallery-nav {
+      display: flex;
+      gap: 10px;
+
+      .nav-arrow {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        user-select: none;
+
+        @media (min-width: 768px) {
+          width: 40px;
+          height: 40px;
+        }
+
+        &:hover {
+          background: $green-gradient;
+          transform: scale(1.1);
+          box-shadow: 0 4px 15px rgba(55, 223, 140, 0.4);
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
+
+        &.disabled {
+          opacity: 0.3;
+          pointer-events: none;
+          filter: grayscale(1);
+        }
+      }
+    }
+  }
+
+  /* --- GRID / CONTENEDOR DE TARJETAS (MOVIMIENTO TÁCTIL) --- */
+  .car-cards-grid {
+    display: flex;
+    align-items: flex-start;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 10px 20px 40px 20px; // Padding lateral para que la 1ª tarjeta respire
+
+    // Propiedades críticas para el deslizamiento móvil
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    user-select: none; // Evita que se seleccione el texto al arrastrar
+    -webkit-user-drag: none;
+    -webkit-overflow-scrolling: touch;
+
+    img {
+      pointer-events: none;
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+    h3,
+    span,
+    div {
+      user-select: none;
+    }
+
+    &.is-dragging {
+    scroll-snap-type: none !important;
+    scroll-behavior: auto !important;
+    cursor: grabbing;
+  }
+
+    /* Ocultar scrollbar */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    @media (min-width: 768px) {
+      gap: 30px;
+      padding: 10px 5px 40px 5px;
+      scroll-snap-type: none; // En PC preferimos scroll libre con flechas
+    }
+
+    /* --- TARJETA INDIVIDUAL --- */
+    .car-card {
+      flex: 0 0 90%; // Ocupa casi todo el ancho en móvil para impacto visual
+      scroll-snap-align: center; // Se imanta al centro en móvil
+      background: #ffffff;
+      border-radius: 20px;
+
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      transition:
+        transform 0.3s,
+        box-shadow 0.3s;
+      .btn-details,
+      .heart-icon,
+      button {
+        pointer-events: auto;
+      }
+      img { pointer-events: none; -webkit-user-drag: none; }
+      @media (min-width: 768px) {
+        flex: 0 0 340px;
+        scroll-snap-align: start;
+      }
+
+      &:hover {
+        @media (min-width: 1024px) {
+          transform: translateY(-8px);
+          box-shadow: 0 15px 35px rgba(55, 223, 140, 0.3);
+
+          .hover-btn-container {
+            max-height: 80px;
+            opacity: 1;
+            margin-top: 15px;
+            padding-bottom: 15px;
+          }
+        }
+      }
+
+      /* --- IMAGEN MÁS GRANDE EN MÓVIL --- */
+      .car-image-container {
+        position: relative;
+        height: 220px; // Aumentado para móvil
+
+        @media (min-width: 768px) {
+          height: 200px;
+        }
+
+        .car-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.5s ease;
+        }
+
+        .badge {
+          position: absolute;
+          top: 15px;
+          left: 15px;
+          padding: 6px 14px;
+          border-radius: 20px;
+          font-size: 10px;
+          font-weight: 800;
+          color: white;
+          background: $green-gradient;
+          text-transform: uppercase;
+        }
+
+        .heart-icon {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          font-size: 24px;
+          cursor: pointer;
+          color: #ffffff;
+          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+          transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+          &:hover {
+            transform: scale(1.2);
+          }
+          &.is-liked {
+            color: #ff4757;
+            animation: latido 0.3s ease-in-out;
+          }
+        }
+      }
+
+      /* --- DETALLES --- */
+      .car-details {
+        padding: 20px;
+
+        .title-price-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 10px;
+
+          h3 {
+            color: $text-dark;
+            font-size: 19px; // Ligeramente más grande
+            font-weight: 700;
+            margin: 0;
+            flex: 1;
+          }
+
+          .car-price {
+            color: $accent-green;
+            font-size: 21px; // Ligeramente más grande
+            font-weight: 900;
+            margin-left: 10px;
+          }
+        }
+
+        .car-subtitle {
+          display: block;
+          font-size: 12px;
+          color: #718096;
+          margin-bottom: 15px;
+        }
+
+        .car-stats-row {
+          display: flex;
+          justify-content: space-between;
+          text-align: center;
+          border-top: 1px solid #edf2f7;
+          padding-top: 15px;
+
+          .stat {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+
+            .stat-value {
+              font-size: 14px;
+              font-weight: 800;
+              color: $text-dark;
+              @media (min-width: 768px) {
+                font-size: 15px;
+              }
+            }
+
+            .stat-label {
+              font-size: 10px;
+              color: #a0aec0;
+              text-transform: uppercase;
+            }
+          }
+        }
+      }
+
+      /* --- BOTÓN SIEMPRE VISIBLE EN MÓVIL --- */
+      .hover-btn-container {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        padding: 0 20px;
+        display: flex;
+        justify-content: center;
+
+        @media (max-width: 1023px) {
+          max-height: 80px;
+          opacity: 1;
+          margin-top: 10px;
+          padding-bottom: 20px;
+        }
+
+        .btn-details {
+          width: 100%;
+          padding: 12px;
+          font-size: 13px;
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          color: #ffffff;
+          background: $green-gradient;
+          border-radius: 30px;
+          border: none;
+          cursor: pointer;
+          box-shadow: 0 4px 15px rgba(55, 223, 140, 0.4);
+          transition: transform 0.2s;
+
+          &:active {
+            transform: scale(0.96);
+          }
+        }
+      }
+    }
+  }
+}
+
+/* --- FILTROS CON SCROLL EN MÓVIL --- */
+.badge-filters {
+  font-family: $font-family;
+  display: flex;
+  gap: 10px;
+  transition: all 0.3s ease;
+
+  @media (min-width: 769px) {
+    flex-wrap: wrap;
+    margin-left: 20px;
+    margin-right: auto;
+  }
+
+  button {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    &.active {
+      background: #37df8c;
+      color: #051121;
+      border-color: #37df8c;
+      box-shadow: 0 0 15px rgba(55, 223, 140, 0.3);
+    }
+  }
+
+  @media (max-width: 768px) {
+    margin: 20px 0;
+    padding: 0 20px 10px 20px;
+    justify-content: flex-start;
+    overflow-x: auto; // Permite deslizar los filtros si hay muchos
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    button {
+      font-size: 12px;
+      padding: 8px 16px;
+    }
+  }
+}
+
+/* --- RESPONSIVE HEADER --- */
+@media (max-width: 768px) {
+  .car-gallery-section {
+    .gallery-header {
+      flex-direction: column;
+      align-items: center; // Centra el H2 y el grupo de nav-arrows
+      text-align: center; // Centra el texto del H2
+      gap: 20px;
+
+      h2 {
+        width: 100%; // Asegura que el título ocupe el ancho para centrarse
+      }
+
+      .gallery-nav {
+        align-self: center; // Centra las flechas en lugar de mandarlas a la derecha
+      }
+    }
+  }
+
+  /* --- FILTROS CENTRADOS EN MÓVIL --- */
+  .badge-filters {
+    margin: 20px 0;
+    padding: 0 10px; // Pequeño aire lateral
+    justify-content: center; // MÁGIA: Centra los botones de filtro
+    width: 100%;
+    flex-wrap: wrap; // Si hay muchos, bajan centrados.
+    // Si prefieres que deslicen de lado, cambia wrap por nowrap y usa overflow-x: auto
+
+    button {
+      margin-top: 5px; // Espacio si llegan a saltar de línea
+      font-size: 12px;
+      padding: 8px 16px;
+    }
+  }
+}
+
+/* --- ANIMACIONES --- */
+@keyframes latido {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

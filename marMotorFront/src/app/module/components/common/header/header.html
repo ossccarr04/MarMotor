@@ -1,0 +1,90 @@
+<header class="autoflow-header">
+  @if (isLogoZoomed) {
+    <div
+      (click)="isLogoZoomed = false"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.85);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: zoom-out;
+      "
+    >
+      <img
+        src="logoMarMotor.png"
+        alt="Logo MarMotor Ampliado"
+        style="max-width: 90%; max-height: 90%; object-fit: contain"
+      />
+    </div>
+  }
+
+  <div class="logo" [routerLink]="['/']" (click)="isMenuOpen = false">
+    <img
+      src="logoMarMotor.png"
+      alt="Logo MarMotor"
+      style="height: 60px; width: auto; object-fit: contain; margin-right: 10px; cursor: zoom-in"
+      (click)="isLogoZoomed = true; $event.stopPropagation(); $event.preventDefault()"
+    />
+    MarMotor
+  </div>
+
+  <button class="menu-toggle" (click)="toggleMenu()" [class.is-active]="isMenuOpen">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <nav class="nav-links" [class.is-open]="isMenuOpen">
+    <a
+      [routerLink]="['/']"
+      routerLinkActive="active-link"
+      [routerLinkActiveOptions]="{ exact: true }"
+      (click)="isMenuOpen = false"
+      >Inicio</a
+    >
+    <a
+      routerLink="/cars"
+      routerLinkActive="active-link"
+      [routerLinkActiveOptions]="{ exact: true }"
+      (click)="isMenuOpen = false"
+      >Coches</a
+    >
+    <a routerLink="/company" routerLinkActive="active-link" (click)="isMenuOpen = false"
+      >Compañia</a
+    >
+    @if (isAdmin) {
+      <a routerLink="/cars/create-car" routerLinkActive="active-link" (click)="isMenuOpen = false"
+        >Añadir vehiculo</a
+      >
+    }
+    @if(!isLogged){
+    <button
+      class="btn btn-outline btn-login-mobile"
+      [routerLink]="['/auth/login']"
+      (click)="isMenuOpen = false"
+    >
+      Login
+    </button>
+  }@else {
+      <div class="profile-mobile-container" (click)="isMenuOpen = false">
+        <app-menu-profile></app-menu-profile>
+      </div>
+    }
+  </nav>
+
+  <div class="header-actions">
+    @if (!isLogged) {
+      <button class="btn btn-outline btn-login-desktop" [routerLink]="['/auth/login']">Login</button>
+    } @else {
+     <div class="profile-desktop-only">
+      <app-menu-profile></app-menu-profile>
+    </div>
+    }
+  </div>
+</header>

@@ -1,0 +1,439 @@
+/* --- VARIABLES DE MARCA --- */
+$primary-blue: #0a1f33;
+$accent-green: #37df8c;
+$text-light: #ffffff;
+$green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
+$font-family: 'Montserrat', sans-serif;
+$card-bg: rgba(15, 32, 50, 0.7);
+
+.profile-page-container {
+  // 🚩 SOLUCIÓN LATERALES: Ocupa el 100% del ancho de la pantalla
+  width: 100%; 
+  min-height: 100vh;
+  // Fondo Showroom que ahora sí cubre todo el monitor
+  background: radial-gradient(circle at top center, #1a2a3a 0%, #050c14 100%);
+  padding: 60px 0; 
+  font-family: $font-family;
+  color: $text-light;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .profile-header {
+    // 🚩 CENTRAMOS EL HEADER respecto al ancho de pantalla
+    width: 100%;
+    max-width: 1300px;
+    margin-bottom: 50px;
+    padding: 0 20px;
+
+    h1 { 
+      font-size: 3rem; 
+      font-weight: 800; 
+      margin: 0; 
+      letter-spacing: -1px;
+      background: $green-gradient;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p { 
+      color: rgba($text-light, 0.5); 
+      font-size: 1.1rem;
+      margin-top: 5px;
+    }
+  }
+}
+
+.profile-grid {
+  // 🚩 CENTRAMOS LAS TARJETAS
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 30px;
+  width: 100%;
+  max-width: 1300px; 
+  padding: 0 20px;
+
+  @media (max-width: 1100px) {
+    grid-template-columns: 1fr;
+    max-width: 800px;
+  }
+}
+
+/* --- TARJETAS CRISTAL --- */
+.profile-card {
+  background: $card-bg;
+  border: 1px solid rgba($accent-green, 0.15);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  height: fit-content;
+
+  .card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 35px;
+
+    .header-text h2 { font-size: 1.4rem; margin: 10px 0 5px; }
+    .account-type { 
+      font-size: 0.7rem; 
+      color: $accent-green; 
+      background: rgba($accent-green, 0.1); 
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+  }
+}
+
+/* --- AVATAR ORGÁNICO --- */
+.user-avatar-large {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background: $green-gradient;
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  font-weight: 800;
+  box-shadow: 0 10px 25px rgba($accent-green, 0.3);
+
+  .online-indicator {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 18px;
+    height: 18px;
+    background: #37df8c;
+    border: 3px solid $primary-blue;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #37df8c;
+  }
+}
+
+/* --- INFO GRUPOS (MÁS SEPARACIÓN Y CONTRASTE) --- */
+.info-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-group {
+  margin-bottom: 25px; // 🚩 Separación entre bloques de datos
+  
+  label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    color: $accent-green; 
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  p { 
+    font-size: 1.3rem; 
+    font-weight: 600; 
+    color: #fff;
+    margin: 0;
+  }
+}
+
+/* --- SECCIÓN ESTADÍSTICAS --- */
+.user-stats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 20px;
+  border-radius: 18px;
+  margin-top: 20px;
+  border: 1px solid rgba($text-light, 0.05);
+
+  .stat-item {
+    text-align: center;
+    .stat-value {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: $accent-green;
+    }
+    .stat-label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      opacity: 0.5;
+      letter-spacing: 1px;
+    }
+  }
+  .stat-divider { width: 1px; height: 30px; background: rgba($text-light, 0.1); }
+}
+
+/* --- CONFIGURACIÓN DE SEGURIDAD (MÁS SEPARACIÓN) --- */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba($accent-green, 0.3), transparent);
+  // 🚩 MÁS ESPACIO: 60px arriba para alejarlo de los datos
+  margin: 60px 0 30px; 
+}
+
+.security-section {
+  h3 { 
+    font-size: 0.8rem; 
+    color: rgba($text-light, 0.4); 
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+}
+
+/* --- FAVORITOS --- */
+.card-header-favs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 1px solid rgba($text-light, 0.05);
+  padding-bottom: 15px;
+
+  h2 { font-size: 1.6rem; font-weight: 700; }
+  .badge {
+    background: $accent-green;
+    color: $primary-blue;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-weight: 800;
+  }
+}
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+.car-mini-card {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  transition: all 0.4s ease;
+
+  &:hover {
+    transform: translateY(-8px);
+    border-color: $accent-green;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .img-container {
+    position: relative;
+    height: 150px;
+    img { width: 100%; height: 100%; object-fit: cover; }
+    
+    .btn-unlike-floating {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba($primary-blue, 0.8);
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: 0.3;
+      &:hover { background: #fff; transform: scale(1.1); }
+    }
+  }
+
+  .car-info {
+    padding: 20px;
+    .make { color: $accent-green; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+    h4 { margin: 5px 0 15px; font-size: 1.1rem; }
+    
+    .btn-view {
+      width: 100%;
+      background: rgba($text-light, 0.05);
+      border: 1px solid rgba($text-light, 0.1);
+      color: $text-light;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      &:hover { background: #fff; color: $primary-blue; }
+    }
+  }
+}
+
+/* --- BOTONES --- */
+.btn-premium-outline {
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba($text-light, 0.1);
+  color: rgba($text-light, 0.7);
+  padding: 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  &:hover { border-color: $accent-green; color: $accent-green; background: rgba($accent-green, 0.05); }
+}
+
+.btn-premium {
+  background: $green-gradient;
+  border: none;
+  color: #fff;
+  padding: 15px 40px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba($accent-green, 0.2);
+  transition: 0.3s;
+  &:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba($accent-green, 0.4); }
+}
+
+.no-favorites {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 0;
+  .empty-icon { font-size: 4rem; margin-bottom: 20px; }
+  p { font-size: 1.2rem; opacity: 0.5; margin-bottom: 25px; }
+}
+
+// --- ZONA DE PELIGRO (Adaptada al Dark Theme) ---
+.danger-zone {
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  // Usamos rgba para que se fusione con el azul oscuro de tu fondo
+  border: 1px solid rgba(239, 68, 68, 0.3); 
+  border-radius: 12px;
+  background-color: rgba(239, 68, 68, 0.03); // Un fondo apenas perceptible
+  overflow: hidden;
+
+  .danger-header {
+    background-color: rgba(239, 68, 68, 0.08); // Cabecera un poco más marcada
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+    
+    h3 {
+      margin: 0;
+      color: #ef4444; // Rojo intenso pero legible en fondos oscuros
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
+
+  .danger-content {
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+
+    .danger-text {
+      flex: 1;
+      min-width: 250px;
+
+      h4 {
+        margin: 0 0 0.5rem 0;
+        color: #f1f5f9; // Texto principal en blanco/gris muy claro
+        font-size: 1rem;
+      }
+
+      p {
+        margin: 0;
+        color: #94a3b8; // Texto secundario en gris azulado (pega con tu tema)
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+    }
+
+    .danger-action {
+      .btn-delete-account {
+        background-color: transparent; // Fondo transparente
+        color: #ef4444;
+        border: 1px solid #ef4444;
+        padding: 0.6rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background-color: #ef4444; // Al pasar el ratón se rellena de rojo
+          color: #ffffff;
+          box-shadow: 0 0 12px rgba(239, 68, 68, 0.3); // Brillo sutil
+        }
+        
+        &:active {
+          transform: translateY(2px);
+        }
+      }
+
+      .btn-delete-account.confirming {
+        background-color: #ef4444;
+        color: #ffffff;
+        animation: pulse-light 1.5s infinite;
+
+        &:hover {
+          background-color: #b91c1c;
+          animation: none;
+        }
+      }
+
+      .confirm-delete-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .confirm-divider {
+        width: 1px;
+        height: 24px;
+        background-color: rgba(239, 68, 68, 0.3);
+      }
+
+      .btn-cancel-delete {
+        background-color: transparent;
+        color: #94a3b8;
+        border: none;
+        padding: 0.6rem 1rem;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background-color: rgba(148, 163, 184, 0.1);
+          color: #f1f5f9;
+        }
+      }
+    }
+  }
+}
+
+@keyframes pulse-light {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}

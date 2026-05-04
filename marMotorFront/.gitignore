@@ -1,0 +1,50 @@
+# ##########################################################################
+# MAR MOTOR - ANGULAR GITIGNORE DEFINITIVO
+# ##########################################################################
+
+# Dependencias (NUNCA SUBIR ESTO)
+node_modules/
+dist/
+.angular/
+
+# Salidas de compilación
+dist/
+tmp/
+out-tsc/
+bazel-out/
+
+# IDEs y Editores (Configuraciones personales)
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+*.iml
+*.iws
+*.ipr
+.vscode/
+*.log
+
+# Logs y Temporales
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+runtime.log
+.sass-cache/
+
+# Testing
+/coverage
+/testem.log
+/typings
+
+# Secretos y Entornos (Solo si no quieres subirlos)
+# Si necesitas que el proyecto compile en GitHub Actions, comenta la siguiente línea
+src/environments/environment.development.ts
+
+# Sistema
+.DS_Store
+Thumbs.db

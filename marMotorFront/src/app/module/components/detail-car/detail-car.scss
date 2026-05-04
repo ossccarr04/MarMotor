@@ -1,0 +1,1383 @@
+/* --- VARIABLES --- */
+$dark-navy-banner: #051121;
+$bg-body-light: #f4f7fa;
+$accent-green: #37df8c;
+$accent-teal: #32d5a4;
+$text-gray: #718096;
+$text-dark: #051121;
+$vibrant-green: #37df8c;
+$vibrant-teal: #32d5a4;
+$deep-emerald: #0d5e4b;
+$font-family: 'Montserrat', sans-serif;
+
+.detail-page-wrapper {
+  background-color: $bg-body-light;
+  min-height: 100vh;
+  font-family: $font-family;
+  color: $dark-navy-banner;
+  padding-bottom: 50px;
+  width: 100%; // Mantener el ancho
+  // overflow-x: hidden; // Eliminado para permitir el scroll horizontal en elementos internos
+
+  &.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+  }
+}
+
+.btn-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(32, 201, 151, 0.1); // Color teal muy suave
+  color: #20c997; // El color accent-teal
+  border: 1px solid rgba(32, 201, 151, 0.4);
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px); // Efecto de cristal
+
+  &:hover {
+    background: #20c997;
+    color: #121d2b; // El color oscuro de tu fondo
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(32, 201, 151, 0.3);
+  }
+
+  i {
+    font-size: 1.1em;
+  }
+}
+
+.no-history {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: #6c757d; /* Gris suave */
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+.no-history p {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #495057;
+}
+
+.hint {
+  font-size: 0.9rem;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.no-features {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 30px;
+  background-color: #f8f9fa; /* Un fondo gris muy ligero */
+  border-radius: 8px;
+  border: 1px dashed #dee2e6; /* Borde discontinuo para indicar "vacío" */
+  color: #6c757d;
+  text-align: center;
+}
+
+.no-features i {
+  font-size: 1.2rem;
+  color: #adb5bd;
+}
+
+.no-features p {
+  margin: 0;
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+/* --- HERO CON DEGRADADO --- */
+.hero-gradient-section {
+  background: linear-gradient(
+    180deg,
+    $dark-navy-banner 0%,
+    $dark-navy-banner 300px,
+    rgba($dark-navy-banner, 0.8) 500px,
+    $bg-body-light 100%
+  );
+  padding: 30px 0; /* Un poco menos de padding en móvil */
+  position: relative;
+  z-index: 1;
+  &.opacity-0 {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  @media (min-width: 768px) {
+    padding: 40px 0;
+  }
+}
+
+.hero-gradient-section,
+.content-grid {
+  &.opacity-0 {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* --- CABECERA (RESPONSIVE) --- */
+.detail-header {
+  max-width: 1200px;
+  margin: 0 auto 20px;
+  padding: 0 20px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  transition: opacity 0.3s;
+
+  @media (min-width: 768px) {
+    flex-direction: row; /* En PC se ponen uno a cada lado */
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  .title-group {
+    flex: 1;
+    min-width: 0; /* Previene que textos largos de la marca rompan el header flex */
+  }
+
+  h1 {
+    font-size: 20px; /* Ajustado para móvil */
+    font-weight: 800;
+    margin: 0;
+    line-height: 1.2;
+    word-wrap: break-word; /* Rompe el texto si es una palabra exageradamente larga */
+    @media (min-width: 768px) {
+      font-size: 32px;
+    }
+  }
+
+  .brand-subtitle {
+    display: block;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    @media (min-width: 768px) {
+      font-size: 16px;
+    }
+  }
+
+  .nav-arrows {
+    display: flex;
+    gap: 15px;
+
+    .arrow {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      width: 36px; /* Flechas un poco más pequeñas en móvil */
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 4px;
+      transition: all 0.3s ease;
+
+      @media (min-width: 768px) {
+        width: 50px;
+        height: 50px;
+        font-size: 28px;
+      }
+
+      &:hover {
+        background: $accent-green;
+        color: $dark-navy-banner;
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+/* --- GALERÍA Y ZOOM (RESPONSIVE) --- */
+.gallery-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 15px; /* Añadido padding lateral para móvil */
+}
+
+.main-photo-card {
+  width: 100%;
+  // Eliminamos los height fijos conflictivos y usamos una proporción lógica
+  height: auto;
+  aspect-ratio: 16 / 9; // Proporción cinematográfica ideal para coches
+  background: #0b1624; // Fondo oscuro para que combine con tu banner si hay bordes
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  overflow: hidden;
+
+  @media (min-width: 768px) {
+    height: 550px; // Altura fija para escritorio
+    aspect-ratio: auto;
+    border-radius: 25px;
+
+    img {
+      // Importante: En escritorio también usamos cover para que el coche llene la tarjeta
+      object-fit: cover;
+      object-position: center 60%; // Ajusta un poco el "foco" hacia abajo para no cortar ruedas
+    }
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; // Llenado total sin deformar
+    object-position: center; // Centrado automático
+    transition: all 0.5s ease;
+    display: block;
+  }
+
+  &.is-zoomed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    z-index: 99999;
+    background: #000; // Fondo negro en zoom para resaltar el coche
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      max-width: 95%;
+      max-height: 95%;
+      width: auto; // En zoom no queremos que se estire a la fuerza
+      height: auto;
+      object-fit: contain; // Ver el coche completo sin recortes
+    }
+
+    .zoom-btn-detail {
+      background: rgba(255, 255, 255, 0.2);
+      &::after {
+        content: '✕';
+        font-size: 20px;
+        color: white;
+      }
+      font-size: 0;
+    }
+  }
+}
+
+/* Controles dentro de la foto */
+.float-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  border: none;
+  width: 35px;
+  height: 35px; /* Más pequeñas en móvil */
+  border-radius: 50%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 15;
+
+  @media (min-width: 768px) {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  &.left {
+    left: 10px;
+    @media (min-width: 768px) {
+      left: 20px;
+    }
+  }
+  &.right {
+    right: 10px;
+    @media (min-width: 768px) {
+      right: 20px;
+    }
+  }
+  &:hover {
+    color: $accent-green;
+  }
+}
+
+.heart-icon-detail {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+  font-size: 22px;
+  z-index: 20;
+  color: #051121;
+  @media (min-width: 768px) {
+    top: 20px;
+    left: 20px;
+    font-size: 28px;
+  }
+}
+
+.zoom-btn-detail {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  border: none;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  z-index: 20;
+  color: #051121;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @media (min-width: 768px) {
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Miniaturas */
+.thumbnail-strip {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* En móvil, si hay muchas, bajan de línea */
+  gap: 8px;
+  margin-top: 15px;
+  padding: 0 10px;
+
+  @media (min-width: 768px) {
+    gap: 15px;
+    margin-top: 30px;
+  }
+
+  .thumb-item {
+    width: 60px;
+    height: 45px; /* Más pequeñas en móvil para que quepan más */
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    cursor: pointer;
+    background: white;
+
+    @media (min-width: 768px) {
+      width: 90px;
+      height: 60px;
+      border-radius: 10px;
+    }
+
+    &.active {
+      border-color: $accent-green;
+      transform: translateY(-3px);
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+/* --- GRID DE CONTENIDO (BENTO BOX RESPONSIVE) --- */
+.content-grid {
+  max-width: 1400px;
+  margin: 20px auto; /* Menos margen superior en móvil */
+  padding: 0 15px;
+  display: grid;
+  grid-template-columns: minmax(
+    0,
+    1fr
+  ); /* CRÍTICO: Previene que hijos grandes ensanchen la página */
+  gap: 15px; /* Menos espacio entre tarjetas en móvil */
+
+  @media (min-width: 1024px) {
+    margin: 40px auto;
+    padding: 0 20px;
+    gap: 25px;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales en PC */
+  }
+}
+
+/* Asignación de espacios solo en escritorio */
+@media (min-width: 1024px) {
+  .specs-card {
+    grid-column: span 1;
+  } /* Ocupa 1/3 (Arriba Izquierda) */
+  .history-card {
+    grid-column: span 2;
+  } /* Ocupa 2/3 (Arriba Derecha) */
+
+  .features-card {
+    grid-column: span 2;
+  } /* Ocupa 2/3 (Abajo Izquierda) */
+  .reserve-card {
+    grid-column: span 1;
+  } /* Ocupa 1/3 (Abajo Derecha) */
+}
+
+/* Base para todas las tarjetas */
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px 15px; /* Padding ajustado para móvil */
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  min-width: 0; /* CRÍTICO: Permite que el contenedor colapse al ancho de la pantalla y el scroll interno funcione */
+  width: 100%;
+
+  @media (min-width: 768px) {
+    padding: 30px;
+  }
+
+  h3 {
+    font-size: 14px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-weight: 800;
+    color: #051121;
+  }
+}
+
+/* --- ESPECIFICACIONES --- */
+.specs-list {
+  padding: 0;
+  list-style: none;
+  margin-bottom: 20px;
+  li {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px dashed #e2e8f0;
+    font-size: 12px; /* Ajuste sutil para móvil */
+    @media (min-width: 768px) {
+      font-size: 14px;
+    }
+
+    span {
+      color: $text-gray;
+    }
+    strong {
+      color: $dark-navy-banner;
+      font-weight: 700;
+    }
+  }
+}
+
+.btn-specs-dark {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #051121, #1a4a38, $accent-green);
+  color: white;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* --- TIMELINE GREEN PREMIUM (HISTORIAL) --- */
+.timeline-container {
+  position: relative;
+  padding: 80px 0; // Espacio suficiente para iconos arriba y abajo
+  width: 100%;
+  overflow-x: auto;
+  touch-action: pan-x; // Permite el arrastre horizontal en dispositivos táctiles
+  user-select: none; /* Evita la selección de texto al arrastrar */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE 10+ */
+  cursor: grab; /* Indica que es arrastrable */
+
+
+  // Las reglas !important se añadirán si es necesario para sobrescribir estilos globales de html, body
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.timeline-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  min-width: 650px;
+  height: 2px;
+  background: rgba(32, 201, 151, 0.2);
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.timeline-items {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  min-width: 650px;
+}
+
+.timeline-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 140px;
+  height: 160px; // Altura fija para controlar el centro
+  justify-content: center;
+
+  /* EL PUNTO SOBRE LA LÍNEA (Siempre fijo al centro) */
+  .node-point {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #064e3b;
+    border: 2px solid #34d399;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    transition: all 0.3s ease;
+  }
+
+  /* CAJA DEL ICONO */
+  .node-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: #000000;
+    color: #34d399;
+    border: 1px solid rgba(52, 211, 153, 0.2);
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 18px;
+    position: absolute;
+    top: 0; // Por defecto arriba
+    z-index: 10;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease;
+
+    i {
+      font-weight: 900 !important;
+    }
+  }
+
+  /* TEXTO INFORMATIVO */
+  .node-info {
+    text-align: center;
+    position: absolute;
+    top: calc(50% + 20px); // Por defecto debajo de la línea
+    width: 100%;
+
+    .year {
+      display: block;
+      font-weight: 800;
+      font-size: 16px;
+      color: #34d399;
+      margin-bottom: 2px;
+    }
+    .title {
+      display: block;
+      font-size: 12px;
+      color: #000000;
+      line-height: 1.2;
+    }
+  }
+
+  /* === ESTADO COMPLETADO (NEÓN VERDE) === */
+  &.is-completed {
+    .node-icon {
+      background: #10b981;
+      color: #064e3b;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+    }
+    .node-point {
+      background: #10b981;
+      border-color: #10b981;
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+    .node-info {
+      .year {
+        color: #10b981 !important;
+      }
+      .title {
+        color: #000000;
+      }
+      .node-info {
+        .year {
+          color: #10b981 !important; // Asegura que el año también sea verde
+        }
+      }
+
+      // Aseguramos que el tick dentro de un evento completado siempre sea verde
+      .title .tick-success {
+        color: #10b981 !important; // Sobrescribe cualquier color de .title
+      }
+
+    }
+  }
+  // Aseguramos que los elementos internos también prevengan la selección de texto
+  .timeline-items, .timeline-node, .node-icon, .node-point, .node-info {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+
+  /* === DISEÑO ZIG-ZAG (Abajo) === */
+  &.down {
+    .node-icon {
+      top: auto;
+      bottom: 0; // Mover el icono abajo
+    }
+    .node-info {
+      top: auto;
+      bottom: calc(50% + 20px); // Mover el texto arriba de la línea
+    }
+
+    // Si además está completado y es hacia abajo
+    &.is-completed .node-icon {
+      transform: translateY(5px);
+    }
+  }
+}
+
+.reserve-card.status-unavailable {
+  .price-strikethrough {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ef4444; // Rojo para indicar que ya no aplica
+    text-decoration: line-through;
+    opacity: 0.6;
+    margin: 15px 0;
+  }
+
+  /* Estilo especial para el botón de eliminar */
+  .btn-delete-car {
+    width: 100%;
+    padding: 14px;
+    background-color: #dc2626; // Rojo intenso
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    &:hover {
+      background-color: #b91c1c;
+    }
+
+    i {
+      font-size: 1.1rem;
+    }
+  }
+}
+.delete-actions-container {
+  margin-top: 20px;
+  width: 100%;
+
+  .confirm-box {
+    background: rgba(220, 38, 38, 0.1); // Fondo rojizo suave
+    border: 1px solid #dc2626;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    animation: fadeIn 0.3s ease-in-out;
+
+    .confirm-text {
+      color: #f8fafc;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .confirm-btns {
+      display: flex;
+      gap: 10px;
+
+      button {
+        flex: 1;
+        padding: 10px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .btn-confirm-yes {
+        background: #dc2626;
+        color: white;
+        border: none;
+        &:hover {
+          background: #b91c1c;
+        }
+      }
+
+      .btn-confirm-no {
+        background: transparent;
+        color: #ffffff;
+        border: 1px solid #475569;
+        &:hover {
+          background: linear-gradient(135deg, $vibrant-teal, $vibrant-green, $deep-emerald);
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.car-intro-text {
+  max-width: 800px;
+  margin: 0 auto 30px auto;
+  text-align: center;
+  position: relative;
+  transition: opacity 0.3s ease;
+
+  .quote-line {
+    width: 40px;
+    height: 3px;
+    background: #cc0000; // El rojo de tu marca
+    margin: 0 auto 15px auto;
+  }
+
+  .description-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #f0f0f0; // Suponiendo fondo oscuro por tu "hero-gradient"
+    font-style: italic;
+    font-weight: 300;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* --- RESERVA --- */
+.reserve-card {
+  background: linear-gradient(135deg, $vibrant-teal, $vibrant-green, $deep-emerald);
+  background-size: 200% 200%;
+  animation: shine-gradient 5s infinite;
+  border-radius: 20px;
+  padding: 25px 20px; /* Padding reducido para móviles */
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  color: #051121;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media (min-width: 768px) {
+    padding: 40px 30px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: rotate(45deg);
+    animation: reflection 3s infinite;
+  }
+
+  .reserve-icon {
+    width: 36px;
+    height: 36px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: $deep-emerald;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 5;
+
+    @media (min-width: 768px) {
+      width: 45px;
+      height: 45px;
+      font-size: 20px;
+    }
+  }
+
+  h3.reserve-title {
+    color: #051121;
+    font-size: 18px;
+    margin-bottom: 5px;
+    font-weight: 900;
+    position: relative;
+    z-index: 5;
+    @media (min-width: 768px) {
+      font-size: 22px;
+    }
+  }
+
+  .reserve-subtitle {
+    font-size: 11px;
+    color: rgba(5, 17, 33, 0.7);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 600;
+    position: relative;
+    z-index: 5;
+    @media (min-width: 768px) {
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .final-price {
+    font-size: 32px; /* Mucho más pequeño en móvil para que no rompa la pantalla */
+    font-weight: 900;
+    margin: 5px 0 15px 0;
+    position: relative;
+    z-index: 5;
+
+    @media (min-width: 768px) {
+      font-size: 42px;
+      margin-bottom: 25px;
+    }
+  }
+
+  .btn-contact {
+    background: #051121;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    width: 100%;
+    border-radius: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    position: relative;
+    z-index: 5;
+    transition: transform 0.2s;
+    font-size: 14px;
+
+    @media (min-width: 768px) {
+      font-size: 16px;
+      padding: 15px 40px;
+    }
+    &:hover {
+      transform: translateY(-3px);
+    }
+  }
+}
+
+.specs-list {
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    i {
+      margin-right: 8px;
+      color: #cc0000;
+      width: 20px;
+      text-align: center;
+    }
+
+    span {
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+    }
+
+    .dgt-label-container {
+      display: flex;
+      align-items: center;
+
+      .dgt-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        color: #1a1a1a;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        font-family: 'Montserrat', sans-serif;
+
+        // Por defecto: Círculo (Para 0, B, C)
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 1.1rem;
+
+        &.badge-zero {
+          background-color: #00a1df;
+          color: #ffffff;
+          font-size: 1.5rem; // Tamaño grande para el "0"
+          line-height: 1;
+          padding-bottom: 2px; // Ajuste óptico para centrar el círculo del 0
+        }
+
+        &.badge-eco {
+          // Rectángulo redondeado para que quepa "ECO"
+          width: auto;
+          padding: 0 15px;
+          border-radius: 20px;
+          background: linear-gradient(90deg, #add036 50%, #00a1df 50%);
+          color: #1a1a1a;
+        }
+
+        &.badge-c {
+          background-color: #add036;
+        }
+        &.badge-b {
+          background-color: #f1dc00;
+        }
+
+        &.badge-none {
+          background-color: #ef4444; // Rojo para el aviso
+          color: white;
+          width: auto;
+          padding: 5px 12px;
+          border-radius: 8px;
+          font-size: 0.75rem;
+          height: 30px;
+          border: none;
+        }
+      }
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  /* El tick verde al lado del texto */
+  .tick-success {
+    color: #10b981 !important;
+    margin-left: 5px;
+    font-size: 0.9rem;
+    vertical-align: middle;
+    // La regla de color más específica para el tick se define dentro de .is-completed
+  }
+
+
+  /* Animations */
+  @keyframes shine-gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  @keyframes reflection {
+    0% {
+      transform: translateX(-100%) rotate(45deg);
+    }
+    100% {
+      transform: translateX(100%) rotate(45deg);
+    }
+  }
+}
+
+/* --- EQUIPAMIENTO DESTACADO --- */
+.features-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  @media (min-width: 768px) {
+    gap: 10px;
+  }
+
+  .feature-tag {
+    background: #f1f5f9;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    @media (min-width: 768px) {
+      padding: 10px 15px;
+      font-size: 13px;
+    }
+    i {
+      color: $accent-green;
+    }
+  }
+}
+
+/* --- Contact Seller Modal Styles --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); // Darker overlay
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; // Higher z-index than other modals/elements
+  backdrop-filter: blur(8px); // Stronger blur
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content.contact-seller-modal {
+  background-color: #fff;
+  padding: 35px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto; // Allow scrolling if content is too long
+  position: relative;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  font-family: $font-family;
+  color: $text-dark; // Default text color for modal content
+
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #f1f5f9;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    &:hover {
+      background: #fee2e2;
+      color: #ef4444;
+    }
+  }
+
+  h3 {
+    font-size: 26px;
+    font-weight: 800;
+    color: $dark-navy-banner;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .modal-subtitle {
+    font-size: 15px;
+    color: $text-gray;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .contact-options-grid {
+    display: flex; // Cambiado a flex para organizar grupos lado a lado o apilados
+    flex-wrap: wrap; // Permitir que los grupos se envuelvan
+    gap: 20px;
+    justify-content: center; // Centra las tarjetas horizontalmente en el grid
+    margin-bottom: 30px;
+
+    .contact-group {
+      flex: 1 1 45%; // Permite que los grupos ocupen aproximadamente la mitad del ancho, o el ancho completo en pantallas pequeñas
+      min-width: 280px; // Ancho mínimo para un grupo
+      display: flex;
+      flex-direction: column;
+      align-items: center; // Centra el contenido dentro del grupo
+      text-align: center; // Centra el texto dentro del grupo
+
+      h4 {
+        font-size: 18px;
+        font-weight: 700;
+        color: $dark-navy-banner;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      .contact-cards-subgrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); // Grid responsivo para las tarjetas dentro de un grupo
+        gap: 15px;
+        justify-items: center; // Centra las tarjetas dentro de sus celdas de la cuadrícula
+        width: 100%; // Ocupa todo el ancho del grupo
+      }
+    }
+
+    .contact-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-direction: row; // Mostrar icono y texto en una fila
+      align-items: center; // Alinear elementos verticalmente
+      justify-content: flex-start; // Alinear contenido al inicio
+      padding: 20px;
+      border-radius: 15px;
+      background-color: #f8f9fa;
+      border: 1px solid #e2e8f0;
+      text-decoration: none;
+      color: $dark-navy-banner;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        border-color: $accent-green;
+      }
+
+      .icon-wrapper {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: rgba($accent-green, 0.1); // Fondo del icono
+        margin-bottom: 0; // Eliminar margen inferior
+        margin-right: 10px; // Añadir margen derecho
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        i {
+          color: $accent-green;
+          font-size: 24px;
+        }
+      }
+
+      .card-label {
+        display: block; // Asegura que el label esté en su propia línea
+        font-size: 13px;
+        color: $text-gray;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 2px; // Margen reducido
+      }
+      .card-details {
+        align-items: flex-start; // Alinear detalles de texto al inicio
+      }
+
+      .card-value {
+        font-size: 16px;
+        font-weight: 700;
+        color: $dark-navy-banner;
+        word-break: break-all; // Ensure long emails/numbers wrap
+      }
+
+      &.disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        pointer-events: none; // Evita que se pueda hacer clic
+        background-color: #f0f0f0; // Fondo más claro para el estado deshabilitado
+        border-color: #e0e0e0;
+        .icon-wrapper {
+          background-color: rgba($accent-green, 0.05); // Verde más claro para el icono
+          i {
+            color: rgba($accent-green, 0.5);
+          }
+        }
+        .card-label, .card-value {
+          color: #a0a0a0; // Texto más claro para el estado deshabilitado
+        }
+        font-size: 16px;
+        font-weight: 700;
+        color: $dark-navy-banner;
+        word-break: break-all; // Ensure long emails/numbers wrap
+      }
+    }
+  }
+
+  .modal-divider {
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 25px 0;
+  }
+
+  h4 {
+    font-size: 20px;
+    font-weight: 700;
+    color: $dark-navy-banner;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+
+      label {
+        font-size: 14px;
+        font-weight: 600;
+        color: $dark-navy-banner;
+        margin-bottom: 8px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 15px;
+        font-family: $font-family;
+        color: $dark-navy-banner;
+        background-color: #f8f9fa;
+        transition: all 0.3s ease;
+
+        &:focus {
+          outline: none;
+          border-color: $accent-green;
+          box-shadow: 0 0 0 3px rgba($accent-green, 0.2);
+          background-color: #fff;
+        }
+
+        &::placeholder {
+          color: #94a3b8;
+        }
+
+        &.is-invalid {
+          border-color: #ef4444;
+        }
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+
+      .error-text {
+        color: #ef4444;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+    }
+
+    .btn-submit-contact {
+      background-color: $accent-green;
+      color: #fff;
+      border: none;
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+
+      &:hover {
+        background-color: darken($accent-green, 10%);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba($accent-green, 0.3);
+      }
+
+      &:disabled {
+        background-color: #cbd5e1;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+/* Responsive adjustments for the modal */
+@media (max-width: 768px) {
+  .modal-content.contact-seller-modal {
+    padding: 25px;
+    h3 { font-size: 22px; } // Tamaño de fuente ajustado
+    .modal-subtitle { font-size: 14px; margin-bottom: 20px; } // Tamaño de fuente y margen ajustados
+    .contact-options-grid {
+      flex-direction: column; // Apilar grupos en pantallas pequeñas
+      .contact-group {
+        flex: 1 1 100%; // Cada grupo ocupa el ancho completo
+        min-width: unset; // Eliminar restricción de ancho mínimo
+      }
+      gap: 15px;
+    }
+    h4 { font-size: 18px; margin-bottom: 15px; }
+    .contact-form {
+      gap: 10px;
+      .form-group { margin-bottom: 5px; }
+      label { font-size: 13px; }
+      input, textarea { padding: 10px 12px; font-size: 14px; }
+      .error-text { font-size: 11px; }
+      .btn-submit-contact { padding: 12px 20px; font-size: 15px; }
+    }
+    .contact-card {
+      flex-direction: row; // Mantener la dirección de fila para las tarjetas
+      justify-content: flex-start;
+    }
+  }
+}

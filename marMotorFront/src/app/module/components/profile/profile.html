@@ -1,0 +1,123 @@
+<div class="profile-page-container">
+  <header class="profile-header">
+    <div class="header-content">
+      <h1>Mi Perfil</h1>
+      <p>Gestiona tu cuenta y revisa tu garaje de favoritos</p>
+    </div>
+  </header>
+
+  <div class="profile-grid">
+    <aside class="profile-card info-section">
+      <div class="card-header">
+        <div class="user-avatar-large">
+          <span>{{ userInitial }}</span>
+          <div class="online-indicator"></div>
+        </div>
+        <div class="header-text">
+          <h2>Información Personal</h2>
+          <span class="account-type">Cliente Verificado</span>
+        </div>
+      </div>
+
+      <div class="info-body">
+        <div class="info-group">
+          <label><span class="mini-icon">👤</span> Nombre Completo</label>
+          <p>{{ profileData?.username }}</p>
+        </div>
+
+        <div class="info-group">
+          <label><span class="mini-icon">✉️</span> Correo Electrónico</label>
+          <p>{{ profileData?.email }}</p>
+        </div>
+
+        <div class="user-stats">
+          <div class="stat-item">
+            
+            <span class="stat-label">Miembro desde</span>
+            <span class="stat-value">
+              {{ profileData?.createdAt | date: 'dd/MM/yyyy' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="security-section">
+          <h3>Configuración de Seguridad</h3>
+          <button class="btn-premium-outline" (click)="openChangePasswordModal()">
+            <span class="icon">🔒</span> Cambiar Contraseña
+          </button>
+        </div>
+      </div>
+
+      <div class="danger-zone" *ngIf="profileData">
+        <div class="danger-header">
+          <h3><i class="fa-solid fa-triangle-exclamation"></i> Zona de Peligro</h3>
+        </div>
+
+        <div class="danger-content">
+          <div class="danger-text">
+            <h4>Eliminar cuenta permanentemente</h4>
+            <p>
+              Una vez que elimines tu cuenta, no hay vuelta atrás. Se borrarán tus favoritos,
+              historial de contactos y perderás el acceso inmediatamente.
+            </p>
+          </div>
+          <div class="danger-action">
+            <!-- Botón inicial -->
+            <button *ngIf="!isConfirmingDelete" class="btn-delete-account" (click)="onDeleteAccount()">
+              <span>Eliminar mi cuenta</span>
+            </button>
+
+            <!-- Grupo de confirmación -->
+            <div *ngIf="isConfirmingDelete" class="confirm-delete-group">
+              <button class="btn-delete-account confirming" (click)="onDeleteAccount()">
+                <span>Confirmar eliminación</span>
+              </button>
+              <div class="confirm-divider"></div>
+              <button class="btn-cancel-delete" (click)="cancelDelete()">
+                <span>Cancelar</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="profile-card favorites-section">
+      <div class="card-header-favs">
+        <h2>
+          Mis Favoritos <span class="badge">{{ favoriteCars.length }}</span>
+        </h2>
+      </div>
+
+      <div class="favorites-grid">
+        @for (car of favoriteCars; track car.id) {
+          <div class="car-mini-card">
+            <div class="img-container">
+              <img [src]="car.imageUrl" [alt]="car.model" />
+              <button class="btn-unlike-floating" (click)="removeFavorite(car.id)">❤️</button>
+            </div>
+            <div class="car-info">
+              <div class="brand-info">
+                <span class="make">{{ car.make }}</span>
+                <h4>{{ car.model }}</h4>
+              </div>
+              <button class="btn-view" (click)="showDetails(car.id)">Ver detalles</button>
+            </div>
+          </div>
+        } @empty {
+          <div class="no-favorites">
+            <div class="empty-icon">🏎️</div>
+            <p>Tu garaje está vacío.</p>
+            <button class="btn-premium" routerLink="/cars">Explorar Catálogo</button>
+          </div>
+        }
+      </div>
+    </main>
+  </div>
+
+  @if (isChangePasswordModalOpen) {
+    <app-change-password (close)="closeChangePasswordModal()"></app-change-password>
+  }
+</div>

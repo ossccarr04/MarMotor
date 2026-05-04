@@ -1,0 +1,134 @@
+/* ==========================================================================
+   1. IMPORTACIÓN DE FUENTES GLOBAL
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+/* ==========================================================================
+   2. RESETEO CSS (Crítico para evitar bordes blancos)
+   ========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  /* El overflow-x: hidden aquí es el primer nivel de seguridad */
+  overflow-x: hidden; 
+  position: relative;
+  background-color: #081225; /* Color oscuro base para que no brille blanco al cargar */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   3. ESTILOS GLOBALES BASE
+   ========================================================================== */
+body {
+  font-family: 'Montserrat', sans-serif;
+  color: #333333;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   4. LAYOUT PRINCIPAL (SOLUCIÓN BORDES BLANCOS)
+   ========================================================================== */
+
+#page-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden; 
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  /* MUY IMPORTANTE: 
+     He quitado el padding lateral de 20px en móvil. 
+     Si quieres margen en los textos, dáselo a los componentes internos, 
+     pero NO al <main>, porque romperá los fondos que deben ir de lado a lado.
+  */
+  overflow-x: hidden; 
+  position: relative;
+  flex-grow: 1; /* Empuja el footer hacia abajo si hay poco contenido */
+}
+
+/* Media Query para móviles */
+@media (max-width: 768px) {
+  main {
+    /* Mantenemos solo el margen superior si lo necesitas para el header sticky */
+    margin-top: 0; 
+    /* Padding lateral ELIMINADO para evitar el desborde blanco */
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+/* Corrección para componentes inyectados por el Router */
+router-outlet + * {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Asegura que las imágenes no rompan el layout */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.server-warning-banner {
+  background-color: #3b82f6; /* Un azul profesional o naranja #f59e0b */
+  color: white;
+  padding: 1rem;
+  border-bottom: 4px solid #2563eb;
+  animation: slideIn 0.5s ease-out;
+}
+
+.warning-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.warning-content p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Spinner pequeño animado */
+.spinner-mini {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-top: 3px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}

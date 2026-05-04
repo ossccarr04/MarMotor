@@ -1,0 +1,530 @@
+/* --- VARIABLES --- */
+$dark-background: #0b1624;
+$white-results: #ffffff;
+$card-stock-bg: #fdfdfd;
+$accent-green: #37df8c;
+$green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
+$text-dark: #051121;
+$text-gray: #718096;
+$font-family: 'Montserrat', sans-serif;
+
+.stock-page-wrapper {
+  background-color: $dark-background;
+  min-height: 100vh;
+  font-family: $font-family;
+}
+
+@media (max-width: 768px) {
+  .stock-page-wrapper { padding-top: 0; } // Ajusta si el header es fijo y causa un doble padding
+}
+
+.container-mx {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 30px;
+}
+
+.loading-state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 0;
+  color: #10b981; // El verde de tu diseño
+  
+  i {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+  }
+  
+  p {
+    font-size: 1.1rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+}
+
+/* --- SECCIÓN DE FILTROS --- */
+.filters-section-wrapper {
+  padding: 60px 0 80px 0; // Más padding abajo para el solape
+}
+@media (max-width: 768px) {
+  .filters-section-wrapper {
+    padding: 40px 0 60px 0; // Padding ligeramente menor para móvil
+  }
+}
+
+/* --- CONTENEDOR BLANCO --- */
+.results-wrapper {
+  background-color: $white-results;
+  padding: 50px 0;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+  box-shadow: 0 -20px 40px rgba(0, 0, 0, 0.05);
+  margin-top: -40px; // Solape visual sobre el fondo oscuro
+  position: relative;
+  z-index: 5;
+}
+@media (max-width: 768px) {
+  .results-wrapper {
+    padding: 30px 0; // Padding reducido
+    margin-top: -20px; // Menor solapamiento
+  }
+}
+
+.results-info-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  padding: 0 10px 20px 10px;
+  border-bottom: 1px solid #eee;
+  font-weight: bold;
+  color: $text-dark;
+  font-size: 20px;
+
+  strong {
+    color: $accent-green;
+    font-weight: 800;
+    margin-left: 5px;
+    font-size: 18px;
+  }
+}
+@media (max-width: 768px) {
+  .results-info-bar {
+    flex-direction: column; // Apila el contador de encontrados y los controles
+    align-items: flex-start; // Alinea los elementos al inicio (izquierda)
+    gap: 15px; // Espacio menor entre elementos apilados
+    margin-bottom: 30px; // Margen reducido
+    padding-bottom: 15px; // Padding reducido
+
+    .found-count {
+      font-size: 18px; // Fuente ligeramente más pequeña
+    }
+
+    .results-controls {
+      flex-direction: column; // Apila el selector de orden y el contador de mostrados
+      align-items: flex-start; // Alinea los elementos al inicio (izquierda)
+      gap: 15px; // Espacio menor
+      width: 100%; // Ocupa todo el ancho para alinear correctamente
+
+      .sort-wrapper {
+        width: 100%; // Ocupa todo el ancho
+        justify-content: space-between; // Mantiene la etiqueta y el selector separados
+        
+        label {
+          font-size: 13px;
+        }
+        select {
+          width: auto; // Permite que el selector se ajuste naturalmente
+          font-size: 13px;
+          padding: 6px 10px;
+        }
+      }
+      .showing-count { font-size: 15px; } // Fuente ligeramente más pequeña
+    }
+  }
+}
+
+/* --- GRID --- */
+.stock-grid {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: repeat(1, 1fr);
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 1100px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (min-width: 1400px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* --- CAR CARD --- */
+.car-card {
+  background: $card-stock-bg;
+  border: 1px solid #888686; // Borde negro sólido de 1px
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-8px);
+
+    .hover-btn-container {
+      bottom: 0;
+      opacity: 1;
+    }
+
+    .car-image {
+      transform: scale(1.08);
+    }
+  }
+
+  .car-image-container {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+
+    .car-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .badge-premium {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: $accent-green;
+      color: $text-dark;
+      padding: 5px 12px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 900;
+      z-index: 2;
+    }
+
+    .heart-icon {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 2;
+      transition: all 0.2s ease;
+      &:hover {
+        transform: scale(1.15);
+      }
+      &.is-liked {
+        color: #ff4d4d;
+      }
+    }
+  }
+
+  .car-details {
+    padding: 25px;
+
+    .title-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+
+      h3 {
+        color: $text-dark;
+        font-size: 17px;
+        font-weight: 700;
+        margin: 0;
+        flex: 1;
+      }
+
+      .car-price {
+        color: $accent-green;
+        font-size: 19px;
+        font-weight: 900;
+        margin-left: 10px;
+      }
+    }
+
+    .car-subtitle {
+      display: block;
+      color: $text-gray;
+      font-size: 13px;
+      margin-bottom: 25px;
+    }
+
+    .car-stats-row {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 18px;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+
+      .stat {
+        display: flex;
+        flex-direction: column;
+        .stat-value {
+          color: $text-dark;
+          font-weight: 700;
+          font-size: 14px;
+        }
+        .stat-label {
+          color: $text-gray;
+          font-size: 11px;
+          text-transform: uppercase;
+          margin-top: 3px;
+        }
+      }
+    }
+  }
+
+  /* BOTÓN QUE SUBE */
+  .hover-btn-container {
+    position: absolute;
+    bottom: -80px; // Un poco más abajo para que no se vea la sombra al inicio
+    left: 0;
+    width: 100%;
+    height: 80px; // Un poco más alto para dar margen
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px; // Margen lateral para que no toque los bordes
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    z-index: 3;
+
+    .btn-details {
+      width: 100%;
+      height: 50px; // Altura fija de cápsula
+      background: $accent-green;
+      border: none;
+      color: $text-dark;
+      font-weight: 800; // Un poco menos que 900 para que sea más legible
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-radius: 30px; // EL ROUND: Forma de cápsula
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba($accent-green, 0.4); // Sombra para que flote sobre la imagen
+      transition: transform 0.2s ease;
+
+      &:active {
+        transform: scale(0.95);
+      }
+      &:hover {
+        .hover-btn-container {
+          bottom: 15px; // Sube pero deja un pequeño margen inferior
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .stock-grid {
+    gap: 20px; // Espacio menor entre tarjetas
+  }
+
+  .car-card {
+    .car-image-container {
+      height: 180px; // Altura de imagen menor
+    }
+
+    .car-details {
+      padding: 20px; // Padding reducido
+
+      .title-price-row {
+        h3 {
+          font-size: 16px; // Título más pequeño
+        }
+        .car-price {
+          font-size: 18px; // Precio más pequeño
+        }
+      }
+
+      .car-subtitle {
+        font-size: 12px;
+        margin-bottom: 20px;
+      }
+
+      .car-stats-row {
+        flex-wrap: wrap; // Permite que las estadísticas se envuelvan si hay muchas
+        gap: 10px; // Espacio entre estadísticas
+        .stat {
+          flex: 1 1 auto; // Permite que las estadísticas crezcan/encojan
+          min-width: 45%; // Asegura al menos dos estadísticas por fila
+          text-align: center; // Centra el texto de las estadísticas
+          .stat-value { font-size: 13px; }
+          .stat-label { font-size: 10px; }
+        }
+      }
+    }
+    .hover-btn-container {
+      height: 60px; // Altura menor para el contenedor del botón
+      .btn-details { height: 40px; font-size: 12px; padding: 0 15px; }
+    }
+  }
+}
+.badge {
+          position: absolute;
+          top: 15px;
+          left: 15px;
+          padding: 6px 14px;
+          border-radius: 20px;
+          font-size: 10px;
+          font-weight: 800;
+          color: white;
+          background: $green-gradient;
+          text-transform: uppercase;
+        }
+
+.results-info-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; // Para que en móvil no se amontone
+  gap: 20px;
+  padding: 0 10px 20px 10px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 40px;
+
+  p {
+    margin: 0;
+    font-size: 16px;
+    color: $text-dark;
+  }
+
+  .results-controls {
+    display: flex;
+    align-items: center;
+    gap: 30px; // Espacio entre el select y el "Mostrando"
+
+    .sort-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      label {
+        font-size: 14px;
+        color: $text-gray;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      select {
+        padding: 8px 15px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        background-color: white;
+        font-family: $font-family;
+        font-size: 14px;
+        font-weight: 700;
+        color: $text-dark;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.3s;
+
+        &:focus {
+          border-color: $accent-green;
+        }
+      }
+    }
+  }
+}
+
+/* --- MENSAJE DE NO RESULTADOS --- */
+.no-results-container {
+  grid-column: 1 / -1; // Ocupa todo el ancho del grid
+  padding: 80px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  .no-results-content {
+    i {
+      font-size: 60px;
+      color: $accent-green;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    h2 {
+      font-size: 28px;
+      color: $text-dark;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: $text-gray;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    .btn-reset-filters {
+      background: $text-dark;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: $accent-green;
+        color: $text-dark;
+        transform: scale(1.05);
+      }
+    }
+  }
+}
+@media (max-width: 768px) {
+  .no-results-container {
+    padding: 50px 0; // Padding vertical reducido
+    .no-results-content {
+      i {
+        font-size: 50px;
+      }
+      h2 {
+        font-size: 24px;
+      }
+      p {
+        font-size: 14px;
+      }
+      .btn-reset-filters {
+        padding: 10px 25px;
+        font-size: 13px;
+      }
+    }
+  }
+  .container-mx {
+    padding: 0 15px; // Padding reducido para pantallas pequeñas
+  }
+}
+
+
+/* --- BOTÓN CARGAR MÁS --- */
+.load-more-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 70px;
+
+  .btn-load-more {
+    background: transparent;
+    color: $text-dark;
+    border: 2px solid $accent-green;
+    padding: 18px 60px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: $accent-green;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba($accent-green, 0.3);
+    }
+  }
+}
+@media (max-width: 768px) {
+  .load-more-section {
+    margin-top: 50px; // Margen reducido
+    .btn-load-more {
+      padding: 15px 40px; font-size: 13px; gap: 10px;
+    }
+  }
+}

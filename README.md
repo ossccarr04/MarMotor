@@ -1,57 +1,49 @@
-# ⚙️ MarMotor - Backend API
+# 🏎️ Marmotor Web - Frontend (Angular)
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Spring_Boot-3.X-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white" alt="Spring Boot">
-  <img src="https://img.shields.io/badge/Java-17+-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java">
-  <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
-  <img src="https://img.shields.io/badge/Render-Deployed-46E3B7?style=for-the-badge&logo=render&logoColor=white" alt="Render">
-</p>
+Este es el repositorio del cliente web (Frontend) para **Marmotor**, una plataforma moderna para la exploración y gestión de un catálogo de vehículos. Construida con Angular, esta aplicación ofrece una interfaz de usuario rápida, reactiva y completamente responsiva (adaptable a móviles y escritorio).
 
----
 
-## 📖 Descripción
-
-Este es el repositorio del servidor (Backend) para **MarMotor**, una plataforma integral de catálogo y venta de vehículos. Esta API RESTful está construida con **Spring Boot** y se encarga de gestionar la lógica de negocio, la seguridad, la persistencia de datos y la comunicación segura con el frontend en Angular.
-
-[Image of Spring Boot MVC architecture diagram showing Controllers, Services, Repositories and MySQL Database]
 
 ## 🛠️ Stack Tecnológico
 
-* **Framework Principal:** Spring Boot (Web, Data JPA, Security, Validation)
-* **Lenguaje:** Java 17+
-* **Base de Datos:** MySQL
-* **Herramientas:** Maven (Gestor de dependencias), Lombok (Reducción de código repetitivo)
-* **Despliegue:** * API alojada en **Render**.
-  * Base de Datos alojada en **Koyeb**.
+* **Framework Principal:** Angular 16+
+* **Lenguaje:** TypeScript
+* **Estilos:** SCSS / CSS3
+* **Peticiones HTTP:** `HttpClient` y RxJS
+* **Despliegue en Producción:** Vercel
 
-## 🗄️ Arquitectura de Datos
+## ✨ Características de la Interfaz
 
-El sistema utiliza un modelo relacional optimizado, gestionado a través de **Hibernate/JPA**, que incluye las siguientes entidades:
-* `Usuarios`: Gestión de autenticación y roles (`USER`, `ADMIN`).
-* `Marcas`: Catálogo de fabricantes.
-* `Coches`: Detalles técnicos y de venta de los vehículos (vinculados a marcas).
-* `ImagenesCoche`: Sistema de galería fotográfica (Relación 1:N con Coches).
-* `Favoritos`: Tabla intermedia (N:M) que permite a los usuarios guardar vehículos que les interesan.
+* **Catálogo Dinámico:** Tarjetas de vehículos con su imagen principal, marca, modelo y precio.
+* **Sistema de Búsqueda y Filtros:** Búsqueda en tiempo real conectada a la API de Spring Boot.
+* **Vista de Detalles:** Páginas dinámicas (`/coches/:id`) que muestran la galería completa de imágenes y especificaciones del vehículo.
+* **Gestión de Favoritos:** Interfaz intuitiva con botones de "Me gusta" (❤️) para que los usuarios guarden sus coches preferidos.
+* **Control de Acceso (UI):** Renderizado condicional basado en roles (ej. los botones de "Añadir Coche" solo son visibles si el usuario tiene el rol `ADMIN`).
 
-## 🔒 Seguridad y Entornos
+## 🔒 Seguridad y Configuración
 
-El proyecto aplica prácticas de seguridad estándar de la industria:
-1. **Configuración por Perfiles:** Uso de `spring.profiles.active` para separar entornos.
-2. **Protección de Credenciales:** El archivo principal `application.properties` utiliza variables de entorno (ej. `${DB_PASSWORD}`) que son inyectadas por Render en producción. Las contraseñas locales se gestionan en un archivo `application-dev.properties` excluido del control de versiones (Git).
-3. **CORS:** El servidor está configurado para rechazar cualquier petición HTTP que no provenga estrictamente de la URL de producción del frontend.
+1. **Protección XSS Nativa:** Angular purifica automáticamente todos los valores vinculados al DOM, previniendo ataques de Cross-Site Scripting.
+2. **Gestión de Entornos (`environments`):** La aplicación está configurada para apuntar dinámicamente a la API correcta sin exponer código.
+   * En desarrollo (`environment.ts`): Apunta a `http://localhost:8080`.
+   * En producción (`environment.prod.ts`): Apunta a la URL segura (HTTPS) de tu backend alojado en Render.
 
 ---
 
-## 🚀 Instalación y Uso (Desarrollo Local)
+## ⚙️ Requisitos Previos (Desarrollo Local)
 
-### Requisitos previos
-* **Java JDK 17** o superior.
-* **Maven** instalado.
-* **MySQL Server** funcionando en `localhost:3306`.
+Para ejecutar este proyecto en tu entorno local, asegúrate de tener instalado:
+* [Node.js](https://nodejs.org/) (Versión 18.x o superior)
+* [Angular CLI](https://angular.io/cli) (Instalable vía `npm install -g @angular/cli`)
 
-### Pasos para ejecutar
+## 🚀 Instalación y Ejecución Local
 
-**1. Clonar el repositorio:**
+### 1. Clonar el repositorio e instalar dependencias
+Abre tu terminal y ejecuta:
 ```bash
-git clone [https://github.com/tu-usuario/MarMotorBackend.git](https://github.com/tu-usuario/MarMotorBackend.git)
-cd MarMotorBackend
+git clone [https://github.com/tu-usuario/marmotor-frontend.git](https://github.com/tu-usuario/marmotor-frontend.git)
+cd marmotor-frontend
+npm install
+
+[ ] Añadir validaciones de formularios en el componente de contacto.
+
+[ ] Optimizar imágenes en la carpeta public/.

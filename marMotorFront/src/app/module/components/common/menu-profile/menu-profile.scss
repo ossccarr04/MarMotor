@@ -1,0 +1,251 @@
+/* --- IMPORTACIÓN DE TUS VARIABLES --- */
+$primary-blue: #0a1f33;
+$accent-green: #37df8c;
+$text-light: #fff;
+$font-family: 'Montserrat', sans-serif;
+$green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
+
+.profile-container {
+  font-family: $font-family;
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .avatar-btn {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 5px;
+    transition: all 0.3s ease;
+
+    &:hover .avatar-circle {
+      box-shadow: 0 0 10px rgba($accent-green, 0.5);
+      border-color: $accent-green;
+    }
+
+    .avatar-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: $green-gradient;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+
+      .user-initial {
+        color: #fff;
+        font-weight: 700;
+        font-size: 16px;
+        text-transform: uppercase;
+      }
+    }
+
+    .chevron {
+      color: rgba($text-light, 0.7);
+      font-size: 10px;
+      transition: transform 0.3s ease;
+      &.rotate {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  /* --- DESPLEGABLE --- */
+  .profile-dropdown {
+    position: absolute;
+    top: calc(100% + 15px);
+    right: 0;
+    width: 250px;
+    background: rgba($primary-blue, 0.95);
+    backdrop-filter: blur(10px); // Efecto cristal
+    border: 1px solid rgba($accent-green, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    padding: 15px 0;
+    z-index: 2000;
+    animation: slideIn 0.2s ease-out;
+
+    .dropdown-header {
+      padding: 0 20px 10px;
+
+      .user-email {
+        margin: 0;
+        font-size: 13px;
+        color: $text-light;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .user-role {
+        font-size: 11px;
+        color: $accent-green;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 700;
+      }
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background: rgba($text-light, 0.1);
+      margin: 10px 0;
+    }
+
+    .dropdown-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        a,
+        .logout-btn {
+          width: 100%;
+          display: block;
+          padding: 12px 20px;
+          text-decoration: none;
+          color: rgba($text-light, 0.8);
+          font-size: 14px;
+          font-weight: 500;
+          text-align: left;
+          background: none;
+          border: none;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: rgba($accent-green, 0.1);
+            color: $accent-green;
+            padding-left: 25px;
+          }
+        }
+
+        .logout-btn {
+          color: #ff5f5f; // Color rojizo para logout
+          &:hover {
+            background: rgba(#ff5f5f, 0.1);
+            color: #ff5f5f;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Adaptación para el menú móvil */
+@media (max-width: 1023px) {
+  /* Forzamos que el contenedor sea un bloque vertical */
+  .profile-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    position: relative;
+  }
+
+  /* El botón del avatar ya no debe tener un ancho fijo pequeño */
+  .avatar-btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px; // Espacio entre el círculo y la caja
+
+    .chevron {
+      display: none; // En móvil queda más limpio sin la flechita si vas a mostrar el menú debajo
+    }
+  }
+
+  .profile-dropdown {
+    /* 🚩 CLAVE: Quitamos el posicionamiento absoluto que lo manda a la derecha */
+    position: static !important;
+    transform: none !important;
+    width: 100% !important; // Que ocupe el ancho del menú hamburguesa
+    max-width: 280px; // Pero con un límite para que no se vea gigante
+
+    /* Diseño de la "caja" */
+    background: rgba($primary-blue, 0.4) !important;
+    border: 1px solid rgba($accent-green, 0.5) !important;
+    border-radius: 12px !important;
+    padding: 20px 0 !important;
+    margin: 0 auto !important;
+
+    .dropdown-header {
+      text-align: center;
+      margin-bottom: 15px;
+      padding: 0 10px;
+
+      .user-email {
+        font-size: 14px !important; // Más legible en móvil
+      }
+    }
+
+    .dropdown-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        width: 100%;
+
+        /* Esta clase iguala el <a> y el <button> */
+        .menu-item {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          padding: 12px 20px;
+          gap: 12px;
+
+          /* Reset de estilos */
+          background: none;
+          border: none;
+          text-decoration: none;
+          cursor: pointer;
+
+          /* Fuente idéntica */
+          font-family: 'Montserrat', sans-serif; // O la que uses en el resto de la web
+          font-size: 14px;
+          font-weight: 500;
+          color: rgba(255, 255, 255, 0.8);
+
+          transition: all 0.2s ease;
+
+          .icon {
+            font-size: 16px;
+          }
+
+          &:hover {
+            background: rgba($accent-green, 0.1);
+            color: $accent-green;
+          }
+        }
+
+        /* Estilo específico para el texto de logout si quieres mantener el rojo */
+        .logout-btn {
+          color: #ff5f5f;
+
+          &:hover {
+            background: rgba(#ff5f5f, 0.1);
+            color: #ff5f5f;
+          }
+        }
+      }
+    }
+  }
+}

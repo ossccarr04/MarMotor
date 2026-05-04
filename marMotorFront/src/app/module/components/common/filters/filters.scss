@@ -1,0 +1,716 @@
+// Variables de color
+$primary-blue: #0a1f33;
+$accent-green: #37df8c;
+$electric-blue: #0b79d0;
+$light-blue-gradient: linear-gradient(135deg, #2b3d56 0%, #0a1f33 100%);
+$green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
+$hover-gradient: linear-gradient(135deg, #37df8c 0%, #109b7c 100%);
+$card-gradient: linear-gradient(180deg, rgba(235, 248, 255, 1) 0%, rgba(255, 255, 255, 1) 100%);
+$text-color: #333;
+$text-light: #fff;
+$font-family: 'Montserrat', sans-serif;
+$text-dark: #333;
+
+/* --- SECCIÓN PRINCIPAL DE FILTROS --- */
+.visual-filter-section {
+  padding: 40px 20px;
+  background-color: #f7f9fc;
+  font-family: $font-family;
+
+  @media (min-width: 768px) {
+    padding: 60px 40px;
+  }
+
+  h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: $text-dark;
+    text-align: center;
+    @media (min-width: 768px) {
+      font-size: 24px;
+      text-align: left;
+      margin-bottom: 40px;
+    }
+
+    span {
+      font-weight: normal;
+      color: #777;
+      display: block;
+      @media (min-width: 768px) {
+        display: inline;
+      }
+    }
+  }
+
+  .filters-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    @media (min-width: 1024px) {
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .filter-card {
+      background: #ffffff;
+      flex: 1;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.4s ease;
+      border: 1px solid transparent;
+
+      @media (min-width: 768px) {
+        padding: 30px;
+      }
+
+      h3 {
+        font-size: 15px;
+        color: #111;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        text-align: center;
+        @media (min-width: 768px) {
+          text-align: left;
+        }
+      }
+
+      /* Estado Deshabilitado (Grisáceo + Tick Verde) */
+      &.is-disabled {
+        background-color: #f8fafc;
+        box-shadow: none;
+        border-color: #e2e8f0;
+
+        h3 {
+          color: #94a3b8;
+        }
+
+        .clear-filter {
+          background: #ecfdf5;
+          color: #10b981;
+          &:hover {
+            background: #d1fae5;
+            color: #059669;
+            transform: scale(1.1);
+          }
+        }
+
+        .filter-option {
+          color: #94a3b8;
+          background: #f1f5f9;
+        }
+
+        .more-btn-container .btn-more {
+          background-color: #f1f5f9;
+          color: #cbd5e1;
+          border-color: #e2e8f0;
+        }
+
+        &.price-orbit-card {
+          .circular-slider {
+            opacity: 0.6;
+            svg circle.progress {
+              stroke: #cbd5e1;
+            }
+            svg circle.thumb {
+              stroke: #94a3b8;
+            }
+            .dial-inner {
+              box-shadow: none;
+              background: #f8fafc;
+              border: 1px solid #e2e8f0;
+              .price-value {
+                color: #94a3b8;
+              }
+              .price-label {
+                color: #cbd5e1;
+              }
+            }
+          }
+          .price-type {
+            color: #94a3b8;
+            transition: color 0.4s;
+          }
+        }
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+
+        h3 {
+          margin-bottom: 0; /* El margen inferior lo da ahora el contenedor card-header */
+        }
+
+        .clear-filter {
+          background: #f1f5f9;
+          border: none;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          cursor: pointer;
+          font-size: 16px;
+          color: #94a3b8;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: #fee2e2;
+            color: #ef4444;
+            transform: scale(1.1);
+          }
+        }
+      }
+
+      .filter-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        @media (min-width: 768px) {
+          gap: 15px;
+          justify-content: flex-start;
+        }
+
+        .filter-option {
+          background: #f4f6f8;
+          padding: 8px 16px;
+          border-radius: 12px;
+          font-weight: 600;
+          font-size: 13px;
+          color: #555;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border: 1px solid transparent;
+
+          @media (min-width: 768px) {
+            padding: 10px 20px;
+            font-size: 14px;
+          }
+
+          &:hover {
+            background: #e2e8f0;
+          }
+          &.selected {
+            background: $accent-green;
+            color: $text-light;
+            box-shadow: 0 4px 15px rgba(55, 223, 140, 0.3);
+          }
+
+          &.add-icon {
+            font-size: 18px;
+            border: 2px dashed #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 15px;
+          }
+        }
+      }
+    }
+
+    .price-orbit-card {
+      align-items: center;
+      .circular-slider {
+        position: relative;
+        width: 140px;
+        height: 140px;
+        cursor: grab;
+        touch-action: none;
+        margin-bottom: 10px;
+        @media (min-width: 768px) {
+          width: 160px;
+          height: 160px;
+        }
+        &:active {
+          cursor: grabbing;
+        }
+
+        svg {
+          width: 100%;
+          height: 100%;
+          transform: rotate(-90deg);
+          circle {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            &.track {
+              stroke: #f0f4f8;
+            }
+            &.progress {
+              stroke: $accent-green;
+              transition: stroke-dashoffset 0.05s linear;
+            }
+            &.thumb {
+              fill: #ffffff;
+              stroke: #37df8c;
+              stroke-width: 2;
+              filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.3));
+            }
+          }
+        }
+
+        .dial-inner {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: #fff;
+          border-radius: 50%;
+          width: 90px;
+          height: 90px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+          pointer-events: none;
+
+          .price-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #111;
+          }
+          .price-label {
+            font-size: 10px;
+            color: #888;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* --- ESTILOS DEL MODAL / BUSCADOR (CORREGIDO) --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 25px;
+  width: 90%;
+  max-width: 550px;
+  max-height: 85vh;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  font-family: $font-family;
+
+  h3 {
+    font-size: 22px;
+    font-weight: 800;
+    color: $primary-blue;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #f1f5f9;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    &:hover {
+      background: #fee2e2;
+      color: #ef4444;
+    }
+  }
+
+  /* El Input de búsqueda */
+  .search-input {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid #f1f5f9;
+    border-radius: 15px;
+    font-size: 16px;
+    font-family: $font-family;
+    margin-bottom: 25px;
+    outline: none;
+    transition: all 0.3s;
+    background: #f8fafc;
+
+    &:focus {
+      border-color: $accent-green;
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(55, 223, 140, 0.1);
+    }
+
+    &::placeholder {
+      color: #94a3b8;
+    }
+  }
+
+  /* Listado de marcas en el modal */
+  .modal-brands-list {
+    display: grid;
+    // Usamos auto-fill con un ancho fijo para que las opciones mantengan su tamaño de "cuadro"
+    // y no se estiren horizontalmente cuando hay menos elementos. Además, flex-grow: 1 gestiona la altura.
+    grid-template-columns: repeat(auto-fill, 155px); // Aumentado el ancho de cada opción
+    gap: 12px;
+    overflow-y: auto;
+    padding-right: 5px;
+    margin-bottom: 10px;
+    flex-grow: 1; // Permite que la lista ocupe el espacio vertical restante y se desplace si es necesario.
+
+    /* Personalización del scroll */
+    justify-content: center; // Centra las opciones horizontalmente.
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+    }
+
+    .filter-option {
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 14px;
+      color: #334155;
+      cursor: pointer;
+      border: 1px solid #e2e8f0;
+      transition: all 0.2s;
+      margin-top: 5px;
+
+      &:hover {
+        background: #f1f5f9;
+        border-color: $accent-green;
+        transform: translateY(-2px);
+      }
+
+      &.selected {
+        background: $accent-green;
+        color: white;
+        border-color: $accent-green;
+        box-shadow: 0 4px 12px rgba(55, 223, 140, 0.3);
+      }
+    }
+  }
+
+  .no-results {
+    /* Hacemos que ocupe todo el ancho del grid para centrarse correctamente */
+    grid-column: 1 / -1;
+
+    /* Estilo visual */
+    color: #94a3b8;
+    font-style: italic;
+    font-size: 15px;
+    min-height: 100px;
+    text-align: center;
+
+    /* Centra el texto <p> interior */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+/* BOTONES DE ACCIÓN */
+.action-buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-right: 25px;
+  margin-top: 30px;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  button {
+    width: 100%;
+    padding: 15px 35px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    text-transform: uppercase;
+    @media (min-width: 768px) {
+      width: auto;
+    }
+  }
+
+  .btn-primary {
+    background-color: $accent-green;
+    color: $text-light;
+    border: none;
+    font-weight: 700;
+    padding: 12px 28px;
+    border-radius: 30px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px 0 rgba(55, 223, 140, 0.39);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(55, 223, 140, 0.6);
+      filter: brightness(1.05);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 10px rgba(55, 223, 140, 0.4);
+    }
+  }
+  .btn-secondary {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #0a1f33;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-weight: 700;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+.more-btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+.btn-more {
+  background-color: #f4f6f8;
+  border: 2px dashed #cbd5e1;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #94a3b8;
+  &.is-brand-selected {
+    width: auto;
+    min-width: 100px;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: $accent-green;
+    color: white;
+    border: none;
+  }
+}
+
+.visual-filter-section {
+  position: relative; // Necesario para que el buscador flote dentro
+}
+
+.admin-control-bar {
+  // 1. Posicionamiento (antes estaba en .admin-quick-search)
+  position: absolute;
+  top: 35px;
+  right: 40px;
+  z-index: 100;
+
+  // 2. Alineación Flexbox para poner el switch y el buscador en línea
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+  min-width: 450px; // Anchura mínima para que no se aplasten los elementos
+
+  /* --- SECCIÓN 1: EL INTERRUPTOR (SWITCH) --- */
+  .toggle-vendidos {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+
+    .label-text {
+      font-size: 0.85rem;
+      // Si tu fondo es oscuro, te sugiero cambiar este color a blanco (#fff) o gris (#cbd5e1)
+      color: #000000; 
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 36px;
+      height: 20px;
+
+      input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-color: rgba(15, 23, 42, 0.4); // Gris oscuro de fondo
+        border: 1px solid rgba(16, 185, 129, 0.2); // Borde esmeralda muy suave
+        border-radius: 34px;
+        transition: .4s;
+
+        &:before {
+          position: absolute;
+          content: "";
+          height: 12px;
+          width: 12px;
+          left: 3px;
+          bottom: 2px; // Ajustado para que quede perfectamente centrado
+          background-color: #f8fafc;
+          border-radius: 50%;
+          transition: .4s;
+        }
+      }
+
+      /* Cuando se marca, usa el verde esmeralda de tu diseño */
+      input:checked + .slider {
+        background-color: rgba(16, 185, 129, 0.8);
+        border-color: #10b981;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(16px);
+      }
+    }
+  }
+
+  /* --- SECCIÓN 2: LA CAJA DE BÚSQUEDA --- */
+  .search-box {
+    flex: 1; // Ocupa el resto del espacio disponible
+    display: flex;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    border-radius: 50px;
+    padding: 8px 18px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+
+    &:hover,
+    &:focus-within {
+      border-color: #10b981;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .admin-icon {
+      color: #10b981;
+      margin-right: 10px;
+      font-size: 0.9rem;
+    }
+
+    input {
+      background: transparent;
+      border: none;
+      color: #f8fafc;
+      font-size: 0.85rem;
+      outline: none;
+      width: 100%;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+        font-weight: 300;
+      }
+    }
+
+    .btn-search {
+      background: transparent;
+      border: none;
+      color: #10b981;
+      cursor: pointer;
+      margin-left: 5px;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        color: #34d399;
+      }
+    }
+  }
+}
+
+// Responsive: en móviles lo movemos para que no tape el título
+@media (max-width: 768px) {
+  .admin-control-bar {
+    position: static; /* Asegura que el elemento esté en el flujo normal del documento */
+    top: auto; /* Resetea la posición absoluta */
+    right: auto; /* Resetea la posición absoluta */
+    margin-bottom: 30px; /* Espacio debajo de la barra de control */
+    min-width: 0;
+    flex-direction: column;
+    align-items: center; /* Centra los elementos horizontalmente */
+    gap: 20px; /* Añade espacio entre el interruptor y el buscador */
+    width: 100%;
+    padding: 15px 20px; /* Añade padding interno a la barra de control */
+    box-sizing: border-box; /* Asegura que el padding no aumente el ancho total */
+    background-color: #f0f4f8; /* Un fondo ligeramente diferente para destacarlo */
+    border-bottom: 1px solid #e2e8f0; /* Separador visual */
+    border-radius: 0; /* Elimina bordes redondeados si los tuviera */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+
+    .search-box {
+      width: 100%;
+      max-width: 300px; /* Limita el ancho del buscador para que no sea demasiado grande */
+    }
+
+    .toggle-vendidos {
+      width: 100%; /* Asegura que el toggle ocupe el ancho completo para centrar su contenido */
+      justify-content: center; /* Centra el texto y el switch dentro del toggle */
+    }
+  }
+
+  .visual-filter-section h2 {
+    margin-top: 20px; /* Añade un margen superior al título para separarlo de la barra de control */
+    text-align: center; /* Mantiene el título centrado en móvil */
+  }
+}

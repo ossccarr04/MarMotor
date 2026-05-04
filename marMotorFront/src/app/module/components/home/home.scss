@@ -1,0 +1,178 @@
+/* --- VARIABLES DE COLOR (Basadas en tu imagen) --- */
+$bg-dark-blue: #081225;
+$bg-card-blue: #13274a;
+$bg-card-dark: #0c1a35;
+$accent-green: #37df8c;
+$accent-teal: #32d5a4;
+$text-light: #ffffff;
+$font-family: 'Montserrat', sans-serif;
+
+.autoflow-home {
+  background-color: $bg-dark-blue;
+  position: relative;
+  overflow: hidden; /* Evita que la ola se salga de la pantalla */
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+
+  /* La ola verde diagonal del fondo */
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 120%;
+    height: 50%;
+    background: linear-gradient(to right, #0d5e4b, $accent-green);
+    transform: rotate(-10deg); /* Inclina el fondo */
+    z-index: 0;
+    opacity: 0.9;
+    border-radius: 50% 50% 0 0; /* Le da esa curva suave */
+  }
+}
+
+.discovery-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px; /* Ancho máximo para pantallas grandes */
+  margin: 0 auto;
+  padding: 60px 20px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  
+  /* ESTA ES LA CLAVE MÁGICA: Fuerza una separación mínima exacta */
+  gap: 120px;
+  
+  /* 3. AUMENTAMOS LA SEPARACIÓN DIRECTA ENTRE TEXTO Y GRID (antes 60px) */
+  gap: 150px; 
+
+  /* En móviles se apilan, así que reducimos el gap */
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    gap: 60px; 
+  }
+}
+
+/* --- TEXTO Y BOTÓN IZQUIERDO --- */
+.discovery-text {
+  font-family:$font-family ;
+  flex: 1;
+  max-width: 500px;
+  color: $text-light;
+
+  h1 {
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  p {
+    font-size: 18px;
+    color: #a0aec0;
+    margin-bottom: 35px;
+    max-width: 450px;
+    line-height: 1.5;
+  }
+
+  .btn-discovery {
+    background: linear-gradient(90deg, #32d5a4, $accent-green);
+    color: #000;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 15px 40px;
+    border-radius: 30px; /* Botón píldora */
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(55, 223, 140, 0.3);
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(55, 223, 140, 0.5);
+    }
+  }
+}
+
+/* --- COLLAGE DE GRID DERECHO --- */
+.vehicle-icons-grid {
+  font-family:$font-family ;
+  flex: 1;
+  display: grid;
+  max-width: 600px;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
+  gap: 15px;
+
+  .icon-block {
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1; /* Hace que sean cuadrados perfectos por defecto */
+    transition: transform 0.2s ease;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+
+    &:hover {
+      transform: scale(1.05); /* Efecto zoom al pasar el ratón */
+    }
+
+    img {
+      width: 60%; /* En lugar de 50px, hacemos que ocupe el 60% del ancho de su caja */
+      max-width: 120px; /* Le ponemos un tope para que no se hagan gigantes en pantallas grandes */
+      height: auto;
+      
+      .wide & {
+        width: 40%;
+        max-width: 150px;
+      }
+      
+      /* Opcional: Si quieres que la transición del hover también afecte a la imagen */
+      transition: transform 0.3s ease;
+    }
+
+    span {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+
+    &:hover {
+      transform: scale(1.05);
+      
+      /* Opcional: Que la imagen crezca un poquito más al pasar el ratón */
+      img {
+        transform: scale(1.1); 
+      }
+    }
+  }
+
+  /* Clases de Tamaño especial */
+  .wide {
+    grid-column: span 2; /* Ocupa 2 columnas de ancho (para los rectangulares) */
+    aspect-ratio: 2 / 1; 
+  }
+
+  /* Clases de Colores */
+  .bg-green-light { background: linear-gradient(135deg, #4ef0a0, #20cd8d); }
+  .bg-teal { background: #20b2aa; }
+  .bg-blue-medium { background: $bg-card-blue; }
+  .bg-blue-dark { background: $bg-card-dark; border: 1px solid #1e3a68; }
+  .bg-green-gradient { background: linear-gradient(135deg, $accent-green, #0d5e4b); }
+  
+  .fade { 
+    opacity: 0.5; 
+    &:hover { opacity: 1; } /* Que se ilumine al pasar el ratón */
+  }
+
+  .highlighted {
+    color: $accent-green;
+    border: 1px solid $accent-green;
+  }
+}

@@ -1,0 +1,168 @@
+@import 'ngx-toastr/toastr';
+
+#toast-container > .ngx-toastr {
+  // Dimensiones y Espaciado
+  width: 420px;            // Más ancho (por defecto suelen ser 300px)
+  padding: 22px 22px 22px 65px; // Más aire interno
+  border-radius: 16px;      // Bordes más redondeados y modernos
+  
+  // Fondo y Efecto Cristal (Glassmorphism)
+  background-color: rgba(11, 22, 36, 0.95); // Tu azul oscuro con ligera transparencia
+  backdrop-filter: blur(10px);              // Desenfoque del fondo
+  
+  // Bordes y Sombra
+  border: 1px solid rgba(55, 223, 140, 0.4); // Borde verde sutil
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 
+              0 0 20px rgba(55, 223, 140, 0.1);
+  
+  // Texto
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;         // Texto un poco más grande
+  opacity: 1;              // Quitar la transparencia por defecto de la librería
+
+  &:hover {
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 
+                0 0 30px rgba(55, 223, 140, 0.2);
+    opacity: 1;
+    transform: scale(1.02); // Pequeño efecto de "pop" al pasar el ratón
+    transition: all 0.3s ease;
+  }
+
+  // Título del Toast
+  .toast-title {
+    font-weight: 800;
+    font-size: 17px;
+    margin-bottom: 4px;
+    color: #37df8c; // Título en tu verde corporativo
+    letter-spacing: 0.5px;
+  }
+
+  // Mensaje del Toast
+  .toast-message {
+    font-weight: 400;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  // Iconos (Ajuste de posición por el nuevo tamaño)
+  background-image: none !important; // Quitamos el icono por defecto para poner uno mejor
+  &::before {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 24px;
+    color: #37df8c;
+  }
+}
+
+/* Iconos específicos según el tipo de alerta */
+.toast-success::before { content: "\f00c"; } // Check
+.toast-error::before   { content: "\f00d"; color: #ff4d4d !important; } // X
+.toast-warning::before { content: "\f071"; color: #fabb05 !important; } // Exclamación
+
+/* Barra de progreso inferior */
+#toast-container > .ngx-toastr .toast-progress {
+  background-color: #37df8c;
+  height: 4px;
+  opacity: 0.6;
+}
+
+@media (max-width: 480px) {
+  #toast-container > .ngx-toastr {
+    width: 90vw !important; // Ocupa el 90% del ancho de la pantalla
+    left: 5vw;             // Centrado manual
+    margin: 0 auto 10px auto;
+    font-size: 13px;
+    padding: 15px 15px 15px 50px;
+    
+    &::before { font-size: 20px; left: 15px; }
+  }
+}
+
+/* --- VARIANTE: SUCCESS (VERDE) --- */
+#toast-container > .toast-success {
+  border: 1px solid rgba(55, 223, 140, 0.5) !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(55, 223, 140, 0.15) !important;
+
+  .toast-title { color: #37df8c !important; }
+  
+  &::before {
+    content: "\f00c"; // Icono de Check
+    color: #37df8c;
+  }
+  
+  .toast-progress { background-color: #37df8c; }
+}
+
+/* --- VARIANTE: ERROR (ROJO) --- */
+#toast-container > .toast-error {
+  border: 1px solid rgba(255, 77, 77, 0.5) !important; // Borde Rojo
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 77, 77, 0.15) !important;
+
+  .toast-title { color: #ff4d4d !important; } // Título Rojo
+  
+  &::before {
+    content: "\f00d"; // Icono de X
+    color: #ff4d4d;
+  }
+  
+  .toast-progress { background-color: #ff4d4d; }
+}
+
+
+/* 1. Forzamos al HTML y al BODY a ocupar el 100% del alto y ancho */
+html, body {
+  width: 100%;
+  
+  /* Fallback para navegadores antiguos */
+  min-height: 100vh; 
+  /* LA MAGIA PARA MÓVIL: dvh (Dynamic Viewport Height). 
+     Se adapta automáticamente cuando aparece/desaparece la barra del navegador */
+  min-height: 100dvh; 
+  
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Evita que aparezca una barra de scroll horizontal molesta */
+  
+  /* Evita el scroll horizontal táctil (gestos de arrastre laterales en móvil) */
+  touch-action: pan-y; 
+}
+
+/* 2. La etiqueta principal que envuelve todo necesita comportarse como un bloque */
+app-root {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh; /* Aplicamos el mismo truco aquí */
+}
+
+/* 3. Reseteo de cajas */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; 
+  
+  /* (Opcional pero recomendado para móvil) 
+     Quita el sombreado azul feo que sale en Android al tocar un botón o enlace */
+  -webkit-tap-highlight-color: transparent; 
+}
+
+/* 4. MODO ZOOM (BLOQUEO DE PANTALLA) */
+body.is-zooming-mode {
+  overflow: hidden !important; 
+  
+  /* TRUCO PARA iOS: Para que el iPhone no haga scroll de fondo por accidente */
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
+  touch-action: none !important; /* Bloquea todos los gestos táctiles en el fondo */
+
+  // Busca el selector de tu Navbar
+  nav, .main-navbar, header.global-header, .autoflow {
+    display: none !important; 
+  }
+}

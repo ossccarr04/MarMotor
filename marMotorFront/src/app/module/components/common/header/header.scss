@@ -1,0 +1,250 @@
+/* --- VARIABLES --- */
+$primary-blue: #0a1f33;
+$accent-green: #37df8c;
+$text-light: #fff;
+$green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
+$hover-gradient: linear-gradient(135deg, #37df8c 0%, #109b7c 100%);
+$font-family: 'Montserrat', sans-serif;
+
+.autoflow-header {
+  font-family: $font-family;
+  display: flex;
+  justify-content: space-between; // 🚩 Separa el Logo (izquierda) de las Acciones (derecha)
+  align-items: center;
+  padding: 12px 15px; // Padding reducido para ganar espacio en móviles
+  background: $primary-blue;
+  color: $text-light;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-sizing: border-box; // Evita que el padding ensanche el header en móviles
+
+  @media (min-width: 1024px) {
+    padding: 20px 40px;
+  }
+
+  /* --- LOGO (Sin cambios) --- */
+  .logo {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    flex-shrink: 1; // Permite que el logo se encoja un poco si es necesario
+    min-width: 0; // Evita que el texto del logo bloquee el espacio
+    z-index: 1010;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    z-index: 1010;
+
+    span {
+      white-space: nowrap; // Evita que el nombre de la marca salte de línea
+      overflow: hidden;
+      text-overflow: ellipsis; // Si el móvil es diminuto, corta el texto con "..."
+    }
+    @media (min-width: 1024px) {
+      font-size: 24px;
+      z-index: 1100;
+    }
+
+    .logo-icon {
+      background: linear-gradient(135deg, #2b3d56 0%, #109b7c 100%);
+      color: $text-light;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 10px;
+      font-size: 18px;
+    }
+  }
+
+  
+
+  .menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px; // Área de clic optimizada
+    margin-left: 50%; // 🚩 Eliminado cualquier margen previo (como el 64%)
+    position: relative;
+    z-index: 2100;
+
+    @media (min-width: 1024px) {
+      display: none;
+    }
+
+    span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background-color: $text-light;
+      transition: all 0.3s ease-in-out;
+      border-radius: 3px;
+    }
+
+    &.is-active {
+      span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+      }
+      span:nth-child(2) {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+      }
+    }
+  }
+
+  /* --- NAVEGACIÓN MÓVIL (Sin cambios) --- */
+  .nav-links {
+    display: flex;
+    gap: 30px;
+    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    align-items: center;
+
+    @media (max-width: 1023px) {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100vw;
+      height: 100vh;
+      background: $primary-blue;
+      z-index: 1500;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+
+      &.is-open {
+        transform: translateX(0);
+      }
+    }
+
+    a {
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 600;
+      font-size: 24px;
+      padding: 10px 0;
+      transition: color 0.3s ease;
+
+      @media (min-width: 1024px) {
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.7);
+        padding: 0;
+      }
+
+      &:hover,
+      &.active-link {
+        color: $accent-green;
+      }
+    }
+  }
+
+  /* --- ACCIONES (Modificado para anclar la hamburguesa a la derecha) --- */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0; // 🚩 ESTO ES LO MÁS IMPORTANTE: impide que la hamburguesa desaparezca
+    margin-left: 10px; // Espacio mínimo de seguridad con el logo
+    z-index: 1010;
+  }
+}
+
+
+/* --- BOTONES Y RESTO (Sin cambios) --- */
+.btn {
+  font-family: $font-family;
+  padding: 10px 24px;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  white-space: nowrap;
+
+  @media (min-width: 1024px) {
+    font-size: 14px;
+  }
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &.btn-primary {
+    background: $green-gradient;
+    color: #fff;
+    &:hover {
+      background: $hover-gradient;
+      box-shadow: 0 4px 15px rgba($accent-green, 0.4);
+    }
+  }
+
+  &.btn-outline {
+    background: transparent;
+    border: 2px solid $accent-green;
+    color: $accent-green;
+    &:hover {
+      background: rgba($accent-green, 0.1);
+    }
+  }
+
+  &.btn-login-desktop {
+    display: none;
+    @media (min-width: 1024px) {
+      display: inline-block;
+    }
+  }
+
+  &.btn-login-mobile {
+    margin-top: 40px;
+    display: inline-block;
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+}
+
+body[style*='overflow: hidden'] {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  -webkit-overflow-scrolling: none;
+}
+
+@media (max-width: 1023px) {
+  .profile-desktop-only {
+    display: none !important; /* Desaparece por completo de la derecha del logo */
+  }
+
+.profile-mobile-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+}
+}
+
+/* En escritorio (1024px o más) */
+@media (min-width: 1024px) {
+  .profile-mobile-container {
+    display: none !important; /* Desaparece del menú hamburguesa */
+  }
+
+  .profile-desktop-only {
+    display: block !important; /* Aparece en la derecha */
+  }
+}

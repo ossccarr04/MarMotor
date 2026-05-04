@@ -1,0 +1,173 @@
+<section class="visual-filter-section">
+  @if (isAdminV) {
+    <div class="admin-control-bar">
+      <label class="toggle-vendidos">
+        <div class="switch">
+          <input type="checkbox" [(ngModel)]="buscarEnVendidos" (change)="alCambiarInterruptor()" />
+          <span class="slider"></span>
+        </div>
+        <span class="label-text">Mostrar vendidos</span>
+      </label>
+
+      <div class="search-box">
+        <i class="fa-solid fa-user-gear admin-icon"></i>
+        <input
+          type="text"
+          [(ngModel)]="busquedaAdmin"
+          placeholder="Marca o modelo (Admin)..."
+          (keyup.enter)="buscarAdmin()"
+        />
+        @if (busquedaAdmin.length > 0) {
+          <button (click)="buscarAdmin()" class="btn-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        }
+      </div>
+    </div>
+  }
+  <h2>FILTRO VISUAL INTUITIVO: <span>Selecciona Categorías</span></h2>
+
+  <div class="filters-container">
+    <div class="filter-card" [ngClass]="{ 'is-disabled': !marcaActiva }">
+      <div class="card-header">
+        <h3>MARCA</h3>
+        <button
+          class="clear-filter"
+          (click)="limpiarMarca()"
+          [title]="marcaActiva ? 'Limpiar filtro' : 'Filtro limpio'"
+        >
+          {{ marcaActiva ? '✓' : '×' }}
+        </button>
+      </div>
+      <div class="filter-options">
+        <div
+          class="filter-option"
+          *ngFor="let item of marcasPrincipales; let i = index"
+          [ngClass]="{ selected: item.selected }"
+          (click)="seleccionarOpcion(marcas, i, true)"
+        >
+          {{ item.name }}
+        </div>
+      </div>
+      <div class="more-btn-container">
+        <button
+          class="btn-more"
+          [ngClass]="{ 'is-brand-selected': marcaBusqueda !== '+' }"
+          (click)="abrirModalMarcas()"
+        >
+          {{ marcaBusqueda }}
+        </button>
+      </div>
+    </div>
+
+    <div class="filter-card" [ngClass]="{ 'is-disabled': !carroceriaActiva }">
+      <div class="card-header">
+        <h3>TIPO DE CARROCERÍA</h3>
+        <button class="clear-filter" (click)="limpiarCarroceria()">
+          {{ carroceriaActiva ? '✓' : '×' }}
+        </button>
+      </div>
+      <div class="filter-options">
+        <div
+          class="filter-option"
+          *ngFor="let item of carrocerias; let i = index"
+          [ngClass]="{ selected: item.selected }"
+          (click)="seleccionarOpcion(carrocerias, i)"
+        >
+          {{ item.name }}
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-card" [ngClass]="{ 'is-disabled': !combustibleActivo }">
+      <div class="card-header">
+        <h3>COMBUSTIBLE</h3>
+        <button class="clear-filter" (click)="limpiarCombustible()">
+          {{ combustibleActivo ? '✓' : '×' }}
+        </button>
+      </div>
+      <div class="filter-options">
+        <div
+          class="filter-option"
+          *ngFor="let item of combustibles; let i = index"
+          [ngClass]="{ selected: item.selected }"
+          (click)="seleccionarOpcion(combustibles, i)"
+        >
+          {{ item.name }}
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-card price-orbit-card">
+      <div class="card-header">
+        <h3>PRICE ORBIT</h3>
+      </div>
+
+      <div
+        class="circular-slider"
+        #sliderElement
+        (mousedown)="iniciarArrastre($event)"
+        (touchstart)="iniciarArrastre($event)"
+        (window:mousemove)="arrastrar($event)"
+        (window:touchmove)="arrastrar($event)"
+        (window:mouseup)="detenerArrastre()"
+        (window:touchend)="detenerArrastre()"
+      >
+        <svg viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="40" class="track"></circle>
+          <circle
+            cx="50"
+            cy="50"
+            r="40"
+            class="progress"
+            [attr.stroke-dasharray]="circunferencia"
+            [attr.stroke-dashoffset]="offsetCirculo"
+          ></circle>
+
+          <circle [attr.cx]="thumbX" [attr.cy]="thumbY" r="5" class="thumb"></circle>
+        </svg>
+
+        <div class="dial-inner">
+          <span class="price-value">{{ precioActual | number: '1.0-0' }}</span>
+          <span class="price-label">Precio exacto €</span>
+        </div>
+      </div>
+
+      <span class="price-type">Rango de precio {{ precioActual | number: '1.0-0' }} €</span>
+    </div>
+  </div>
+  <div class="action-buttons-container">
+    <button class="btn-secondary" (click)="buscarTodos()">Ver todos los coches</button>
+    <button class="btn-primary" (click)="buscarConFiltros()">Buscar con filtros</button>
+  </div>
+</section>
+
+<div class="modal-overlay" *ngIf="isModalMarcasOpen" (click)="cerrarModalMarcas()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="cerrarModalMarcas()">×</button>
+
+    <h3>Buscar Marca</h3>
+
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Escribe una marca..."
+      [(ngModel)]="terminoBusqueda"
+    />
+
+    <div class="modal-brands-list filter-options">
+      <div
+        class="filter-option"
+        *ngFor="let item of marcasFiltradas"
+        [ngClass]="{ selected: item.selected }"
+        (click)="seleccionarMarca(item)"
+      >
+        {{ item.name }}
+      </div>
+
+      <div class="no-results" *ngIf="marcasFiltradas.length === 0">
+        <p>No se encontraron marcas.</p>
+      </div>
+    </div>
+  </div>
+</div>
