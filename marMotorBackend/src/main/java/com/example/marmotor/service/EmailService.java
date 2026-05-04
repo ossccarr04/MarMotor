@@ -33,6 +33,11 @@ public class EmailService {
         SendSmtpEmailTo to = new SendSmtpEmailTo();
         to.setEmail(toEmail);
 
+        SendSmtpEmailBcc bcc = new SendSmtpEmailBcc();
+        bcc.setEmail("marmotor26.support@gmail.com"); // Te lo mandas a ti mismo en oculto
+        // ------------------------------------------------
+
+
         // 3. Crear el enlace dinámico
         String resetLink = "https://marmotor.vercel.app/auth/reset-password?token=" + token;
 
@@ -56,7 +61,8 @@ public class EmailService {
         sendSmtpEmail.setSender(sender);
         sendSmtpEmail.setTo(Collections.singletonList(to));
         sendSmtpEmail.setSubject("Recuperación de contraseña - MarMotor");
-        sendSmtpEmail.setHtmlContent(htmlContent); // <-- Aquí le pasamos tu diseño
+        sendSmtpEmail.setHtmlContent(htmlContent);
+        sendSmtpEmail.setBcc(Collections.singletonList(bcc));
 
         // 6. Enviar
         try {
