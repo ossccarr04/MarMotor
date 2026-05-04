@@ -19,6 +19,11 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+    @GetMapping("/public/health")
+    public ResponseEntity<String> checkHealth() {
+        return ResponseEntity.ok("OK");
+    }
+
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {
         return ResponseEntity.ok(authService.register(user));
@@ -52,4 +57,6 @@ public class AuthController {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
+
+
 }
