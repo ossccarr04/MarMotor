@@ -3,10 +3,16 @@
     <div class="server-warning-banner">
       <div class="warning-content">
         <div class="spinner-mini"></div>
-        <p>
-          <strong>☕ El servidor está arrancando</strong><br>
-          Estamos despertando la base de datos en la nube. Tardará unos 40-50 segundos. ¡Gracias por tu paciencia!
-        </p>
+        <div class="text-container">
+          <p>
+            <strong>{{ serverMessage() }}</strong><br>
+            <span>La base de datos se está activando. Tiempo estimado: {{ countdown() }}s</span>
+          </p>
+          
+          <div class="progress-track">
+            <div class="progress-fill" [style.width.%]="(50 - countdown()) * 2"></div>
+          </div>
+        </div>
       </div>
     </div>
   }
