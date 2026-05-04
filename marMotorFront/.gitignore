@@ -43,7 +43,6 @@ runtime.log
 
 # Secretos y Entornos (Solo si no quieres subirlos)
 # Si necesitas que el proyecto compile en GitHub Actions, comenta la siguiente línea
-src/environments/environment.prod.ts
 src/environments/environment.development.ts
 
 # Sistema
