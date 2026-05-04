@@ -1,5 +1,8 @@
-# Usamos una imagen ligera de Java 17 o 21 (la que estés usando)
+# Imagen base ligera con Java
 FROM eclipse-temurin:17-jdk-alpine
+
+# Exponemos el puerto interno del contenedor
+EXPOSE 8080
 
 # El volumen para que guarde datos temporales
 VOLUME /tmp
