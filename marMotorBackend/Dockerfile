@@ -1,20 +1,21 @@
-# --- ETAPA 1: Construir la aplicación ---
+# --- ETAPA 1: Compilación ---
 FROM maven:3.8.5-openjdk-17 AS build
-WORKDIR /workspace/app
+WORKDIR /app
 
-# Copiamos la configuración y el código fuente al WORKSPACE
-COPY pom.xml .
-COPY src ./src
+# Copiamos todo lo que hay en la carpeta marMotorBackend (porque Render ya entró ahí)
+COPY . .
 
-# Compilamos el proyecto de forma explícita
+# Ejecutamos la compilación
 RUN mvn clean package -DskipTests
 
-# --- ETAPA 2: Ejecutar la aplicación ---
+# --- ETAPA 2: Ejecución ---
 FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
-# Copiamos el .jar generado en la etapa anterior a la carpeta app.jar
-COPY --from=build /workspace/app/target/marMotorBackend-0.0.1-SNAPSHOT.jar app.jar
+# Usamos *.jar para que no importe si el nombre es marmotor o marMotorBackend
+COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+# Forzamos el puerto y arrancamos
+ENTRYPOINT ["java", "-Dserver.port=${PORT:8080}", "-jar", "app.jar"]
