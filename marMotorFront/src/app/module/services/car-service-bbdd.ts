@@ -3,7 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { CarDTO } from '../../@types/interface/car.interface';
 import { CarDetail } from '../../@types/interface/car-details.interface';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment.prod';
+
 
 @Injectable({
   providedIn: 'root',

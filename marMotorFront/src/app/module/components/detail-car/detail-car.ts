@@ -19,7 +19,7 @@ import { BadgeLabel, BadgeType } from '../../../@types/enums/badge.enum';
 import { ToastrService } from 'ngx-toastr';
 import { FavoriteServiceBBDD } from '../../services/favorite-service-bbdd';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { environment } from '../../../../environments/environment.development';
+import { environment } from '../../../../environments/environment.prod';
 
 @Component({
   selector: 'detail-car',

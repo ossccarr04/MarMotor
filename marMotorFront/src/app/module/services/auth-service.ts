@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { jwtDecode } from 'jwt-decode';
 import { LoggedUserDTO, LoginDTO, RegisterDTO } from '../../@types/interface/user.interface';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',

@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Router, RouterLink, RouterModule } from "@angular/router";
-import { environment } from '../../../../../environments/environment.development';
 import { AuthServiceBBDD } from '../../../services/auth-service';
 import { ToastrService } from 'ngx-toastr';
 import { RegisterDTO } from '../../../../@types/interface/user.interface';
+import { environment } from '../../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-register',
