@@ -2,8 +2,12 @@
 FROM maven:3.8.5-openjdk-17 AS build
 WORKDIR /home/app
 
-# Copiamos todo el contenido del directorio actual (marMotorBackend) al contenedor
-COPY . .
+# Copiamos primero el archivo pom.xml y descargamos las dependencias
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+# Ahora copiamos el código fuente
+COPY src ./src
 
 # Compilamos el proyecto
 RUN mvn clean package -DskipTests
