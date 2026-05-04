@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/images")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://marmotor.vercel.app")
 public class CarImageController {
 
     @Autowired

@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/fuel-types")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://marmotor.vercel.app")
 public class FuelTypeController {
     @Autowired
     private FuelTypeService fuelTypeService;

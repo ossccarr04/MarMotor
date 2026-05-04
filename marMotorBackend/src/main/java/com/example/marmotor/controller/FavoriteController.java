@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users/me/favorites")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://marmotor.vercel.app")
 public class FavoriteController {
 
     @Autowired

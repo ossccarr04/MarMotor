@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/body-types")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://marmotor.vercel.app")
 public class BodyTypeController {
     @Autowired
     private BodyTypeService bodyTypeService;

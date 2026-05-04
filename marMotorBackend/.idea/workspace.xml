@@ -4,47 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Modificado Dockerfile">
+    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Subido para salud server">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/MarMotorBackendApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/config/SecurityConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/BodyTypeController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/BrandController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/CarController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/CarImageController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/FuelTypeController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/controller/UserController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/BodyTypeDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/BrandDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/CarDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/CarDetailDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/CarImageDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/FuelTypeDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/HistoryEventDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/DTO/UserDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/BodyType.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/Brand.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/Car.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/CarDetail.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/CarImage.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/FuelType.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/HistoryEvent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/User$Role.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/entity/User.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/enums/Status.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/model/enums/Transmission.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/BodyTypeRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/BrandRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/CarImageRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/CarRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/FuelTypeRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/repository/UserRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/BodyTypeService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/BrandService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/CarImageService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/CarService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/marmotor/service/FuelTypeService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/BodyTypeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/BodyTypeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/BrandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/BrandController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/CarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/CarController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/CarImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/CarImageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/FavoriteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/FavoriteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/FuelTypeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/FuelTypeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/UserController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,7 +162,7 @@
       <workItem from="1777493096715" duration="715000" />
       <workItem from="1777529941032" duration="1314000" />
       <workItem from="1777621375684" duration="9948000" />
-      <workItem from="1777884277311" duration="3630000" />
+      <workItem from="1777884277311" duration="7527000" />
     </task>
     <task id="LOCAL-00001" summary="Añadido la creacion de vehiculos y guardar la imagen">
       <option name="closed" value="true" />
@@ -363,7 +332,71 @@
       <option name="project" value="LOCAL" />
       <updated>1777888280666</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Limpieza Maven">
+      <option name="closed" value="true" />
+      <created>1777888769443</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1777888769443</updated>
+    </task>
+    <task id="LOCAL-00023" summary="&quot;Dockerfile actualizado con multi-stage build&quot;">
+      <option name="closed" value="true" />
+      <created>1777888892598</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1777888892598</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Dockerfile optimizado para evitar problemas de ruta">
+      <option name="closed" value="true" />
+      <created>1777889092765</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1777889092765</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Dockerfile corregido: copia de pom.xml explícita">
+      <option name="closed" value="true" />
+      <created>1777889288215</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1777889288215</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Dockerfile simplificado con copia recursiva">
+      <option name="closed" value="true" />
+      <created>1777889369650</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1777889369650</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Dockerfile con ruta /workspace/app explícita">
+      <option name="closed" value="true" />
+      <created>1777889459061</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1777889459061</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Fix: rutas de Render y nombre de JAR con comodín">
+      <option name="closed" value="true" />
+      <created>1777889757116</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1777889757116</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Subido para salud server">
+      <option name="closed" value="true" />
+      <created>1777890533094</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1777890533094</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -387,6 +420,14 @@
     <MESSAGE value="Añadido envio de email y reestablecer contraseña y eliminacion de campos que no se utilizan" />
     <MESSAGE value="Añadido Dockerfile" />
     <MESSAGE value="Modificado Dockerfile" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modificado Dockerfile" />
+    <MESSAGE value="Limpieza Maven" />
+    <MESSAGE value="&quot;Dockerfile actualizado con multi-stage build&quot;" />
+    <MESSAGE value="Dockerfile optimizado para evitar problemas de ruta" />
+    <MESSAGE value="Dockerfile corregido: copia de pom.xml explícita" />
+    <MESSAGE value="Dockerfile simplificado con copia recursiva" />
+    <MESSAGE value="Dockerfile con ruta /workspace/app explícita" />
+    <MESSAGE value="Fix: rutas de Render y nombre de JAR con comodín" />
+    <MESSAGE value="Subido para salud server" />
+    <option name="LAST_COMMIT_MESSAGE" value="Subido para salud server" />
   </component>
 </project>
