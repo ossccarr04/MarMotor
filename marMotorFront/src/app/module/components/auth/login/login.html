@@ -10,6 +10,7 @@
           formControlName="email"
           placeholder="ejemplo@correo.com"
           [class.is-invalid]="f['email'].invalid && f['email'].touched"
+          [readOnly]="isBlocked"
         />
 
         @if (f['email'].invalid && f['email'].touched) {
@@ -31,9 +32,10 @@
             placeholder="••••••••"
             autocomplete="current-password"
             [class.is-invalid]="f['password'].invalid && f['password'].touched"
+            [readOnly]="isBlocked"
           />
 
-          <button type="button" class="toggle-eye" (click)="togglePassword()" tabindex="-1">
+          <button type="button" class="toggle-eye" (click)="togglePassword()" tabindex="-1" [disabled]="isBlocked">
             @if (passwordVisible) {
               <i class="fa-solid fa-eye-slash"></i>
             } @else {
@@ -54,7 +56,16 @@
         }
       </div>
 
-      <button type="submit" class="btn-submit">Iniciar sesión</button>
+      <!-- Throttler Block Message -->
+      @if (isBlocked) {
+        <div class="block-message">
+          <p>Demasiados intentos. Podrás volver a intentarlo en:</p>
+          <div class="countdown">{{ formattedTime }}</div>
+        </div>
+      }
+
+      <button type="submit" class="btn-submit" [disabled]="loginForm.invalid || isBlocked">{{ isBlocked ? 'Bloqueado' : 'Iniciar sesión' }}</button>
+      
       <div class="forgot-password-container">
         <a
           (click)="isForgotPasswordOpen = true"
@@ -76,5 +87,3 @@
 }
   </div>
 </div>
-
-
