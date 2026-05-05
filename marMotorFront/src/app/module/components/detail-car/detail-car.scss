@@ -134,35 +134,41 @@ $font-family: 'Montserrat', sans-serif;
   }
 }
 
-/* --- CABECERA (RESPONSIVE) --- */
+
 .detail-header {
   max-width: 1200px;
   margin: 0 auto 20px;
   padding: 0 20px;
   color: white;
   display: flex;
+  
+  
+  flex-wrap: wrap; 
   justify-content: space-between;
   align-items: center;
   gap: 15px;
   transition: opacity 0.3s;
 
   @media (min-width: 768px) {
-    flex-direction: row; /* En PC se ponen uno a cada lado */
-    align-items: center;
+    flex-wrap: nowrap; 
     margin-bottom: 30px;
   }
 
   .title-group {
-    flex: 1;
-    min-width: 0; /* Previene que textos largos de la marca rompan el header flex */
+    flex: 1 1 100%; 
+    min-width: 0; 
+    
+    @media (min-width: 768px) {
+      flex: 1; 
+    }
   }
 
   h1 {
-    font-size: 20px; /* Ajustado para móvil */
+    font-size: 20px; 
     font-weight: 800;
     margin: 0;
     line-height: 1.2;
-    word-wrap: break-word; /* Rompe el texto si es una palabra exageradamente larga */
+    word-wrap: break-word; 
     @media (min-width: 768px) {
       font-size: 32px;
     }
@@ -179,15 +185,44 @@ $font-family: 'Montserrat', sans-serif;
     }
   }
 
+  .admin-actions {
+    
+    .btn-edit {
+      background-color: transparent;
+      color: $accent-green;
+      border: 1px solid $accent-green;
+      padding: 8px 16px; 
+      border-radius: 20px; 
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px; 
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: $accent-green;
+        color: #0b1624; 
+        transform: translateY(-2px);
+      }
+      
+      i {
+        font-size: 14px;
+      }
+    }
+  }
+
   .nav-arrows {
     display: flex;
     gap: 15px;
+    margin-left: auto; 
 
     .arrow {
       background: rgba(255, 255, 255, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.2);
       color: white;
-      width: 36px; /* Flechas un poco más pequeñas en móvil */
+      width: 36px; 
       height: 36px;
       border-radius: 50%;
       cursor: pointer;
@@ -206,7 +241,7 @@ $font-family: 'Montserrat', sans-serif;
 
       &:hover {
         background: $accent-green;
-        color: $dark-navy-banner;
+        color: #0b1624; 
         transform: scale(1.1);
       }
     }
@@ -234,7 +269,7 @@ $font-family: 'Montserrat', sans-serif;
   align-items: center;
   justify-content: center;
   position: relative;
-    overflow: hidden; // Para que la imagen no se salga al hacer pan
+  overflow: hidden; // Para que la imagen no se salga al hacer pan
   z-index: 10;
   transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
   overflow: hidden;

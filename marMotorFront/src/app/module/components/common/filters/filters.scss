@@ -445,22 +445,28 @@ $text-dark: #333;
   }
 }
 
-/* BOTONES DE ACCIÓN */
+
 .action-buttons-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 15px;
-  margin-right: 15px;
-  margin-top: 30px;
+  
+  margin: 30px auto 0; 
+  width: 90%;
+  max-width: 400px; 
+
+
   @media (min-width: 768px) {
     flex-direction: row;
     justify-content: center;
     gap: 20px;
+    width: 100%; // En escritorio recuperamos el comportamiento normal
+    max-width: none;
   }
 
   button {
-    width: 100%;
+    width: 100%; // Como el contenedor ahora mide max 400px, los botones se adaptarán perfecto
     padding: 15px 35px;
     border-radius: 30px;
     font-size: 16px;
@@ -469,8 +475,9 @@ $text-dark: #333;
     transition: all 0.3s ease;
     border: none;
     text-transform: uppercase;
+    
     @media (min-width: 768px) {
-      width: auto;
+      width: auto; // En escritorio se adaptan al texto
     }
   }
 
