@@ -87,11 +87,22 @@ export class Filters implements OnInit {
   busquedaAdmin: string = '';
   resultadosAdmin: any[] = [];
   isAdminV: boolean = false; 
+  private internalLoading: boolean = true;
+  private loadingCounter = 0;
 
   @ViewChild('sliderElement') sliderElement!: ElementRef;
 
+  get isLoading(): boolean {
+    // Si el padre manda el estado de carga (como en /cars), se respeta.
+    // Si no (como en /home), usa su propio estado de carga interno.
+    return this.cargando || this.internalLoading;
+  }
+
   ngOnInit(): void {
-    this.isAdmin()
+    // Establecemos el contador de las llamadas asíncronas que haremos
+    this.loadingCounter = 3; // 1 para marcas, 1 para carrocerías, 1 para combustibles
+
+    this.isAdmin();
     this.limpiezaFiltros();
     // 1. Cargar Marcas
     this.cargarMarcasSegunEstado();
@@ -107,11 +118,21 @@ export class Filters implements OnInit {
         const bodyFromUrl = this.getParamFromUrl('bodyType');
         if (bodyFromUrl) this.seleccionarCarroceriaPorNombre(bodyFromUrl);
         this.cdr.detectChanges();
+        this.checkLoadingComplete();
       },
+      error: () => this.checkLoadingComplete(),
     });
 
     // 3. Cargar Combustibles
     this.actualizarCombustiblesDinamicos();
+  }
+
+  private checkLoadingComplete(): void {
+    this.loadingCounter--;
+    if (this.loadingCounter <= 0) {
+      this.internalLoading = false;
+      this.cdr.detectChanges();
+    }
   }
 
   actualizarCombustiblesDinamicos() {
@@ -131,7 +152,9 @@ export class Filters implements OnInit {
         const fuelFromUrl = this.getParamFromUrl('fuelType');
         if (fuelFromUrl) this.seleccionarCombustiblePorNombre(fuelFromUrl);
         this.cdr.detectChanges();
+        this.checkLoadingComplete();
       },
+      error: () => this.checkLoadingComplete(),
     });
   }
 
@@ -157,8 +180,12 @@ export class Filters implements OnInit {
           this.seleccionarMarca({ name: brandFromUrl });
         }
         this.cdr.detectChanges();
+        this.checkLoadingComplete();
       },
-      error: (err) => console.error('Error cargando marcas dinámicas:', err),
+      error: (err) => {
+        console.error('Error cargando marcas dinámicas:', err);
+        this.checkLoadingComplete();
+      },
     });
   }
 

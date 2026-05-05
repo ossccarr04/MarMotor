@@ -2,6 +2,7 @@
   <section class="filters-section-wrapper">
     <div class="container-mx">
       <app-filters
+        [cargando]="cargando"
         [initialFilters]="filtrosSeleccionados"
         [limiteMarcas]="5"
         (onFilterChange)="aplicarFiltros($event)"

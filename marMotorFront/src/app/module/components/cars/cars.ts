@@ -79,6 +79,11 @@ export class Cars implements OnInit, OnDestroy {
    * y luego procede a cargar la lista de coches aplicando esos favoritos.
    */
   private cargarFavoritosYCoches(params: any): void {
+    this.cargando = true;
+    this.cochesFiltrados = [];
+    this.cochesVisibles = [];
+    this.cdr.detectChanges(); // Forzamos la detección de cambios para mostrar el estado de carga
+
     if (this.authService.isLoggedIn()) {
       this.favoriteService.getMyFavorites().subscribe({
         next: (favs) => {
@@ -117,8 +122,6 @@ export class Cars implements OnInit, OnDestroy {
   }
 
   cargarCoches(filtrosNuevos: any = {}) {
-    this.cargando = true;
-    this.cochesFiltrados = [];
     // 1. LA ÚNICA REGLA: ¿Qué dice el interruptor de Admin ahora mismo?
     const quiereVerVendidos = this.carService.mantenerVendidosActivo;
 
