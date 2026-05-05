@@ -4,16 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Subido para salud server">
+    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Arreglo eliminar coches por favoritos">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/config/CacheConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/exception/ThrottledException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/IpAddressService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/LoginAttemptService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/BodyTypeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/BodyTypeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/BrandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/BrandController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/CarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/CarController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/CarImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/CarImageController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/FavoriteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/FavoriteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/FuelTypeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/FuelTypeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/AuthService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +161,9 @@
       <workItem from="1777493096715" duration="715000" />
       <workItem from="1777529941032" duration="1314000" />
       <workItem from="1777621375684" duration="9948000" />
-      <workItem from="1777884277311" duration="7527000" />
+      <workItem from="1777884277311" duration="13539000" />
+      <workItem from="1777964076112" duration="2211000" />
+      <workItem from="1777989227667" duration="1070000" />
     </task>
     <task id="LOCAL-00001" summary="Añadido la creacion de vehiculos y guardar la imagen">
       <option name="closed" value="true" />
@@ -396,19 +397,93 @@
       <option name="project" value="LOCAL" />
       <updated>1777890533094</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Subido para salud server">
+      <option name="closed" value="true" />
+      <created>1777896933643</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1777896933643</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Configuracion del corss">
+      <option name="closed" value="true" />
+      <created>1777897511938</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1777897511938</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Modificacion del correo">
+      <option name="closed" value="true" />
+      <created>1777903017400</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1777903017400</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Modificacion del correo en pom">
+      <option name="closed" value="true" />
+      <created>1777903295343</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1777903295343</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Modificacion del correo en pom">
+      <option name="closed" value="true" />
+      <created>1777904407054</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1777904407054</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Envio al propio gmail y a la api">
+      <option name="closed" value="true" />
+      <created>1777905804958</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1777905804958</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Envio al propio gmail">
+      <option name="closed" value="true" />
+      <created>1777906368421</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1777906368421</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Arreglo eliminar coches por favoritos">
+      <option name="closed" value="true" />
+      <created>1777964329660</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1777964329660</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Arreglo eliminar coches por favoritos">
+      <option name="closed" value="true" />
+      <created>1777964342063</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1777964342063</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Arreglo eliminar coches por favoritos">
+      <option name="closed" value="true" />
+      <created>1777965092121</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1777965092121</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Modificaciones en todo el apartado de car e incremento de prueba de coches" />
-    <MESSAGE value="Añadido la creacion de vehiculos y guardar la imagen" />
-    <MESSAGE value="Modificado para editar vehiculos y correccion de eliminar imagenes" />
-    <MESSAGE value="Añadido buscador para administrador" />
-    <MESSAGE value="Añadido fecha venta y fecha creacion" />
-    <MESSAGE value="Añadido endpoints para mostrar los datos de coches vendidos" />
     <MESSAGE value="Añadido todo lo de etiquetas corregido" />
     <MESSAGE value="Todo el backend corregido" />
     <MESSAGE value="Todo el backend corregido con etiquetas ambientales" />
@@ -428,6 +503,12 @@
     <MESSAGE value="Dockerfile con ruta /workspace/app explícita" />
     <MESSAGE value="Fix: rutas de Render y nombre de JAR con comodín" />
     <MESSAGE value="Subido para salud server" />
-    <option name="LAST_COMMIT_MESSAGE" value="Subido para salud server" />
+    <MESSAGE value="Configuracion del corss" />
+    <MESSAGE value="Modificacion del correo" />
+    <MESSAGE value="Modificacion del correo en pom" />
+    <MESSAGE value="Envio al propio gmail y a la api" />
+    <MESSAGE value="Envio al propio gmail" />
+    <MESSAGE value="Arreglo eliminar coches por favoritos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Arreglo eliminar coches por favoritos" />
   </component>
 </project>
