@@ -226,10 +226,9 @@ $font-family: 'Montserrat', sans-serif;
 
 .main-photo-card {
   width: 100%;
-  // Eliminamos los height fijos conflictivos y usamos una proporción lógica
   height: auto;
-  aspect-ratio: 16 / 9; // Proporción cinematográfica ideal para coches
-  background: #0b1624; // Fondo oscuro para que combine con tu banner si hay bordes
+  aspect-ratio: 16 / 9; // Unificamos la proporción para que móvil y escritorio escalen igual
+  background: #000000; // Fondo negro puro para que el pilarbox se fusione si el coche no llena el 100%
   border-radius: 20px;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
   display: flex;
@@ -240,26 +239,16 @@ $font-family: 'Montserrat', sans-serif;
   transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
   overflow: hidden;
 
-  @media (min-width: 768px) {
-    height: 550px; // Altura fija para escritorio
-    aspect-ratio: auto;
-    border-radius: 25px;
-
-    img {
-      // Importante: En escritorio también usamos cover para que el coche llene la tarjeta
-      object-fit: contain;
-      object-position: center 60%; // Ajusta un poco el "foco" hacia abajo para no cortar ruedas
-    }
-  }
-
   img {
     width: 100%;
     height: 100%;
-    object-fit: cover; // Llenado total sin deformar
-    object-position: center; // Centrado automático
+    object-fit: contain;
+    object-position: center; 
     transition: all 0.5s ease;
     display: block;
   }
+
+
 
   &.is-zoomed {
     position: fixed;
@@ -278,11 +267,11 @@ $font-family: 'Montserrat', sans-serif;
     justify-content: center;
 
     img {
-      max-width: 95%;
-      max-height: 95%;
-      width: auto; // En zoom no queremos que se estire a la fuerza
-      height: auto;
-      object-fit: contain; // Ver el coche completo sin recortes
+       max-width: 95%;
+       max-height: 95%;
+       width: auto;
+       height: auto;
+       object-fit: contain; // Ver el coche completo en zoom
     }
 
     .zoom-btn-detail {
@@ -293,6 +282,18 @@ $font-family: 'Montserrat', sans-serif;
         color: white;
       }
       font-size: 0;
+    }
+  }
+
+    @media (min-width: 768px) {
+    height: 550px; // Altura fija para escritorio
+    aspect-ratio: auto;
+    border-radius: 25px;
+
+    img {
+      // Importante: En escritorio también usamos cover para que el coche llene la tarjeta
+      object-fit: contain;
+      object-position: center 60%; // Ajusta un poco el "foco" hacia abajo para no cortar ruedas
     }
   }
 }
