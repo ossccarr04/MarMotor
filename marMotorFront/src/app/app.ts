@@ -1,7 +1,8 @@
 import { Component, inject, signal, OnDestroy } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Header } from './module/components/common/header/header';
 import { AuthServiceBBDD } from './module/services/auth-service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -24,8 +25,20 @@ export class App implements OnDestroy {
   serverMessage = signal('Contactando con el servidor...');
   private countdownInterval: any;
 
+  // Visibilidad del Header
+  mostrarHeader = signal(true);
+
   constructor() {
     this.wakeUpServer();
+
+    // Escuchar eventos de navegación para mostrar/ocultar el header de forma reactiva
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      const rutasSinHeader = ['/auth/login', '/auth/register', '/auth/reset-password'];
+      const rutaActualLimpia = event.urlAfterRedirects.split('?')[0];
+      this.mostrarHeader.set(!rutasSinHeader.includes(rutaActualLimpia));
+    });
   }
 
   wakeUpServer() {
@@ -83,11 +96,5 @@ export class App implements OnDestroy {
 
   ngOnDestroy() {
     this.stopCountdown(); // Limpieza por seguridad
-  }
-
-  get mostrarHeader(): boolean {
-    const rutasSinHeader = ['/auth/login', '/auth/register', '/auth/reset-password'];
-    const rutaActualLimpia = this.router.url.split('?')[0];
-    return !rutasSinHeader.includes(rutaActualLimpia);
   }
 }

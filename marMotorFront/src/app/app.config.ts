@@ -9,9 +9,7 @@ import { authInterceptor } from './interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(
-      withInterceptors([authInterceptor])
-    ),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     provideAnimations(), 
     provideToastr({
       timeOut: 3000,
@@ -20,9 +18,6 @@ export const appConfig: ApplicationConfig = {
     }),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes), 
-    provideHttpClient(withFetch()),
     provideClientHydration(withEventReplay())
   ],
 };
-
-
