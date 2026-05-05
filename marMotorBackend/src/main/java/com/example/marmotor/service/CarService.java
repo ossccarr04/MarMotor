@@ -223,6 +223,7 @@ public class CarService {
         Car car= carRepository.findById(id).orElseThrow();
         Long brandId= car.getBrand().getId();
 
+        carRepository.deleteCarFromAllFavorites(id);
         carRepository.deleteById(id);
 
         if(!carRepository.existsByBrandId(brandId)){
