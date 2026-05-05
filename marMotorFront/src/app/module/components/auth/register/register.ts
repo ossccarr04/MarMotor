@@ -89,10 +89,10 @@ export class Register {
       error: (err) => {
 
         if (err.status === 403 || err.error?.code === environment.PROTECTED_EMAILS) {
-          this.toast.error('Este correo electrónico está reservado.', 'Error de Seguridad');
+          this.toast.error('No se ha podido completar el registro con los datos proporcionados. Por favor, verifica tu información o, si ya tienes una cuenta, intenta iniciar sesión.', 'Error de Seguridad');
           this.registerForm.get('email')?.setErrors({ emailProtegido: true });
         } else if (err.status === 409) {
-          this.toast.warning('El correo ya está registrado.', 'Aviso');
+          this.toast.warning('No se ha podido completar el registro con los datos proporcionados. Por favor, verifica tu información o, si ya tienes una cuenta, intenta iniciar sesión.', 'Aviso');
         } else {
           this.toast.error('No se pudo completar el registro. Inténtalo más tarde.', 'Error');
         }
