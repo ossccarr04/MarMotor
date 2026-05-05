@@ -227,8 +227,7 @@ $font-family: 'Montserrat', sans-serif;
 .main-photo-card {
   width: 100%;
   height: auto;
-  aspect-ratio: 4 / 3; // Unificamos la proporción para que móvil y escritorio escalen igual
-  background: #0b1624; // Fondo negro puro para que el pilarbox se fusione si el coche no llena el 100%
+  aspect-ratio: 16 / 9; // Proporción más panorámica
   border-radius: 20px;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
   display: flex;
@@ -242,13 +241,10 @@ $font-family: 'Montserrat', sans-serif;
   img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    object-position: center 60%; 
+    object-fit: cover; // Asegura que la imagen cubra todo el contenedor
     transition: all 0.5s ease;
     display: block;
   }
-
-
 
   &.is-zoomed {
     position: fixed;
@@ -267,11 +263,11 @@ $font-family: 'Montserrat', sans-serif;
     justify-content: center;
 
     img {
-       max-width: 95%;
-       max-height: 95%;
-       width: auto;
-       height: auto;
-       object-fit: contain; // Ver el coche completo en zoom
+      max-width: 95%;
+      max-height: 95%;
+      width: auto;
+      height: auto;
+      object-fit: contain; // Ver el coche completo en zoom
     }
 
     .zoom-btn-detail {
@@ -285,20 +281,13 @@ $font-family: 'Montserrat', sans-serif;
     }
   }
 
-    @media (min-width: 768px) {
-    height: 550px; 
-    width: 100%;
-    max-width: 1000px; 
+  @media (min-width: 768px) {
+    max-width: 1000px;
     margin: 0 auto;
-    
-    border-radius: 25px;
 
-    img {
-      object-fit: contain; 
-    }
+    border-radius: 25px;
   }
 }
-
 /* Controles dentro de la foto */
 .float-arrow {
   position: absolute;
@@ -343,21 +332,21 @@ $font-family: 'Montserrat', sans-serif;
   left: 15px;
   z-index: 20;
   cursor: pointer;
-  
-  color: #ffffff; 
-  background: rgba(255, 255, 255, 0.15); 
+
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.3); 
-  
-  width: 30px; 
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  width: 30px;
   height: 30px;
-  border-radius: 50%; 
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 22px;
-  
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); 
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   &:hover {
@@ -365,9 +354,8 @@ $font-family: 'Montserrat', sans-serif;
     transform: scale(1.1);
   }
 
-
   &.is-liked {
-    transform: scale(1.15); 
+    transform: scale(1.15);
   }
 
   @media (min-width: 768px) {
@@ -558,7 +546,6 @@ $font-family: 'Montserrat', sans-serif;
   -ms-user-select: none; /* IE 10+ */
   cursor: grab; /* Indica que es arrastrable */
 
-
   // Las reglas !important se añadirán si es necesario para sobrescribir estilos globales de html, body
   -webkit-overflow-scrolling: touch;
 
@@ -688,11 +675,14 @@ $font-family: 'Montserrat', sans-serif;
       .title .tick-success {
         color: #10b981 !important; // Sobrescribe cualquier color de .title
       }
-
     }
   }
   // Aseguramos que los elementos internos también prevengan la selección de texto
-  .timeline-items, .timeline-node, .node-icon, .node-point, .node-info {
+  .timeline-items,
+  .timeline-node,
+  .node-icon,
+  .node-point,
+  .node-info {
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -1046,7 +1036,6 @@ $font-family: 'Montserrat', sans-serif;
     // La regla de color más específica para el tick se define dentro de .is-completed
   }
 
-
   /* Animations */
   @keyframes shine-gradient {
     0% {
@@ -1192,7 +1181,10 @@ $font-family: 'Montserrat', sans-serif;
 
       .contact-cards-subgrid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); // Grid responsivo para las tarjetas dentro de un grupo
+        grid-template-columns: repeat(
+          auto-fit,
+          minmax(200px, 1fr)
+        ); // Grid responsivo para las tarjetas dentro de un grupo
         gap: 15px;
         justify-items: center; // Centra las tarjetas dentro de sus celdas de la cuadrícula
         width: 100%; // Ocupa todo el ancho del grupo
@@ -1270,7 +1262,8 @@ $font-family: 'Montserrat', sans-serif;
             color: rgba($accent-green, 0.5);
           }
         }
-        .card-label, .card-value {
+        .card-label,
+        .card-value {
           color: #a0a0a0; // Texto más claro para el estado deshabilitado
         }
         font-size: 16px;
@@ -1312,8 +1305,8 @@ $font-family: 'Montserrat', sans-serif;
         margin-bottom: 8px;
       }
 
-      input[type="text"],
-      input[type="email"],
+      input[type='text'],
+      input[type='email'],
       textarea {
         width: 100%;
         padding: 12px 15px;
@@ -1385,8 +1378,13 @@ $font-family: 'Montserrat', sans-serif;
 @media (max-width: 768px) {
   .modal-content.contact-seller-modal {
     padding: 25px;
-    h3 { font-size: 22px; } // Tamaño de fuente ajustado
-    .modal-subtitle { font-size: 14px; margin-bottom: 20px; } // Tamaño de fuente y margen ajustados
+    h3 {
+      font-size: 22px;
+    } // Tamaño de fuente ajustado
+    .modal-subtitle {
+      font-size: 14px;
+      margin-bottom: 20px;
+    } // Tamaño de fuente y margen ajustados
     .contact-options-grid {
       flex-direction: column; // Apilar grupos en pantallas pequeñas
       .contact-group {
@@ -1395,14 +1393,30 @@ $font-family: 'Montserrat', sans-serif;
       }
       gap: 15px;
     }
-    h4 { font-size: 18px; margin-bottom: 15px; }
+    h4 {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
     .contact-form {
       gap: 10px;
-      .form-group { margin-bottom: 5px; }
-      label { font-size: 13px; }
-      input, textarea { padding: 10px 12px; font-size: 14px; }
-      .error-text { font-size: 11px; }
-      .btn-submit-contact { padding: 12px 20px; font-size: 15px; }
+      .form-group {
+        margin-bottom: 5px;
+      }
+      label {
+        font-size: 13px;
+      }
+      input,
+      textarea {
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+      .error-text {
+        font-size: 11px;
+      }
+      .btn-submit-contact {
+        padding: 12px 20px;
+        font-size: 15px;
+      }
     }
     .contact-card {
       flex-direction: row; // Mantener la dirección de fila para las tarjetas
