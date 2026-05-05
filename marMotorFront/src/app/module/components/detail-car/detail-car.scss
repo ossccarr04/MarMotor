@@ -227,8 +227,8 @@ $font-family: 'Montserrat', sans-serif;
 .main-photo-card {
   width: 100%;
   height: auto;
-  aspect-ratio: 16 / 9; // Unificamos la proporción para que móvil y escritorio escalen igual
-  background: #000000; // Fondo negro puro para que el pilarbox se fusione si el coche no llena el 100%
+  aspect-ratio: 4 / 3; // Unificamos la proporción para que móvil y escritorio escalen igual
+  background: #0b1624; // Fondo negro puro para que el pilarbox se fusione si el coche no llena el 100%
   border-radius: 20px;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
   display: flex;
@@ -338,16 +338,43 @@ $font-family: 'Montserrat', sans-serif;
 
 .heart-icon-detail {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  cursor: pointer;
-  font-size: 22px;
+  top: 15px;
+  left: 15px;
   z-index: 20;
-  color: #051121;
+  cursor: pointer;
+  
+  color: #ffffff; 
+  background: rgba(255, 255, 255, 0.15); 
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3); 
+  
+  width: 45px; 
+  height: 45px;
+  border-radius: 50%; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); 
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+
+
+  &.is-liked {
+    transform: scale(1.15); 
+  }
+
   @media (min-width: 768px) {
     top: 20px;
     left: 20px;
-    font-size: 28px;
+    width: 55px;
+    height: 55px;
+    font-size: 26px;
   }
 }
 
