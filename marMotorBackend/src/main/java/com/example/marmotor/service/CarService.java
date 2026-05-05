@@ -219,6 +219,7 @@ public class CarService {
         });
     }
 
+    @Transactional
     public void deleteCar(Long id) {
         Car car= carRepository.findById(id).orElseThrow();
         Long brandId= car.getBrand().getId();
