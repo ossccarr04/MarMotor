@@ -24,7 +24,7 @@ export class App implements OnDestroy {
   serverMessage = signal('Contactando con el servidor...');
   private countdownInterval: any;
 
-  ngOnInit() {
+  constructor() {
     this.wakeUpServer();
   }
 
