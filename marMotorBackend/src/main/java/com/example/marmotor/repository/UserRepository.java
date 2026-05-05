@@ -21,4 +21,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT c FROM User u JOIN u.favoriteCars c WHERE u.email = :email")
     List<Car> findFavoriteCarsByUserEmail(@Param("email") String email);
 
+    boolean existsByEmail(String email);
 }

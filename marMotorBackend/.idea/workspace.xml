@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Arreglo eliminar coches por favoritos">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/config/CacheConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/exception/ThrottledException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/IpAddressService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/LoginAttemptService.java" afterDir="false" />
+    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Añadido servicio para la prueba del login seguro">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/AuthService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -163,7 +158,8 @@
       <workItem from="1777621375684" duration="9948000" />
       <workItem from="1777884277311" duration="13539000" />
       <workItem from="1777964076112" duration="2211000" />
-      <workItem from="1777989227667" duration="1070000" />
+      <workItem from="1777989227667" duration="2035000" />
+      <workItem from="1778011120270" duration="183000" />
     </task>
     <task id="LOCAL-00001" summary="Añadido la creacion de vehiculos y guardar la imagen">
       <option name="closed" value="true" />
@@ -477,14 +473,21 @@
       <option name="project" value="LOCAL" />
       <updated>1777965092121</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="Añadido servicio para la prueba del login seguro">
+      <option name="closed" value="true" />
+      <created>1777990551974</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1777990551974</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Añadido todo lo de etiquetas corregido" />
     <MESSAGE value="Todo el backend corregido" />
     <MESSAGE value="Todo el backend corregido con etiquetas ambientales" />
     <MESSAGE value="Añadida proteccion de rutas, modificacion de metodos de auth" />
@@ -509,6 +512,7 @@
     <MESSAGE value="Envio al propio gmail y a la api" />
     <MESSAGE value="Envio al propio gmail" />
     <MESSAGE value="Arreglo eliminar coches por favoritos" />
-    <option name="LAST_COMMIT_MESSAGE" value="Arreglo eliminar coches por favoritos" />
+    <MESSAGE value="Añadido servicio para la prueba del login seguro" />
+    <option name="LAST_COMMIT_MESSAGE" value="Añadido servicio para la prueba del login seguro" />
   </component>
 </project>

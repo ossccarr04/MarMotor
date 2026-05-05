@@ -63,8 +63,12 @@ public class AuthService implements UserDetailsService {
     }
 
     public User register(User user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("No se ha podido completar el registro con los datos proporcionados. Por favor, verifica tu información o, si ya tienes una cuenta, intenta iniciar sesión.");
+        }
+
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
-            throw new RuntimeException("El nombre de usuario ya está en uso");
+            throw new RuntimeException("No se ha podido completar el registro con los datos proporcionados. Por favor, verifica tu información o, si ya tienes una cuenta, intenta iniciar sesión.");
         }
         user.setPassword(passwordEncoderConfig.passwordEncoder().encode(user.getPassword()));
         if (user.getRole() == null) user.setRole(User.Role.USER);
@@ -72,12 +76,9 @@ public class AuthService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    // 2. Modificamos la firma del método login
     public AuthResponse login(LoginRequest request, HttpServletRequest httpRequest) {
-        // 3. Obtenemos la IP del cliente
         String ip = ipAddressService.getClientIp(httpRequest);
 
-        // 4. Comprobamos si la IP está bloqueada
         if (loginAttemptService.isBlocked(ip)) {
             throw new ThrottledException("Cliente bloqueado por demasiados intentos fallidos.");
         }
@@ -90,7 +91,6 @@ public class AuthService implements UserDetailsService {
                 throw new BadCredentialsException("Usuario no encontrado o credenciales incorrectas");
             }
 
-            // 5. Si el login es exitoso, reseteamos el contador de intentos para esta IP
             loginAttemptService.loginSucceeded(ip);
 
             String token = Jwts.builder()
