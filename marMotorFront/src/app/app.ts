@@ -20,7 +20,7 @@ export class App implements OnDestroy {
   serverReady = false;
   
   // Lógica de cuenta atrás
-  countdown = signal(50);
+  countdown = signal(90);
   serverMessage = signal('Contactando con el servidor...');
   private countdownInterval: any;
 
@@ -29,13 +29,13 @@ export class App implements OnDestroy {
   }
 
   wakeUpServer() {
-    // Si a los 3 segundos no ha respondido, activamos el aviso y la cuenta atrás
+    // Si a los 2 segundos no ha respondido, activamos el aviso y la cuenta atrás
     const timeout = setTimeout(() => {
       if (!this.serverReady) {
         this.isServerSleeping = true;
         this.startCountdown();
       }
-    }, 3000); 
+    }, 2000); 
 
     this.authService.checkServerHealth().subscribe({
       next: () => {

@@ -6,11 +6,11 @@
         <div class="text-container">
           <p>
             <strong>{{ serverMessage() }}</strong><br>
-            <span>La base de datos se está activando. Tiempo estimado: {{ countdown() }}s</span>
+            <span>Los datos se están cargando. Tiempo estimado: {{ countdown() }}s</span>
           </p>
           
           <div class="progress-track">
-            <div class="progress-fill" [style.width.%]="(50 - countdown()) * 2"></div>
+            <div class="progress-fill" [style.width.%]="(90 - countdown()) * 2"></div>
           </div>
         </div>
       </div>

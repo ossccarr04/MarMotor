@@ -33,6 +33,7 @@ import { UserRoles } from '../../../../@types/enums/roles.enums';
   styleUrl: './filters.scss',
 })
 export class Filters implements OnInit {
+  @Input() cargando: boolean = false;
   @Input() limiteMarcas: number = 10;
 
   @Input() set initialFilters(value: any) {

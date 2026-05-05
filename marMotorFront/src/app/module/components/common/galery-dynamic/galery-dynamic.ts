@@ -28,6 +28,7 @@ export class GaleryDynamic {
   BadgeType = BadgeType;
   badgeLabel= BadgeLabel
   filtroSeleccionado: BadgeType = BadgeType.NONE;
+  public cargando = true;
   cochesOriginal: CarDTO[] = [];
   coches: CarDTO[] = [];
   cochesFiltradoDetail: CarDTO[] = [];
@@ -77,9 +78,11 @@ export class GaleryDynamic {
 
         this.cochesFiltradoDetail = [...this.coches];
         this.cdr.detectChanges();
+        this.cargando = false;
       },
       error: (err) => {
         console.error('Error de conexión o de API:', err);
+        this.cargando = false;
       },
     });
   }
