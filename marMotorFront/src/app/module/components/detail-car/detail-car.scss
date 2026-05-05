@@ -243,7 +243,7 @@ $font-family: 'Montserrat', sans-serif;
     width: 100%;
     height: 100%;
     object-fit: contain;
-    object-position: center; 
+    object-position: center 60%; 
     transition: all 0.5s ease;
     display: block;
   }
@@ -289,11 +289,12 @@ $font-family: 'Montserrat', sans-serif;
     height: 550px; // Altura fija para escritorio
     aspect-ratio: auto;
     border-radius: 25px;
+    width: 100%;
 
     img {
-      // Importante: En escritorio también usamos cover para que el coche llene la tarjeta
+
       object-fit: contain;
-      object-position: center 60%; // Ajusta un poco el "foco" hacia abajo para no cortar ruedas
+      object-position: center 60%; 
     }
   }
 }
@@ -348,8 +349,8 @@ $font-family: 'Montserrat', sans-serif;
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.3); 
   
-  width: 45px; 
-  height: 45px;
+  width: 30px; 
+  height: 30px;
   border-radius: 50%; 
   display: flex;
   align-items: center;

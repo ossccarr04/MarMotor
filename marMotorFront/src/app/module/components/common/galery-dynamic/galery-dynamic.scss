@@ -108,10 +108,10 @@ $font-family: 'Montserrat', sans-serif;
     }
 
     &.is-dragging {
-    scroll-snap-type: none !important;
-    scroll-behavior: auto !important;
-    cursor: grabbing;
-  }
+      scroll-snap-type: none !important;
+      scroll-behavior: auto !important;
+      cursor: grabbing;
+    }
 
     /* Ocultar scrollbar */
     &::-webkit-scrollbar {
@@ -144,7 +144,10 @@ $font-family: 'Montserrat', sans-serif;
       button {
         pointer-events: auto;
       }
-      img { pointer-events: none; -webkit-user-drag: none; }
+      img {
+        pointer-events: none;
+        -webkit-user-drag: none;
+      }
       @media (min-width: 768px) {
         flex: 0 0 340px;
         scroll-snap-align: start;
@@ -195,20 +198,42 @@ $font-family: 'Montserrat', sans-serif;
 
         .heart-icon {
           position: absolute;
-          top: 12px;
-          right: 12px;
-          font-size: 24px;
+          top: 15px;
+          left: 15px;
+          z-index: 20;
           cursor: pointer;
+
           color: #ffffff;
-          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
-          transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          background: rgba(255, 255, 255, 0.15);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 22px;
+
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+          transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
           &:hover {
-            transform: scale(1.2);
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
           }
+
           &.is-liked {
-            color: #ff4757;
-            animation: latido 0.3s ease-in-out;
+            transform: scale(1.15);
+          }
+
+          @media (min-width: 768px) {
+            top: 20px;
+            left: 20px;
+            width: 55px;
+            height: 55px;
+            font-size: 26px;
           }
         }
       }
