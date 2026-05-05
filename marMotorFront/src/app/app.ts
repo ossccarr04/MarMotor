@@ -60,11 +60,11 @@ export class App implements OnDestroy {
       const current = this.countdown();
       
       // Cambiamos el mensaje según el tiempo restante
-      if (current > 40) {
+      if (current > 72) {
         this.serverMessage.set('Despertando el sistema de MarMotor...');
-      } else if (current > 25) {
+      } else if (current > 45) {
         this.serverMessage.set('Calentando motores y revisando inventario...');
-      } else if (current > 10) {
+      } else if (current > 18) {
         this.serverMessage.set('Casi listo, abriendo las puertas del concesionario...');
       } else if (current > 0) {
         this.serverMessage.set('Entrando en 3, 2, 1...');
