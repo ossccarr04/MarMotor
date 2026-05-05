@@ -62,6 +62,14 @@ export class DetailCar implements OnInit, OnDestroy {
   isAdmin: boolean = false; 
   private scrollPosition: number = 0;
 
+  // --- Propiedades para Zoom y Paneo ---
+  zoomLevel = 1;
+  imagePosition = { x: 0, y: 0 };
+  isDraggingImage = false;
+  private dragStart = { x: 0, y: 0 };
+  private lastImagePosition = { x: 0, y: 0 };
+  private initialPinchDistance: number | null = null; // Para el gesto de "pellizco" en móvil
+
   // Contact Seller properties
   showContactSellerModal: boolean = false;
   contactForm!: FormGroup;
@@ -238,7 +246,17 @@ export class DetailCar implements OnInit, OnDestroy {
       this.renderer.removeStyle(document.body, 'overflow');
       if (navHeader) this.renderer.setStyle(navHeader, 'display', 'flex');
       window.scrollTo(0, this.scrollPosition);
+      // Reseteamos el estado del zoom al cerrar
+      this.resetZoom();
     }
+  }
+
+  private resetZoom(): void {
+    this.zoomLevel = 1;
+    this.imagePosition = { x: 0, y: 0 };
+    this.lastImagePosition = { x: 0, y: 0 };
+    this.isDraggingImage = false;
+    this.initialPinchDistance = null;
   }
 
   toggleSave(): void {
@@ -434,5 +452,97 @@ export class DetailCar implements OnInit, OnDestroy {
       el.style.scrollBehavior = 'smooth'; // Reactiva el smooth scroll después de la inercia
       this.rafIdTimeline = null;
     }
+  }
+
+  // --- LÓGICA DE ZOOM Y PANEO DE IMAGEN ---
+
+  onWheel(event: WheelEvent): void {
+    if (!this.isZoomed) return;
+    event.preventDefault();
+
+    const zoomIntensity = 0.1;
+    const newZoomLevel = this.zoomLevel - event.deltaY * zoomIntensity * 0.05;
+
+    // Limita el zoom entre 1 (sin zoom) y 5 (máximo)
+    this.zoomLevel = Math.max(1, Math.min(newZoomLevel, 5));
+
+    if (this.zoomLevel <= 1) {
+      this.resetZoom();
+    }
+    this.cdr.detectChanges();
+  }
+
+  onImageMouseDown(event: MouseEvent): void {
+    if (this.zoomLevel > 1) {
+      event.preventDefault();
+      this.isDraggingImage = true;
+      this.dragStart = { x: event.clientX, y: event.clientY };
+      this.lastImagePosition = { ...this.imagePosition };
+      (event.target as HTMLElement).style.cursor = 'grabbing';
+    }
+  }
+
+  onImageMouseMove(event: MouseEvent): void {
+    if (this.isDraggingImage) {
+      const dx = event.clientX - this.dragStart.x;
+      const dy = event.clientY - this.dragStart.y;
+
+      // Dividimos por el nivel de zoom para que el paneo se sienta natural
+      this.imagePosition.x = this.lastImagePosition.x + dx / this.zoomLevel;
+      this.imagePosition.y = this.lastImagePosition.y + dy / this.zoomLevel;
+    }
+  }
+
+  onImageMouseUp(event: MouseEvent): void {
+    if (this.isDraggingImage) {
+      this.isDraggingImage = false;
+      (event.target as HTMLElement).style.cursor = 'grab';
+    }
+  }
+
+  // --- EVENTOS TÁCTILES PARA MÓVIL ---
+
+  onTouchStart(event: TouchEvent): void {
+    if (!this.isZoomed) return;
+
+    if (event.touches.length === 2) { // Gesto de "pellizco"
+      event.preventDefault();
+      this.initialPinchDistance = this.getPinchDistance(event);
+    } else if (event.touches.length === 1 && this.zoomLevel > 1) { // Arrastre con un dedo
+      event.preventDefault();
+      this.isDraggingImage = true;
+      this.dragStart = { x: event.touches[0].clientX, y: event.touches[0].clientY };
+      this.lastImagePosition = { ...this.imagePosition };
+    }
+  }
+
+  onTouchMove(event: TouchEvent): void {
+    if (!this.isZoomed) return;
+
+    if (event.touches.length === 2 && this.initialPinchDistance) { // "Pellizco" en movimiento
+      event.preventDefault();
+      const newPinchDistance = this.getPinchDistance(event);
+      const zoomFactor = newPinchDistance / this.initialPinchDistance;
+      this.zoomLevel = Math.max(1, Math.min(this.zoomLevel * zoomFactor, 5));
+      this.initialPinchDistance = newPinchDistance;
+    } else if (event.touches.length === 1 && this.isDraggingImage) { // Arrastre en movimiento
+      event.preventDefault();
+      const dx = event.touches[0].clientX - this.dragStart.x;
+      const dy = event.touches[0].clientY - this.dragStart.y;
+      this.imagePosition.x = this.lastImagePosition.x + dx / this.zoomLevel;
+      this.imagePosition.y = this.lastImagePosition.y + dy / this.zoomLevel;
+    }
+  }
+
+  onTouchEnd(): void {
+    this.isDraggingImage = false;
+    this.initialPinchDistance = null;
+    if (this.zoomLevel <= 1) this.resetZoom();
+  }
+
+  private getPinchDistance(event: TouchEvent): number {
+    const dx = event.touches[0].clientX - event.touches[1].clientX;
+    const dy = event.touches[0].clientY - event.touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
   }
 }

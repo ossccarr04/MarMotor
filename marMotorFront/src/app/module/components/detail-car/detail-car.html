@@ -43,6 +43,17 @@
                 [src]="car.imagesAlbum[currentImageIndex]"
                 [alt]="car.model"
                 (error)="onImageError($event)"
+                [style.transform]="isZoomed ? 'scale(' + zoomLevel + ') translate(' + imagePosition.x + 'px, ' + imagePosition.y + 'px)' : ''"
+                [style.cursor]="isZoomed && zoomLevel > 1 ? 'grab' : 'default'"
+                (wheel)="onWheel($event)"
+                (mousedown)="onImageMouseDown($event)"
+                (mousemove)="onImageMouseMove($event)"
+                (mouseup)="onImageMouseUp($event)"
+                (mouseleave)="onImageMouseUp($event)"
+                (touchstart)="onTouchStart($event)"
+                (touchmove)="onTouchMove($event)"
+                (touchend)="onTouchEnd()"
+                (touchcancel)="onTouchEnd()"
               />
             } @else {
               <img src="assets/placeholder-car.jpg" alt="No image available" />

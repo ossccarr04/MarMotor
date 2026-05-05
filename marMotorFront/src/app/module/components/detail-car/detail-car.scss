@@ -234,6 +234,7 @@ $font-family: 'Montserrat', sans-serif;
   align-items: center;
   justify-content: center;
   position: relative;
+    overflow: hidden; // Para que la imagen no se salga al hacer pan
   z-index: 10;
   transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
   overflow: hidden;
@@ -242,7 +243,8 @@ $font-family: 'Montserrat', sans-serif;
     width: 100%;
     height: 100%;
     object-fit: cover; // Asegura que la imagen cubra todo el contenedor
-    transition: all 0.5s ease;
+    // La transición de la imagen se gestiona por separado para el zoom
+    transition: opacity 0.5s ease;
     display: block;
   }
 
@@ -268,6 +270,10 @@ $font-family: 'Montserrat', sans-serif;
       width: auto;
       height: auto;
       object-fit: contain; // Ver el coche completo en zoom
+      cursor: grab; // Cursor para indicar que se puede arrastrar
+      will-change: transform; // Optimización para el navegador
+      transition: transform 0.1s ease-out; // Transición suave para el zoom
+      image-rendering: -webkit-optimize-contrast; // Intenta mejorar la nitidez
     }
 
     .zoom-btn-detail {
