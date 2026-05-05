@@ -16,7 +16,7 @@ export class App implements OnDestroy {
   private authService = inject(AuthServiceBBDD);
 
   // Estados del servidor
-  isServerSleeping = false;
+  isServerSleeping = signal(false);
   serverReady = false;
   
   // Lógica de cuenta atrás
@@ -32,7 +32,7 @@ export class App implements OnDestroy {
     // Si a los 2 segundos no ha respondido, activamos el aviso y la cuenta atrás
     const timeout = setTimeout(() => {
       if (!this.serverReady) {
-        this.isServerSleeping = true;
+        this.isServerSleeping.set(true);
         this.startCountdown();
       }
     }, 2000); 
@@ -40,7 +40,7 @@ export class App implements OnDestroy {
     this.authService.checkServerHealth().subscribe({
       next: () => {
         this.serverReady = true;
-        this.isServerSleeping = false;
+        this.isServerSleeping.set(false);
         this.stopCountdown();
         clearTimeout(timeout);
       },
