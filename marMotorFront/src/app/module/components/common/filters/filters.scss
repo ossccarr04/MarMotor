@@ -450,16 +450,15 @@ $text-dark: #333;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 15px;
   
   margin: 30px auto 0; 
   width: 90%;
   max-width: 400px; 
 
-
   @media (min-width: 768px) {
     flex-direction: row;
-    justify-content: center;
     gap: 20px;
     width: 100%; // En escritorio recuperamos el comportamiento normal
     max-width: none;

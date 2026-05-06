@@ -1,8 +1,9 @@
-import { Component, inject, signal, OnDestroy } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { Component, inject, signal, OnDestroy, Renderer2 } from '@angular/core';
+import { NavigationEnd, NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { Header } from './module/components/common/header/header';
 import { AuthServiceBBDD } from './module/services/auth-service';
 import { filter } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-root',
@@ -15,23 +16,32 @@ export class App implements OnDestroy {
   protected readonly title = signal('marMotor');
   private router = inject(Router);
   private authService = inject(AuthServiceBBDD);
+  private toast = inject(ToastrService);
+  private renderer = inject(Renderer2);
 
-  // Estados del servidor
   isServerSleeping = signal(false);
   serverReady = false;
   
-  // Lógica de cuenta atrás
   countdown = signal(90);
   serverMessage = signal('Contactando con el servidor...');
   private countdownInterval: any;
 
-  // Visibilidad del Header
   mostrarHeader = signal(true);
+
+  private globalClickListener: (() => void) | null = null;
 
   constructor() {
     this.wakeUpServer();
 
-    // Escuchar eventos de navegación para mostrar/ocultar el header de forma reactiva
+    this.router.events.pipe(
+      filter((event): event is NavigationStart => event instanceof NavigationStart)
+    ).subscribe((event: NavigationStart) => {
+      if (!this.serverReady && event.url !== '/' && event.url !== '') {
+        this.router.navigate(['/'], { replaceUrl: true });
+        this.toast.info('Por favor, espere mientras se recogen los datos.', 'Servidor Iniciando');
+      }
+    });
+
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
@@ -42,7 +52,9 @@ export class App implements OnDestroy {
   }
 
   wakeUpServer() {
-    // Si a los 2 segundos no ha respondido, activamos el aviso y la cuenta atrás
+    this.blockInteractions(); 
+
+
     const timeout = setTimeout(() => {
       if (!this.serverReady) {
         this.isServerSleeping.set(true);
@@ -55,13 +67,36 @@ export class App implements OnDestroy {
         this.serverReady = true;
         this.isServerSleeping.set(false);
         this.stopCountdown();
+        this.unblockInteractions(); 
         clearTimeout(timeout);
       },
       error: () => {
-        // En caso de error crítico persistente
         this.serverMessage.set('El servidor está tardando más de lo previsto...');
       }
     });
+  }
+
+  blockInteractions() {
+    if (this.globalClickListener) return; // Ya está bloqueado
+
+    this.globalClickListener = this.renderer.listen('document', 'click', (event: MouseEvent) => {
+      if (!this.serverReady) {
+        const target = event.target as HTMLElement;
+
+        if (target.closest('a, button, [routerLink]')) {
+          event.preventDefault();
+          event.stopPropagation();
+          this.toast.info('Por favor, espere mientras se recogen los datos.', 'Servidor Iniciando');
+        }
+      }
+    }); 
+  }
+
+  unblockInteractions() {
+    if (this.globalClickListener) {
+      this.globalClickListener(); // Ejecuta la función de limpieza del listener
+      this.globalClickListener = null;
+    }
   }
 
   startCountdown() {
@@ -95,6 +130,7 @@ export class App implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.stopCountdown(); // Limpieza por seguridad
+    this.stopCountdown(); 
+    this.unblockInteractions(); 
   }
 }
