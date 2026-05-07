@@ -89,7 +89,7 @@ export class App implements OnDestroy {
           this.toast.info('Por favor, espere mientras se recogen los datos.', 'Servidor Iniciando');
         }
       }
-    }); 
+    }, { capture: true }); // Usamos la fase de captura para interceptar el evento antes y bloquear clics como el del menú móvil.
   }
 
   unblockInteractions() {
