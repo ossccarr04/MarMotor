@@ -14,9 +14,13 @@ export class BodyTypeServiceBBDD {
 
   private readonly URL = `${environment.apiUrl}/api/body-types`;
 
-  getBodyTypes(): Observable<any> {
-    return this.http.get<any>(this.URL);
-  }
-
+  getBodyTypes(isSold?: boolean): Observable<any> {
+    // Si isSold es true o false, lo añadimos como parámetro a la URL
+    let urlFinal = this.URL;
   
+    if (isSold !== undefined) {
+      urlFinal = `${this.URL}/active?isSold=${isSold}`;
+    }
+    return this.http.get<any>(urlFinal);
+  }
 }

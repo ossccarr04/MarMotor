@@ -89,7 +89,7 @@
             class="filter-option"
             *ngFor="let item of marcasPrincipales; let i = index"
             [ngClass]="{ selected: item.selected }"
-            (click)="seleccionarOpcion(marcas, i, true)"
+            (click)="seleccionarOpcion(marcas, i)"
           >
             {{ item.name }}
           </div>
@@ -97,10 +97,10 @@
         <div class="more-btn-container">
           <button
             class="btn-more"
-            [ngClass]="{ 'is-brand-selected': marcaBusqueda !== '+' }"
+            [ngClass]="{ 'is-brand-selected': marcaBusquedaTexto !== '+' }"
             (click)="abrirModalMarcas()"
           >
-            {{ marcaBusqueda }}
+            {{ marcaBusquedaTexto }}
           </button>
         </div>
       </div>

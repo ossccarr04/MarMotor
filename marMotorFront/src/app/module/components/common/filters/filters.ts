@@ -40,14 +40,14 @@ export class Filters implements OnInit {
     // Protección para evitar ejecutar lógica de decodificación en el servidor
     if (value && isPlatformBrowser(this.platformId)) {
       try {
-        const brand = value[btoa('brand')] ? atob(value[btoa('brand')]) : null;
-        const body = value[btoa('bodyType')] ? atob(value[btoa('bodyType')]) : null;
-        const fuel = value[btoa('fuelType')] ? atob(value[btoa('fuelType')]) : null;
+        const brands = value[btoa('brand')] ? atob(value[btoa('brand')]).split(',') : [];
+        const bodies = value[btoa('bodyType')] ? atob(value[btoa('bodyType')]).split(',') : [];
+        const fuels = value[btoa('fuelType')] ? atob(value[btoa('fuelType')]).split(',') : [];
         const price = value[btoa('maxPrice')] ? atob(value[btoa('maxPrice')]) : null;
 
-        if (brand) this.seleccionarMarca({ name: brand.toUpperCase() });
-        if (body) this.seleccionarCarroceriaPorNombre(body);
-        if (fuel) this.seleccionarCombustiblePorNombre(fuel);
+        if (brands.length > 0) brands.forEach(b => this.seleccionarMarcaPorNombre(b));
+        if (bodies.length > 0) bodies.forEach(b => this.seleccionarCarroceriaPorNombre(b));
+        if (fuels.length > 0) fuels.forEach(f => this.seleccionarCombustiblePorNombre(f));
 
         if (price) {
           this.precioActual = parseInt(price);
@@ -75,7 +75,6 @@ export class Filters implements OnInit {
   combustibles: FuelDTO[] = [];
   isModalMarcasOpen = false;
   terminoBusqueda = '';
-  marcaBusqueda = '+';
 
   // Variables para el precio
   precioActual = 0;
@@ -106,22 +105,8 @@ export class Filters implements OnInit {
     this.limpiezaFiltros();
     // 1. Cargar Marcas
     this.cargarMarcasSegunEstado();
-
-    // 2. Cargar Carrocerías
-    this.bodyTypeService.getBodyTypes().subscribe({
-      next: (data) => {
-        this.carrocerias = data;
-        this.carrocerias.forEach((item) => {
-          item.name = item.name.toUpperCase();
-          item.selected = false;
-        });
-        const bodyFromUrl = this.getParamFromUrl('bodyType');
-        if (bodyFromUrl) this.seleccionarCarroceriaPorNombre(bodyFromUrl);
-        this.cdr.detectChanges();
-        this.checkLoadingComplete();
-      },
-      error: () => this.checkLoadingComplete(),
-    });
+    // 2. Cargar Carrocerías (ahora dinámico)
+    this.actualizarCarroceriasDinamicas();
 
     // 3. Cargar Combustibles
     this.actualizarCombustiblesDinamicos();
@@ -138,19 +123,41 @@ export class Filters implements OnInit {
   actualizarCombustiblesDinamicos() {
     const mostrarVendidos = this.carService.mantenerVendidosActivo;
 
-
-    const combustiblePreviamenteSeleccionado = this.combustibles.find((f) => f.selected);
+    const combustiblesPreviamenteSeleccionados = this.combustibles.filter((f) => f.selected).map(f => f.name);
 
     this.fuelTypeService.getFuels(mostrarVendidos).subscribe({
       next: (data) => {
         this.combustibles = data.map((f: any) => ({
           ...f,
           name: f.name.toUpperCase(),
-          value: f.name,
-          selected: f.name === combustiblePreviamenteSeleccionado,
+          selected: combustiblesPreviamenteSeleccionados.includes(f.name.toUpperCase()),
         }));
         const fuelFromUrl = this.getParamFromUrl('fuelType');
-        if (fuelFromUrl) this.seleccionarCombustiblePorNombre(fuelFromUrl);
+        if (fuelFromUrl) {
+          fuelFromUrl.split(',').forEach(name => this.seleccionarCombustiblePorNombre(name));
+        }
+        this.cdr.detectChanges();
+        this.checkLoadingComplete();
+      },
+      error: () => this.checkLoadingComplete(),
+    });
+  }
+
+  actualizarCarroceriasDinamicas() {
+    const mostrarVendidos = this.carService.mantenerVendidosActivo;
+    const carroceriasPreviamenteSeleccionadas = this.carrocerias.filter((c) => c.selected).map(c => c.name);
+
+    this.bodyTypeService.getBodyTypes(mostrarVendidos).subscribe({
+      next: (data) => {
+        this.carrocerias = data.map((c: any) => ({
+          ...c,
+          name: c.name.toUpperCase(),
+          selected: carroceriasPreviamenteSeleccionadas.includes(c.name.toUpperCase()),
+        }));
+        const bodyFromUrl = this.getParamFromUrl('bodyType');
+        if (bodyFromUrl) {
+          bodyFromUrl.split(',').forEach(name => this.seleccionarCarroceriaPorNombre(name));
+        }
         this.cdr.detectChanges();
         this.checkLoadingComplete();
       },
@@ -177,7 +184,7 @@ export class Filters implements OnInit {
         // PROTECCIÓN SSR: Solo ejecutamos la selección por URL si hay marcas cargadas
         const brandFromUrl = this.getParamFromUrl('brand');
         if (brandFromUrl) {
-          this.seleccionarMarca({ name: brandFromUrl });
+          brandFromUrl.split(',').forEach(name => this.seleccionarMarcaPorNombre(name));
         }
         this.cdr.detectChanges();
         this.checkLoadingComplete();
@@ -189,17 +196,32 @@ export class Filters implements OnInit {
     });
   }
 
+  seleccionarMarcaPorNombre(nombre: string) {
+    if (!nombre) return;
+    const nombreUpper = nombre.toUpperCase();
+    const marca = this.marcas.find(m => m.name === nombreUpper);
+    if (marca) {
+      marca.selected = true;
+    }
+  }
+
   // Métodos de selección y lógica de negocio
   seleccionarCarroceriaPorNombre(nombre: string) {
     if (!nombre) return;
     const nombreUpper = nombre.toUpperCase();
-    this.carrocerias.forEach((c) => (c.selected = c.name === nombreUpper));
+    const item = this.carrocerias.find((c) => c.name === nombreUpper);
+    if (item) {
+      item.selected = true;
+    }
   }
 
   seleccionarCombustiblePorNombre(nombre: string) {
     if (!nombre) return;
     const nombreUpper = nombre.toUpperCase();
-    this.combustibles.forEach((f) => (f.selected = f.name === nombreUpper));
+    const item = this.combustibles.find((f) => f.name === nombreUpper);
+    if (item) {
+      item.selected = true;
+    }
   }
 
   get marcasPrincipales() {
@@ -214,7 +236,6 @@ export class Filters implements OnInit {
   }
 
   abrirModalMarcas() {
-    this.limpiarMarca();
     this.isModalMarcasOpen = true;
   }
   cerrarModalMarcas() {
@@ -224,21 +245,29 @@ export class Filters implements OnInit {
 
   seleccionarMarca(marcaRecibida: any) {
     if (!marcaRecibida || !marcaRecibida.name) return;
-    const nombreBusqueda = marcaRecibida.name.trim().toUpperCase();
-    this.marcas.forEach((item) => (item.selected = false));
 
+    const nombreBusqueda = marcaRecibida.name.trim().toUpperCase();
     const marcaEncontrada = this.marcas.find((m) => m.name.trim().toUpperCase() === nombreBusqueda);
+
     if (marcaEncontrada) {
-      marcaEncontrada.selected = true;
-      const index = this.marcas.indexOf(marcaEncontrada);
-      this.marcaBusqueda = index >= this.limiteMarcas ? marcaEncontrada.name : '+';
+      // Simplemente cambiamos el estado de selección (toggle)
+      marcaEncontrada.selected = !marcaEncontrada.selected;
     }
-    this.cerrarModalMarcas();
+  }
+
+  get marcaBusquedaTexto(): string {
+    const otrasMarcasSeleccionadas = this.marcas.filter((m, i) => m.selected && i >= this.limiteMarcas);
+    if (otrasMarcasSeleccionadas.length === 0) {
+        return '+';
+    }
+    if (otrasMarcasSeleccionadas.length === 1) {
+        return otrasMarcasSeleccionadas[0].name;
+    }
+    return `${otrasMarcasSeleccionadas.length} marcas`;
   }
 
   limpiarMarca() {
     this.marcas.forEach((m) => (m.selected = false));
-    this.marcaBusqueda = '+';
   }
   limpiarCarroceria() {
     this.carrocerias.forEach((c) => (c.selected = false));
@@ -294,16 +323,16 @@ export class Filters implements OnInit {
 
   // Getters de estado
   get marcaActiva() {
-    return this.marcas.find((m) => m.selected)?.name || null;
+    return this.marcas.some((m) => m.selected);
   }
   get carroceriaActiva() {
-    return this.carrocerias.find((c) => c.selected)?.name || null;
+    return this.carrocerias.some((c) => c.selected);
   }
   get combustibleActivo() {
-    return this.combustibles.find((c) => c.selected)?.name || null;
+    return this.combustibles.some((c) => c.selected);
   }
 
-  // Navegación
+  // Navegación y Búsqueda
   buscarTodos() {
     this.limpiezaFiltros();
     this.precioModificado = false;
@@ -316,30 +345,26 @@ export class Filters implements OnInit {
 
   buscarConFiltros() {
     if (!isPlatformBrowser(this.platformId)) return;
+
     const queryParams: any = {};
-    if (this.marcaActiva) queryParams[btoa('brand')] = btoa(this.marcaActiva);
-    if (this.carroceriaActiva) queryParams[btoa('bodyType')] = btoa(this.carroceriaActiva);
-    if (this.combustibleActivo) queryParams[btoa('fuelType')] = btoa(this.combustibleActivo);
+    const marcasSeleccionadas = this.marcas.filter(m => m.selected).map(m => m.name);
+    const carroceriasSeleccionadas = this.carrocerias.filter(c => c.selected).map(c => c.name);
+    const combustiblesSeleccionados = this.combustibles.filter(f => f.selected).map(f => f.name);
+
+    if (marcasSeleccionadas.length > 0) queryParams[btoa('brand')] = btoa(marcasSeleccionadas.join(','));
+    if (carroceriasSeleccionadas.length > 0) queryParams[btoa('bodyType')] = btoa(carroceriasSeleccionadas.join(','));
+    if (combustiblesSeleccionados.length > 0) queryParams[btoa('fuelType')] = btoa(combustiblesSeleccionados.join(','));
+
     if (this.precioModificado && this.precioActual > 0) {
       queryParams[btoa('maxPrice')] = btoa(this.precioActual.toString());
     }
     this.route.navigate(['/cars'], { queryParams });
   }
 
-  // Seleccionar una opción de una lista (Carrocerías o Combustibles)
-  seleccionarOpcion(lista: any[], index: number, isBrand:boolean = false) {
-    
-    if(this.limiteMarcas < 10 && isBrand){
-    this.limpiarMarca();
-    }
+  // Seleccionar una opción de una lista (Marcas, Carrocerías o Combustibles)
+  seleccionarOpcion(lista: any[], index: number) {
     if (!lista || !lista[index]) return;
-
-    if (lista[index].selected) {
-      lista[index].selected = false;
-    } else {
-      lista.forEach((item) => (item.selected = false));
-      lista[index].selected = true;
-    }
+    lista[index].selected = !lista[index].selected;
   }
 
   // Método centralizado y seguro para la URL
@@ -397,6 +422,7 @@ export class Filters implements OnInit {
 
     // Actualizamos las fuentes de datos para los desplegables (marcas, combustibles).
     this.actualizarCombustiblesDinamicos();
+    this.actualizarCarroceriasDinamicas();
     this.cargarMarcasSegunEstado();
 
     // Emitimos una señal para que el componente padre (Cars) se encargue de recargar.
