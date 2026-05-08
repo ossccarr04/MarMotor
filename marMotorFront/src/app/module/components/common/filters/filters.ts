@@ -148,16 +148,22 @@ export class Filters implements OnInit {
 
   actualizarCarroceriasDinamicas() {
     const mostrarVendidos = this.carService.mantenerVendidosActivo;
-    const carroceriasPreviamenteSeleccionadas = this.carrocerias.filter((c) => c.selected).map(c => this.capitalizeFirstLetter(c.name));
+    
+    // TRUCO: Guardamos lo que ya estaba seleccionado transformándolo a MAYÚSCULAS
+    const carroceriasPreviamenteSeleccionadas = this.carrocerias
+      .filter((c) => c.selected)
+      .map(c => c.name.toUpperCase());
 
-    // CORRECCIÓN: Cambiado getActiveBodyTypes por getBodyTypes
     this.bodyTypeService.getBodyTypes(mostrarVendidos).subscribe({
       next: (data) => {
         this.carrocerias = data.map((c: any) => ({
           ...c,
-          name: this.capitalizeFirstLetter(c.name),
-          selected: carroceriasPreviamenteSeleccionadas.includes(this.capitalizeFirstLetter(c.name)),
+          // VISUAL: Lo ponemos bonito ("Berlina", "Suv") para que el usuario lo lea bien
+          name: this.capitalizeFirstLetter(c.name), 
+          // COMPARACIÓN SEGURA: Comparamos siempre en MAYÚSCULAS para que nunca falle
+          selected: carroceriasPreviamenteSeleccionadas.includes(c.name.toUpperCase()), 
         }));
+        
         const bodyFromUrl = this.getParamFromUrl('bodyType');
         if (bodyFromUrl) {
           bodyFromUrl.split(',').forEach(name => this.seleccionarCarroceriaPorNombre(name));
@@ -215,9 +221,13 @@ export class Filters implements OnInit {
   // Métodos de selección y lógica de negocio
   seleccionarCarroceriaPorNombre(nombre: string) {
     if (!nombre) return;
-    // Normalizamos el nombre de entrada para que coincida con el formato de la lista
-    const nombreFormatted = this.capitalizeFirstLetter(nombre);
-    const item = this.carrocerias.find((c) => c.name === nombreFormatted);
+    
+    // Normalizamos la entrada a MAYÚSCULAS
+    const nombreUpper = nombre.toUpperCase(); 
+    
+    // Buscamos ignorando cómo esté escrito en c.name
+    const item = this.carrocerias.find((c) => c.name.toUpperCase() === nombreUpper); 
+    
     if (item) {
       item.selected = true;
     }
