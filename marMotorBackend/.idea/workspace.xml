@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Añadido seleccion multiple y carroceria dinamica">
+    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Correccion query y seleccion de filtros multiples">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/CarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/controller/CarController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/BodyTypeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/BodyTypeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/CarRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/CarRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/CarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/CarService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,7 +161,7 @@
       <workItem from="1778011120270" duration="943000" />
       <workItem from="1778222185145" duration="500000" />
       <workItem from="1778223557295" duration="637000" />
-      <workItem from="1778225091956" duration="1134000" />
+      <workItem from="1778225091956" duration="1968000" />
     </task>
     <task id="LOCAL-00001" summary="Añadido la creacion de vehiculos y guardar la imagen">
       <option name="closed" value="true" />
@@ -510,14 +507,21 @@
       <option name="project" value="LOCAL" />
       <updated>1778224166544</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Correccion query y seleccion de filtros multiples">
+      <option name="closed" value="true" />
+      <created>1778226256604</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1778226256604</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Añadido todo lo de favorito" />
     <MESSAGE value="Añadido eliminacion de cuentas y obtener datos de usuario" />
     <MESSAGE value="Añadido cambio de contraseña y mas seguridad al eliminar un usuario" />
     <MESSAGE value="Correccion de fechas y correccion del import" />
@@ -542,6 +546,7 @@
     <MESSAGE value="Corregido seguridad para key repetida" />
     <MESSAGE value="Correccion de eliminacion usuario aunque haya token, y eliminacion automatica de tokens" />
     <MESSAGE value="Añadido seleccion multiple y carroceria dinamica" />
-    <option name="LAST_COMMIT_MESSAGE" value="Añadido seleccion multiple y carroceria dinamica" />
+    <MESSAGE value="Correccion query y seleccion de filtros multiples" />
+    <option name="LAST_COMMIT_MESSAGE" value="Correccion query y seleccion de filtros multiples" />
   </component>
 </project>
