@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Añadido servicio para la prueba del login seguro">
+    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Corregido seguridad para key repetida">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/TokenCleanUpService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/MarMotorBackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/MarMotorBackendApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/PasswordResetToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/PasswordResetToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/PasswordResetTokenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/repository/PasswordResetTokenRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,7 +161,8 @@
       <workItem from="1777884277311" duration="13539000" />
       <workItem from="1777964076112" duration="2211000" />
       <workItem from="1777989227667" duration="2035000" />
-      <workItem from="1778011120270" duration="183000" />
+      <workItem from="1778011120270" duration="943000" />
+      <workItem from="1778222185145" duration="398000" />
     </task>
     <task id="LOCAL-00001" summary="Añadido la creacion de vehiculos y guardar la imagen">
       <option name="closed" value="true" />
@@ -481,14 +484,21 @@
       <option name="project" value="LOCAL" />
       <updated>1777990551974</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="Corregido seguridad para key repetida">
+      <option name="closed" value="true" />
+      <created>1778011470229</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1778011470230</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Todo el backend corregido" />
     <MESSAGE value="Todo el backend corregido con etiquetas ambientales" />
     <MESSAGE value="Añadida proteccion de rutas, modificacion de metodos de auth" />
     <MESSAGE value="Añadido todo lo de favorito" />
@@ -513,6 +523,7 @@
     <MESSAGE value="Envio al propio gmail" />
     <MESSAGE value="Arreglo eliminar coches por favoritos" />
     <MESSAGE value="Añadido servicio para la prueba del login seguro" />
-    <option name="LAST_COMMIT_MESSAGE" value="Añadido servicio para la prueba del login seguro" />
+    <MESSAGE value="Corregido seguridad para key repetida" />
+    <option name="LAST_COMMIT_MESSAGE" value="Corregido seguridad para key repetida" />
   </component>
 </project>
