@@ -132,7 +132,8 @@ public class CarService {
         car.setDetail(detail);
         car.setCreatedAt(LocalDateTime.now());
 
-        if(car.getLabel() != null && car.getLabel().name().equalsIgnoreCase(Status.SOLD.toString())){
+        if (car.getBadge() != null &&
+                (car.getBadge().equalsIgnoreCase("SOLD") || car.getBadge().equalsIgnoreCase("VENDIDO"))) {
             car.setSoldAt(LocalDateTime.now());
         }
         Car savedCar = carRepository.save(car);
@@ -209,10 +210,12 @@ public class CarService {
                     }
                 }
             }
-            if(car.getBadge() != null && car.getBadge().toUpperCase().equalsIgnoreCase(Status.SOLD.toString())){
-                car.setSoldAt(LocalDateTime.now());
+            if (car.getBadge() != null &&
+                    (car.getBadge().equalsIgnoreCase("SOLD") || car.getBadge().equalsIgnoreCase("VENDIDO"))) {
+                if (car.getSoldAt() == null) {
+                    car.setSoldAt(LocalDateTime.now());
+                }
             } else {
-                // Si el coche se marca como NO vendido, eliminamos la fecha de venta.
                 car.setSoldAt(null);
             }
             return convertToDto(carRepository.save(car));
