@@ -370,7 +370,7 @@ export class AnadirCoche implements OnInit {
 
   cargarSugerencias() {
     this.brandService
-      .getAllBrands()
+      .getAllBrands() // Ya estaba bien
       .subscribe((d) => (this.marcasSugeridas = d.map((b: BrandDTO) => b.name)));
     this.bodyTypeService
       .getAllBodyTypes()

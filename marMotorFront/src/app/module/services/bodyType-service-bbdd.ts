@@ -13,7 +13,6 @@ export class BodyTypeServiceBBDD {
 
   private readonly URL = `${environment.apiUrl}/api/body-types`;
 
-
   getAllBodyTypes(): Observable<any> {
     return this.http.get<any>(this.URL);
   }

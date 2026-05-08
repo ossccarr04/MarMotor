@@ -125,7 +125,7 @@ export class Filters implements OnInit {
 
     const combustiblesPreviamenteSeleccionados = this.combustibles.filter((f) => f.selected).map(f => f.name);
 
-    this.fuelTypeService.getActiveFuels(mostrarVendidos).subscribe({
+    this.fuelTypeService.getActiveFuels(mostrarVendidos).subscribe({ // Ya estaba bien
       next: (data) => {
         this.combustibles = data.map((f: any) => ({
           ...f,
@@ -176,14 +176,14 @@ export class Filters implements OnInit {
   cargarMarcasSegunEstado() {
     // 1. Decidimos qué servicio llamar según el interruptor
     const mostrarVendidos = this.carService.mantenerVendidosActivo;
-    const marcasPreviamenteSeleccionadas = this.marcas.filter((m) => m.selected).map(m => m.name);
+    const marcasPreviamenteSeleccionadas = this.marcas.filter((m) => m.selected).map(m => m.name); // Ya estaba bien
 
-    this.brandService.getActiveBrands(mostrarVendidos).subscribe({
+    this.brandService.getActiveBrands(mostrarVendidos).subscribe({ // Ya estaba bien
       next: (data) => {
         this.marcas = data;
         this.marcas.forEach((item) => {
           item.name = item.name.toUpperCase();
-          item.selected = marcasPreviamenteSeleccionadas.includes(item.name.toUpperCase());
+          item.selected = marcasPreviamenteSeleccionadas.includes(item.name.toUpperCase()); // Ya estaba bien
         });
 
         // PROTECCIÓN SSR: Solo ejecutamos la selección por URL si hay marcas cargadas
