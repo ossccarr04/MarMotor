@@ -3,6 +3,7 @@ package com.example.marmotor.repository;
 import com.example.marmotor.model.entity.Car;
 import com.example.marmotor.model.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CarRepository extends JpaRepository<Car, Long> {
+public interface CarRepository extends JpaRepository<Car, Long>, JpaSpecificationExecutor<Car> {
     boolean existsByBrandId(Long brandId);
 
     List<Car> findByStatus(Status status);

@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface BodyTypeRepository extends JpaRepository<BodyType, Long> {
     Optional<BodyType> findByNameIgnoreCase(String name);
 
-    @Query(value = "SELECT DISTINCT bt.* FROM body_type bt " +
+    @Query(value = "SELECT DISTINCT bt.* FROM body_types bt " +
             "INNER JOIN car c ON c.body_type_id = bt.id " +
             "WHERE (:isSold = true AND UPPER(c.badge) = 'SOLD') OR " +
             "(:isSold = false AND UPPER(c.badge) != 'SOLD')",

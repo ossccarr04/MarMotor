@@ -238,12 +238,21 @@ public class CarService {
        LÓGICA DE BÚSQUEDA Y FILTRADO
        ========================================================================== */
 
-    public List<CarDTO> searchCars(String brand, String fuel, String body, String maxPrice) {
+    public List<CarDTO> searchCars(List<String> brands, List<String> fuelTypes, List<String> bodyTypes, String maxPrice) {
         return carRepository.findAll().stream()
-                .filter(c -> isNullOrEmpty(brand) || (c.getBrand() != null && c.getBrand().getName().equalsIgnoreCase(brand)))
-                .filter(c -> isNullOrEmpty(fuel) || (c.getFuelType() != null && c.getFuelType().getName().equalsIgnoreCase(fuel)))
-                .filter(c -> isNullOrEmpty(body) || (c.getBodyType() != null && c.getBodyType().getName().equalsIgnoreCase(body)))
-                .filter(c -> isNullOrEmpty(maxPrice) || (c.getPrice() != null && c.getPrice().compareTo(new BigDecimal(maxPrice)) <= 0))
+                // Si la lista está vacía/tiene "all", deja pasar todos. Si no, comprueba si la marca del coche coincide con alguna de la lista
+                .filter(c -> isListEmptyOrAll(brands) ||
+                        (c.getBrand() != null && brands.stream().anyMatch(b -> b.equalsIgnoreCase(c.getBrand().getName()))))
+
+                .filter(c -> isListEmptyOrAll(fuelTypes) ||
+                        (c.getFuelType() != null && fuelTypes.stream().anyMatch(f -> f.equalsIgnoreCase(c.getFuelType().getName()))))
+
+                .filter(c -> isListEmptyOrAll(bodyTypes) ||
+                        (c.getBodyType() != null && bodyTypes.stream().anyMatch(b -> b.equalsIgnoreCase(c.getBodyType().getName()))))
+
+                .filter(c -> isNullOrEmpty(maxPrice) ||
+                        (c.getPrice() != null && c.getPrice().compareTo(new BigDecimal(maxPrice)) <= 0))
+
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
@@ -383,25 +392,20 @@ public class CarService {
         return dto;
     }
 
-    public List<CarDetailDTO> searchCarsDetailed(String brand, String fuelTypeName, String bodyTypeName, BigDecimal maxPrice) {
+    public List<CarDetailDTO> searchCarsDetailed(List<String> brands, List<String> fuelTypes, List<String> bodyTypes, String maxPrice) {
         return carRepository.findAll().stream()
-                // Filtro por Marca (ignora mayúsculas/minúsculas)
-                .filter(car -> isNullOrEmpty(brand) ||
-                        (car.getBrand() != null && car.getBrand().getName().equalsIgnoreCase(brand)))
+                .filter(c -> isListEmptyOrAll(brands) ||
+                        (c.getBrand() != null && brands.stream().anyMatch(b -> b.equalsIgnoreCase(c.getBrand().getName()))))
 
-                // Filtro por Combustible
-                .filter(car -> isNullOrEmpty(fuelTypeName) ||
-                        (car.getFuelType() != null && car.getFuelType().getName().equalsIgnoreCase(fuelTypeName)))
+                .filter(c -> isListEmptyOrAll(fuelTypes) ||
+                        (c.getFuelType() != null && fuelTypes.stream().anyMatch(f -> f.equalsIgnoreCase(c.getFuelType().getName()))))
 
-                // Filtro por Carrocería
-                .filter(car -> isNullOrEmpty(bodyTypeName) ||
-                        (car.getBodyType() != null && car.getBodyType().getName().equalsIgnoreCase(bodyTypeName)))
+                .filter(c -> isListEmptyOrAll(bodyTypes) ||
+                        (c.getBodyType() != null && bodyTypes.stream().anyMatch(b -> b.equalsIgnoreCase(c.getBodyType().getName()))))
 
-                // Filtro por Precio Máximo (solo si el precio es > 0)
-                .filter(car -> maxPrice == null || maxPrice.compareTo(BigDecimal.ZERO) <= 0 ||
-                        (car.getPrice() != null && car.getPrice().compareTo(maxPrice) <= 0))
+                .filter(c -> isNullOrEmpty(maxPrice) ||
+                        (c.getPrice() != null && c.getPrice().compareTo(new BigDecimal(maxPrice)) <= 0))
 
-                // Convertimos a Detail DTO para enviar toda la info (historial, etc.)
                 .map(this::convertToDetailDto)
                 .collect(Collectors.toList());
     }
@@ -415,6 +419,11 @@ public class CarService {
     }
     private boolean hasMainImage(List<CarImage> images) {
         return images.stream().anyMatch(img -> img.getIsMain() != null && img.getIsMain());
+    }
+
+    private boolean isListEmptyOrAll(List<String> list) {
+        if (list == null || list.isEmpty()) return true;
+        return list.stream().anyMatch(item -> item.equalsIgnoreCase("all"));
     }
 
     private boolean isNullOrEmpty(String str) {

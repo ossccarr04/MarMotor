@@ -30,9 +30,9 @@ public class CarController {
 
     @GetMapping("/filters")
     public ResponseEntity<List<CarDTO>> getCarsByFilters(
-            @RequestParam(name="brand", required = false) String brand,
-            @RequestParam(name="fuelType",required = false) String fuelType,
-            @RequestParam(name="bodyType",required = false) String bodyType,
+            @RequestParam(name="brand", required = false) List<String> brand,
+            @RequestParam(name="fuelType",required = false) List<String> fuelType,
+            @RequestParam(name="bodyType",required = false) List<String> bodyType,
             @RequestParam(name="maxPrice",required = false) String maxPrice
     ) {
         return ResponseEntity.ok(carService.searchCars(brand, fuelType, bodyType, maxPrice));
@@ -46,10 +46,10 @@ public class CarController {
 
     @GetMapping("/filters/detailed")
     public ResponseEntity<List<CarDetailDTO>> getCarsFilteredDetailed(
-            @RequestParam(required = false) String brand,
-            @RequestParam(required = false) String fuelType,
-            @RequestParam(required = false) String bodyType,
-            @RequestParam(required = false) BigDecimal maxPrice
+            @RequestParam(required = false) List<String> brand,
+            @RequestParam(required = false) List<String> fuelType,
+            @RequestParam(required = false) List<String> bodyType,
+            @RequestParam(required = false) String maxPrice
     ) {
         return ResponseEntity.ok(carService.searchCarsDetailed(brand, fuelType, bodyType, maxPrice));
     }
