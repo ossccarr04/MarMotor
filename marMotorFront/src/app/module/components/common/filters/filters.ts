@@ -159,8 +159,8 @@ export class Filters implements OnInit {
         this.carrocerias = data.map((c: any) => ({
           ...c,
           // VISUAL: Lo ponemos bonito ("Berlina", "Suv") para que el usuario lo lea bien
-          name: this.capitalizeFirstLetter(c.name), 
-          // COMPARACIÓN SEGURA: Comparamos siempre en MAYÚSCULAS para que nunca falle
+          name: c.name.toUpperCase(), 
+          
           selected: carroceriasPreviamenteSeleccionadas.includes(c.name.toUpperCase()), 
         }));
         
