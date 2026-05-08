@@ -145,14 +145,16 @@ export class Filters implements OnInit {
 
   actualizarCarroceriasDinamicas() {
     const mostrarVendidos = this.carService.mantenerVendidosActivo;
-    const carroceriasPreviamenteSeleccionadas = this.carrocerias.filter((c) => c.selected).map(c => c.name);
+    // Normalizamos los nombres de las carrocerías previamente seleccionadas
+    // para que coincidan con el formato que vamos a usar (primera letra mayúscula).
+    const carroceriasPreviamenteSeleccionadas = this.carrocerias.filter((c) => c.selected).map(c => this.capitalizeFirstLetter(c.name));
 
-    this.bodyTypeService.getBodyTypes(mostrarVendidos).subscribe({
+    this.bodyTypeService.getActiveBodyTypes(mostrarVendidos).subscribe({
       next: (data) => {
         this.carrocerias = data.map((c: any) => ({
           ...c,
-          name: c.name.toUpperCase(),
-          selected: carroceriasPreviamenteSeleccionadas.includes(c.name.toUpperCase()),
+          name: this.capitalizeFirstLetter(c.name), // Capitalizamos para mostrar
+          selected: carroceriasPreviamenteSeleccionadas.includes(this.capitalizeFirstLetter(c.name)), // Comparamos con el formato capitalizado
         }));
         const bodyFromUrl = this.getParamFromUrl('bodyType');
         if (bodyFromUrl) {
@@ -161,7 +163,10 @@ export class Filters implements OnInit {
         this.cdr.detectChanges();
         this.checkLoadingComplete();
       },
-      error: () => this.checkLoadingComplete(),
+      error: (err) => {
+        console.error('Error al cargar carrocerías dinámicas:', err);
+        this.checkLoadingComplete();
+      },
     });
   }
 
@@ -208,11 +213,18 @@ export class Filters implements OnInit {
   // Métodos de selección y lógica de negocio
   seleccionarCarroceriaPorNombre(nombre: string) {
     if (!nombre) return;
-    const nombreUpper = nombre.toUpperCase();
-    const item = this.carrocerias.find((c) => c.name === nombreUpper);
+    // Normalizamos el nombre de entrada para que coincida con el formato de la lista
+    const nombreFormatted = this.capitalizeFirstLetter(nombre);
+    const item = this.carrocerias.find((c) => c.name === nombreFormatted);
     if (item) {
       item.selected = true;
     }
+  }
+
+
+  private capitalizeFirstLetter(text: string): string {
+    if (!text) return '';
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
   }
 
   seleccionarCombustiblePorNombre(nombre: string) {

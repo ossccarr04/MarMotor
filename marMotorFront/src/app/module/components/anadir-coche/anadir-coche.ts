@@ -373,7 +373,7 @@ export class AnadirCoche implements OnInit {
       .getBrands()
       .subscribe((d) => (this.marcasSugeridas = d.map((b: BrandDTO) => b.name)));
     this.bodyTypeService
-      .getBodyTypes()
+      .getAllBodyTypes()
       .subscribe(
         (d) => (this.carroceriasSugeridas = d.map((bt: BodyTypeDTO) => bt.name.toLowerCase())),
       );
