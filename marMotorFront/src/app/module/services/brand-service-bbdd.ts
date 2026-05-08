@@ -14,11 +14,15 @@ export class BrandServiceBBDD {
 
   private readonly URL = `${environment.apiUrl}/api/brands`;
 
-  getBrands(): Observable<any> {
+  getAllBrands(): Observable<any> {
     return this.http.get<any>(this.URL);
   }
 
-  getBrandsSold(): Observable<any> {
-    return this.http.get<any>(`${this.URL}/sold`);
+  /**
+   * Obtiene solo las marcas de coches que están a la venta o vendidos.
+   * NOTA: Esto requiere que el backend tenga un endpoint /api/brands/active?isSold=...
+   */
+  getActiveBrands(isSold: boolean): Observable<any> {
+    return this.http.get<any>(`${this.URL}/active?isSold=${isSold}`);
   }
 }

@@ -125,7 +125,7 @@ export class Filters implements OnInit {
 
     const combustiblesPreviamenteSeleccionados = this.combustibles.filter((f) => f.selected).map(f => f.name);
 
-    this.fuelTypeService.getFuels(mostrarVendidos).subscribe({
+    this.fuelTypeService.getActiveFuels(mostrarVendidos).subscribe({
       next: (data) => {
         this.combustibles = data.map((f: any) => ({
           ...f,
@@ -139,7 +139,10 @@ export class Filters implements OnInit {
         this.cdr.detectChanges();
         this.checkLoadingComplete();
       },
-      error: () => this.checkLoadingComplete(),
+      error: (err) => {
+        console.error('Error al cargar combustibles dinámicos:', err);
+        this.checkLoadingComplete();
+      },
     });
   }
 
@@ -173,17 +176,14 @@ export class Filters implements OnInit {
   cargarMarcasSegunEstado() {
     // 1. Decidimos qué servicio llamar según el interruptor
     const mostrarVendidos = this.carService.mantenerVendidosActivo;
+    const marcasPreviamenteSeleccionadas = this.marcas.filter((m) => m.selected).map(m => m.name);
 
-    const peticion = mostrarVendidos
-      ? this.brandService.getBrandsSold()
-      : this.brandService.getBrands();
-
-    peticion.subscribe({
+    this.brandService.getActiveBrands(mostrarVendidos).subscribe({
       next: (data) => {
         this.marcas = data;
         this.marcas.forEach((item) => {
           item.name = item.name.toUpperCase();
-          item.selected = false;
+          item.selected = marcasPreviamenteSeleccionadas.includes(item.name.toUpperCase());
         });
 
         // PROTECCIÓN SSR: Solo ejecutamos la selección por URL si hay marcas cargadas

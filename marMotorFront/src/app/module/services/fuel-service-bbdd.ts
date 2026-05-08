@@ -13,13 +13,14 @@ export class FuelTypeServiceBBDD {
 
   private readonly URL = `${environment.apiUrl}/api/fuel-types`;
 
-  getFuels(isSold?: boolean): Observable<any> {
-  // Si isSold es true o false, lo añadimos como parámetro a la URL
-  let urlFinal = this.URL;
-
-  if (isSold !== undefined) {
-    urlFinal = `${this.URL}/active?isSold=${isSold}`;
+  /**
+   * Obtiene TODOS los tipos de combustible.
+   */
+  getAllFuels(): Observable<any> {
+    return this.http.get<any>(this.URL);
   }
-  return this.http.get<any>(urlFinal);
-}
+
+  getActiveFuels(isSold: boolean): Observable<any> {
+    return this.http.get<any>(`${this.URL}/active?isSold=${isSold}`);
+  }
 }
