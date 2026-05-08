@@ -42,7 +42,18 @@ export class CarServiceBBDD {
 
     if (filtros) {
       Object.keys(filtros).forEach((key) => {
-        params = params.append(key, filtros[key]);
+        const value = filtros[key];
+        
+        if (Array.isArray(value)) {
+          value.forEach((val) => {
+            if (val !== null && val !== undefined && val !== '') {
+              params = params.append(key, val);
+            }
+          });
+        } 
+        else if (value !== null && value !== undefined && value !== '') {
+          params = params.append(key, value);
+        }
       });
     }
 
