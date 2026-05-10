@@ -1004,57 +1004,6 @@ $font-family: 'Montserrat', sans-serif;
       display: flex;
       align-items: center;
 
-      .dgt-badge {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 800;
-        color: #1a1a1a;
-        border: 2px solid rgba(255, 255, 255, 0.4);
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-        font-family: 'Montserrat', sans-serif;
-
-        // Por defecto: Círculo (Para 0, B, C)
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        font-size: 1.1rem;
-
-        &.badge-zero {
-          background-color: #00a1df;
-          color: #ffffff;
-          font-size: 1.5rem; // Tamaño grande para el "0"
-          line-height: 1;
-          padding-bottom: 2px; // Ajuste óptico para centrar el círculo del 0
-        }
-
-        &.badge-eco {
-          // Rectángulo redondeado para que quepa "ECO"
-          width: auto;
-          padding: 0 15px;
-          border-radius: 20px;
-          background: linear-gradient(90deg, #add036 50%, #00a1df 50%);
-          color: #1a1a1a;
-        }
-
-        &.badge-c {
-          background-color: #add036;
-        }
-        &.badge-b {
-          background-color: #f1dc00;
-        }
-
-        &.badge-none {
-          background-color: #ef4444; // Rojo para el aviso
-          color: white;
-          width: auto;
-          padding: 5px 12px;
-          border-radius: 8px;
-          font-size: 0.75rem;
-          height: 30px;
-          border: none;
-        }
-      }
     }
   }
 

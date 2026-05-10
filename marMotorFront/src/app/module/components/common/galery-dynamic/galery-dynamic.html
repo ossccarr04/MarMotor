@@ -102,11 +102,17 @@
                 <span class="stat-label">Motor</span>
               </div>
               <div class="stat">
-                <span class="stat-value">
-                  <span class="dgt-label-badge-small" [ngClass]="'dgt-label-' + (coche.label | lowercase)">
-                    {{ coche.label === 'ZERO' ? '0' : coche.label }}
-                  </span>
-                </span>
+                <div class="stat-value">
+                  @if (coche.label.toLowerCase().includes('0') || coche.label.toLowerCase().includes('zero')) {
+                    <span class="dgt-badge badge-zero">0</span>
+                  } @else if (coche.label.toLowerCase().includes('none') || coche.label.toLowerCase().includes('sin')) {
+                    <span class="dgt-badge badge-none">Sin Etiqueta</span>
+                  } @else {
+                    <span class="dgt-badge" [ngClass]="'badge-' + coche.label.toLowerCase().trim()">
+                      {{ coche.label }}
+                    </span>
+                  }
+                </div>
                 <span class="stat-label">Etiqueta</span>
               </div>
               <div class="stat">
