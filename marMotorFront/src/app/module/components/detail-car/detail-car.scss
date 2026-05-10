@@ -1001,11 +1001,19 @@ $font-family: 'Montserrat', sans-serif;
     }
 
     .dgt-label-container {
-      display: flex;
-      align-items: center;
-      color: black;
+  display: flex;
+  align-items: center;
 
+
+  .dgt-badge {
+    color: #1a1a1a !important; 
+    
+    &.badge-zero,
+    &.badge-none {
+      color: #ffffff !important; 
     }
+  }
+}
   }
 
   @keyframes fadeIn {
