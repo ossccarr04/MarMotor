@@ -169,7 +169,7 @@ $font-family: 'Montserrat', sans-serif;
 
       .car-image-container {
         position: relative;
-        height: 220px; 
+        height: 220px;
 
         @media (min-width: 768px) {
           height: 200px;
@@ -202,32 +202,31 @@ $font-family: 'Montserrat', sans-serif;
           z-index: 20;
           cursor: pointer;
 
-          color: #ffffff; 
-          background: rgba(255, 255, 255, 0.15); 
+          color: #ffffff;
+          background: rgba(255, 255, 255, 0.15);
           backdrop-filter: blur(8px);
-          border: 1px solid rgba(255, 255, 255, 0.3); 
+          border: 1px solid rgba(255, 255, 255, 0.3);
 
-          
           width: 40px;
           height: 40px;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 20px; 
+          font-size: 20px;
 
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); 
-          transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+          transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
           &:hover {
-            background: rgba(255, 255, 255, 0.3); 
-            transform: scale(1.1); 
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
           }
 
           &.is-liked {
             color: #ff4757;
             transform: scale(1.15);
-            animation: latido 0.3s ease-in-out; 
+            animation: latido 0.3s ease-in-out;
           }
         }
       }
@@ -275,12 +274,21 @@ $font-family: 'Montserrat', sans-serif;
           .stat {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            align-items: center; /* Asegura que el contenido (la etiqueta) esté centrado */
+            gap: 4px; /* Un pelín más de espacio para respirar */
 
             .stat-value {
               font-size: 14px;
               font-weight: 800;
               color: $text-dark;
+
+              /* --- LA MAGIA DE LA ALINEACIÓN --- */
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              min-height: 28px; /* Obliga a que todos los números midan de alto lo mismo que la etiqueta */
+              /* ---------------------------------- */
+
               @media (min-width: 768px) {
                 font-size: 15px;
               }
