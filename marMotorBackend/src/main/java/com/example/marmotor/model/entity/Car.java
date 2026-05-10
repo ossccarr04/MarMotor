@@ -41,7 +41,8 @@ public class Car {
     private BigDecimal price;
     private Integer power;
     private Integer mileage;
-    private String consumption;
+    @Column(name = "version")
+    private String version;
 
     // ETIQUETA DGT (0, ECO, C...)
     @Enumerated(EnumType.STRING)

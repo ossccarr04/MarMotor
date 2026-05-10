@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Correccion query cars">
+    <list default="true" id="8f2a4163-8875-40aa-ac3d-3e9de5ee790d" name="Changes" comment="Correccion fecha de venta">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/CarCreateDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/CarCreateDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/CarDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/DTO/CarDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/model/entity/Car.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/CarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/marmotor/service/CarService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -161,7 +164,8 @@
       <workItem from="1778011120270" duration="943000" />
       <workItem from="1778222185145" duration="500000" />
       <workItem from="1778223557295" duration="637000" />
-      <workItem from="1778225091956" duration="2761000" />
+      <workItem from="1778225091956" duration="3459000" />
+      <workItem from="1778403600232" duration="427000" />
     </task>
     <task id="LOCAL-00001" summary="Añadido la creacion de vehiculos y guardar la imagen">
       <option name="closed" value="true" />
@@ -523,14 +527,21 @@
       <option name="project" value="LOCAL" />
       <updated>1778228326070</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="Correccion fecha de venta">
+      <option name="closed" value="true" />
+      <created>1778229142302</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1778229142302</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Añadido cambio de contraseña y mas seguridad al eliminar un usuario" />
     <MESSAGE value="Correccion de fechas y correccion del import" />
     <MESSAGE value="Añadido envio de email y reestablecer contraseña y eliminacion de campos que no se utilizan" />
     <MESSAGE value="Añadido Dockerfile" />
@@ -555,6 +566,7 @@
     <MESSAGE value="Añadido seleccion multiple y carroceria dinamica" />
     <MESSAGE value="Correccion query y seleccion de filtros multiples" />
     <MESSAGE value="Correccion query cars" />
-    <option name="LAST_COMMIT_MESSAGE" value="Correccion query cars" />
+    <MESSAGE value="Correccion fecha de venta" />
+    <option name="LAST_COMMIT_MESSAGE" value="Correccion fecha de venta" />
   </component>
 </project>

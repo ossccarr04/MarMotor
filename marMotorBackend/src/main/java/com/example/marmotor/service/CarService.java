@@ -270,7 +270,7 @@ public class CarService {
         car.setPrice(dto.getPrice());
         car.setPower(dto.getPower());
         car.setMileage(dto.getMileage());
-        car.setConsumption(dto.getConsumption());
+        car.setVersion(dto.getVersion());
         car.setBadge(dto.getBadge());
         car.setBadgeType(dto.getBadgeType());
         car.setDescription(dto.getDescription());
@@ -324,7 +324,7 @@ public class CarService {
         dto.setPrice(car.getPrice());
         dto.setPower(car.getPower());
         dto.setMileage(car.getMileage());
-        dto.setConsumption(car.getConsumption());
+        dto.setVersion(car.getVersion());
         dto.setTransmission(car.getTransmission() != null ? car.getTransmission().name() : null);
         dto.setStatus(car.getStatus() != null ? car.getStatus().name() : null);
         dto.setDescription(car.getDescription());
@@ -361,7 +361,7 @@ public class CarService {
         dto.setPower(basic.getPower());
         dto.setMileage(basic.getMileage());
         dto.setImageUrl(basic.getImageUrl());
-        dto.setConsumption(basic.getConsumption());
+        dto.setVersion(basic.getVersion());
         dto.setTransmission(basic.getTransmission());
         dto.setFuelType(basic.getFuelType());
         dto.setBodyType(basic.getBodyType());

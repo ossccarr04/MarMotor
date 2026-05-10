@@ -17,7 +17,7 @@ public class CarDTO {
 
     private Integer power; //cv
     private Integer mileage; //km
-    private String consumption;
+    private String version;
 
     private String badge;
     private String badgeType;

@@ -14,7 +14,7 @@ public class CarCreateDTO {
     private BigDecimal price;
     private Integer power;
     private Integer mileage;
-    private String consumption;
+    private String version;
     private String transmission;
     private String badge;
     private String badgeType;
