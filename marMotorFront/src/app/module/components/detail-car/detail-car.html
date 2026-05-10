@@ -90,6 +90,9 @@
             <span>Año:</span> <strong>{{ car.year }}</strong>
           </li>
           <li>
+            <span>Version:</span> <strong>{{ car.version }}</strong>
+          </li>
+          <li>
             <span>Motorización:</span> <strong>{{ car.fuelType | titlecase }}</strong>
           </li>
           <li>
@@ -101,9 +104,7 @@
           <li>
             <span>Kilometraje:</span> <strong>{{ car.mileage | number }} km</strong>
           </li>
-          <li>
-            <span>Consumo:</span> <strong>{{ car.consumption }} L/100km</strong>
-          </li>
+          
           <li>
             <span>Color:</span> <strong>{{ car.color }}</strong>
           </li>
