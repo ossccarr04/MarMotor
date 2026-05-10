@@ -203,7 +203,7 @@ body.is-zooming-mode {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Montserrat', sans-serif;
+  font-family: $font-family; /* Usa tu fuente corporativa */
   font-weight: 800;
   text-transform: uppercase;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -254,5 +254,33 @@ body.is-zooming-mode {
     font-weight: 600;
     border: none;
     box-shadow: none;
+  }
+}
+
+/* =============================================== */
+/* --- AJUSTE DE TAMAÑO PARA ETIQUETAS EN CARDS --- */
+/* =============================================== */
+
+.car-card .dgt-badge {
+  width: 28px;
+  height: 28px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-width: 1px;
+
+  &.badge-zero {
+    font-size: 1.2rem;
+  }
+
+  &.badge-eco {
+    height: 28px;
+    padding: 0 10px;
+    font-size: 0.8rem;
+  }
+
+  &.badge-none {
+    height: auto;
+    padding: 4px 8px;
+    font-size: 0.7rem;
   }
 }
