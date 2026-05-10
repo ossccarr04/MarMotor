@@ -194,3 +194,65 @@ body.is-zooming-mode {
     background-position: 300px 0;
   }
 }
+
+/* =============================================== */
+/* --- ESTILOS GLOBALES PARA ETIQUETAS DGT --- */
+/* =============================================== */
+
+.dgt-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  /* --- Estilos por defecto (Circular para B y C) --- */
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  color: #1a1a1a; /* Color de texto negro por defecto */
+
+  /* --- ETIQUETA 0 (AZUL) --- */
+  &.badge-zero {
+    background-color: #00a1df;
+    color: #ffffff;
+    font-size: 1.5rem;
+  }
+
+  /* --- ETIQUETA ECO (BICOLOR) --- */
+  &.badge-eco {
+    width: auto; /* Ancho automático para que quepa "ECO" */
+    padding: 0 14px;
+    border-radius: 20px; /* Rectángulo redondeado */
+    background: linear-gradient(90deg, #add036 50%, #00a1df 50%); /* Verde y Azul */
+    color: #1a1a1a; /* Texto negro como en la real */
+  }
+
+  /* --- ETIQUETA C (VERDE) --- */
+  &.badge-c {
+    background-color: #add036;
+  }
+
+  /* --- ETIQUETA B (AMARILLA) --- */
+  &.badge-b {
+    background-color: #f1dc00;
+  }
+
+  /* --- SIN ETIQUETA (GRIS) --- */
+  &.badge-none {
+    width: auto;
+    height: auto;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background-color: #6c757d;
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: none;
+    box-shadow: none;
+  }
+}
