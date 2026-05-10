@@ -38,7 +38,10 @@ export class App implements OnDestroy {
     ).subscribe((event: NavigationStart) => {
       if (!this.serverReady && event.url !== '/' && event.url !== '') {
         this.router.navigate(['/'], { replaceUrl: true });
-        this.toast.info('Por favor, espere mientras se recogen los datos.', 'Servidor Iniciando');
+        // Solo mostramos el toast si hemos confirmado que el servidor está "durmiendo"
+        if (this.isServerSleeping()) {
+          this.toast.info('Por favor, espere mientras se recogen los datos.', 'Servidor Iniciando');
+        }
       }
     });
 
@@ -86,7 +89,10 @@ export class App implements OnDestroy {
         if (target.closest('a, button, [routerLink]')) {
           event.preventDefault();
           event.stopPropagation();
-          this.toast.info('Por favor, espere mientras se recogen los datos.', 'Servidor Iniciando');
+
+          if (this.isServerSleeping()) {
+            this.toast.info('Por favor, espere mientras se recogen los datos.', 'Servidor Iniciando');
+          }
         }
       }
     }, { capture: true }); // Usamos la fase de captura para interceptar el evento antes y bloquear clics como el del menú móvil.

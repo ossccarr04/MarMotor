@@ -43,7 +43,7 @@
         </div>
 
         <div class="form-group" style="margin-top: 15px">
-          <label><i class="icon">ℹ️</i> Versión <span class="text-danger">*</span></label>
+          <label><i class="icon">ℹ️</i> Versión</label>
           <textarea
             #versionArea
             formControlName="version"
@@ -263,21 +263,20 @@
 
       <div class="dynamic-sections-wrapper">
         <section class="form-section">
-          <div class="section-header-flex">
-            <h3 class="section-title">Equipamiento</h3>
-            <button type="button" class="btn-add" (click)="addFeature()">+ Añadir Extra</button>
-          </div>
-          <div formArrayName="features" class="dynamic-list">
-            @for (feature of features.controls; track feature) {
-              <div class="dynamic-row">
-                <input
-                  type="text"
-                  [formControl]="$any(feature)"
-                  placeholder="Ej: Techo panorámico"
-                />
-                <button type="button" class="btn-remove" (click)="removeFeature($index)">🗑️</button>
-              </div>
-            }
+          <h3 class="section-title">Equipamiento Destacado</h3>
+          <div class="form-group">
+            <label><i class="icon">📋</i> Listado de extras (separados por comas)</label>
+            <textarea
+              #featuresArea
+              formControlName="features"
+              rows="4"
+              placeholder="Ej: Techo panorámico, Asientos de cuero, Llantas AMG..."
+              (input)="autoGrow(featuresArea)"
+              style="overflow: hidden; display: block; width: 100%; white-space: pre-wrap"
+              [class.is-invalid]="
+                carForm.get('features')?.invalid && carForm.get('features')?.touched
+              "
+            ></textarea>
           </div>
         </section>
 

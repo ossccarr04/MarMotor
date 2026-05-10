@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -29,6 +29,10 @@ import { LabelDescriptions, Labels } from '../../../@types/enums/label.enum';
   styleUrls: ['./anadir-coche.scss'],
 })
 export class AnadirCoche implements OnInit {
+  @ViewChild('versionArea') versionArea!: ElementRef;
+  @ViewChild('featuresArea') featuresArea!: ElementRef;
+  @ViewChild('descArea') descArea!: ElementRef;
+
   private cdr = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
   private router = inject(Router);
@@ -99,7 +103,7 @@ export class AnadirCoche implements OnInit {
   private initForm() {
     this.carForm = this.fb.group({
       model: ['', [Validators.required, Validators.minLength(2)]],
-      version: ['', [Validators.required]],
+      version: [''],
       // El año no puede ser mayor al actual + 1 (coches nuevos)
       year: [
         new Date().getFullYear(),
@@ -123,7 +127,7 @@ export class AnadirCoche implements OnInit {
           Validators.pattern(/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,!¡?¿\-]+$/),
         ],
       ],
-      features: this.fb.array([]),
+      features: [''],
       history: this.fb.array([]),
     });
   }
@@ -161,16 +165,11 @@ export class AnadirCoche implements OnInit {
           color: car.color,
           badge: car.badge,
           description: car.description,
+          features: car.features?.join(', ') || '',
         });
 
         // 2. Limpiar FormArrays antes de cargar (evita duplicados si entras/sales)
-        this.features.clear();
         this.history.clear();
-
-        // 3. Rellenar Equipamiento
-        car.features?.forEach((f: string) => {
-          this.features.push(this.fb.control(f, Validators.required));
-        });
 
         // 4. Rellenar Historial (Aseguramos los nombres de campos)
         if (car.history && car.history.length > 0) {
@@ -202,28 +201,21 @@ export class AnadirCoche implements OnInit {
         }
 
         this.cdr.detectChanges();
+
+        // Forzamos el auto-crecimiento de los textareas después de que Angular haya pintado los datos
+        setTimeout(() => {
+          if (this.versionArea?.nativeElement) this.autoGrow(this.versionArea.nativeElement);
+          if (this.descArea?.nativeElement) this.autoGrow(this.descArea.nativeElement);
+          if (this.featuresArea?.nativeElement) this.autoGrow(this.featuresArea.nativeElement);
+        }, 0);
       },
       error: () => this.toast.error('No se pudieron cargar los datos del vehículo'),
     });
   }
 
   // --- GETTERS Y MÉTODOS DINÁMICOS ---
-  get features(): FormArray {
-    return this.carForm.get('features') as FormArray;
-  }
   get history(): FormArray {
     return this.carForm.get('history') as FormArray;
-  }
-
-  addFeature() {
-    this.features.push(this.fb.control('', Validators.required));
-  }
-  removeFeature(index: number) {
-    // Obtenemos la referencia directa y eliminamos por índice
-    this.features.removeAt(index);
-
-    // Forzamos a Angular a que se entere del cambio (opcional pero recomendado con ChangeDetectorRef)
-    this.cdr.detectChanges();
   }
 
   addHistoryEvent() {
@@ -319,10 +311,17 @@ export class AnadirCoche implements OnInit {
       }
     });
 
+    const featuresValue = formRawValue.features || '';
+    const featuresArray = featuresValue
+      .split(',')
+      .map((feature: string) => feature.trim())
+      .filter((feature: string) => feature.length > 0);
+
     const carData = {
       ...formRawValue,
       transmission:
         this.carForm.value.transmission.toUpperCase() === 'AUTOMATICA' ? 'AUTOMATICA' : 'MANUAL',
+      features: featuresArray,
       existingImages: currentExistingImages, // Mandamos la lista de "sobrevivientes"
       clearImages:
         currentExistingImages.length === 0 && !this.fotoPortada && this.fotosGaleria.length === 0,
