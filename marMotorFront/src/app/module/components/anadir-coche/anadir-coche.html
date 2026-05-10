@@ -42,6 +42,21 @@
           </div>
         </div>
 
+        <div class="form-group" style="margin-top: 15px">
+          <label><i class="icon">ℹ️</i> Versión <span class="text-danger">*</span></label>
+          <textarea
+            #versionArea
+            formControlName="version"
+            rows="1"
+            placeholder="Ej: AMG Line 7G-DCT"
+            (input)="autoGrow(versionArea)"
+            style="overflow: hidden; display: block; width: 100%; white-space: pre-wrap"
+            [class.is-invalid]="
+              carForm.get('version')?.invalid && carForm.get('version')?.touched
+            "
+          ></textarea>
+        </div>
+
         <div class="form-grid-3">
           <div class="form-group">
             <label><i class="icon">📅</i> Año <span class="text-danger">*</span></label>
@@ -140,21 +155,6 @@
           </div>
         </div>
 
-        <div class="form-grid-4" style="margin-top: 15px">
-          <div class="form-group">
-            <label
-              ><i class="icon">📉</i> Consumo (L/100km) <span class="text-danger">*</span></label
-            >
-            <input
-              type="text"
-              formControlName="consumption"
-              placeholder="4.5"
-              [class.is-invalid]="
-                carForm.get('consumption')?.invalid && carForm.get('consumption')?.touched
-              "
-            />
-          </div>
-        </div>
       </section>
 
       <section class="form-section">

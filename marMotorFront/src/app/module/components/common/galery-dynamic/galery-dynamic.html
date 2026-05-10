@@ -102,8 +102,12 @@
                 <span class="stat-label">Motor</span>
               </div>
               <div class="stat">
-                <span class="stat-value">{{ coche.consumption }} L/100km</span>
-                <span class="stat-label">Consumo</span>
+                <span class="stat-value">
+                  <span class="dgt-label-badge-small" [ngClass]="'dgt-label-' + (coche.label | lowercase)">
+                    {{ coche.label === 'ZERO' ? '0' : coche.label }}
+                  </span>
+                </span>
+                <span class="stat-label">Etiqueta</span>
               </div>
               <div class="stat">
                 <span class="stat-value">{{ coche.fuelType | titlecase }}</span>

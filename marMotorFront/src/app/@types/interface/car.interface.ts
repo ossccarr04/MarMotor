@@ -13,7 +13,7 @@ export interface CarDTO {
   bodyType: string | null;
   power: number; // cv
   mileage: number; // km
-  consumption: string;
+  version: string;
   createdAt: string;
   soldAt: string;
   label: string;

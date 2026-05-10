@@ -67,7 +67,7 @@ export class AnadirCoche implements OnInit {
     price: 'Precio',
     power: 'Potencia',
     mileage: 'Kilometraje',
-    consumption: 'Consumo',
+    version: 'Versión',
     transmission: 'Transmisión',
     brandName: 'Marca',
     label: 'Etiqueta',
@@ -99,6 +99,7 @@ export class AnadirCoche implements OnInit {
   private initForm() {
     this.carForm = this.fb.group({
       model: ['', [Validators.required, Validators.minLength(2)]],
+      version: ['', [Validators.required]],
       // El año no puede ser mayor al actual + 1 (coches nuevos)
       year: [
         new Date().getFullYear(),
@@ -107,7 +108,6 @@ export class AnadirCoche implements OnInit {
       price: ['', [Validators.required, Validators.min(1)]],
       power: ['', [Validators.required, Validators.min(1), Validators.max(2000)]],
       mileage: ['', [Validators.required, Validators.min(0)]],
-      consumption: ['', [Validators.required, Validators.pattern(/^[0-9]+(\.[0-9]+)?$/)]],
       transmission: ['Manual', Validators.required],
       brandName: ['', Validators.required],
       fuelTypeName: ['', Validators.required],
@@ -146,7 +146,7 @@ export class AnadirCoche implements OnInit {
           price: car.price,
           power: car.power,
           mileage: car.mileage,
-          consumption: car.consumption,
+          version: car.version,
           label: labelToForm,
           transmission: car.transmission
             ? car.transmission.charAt(0).toUpperCase() + car.transmission.slice(1).toLowerCase()
@@ -318,13 +318,11 @@ export class AnadirCoche implements OnInit {
         currentExistingImages.push(url);
       }
     });
-    const rawConsumption = formRawValue.consumption.replace(',', '.');
 
     const carData = {
       ...formRawValue,
       transmission:
         this.carForm.value.transmission.toUpperCase() === 'AUTOMATICA' ? 'AUTOMATICA' : 'MANUAL',
-      consumption: rawConsumption.includes('.') ? rawConsumption : `${rawConsumption}.0`,
       existingImages: currentExistingImages, // Mandamos la lista de "sobrevivientes"
       clearImages:
         currentExistingImages.length === 0 && !this.fotoPortada && this.fotosGaleria.length === 0,
