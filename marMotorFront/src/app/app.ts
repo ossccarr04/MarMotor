@@ -34,18 +34,6 @@ export class App implements OnDestroy {
     this.wakeUpServer();
 
     this.router.events.pipe(
-      filter((event): event is NavigationStart => event instanceof NavigationStart)
-    ).subscribe((event: NavigationStart) => {
-      if (!this.serverReady && event.url !== '/' && event.url !== '') {
-        this.router.navigate(['/'], { replaceUrl: true });
-        // Solo mostramos el toast si hemos confirmado que el servidor está "durmiendo"
-        if (this.isServerSleeping()) {
-          this.toast.info('Por favor, espere mientras se recogen los datos.', 'Servidor Iniciando');
-        }
-      }
-    });
-
-    this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       const rutasSinHeader = ['/auth/login', '/auth/register', '/auth/reset-password'];
