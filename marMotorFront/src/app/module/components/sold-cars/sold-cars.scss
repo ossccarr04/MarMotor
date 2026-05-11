@@ -203,52 +203,61 @@ $error-red: #ef4444;
       flex-direction: column;
       flex-grow: 1; /* Esto empuja todo hacia abajo correctamente */
 
-      .title-price-row {
+      /* --- NUEVA CABECERA MEJORADA --- */
+      .card-header {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 10px;
+        margin-bottom: 25px;
+        gap: 15px;
 
-        h3 {
-          color: $text-dark;
-          font-size: 17px;
-          font-weight: 700;
-          margin: 0;
-          flex: 1;
-          padding-right: 15px; /* Para que textos largos no choquen con la etiqueta */
-        }
-
-        /* --- NUEVO ESTILO PARA LA CAJA DE VENDIDO + FECHA --- */
-        .sold-info {
+        .title-column {
           display: flex;
           flex-direction: column;
-          align-items: flex-end; /* Alinea todo a la derecha */
-          flex-shrink: 0;
+          gap: 6px;
 
-          .sold-label {
-            background-color: $error-red;
-            color: white;
-            font-weight: 700;
-            padding: 4px 10px; /* Un poco más estilizada */
-            border-radius: 6px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            margin-bottom: 4px; /* Separación con la fecha */
+          h3 {
+            color: $text-dark;
+            font-size: 18px;
+            font-weight: 800;
+            margin: 0;
+            line-height: 1.2;
           }
 
-          .sold-date {
-            font-size: 0.75rem; /* Letra pequeñita y elegante */
+          .car-subtitle {
             color: $text-gray;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 500;
           }
         }
-      }
 
-      .car-subtitle {
-        display: block;
-        color: $text-gray;
-        font-size: 13px;
-        margin-bottom: 25px;
+        /* --- LA CÁPSULA DE VENTA (DISEÑO PREMIUM) --- */
+        .sold-status-badge {
+          background-color: rgba($error-red, 0.08); /* Fondo rojo muy suave */
+          border: 1px solid rgba($error-red, 0.15); /* Borde sutil */
+          padding: 8px 14px;
+          border-radius: 12px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          flex-shrink: 0;
+          box-shadow: 0 4px 10px rgba($error-red, 0.05);
+
+          .status-title {
+            color: $error-red;
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+
+          .status-date {
+            color: darken($error-red, 15%); /* Rojo oscurecido para la fecha */
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 3px;
+          }
+        }
       }
 
       /* FILA DE ESTADÍSTICAS */
@@ -312,8 +321,20 @@ $error-red: #ef4444;
       .car-image-container { height: 180px; }
       .car-details {
         padding: 20px;
-        .title-price-row h3 { font-size: 16px; }
-        .car-subtitle { font-size: 12px; margin-bottom: 20px; }
+        
+        /* Ajustes responsive para la nueva cabecera */
+        .card-header {
+          margin-bottom: 20px;
+          .title-column h3 { font-size: 16px; }
+          .title-column .car-subtitle { font-size: 12px; }
+          
+          .sold-status-badge {
+            padding: 6px 10px;
+            .status-title { font-size: 0.75rem; }
+            .status-date { font-size: 0.65rem; }
+          }
+        }
+        
         .car-stats-row .stat .stat-value { font-size: 13px; }
         .car-stats-row .stat .stat-label { font-size: 10px; }
       }
