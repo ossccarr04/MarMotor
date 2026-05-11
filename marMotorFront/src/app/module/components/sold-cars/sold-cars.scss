@@ -96,13 +96,18 @@ $error-red: #ef4444; // Para la etiqueta "Vendido"
   // --- TARJETA DE COCHE (ESTILO DE CARS.SCSS ADAPTADO) ---
   .car-card {
     background: $card-stock-bg;
-    border: 1px solid #e2e8f0; // Borde más sutil
+    border: 1px solid #e2e8f0;
     border-radius: 20px;
     overflow: hidden;
     position: relative;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    
+    /* --- PROTECCIÓN ANTI-CORTES --- */
     display: flex;
     flex-direction: column;
+    height: auto; /* Sobreescribe cualquier altura fija global */
+    min-height: 100%; /* Permite que se estire bien en el Grid */
+    max-height: none;
 
     // Estilo específico para tarjetas vendidas
     &.sold-card {
@@ -115,6 +120,7 @@ $error-red: #ef4444; // Para la etiqueta "Vendido"
     .car-image-container {
       position: relative;
       height: 220px;
+      flex-shrink: 0; /* Evita que flexbox aplaste la imagen */
       overflow: hidden;
 
       .badge {
@@ -128,7 +134,6 @@ $error-red: #ef4444; // Para la etiqueta "Vendido"
         color: white;
         text-transform: uppercase;
         z-index: 2;
-        // Colores específicos para cada badge
         &.badge-sold { background-color: $error-red; }
         &.badge-new_arrivals { background-color: #3b82f6; }
         &.badge-featured { background-color: #8b5cf6; }
@@ -181,28 +186,32 @@ $error-red: #ef4444; // Para la etiqueta "Vendido"
         margin-bottom: 25px;
       }
 
+      /* --- FILA DE ESTADÍSTICAS UNIFICADA (Igual que en cars.scss) --- */
       .car-stats-row {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
+        display: flex;
+        justify-content: space-between;
         margin-top: auto;
         padding-top: 18px;
         border-top: 1px solid rgba(0, 0, 0, 0.05);
 
         .stat {
-          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center; /* Alineación perfecta del bloque */
 
           .stat-value {
             color: $text-dark;
             font-weight: 700;
             font-size: 14px;
+            
+            /* Magia de simetría */
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 28px;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
 
-            .dgt-badge { margin: 0 auto; }
+            .dgt-badge { margin: 0; }
           }
 
           .stat-label {
