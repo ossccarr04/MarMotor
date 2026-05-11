@@ -10,6 +10,7 @@ import { adminGuard } from './guards/admin-guard';
 import { Company } from './module/components/company/company';
 import { ForgotPassword } from './module/components/forgot-password/forgot-password';
 import { ResetPassword } from './module/components/reset-password/reset-password';
+import { SoldCars } from './module/components/sold-cars/sold-cars';
 
 export const routes: Routes = [
   {
@@ -39,6 +40,10 @@ export const routes: Routes = [
   {
     path: 'company',
     component: Company
+  },
+  {
+    path: 'sold-cars',
+    component: SoldCars
   },
   {
     path: 'cars',

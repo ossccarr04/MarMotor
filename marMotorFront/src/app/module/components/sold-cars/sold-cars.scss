@@ -1,0 +1,189 @@
+// Variables de color y fuentes para consistencia
+$font-family: 'Montserrat', sans-serif;
+$accent-green: #37df8c;
+$text-dark: #333;
+$text-light: #fff;
+$error-red: #ef4444;
+
+.sold-cars-page-wrapper {
+  background-color: #f7f9fc;
+  min-height: 100vh;
+  padding-bottom: 50px;
+
+  .intro-section {
+    background-color: #0a1f33;
+    color: $text-light;
+    padding: 40px 20px;
+    text-align: center;
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+      max-width: 800px;
+      margin: 0 auto;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.6;
+    }
+  }
+
+  .results-wrapper {
+    padding-top: 40px;
+  }
+
+  .container-mx {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  // Estilos para los estados de carga y "sin resultados"
+  .loading-state-container,
+  .no-results-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 40vh;
+    flex-direction: column;
+    color: #6c757d;
+    text-align: center;
+
+    .fa-spin,
+    .fa-box-open {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      color: $accent-green;
+    }
+
+    p,
+    h2 {
+      font-family: $font-family;
+    }
+    h2 {
+      font-size: 1.5rem;
+      color: $text-dark;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  // Estilos para la cuadrícula y las tarjetas
+  .stock-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+  }
+
+  .car-card {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &.sold-card {
+      opacity: 0.85; // Ligeramente difuminado
+      .car-image-container .car-image {
+        filter: grayscale(50%); // Efecto de escala de grises
+      }
+    }
+
+    .car-image-container {
+      position: relative;
+      aspect-ratio: 16 / 10;
+
+      .badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background-color: $accent-green;
+        color: $text-light;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        z-index: 2;
+        text-transform: uppercase;
+      }
+
+      .car-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: filter 0.3s ease;
+      }
+    }
+
+    .car-details {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+
+      .title-price-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 5px;
+
+        h3 {
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: $text-dark;
+          margin: 0;
+        }
+
+        .sold-label {
+          background-color: $error-red;
+          color: white;
+          font-weight: 700;
+          padding: 6px 12px;
+          border-radius: 8px;
+          font-size: 0.9rem;
+        }
+      }
+
+      .car-subtitle {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-bottom: 15px;
+      }
+
+      .car-stats-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-top: auto;
+        padding-top: 15px;
+        border-top: 1px solid #e9ecef;
+
+        .stat {
+          text-align: center;
+
+          .stat-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: $text-dark;
+            display: block;
+            margin-bottom: 2px;
+
+            .dgt-badge {
+              margin: 0 auto; // Centra la etiqueta DGT
+            }
+          }
+
+          .stat-label {
+            font-size: 0.75rem;
+            color: #6c757d;
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+  }
+}
