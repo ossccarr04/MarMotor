@@ -1,4 +1,4 @@
-// --- VARIABLES (Consistentes con cars.scss) ---
+// --- VARIABLES ---
 $dark-background: #0b1624;
 $white-results: #ffffff;
 $card-stock-bg: #fdfdfd;
@@ -6,7 +6,53 @@ $accent-green: #37df8c;
 $text-dark: #051121;
 $text-gray: #718096;
 $font-family: 'Montserrat', sans-serif;
-$error-red: #ef4444; // Para la etiqueta "Vendido"
+$error-red: #ef4444; 
+
+// --- ESTILOS DE LAS ETIQUETAS DGT (Locales para evitar fallos de Angular) ---
+.dgt-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-family;
+  font-weight: 800;
+  text-transform: uppercase;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 14px;
+  color: #1a1a1a !important; 
+  line-height: 1;
+
+  &.badge-zero {
+    background-color: #00a1df;
+    color: #ffffff !important;
+    font-size: 16px;
+  }
+  &.badge-eco {
+    width: auto; 
+    height: 24px;
+    padding: 0 10px;
+    border-radius: 12px; 
+    background: linear-gradient(90deg, #add036 50%, #00a1df 50%); 
+    font-size: 12px;
+  }
+  &.badge-c { background-color: #add036; }
+  &.badge-b { background-color: #f1dc00; }
+  &.badge-none {
+    width: auto;
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 6px;
+    background-color: #6c757d;
+    color: #ffffff !important;
+    font-size: 10px;
+    font-weight: 600;
+    border: none;
+    box-shadow: none;
+  }
+}
 
 .sold-cars-page-wrapper {
   background-color: $dark-background;
@@ -14,7 +60,7 @@ $error-red: #ef4444; // Para la etiqueta "Vendido"
   font-family: $font-family;
   padding-bottom: 50px;
 
-  // --- SECCIÓN DE INTRODUCCIÓN (DISEÑO MEJORADO) ---
+  // --- SECCIÓN DE INTRODUCCIÓN ---
   .intro-section {
     background-color: $dark-background;
     color: #fff;
@@ -39,7 +85,7 @@ $error-red: #ef4444; // Para la etiqueta "Vendido"
     }
   }
 
-  // --- CONTENEDOR BLANCO (COMO EN CARS.SCSS) ---
+  // --- CONTENEDOR BLANCO ---
   .results-wrapper {
     background-color: $white-results;
     padding: 50px 0;
@@ -57,7 +103,7 @@ $error-red: #ef4444; // Para la etiqueta "Vendido"
     padding: 0 20px;
   }
 
-  // --- ESTADOS DE CARGA Y SIN RESULTADOS (COMO EN CARS.SCSS) ---
+  // --- ESTADOS DE CARGA Y SIN RESULTADOS ---
   .loading-state-container,
   .no-results-container {
     display: flex;
@@ -86,14 +132,15 @@ $error-red: #ef4444; // Para la etiqueta "Vendido"
     }
   }
 
-  // --- GRID DE COCHES (RESPONSIVE) ---
+  // --- GRID DE COCHES ---
   .stock-grid {
     display: grid;
     gap: 30px;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    align-items: stretch; /* Obliga a que todas las tarjetas midan lo mismo */
   }
 
-  // --- TARJETA DE COCHE (ESTILO DE CARS.SCSS ADAPTADO) ---
+  // --- TARJETA DE COCHE ---
   .car-card {
     background: $card-stock-bg;
     border: 1px solid #e2e8f0;
@@ -102,14 +149,11 @@ $error-red: #ef4444; // Para la etiqueta "Vendido"
     position: relative;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     
-    /* --- PROTECCIÓN ANTI-CORTES --- */
+    /* PROTECCIÓN DE ALTURA ABSOLUTA */
     display: flex;
     flex-direction: column;
-    height: auto; /* Sobreescribe cualquier altura fija global */
-    min-height: 100%; /* Permite que se estire bien en el Grid */
-    max-height: none;
+    height: 100%; 
 
-    // Estilo específico para tarjetas vendidas
     &.sold-card {
       opacity: 0.9;
       .car-image-container .car-image {
@@ -120,7 +164,7 @@ $error-red: #ef4444; // Para la etiqueta "Vendido"
     .car-image-container {
       position: relative;
       height: 220px;
-      flex-shrink: 0; /* Evita que flexbox aplaste la imagen */
+      flex-shrink: 0; 
       overflow: hidden;
 
       .badge {
@@ -152,7 +196,7 @@ $error-red: #ef4444; // Para la etiqueta "Vendido"
       padding: 25px;
       display: flex;
       flex-direction: column;
-      flex-grow: 1;
+      flex-grow: 1; /* Esto empuja todo hacia abajo correctamente */
 
       .title-price-row {
         display: flex;
@@ -186,25 +230,24 @@ $error-red: #ef4444; // Para la etiqueta "Vendido"
         margin-bottom: 25px;
       }
 
-      /* --- FILA DE ESTADÍSTICAS UNIFICADA (Igual que en cars.scss) --- */
+      /* FILA DE ESTADÍSTICAS */
       .car-stats-row {
         display: flex;
         justify-content: space-between;
-        margin-top: auto;
+        margin-top: auto; /* Ancla esta fila al fondo del contenedor */
         padding-top: 18px;
         border-top: 1px solid rgba(0, 0, 0, 0.05);
 
         .stat {
           display: flex;
           flex-direction: column;
-          align-items: center; /* Alineación perfecta del bloque */
+          align-items: center; 
 
           .stat-value {
             color: $text-dark;
             font-weight: 700;
             font-size: 14px;
             
-            /* Magia de simetría */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -218,6 +261,7 @@ $error-red: #ef4444; // Para la etiqueta "Vendido"
             color: $text-gray;
             font-size: 11px;
             text-transform: uppercase;
+            line-height: 1;
           }
         }
       }
@@ -225,7 +269,7 @@ $error-red: #ef4444; // Para la etiqueta "Vendido"
   }
 }
 
-// Media queries para responsive
+// Media queries
 @media (max-width: 768px) {
   .sold-cars-page-wrapper {
     .intro-section {
