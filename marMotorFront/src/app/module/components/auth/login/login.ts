@@ -20,11 +20,9 @@ export class Login implements OnInit, OnDestroy {
   isForgotPasswordOpen = false;
   passwordVisible: boolean = false;
 
-  // --- Throttler Logic ---
   isBlocked = false;
   blockTimeRemaining = 0;
   private countdownSubscription: Subscription | null = null;
-  // --- End Throttler Logic ---
 
   togglePassword(): void {
     this.passwordVisible = !this.passwordVisible;
@@ -34,7 +32,7 @@ export class Login implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private toast: ToastrService,
     private router: Router,
-    private authService: AuthServiceBBDD, // Tu servicio de login
+    private authService: AuthServiceBBDD,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -55,7 +53,6 @@ export class Login implements OnInit, OnDestroy {
     return this.loginForm.controls;
   }
 
-  // --- Throttler Logic ---
   checkExistingBlock(): void {
     const blockExpiresAt = localStorage.getItem('loginBlockExpiresAt');
     if (blockExpiresAt) {
@@ -72,7 +69,7 @@ export class Login implements OnInit, OnDestroy {
 
   startCountdown(seconds: number): void {
     this.blockTimeRemaining = Math.ceil(seconds);
-    this.loginForm.disable(); // Disable the form
+    this.loginForm.disable();
 
     if (this.countdownSubscription) {
       this.countdownSubscription.unsubscribe();
@@ -97,7 +94,6 @@ export class Login implements OnInit, OnDestroy {
     const seconds = this.blockTimeRemaining % 60;
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   }
-  // --- End Throttler Logic ---
 
   onSubmit() {
     if (this.loginForm.invalid) {
@@ -106,7 +102,7 @@ export class Login implements OnInit, OnDestroy {
       return;
     }
     if (this.isBlocked) {
-      return; // No enviar si está bloqueado
+      return;
     }
 
     this.authService
@@ -114,7 +110,6 @@ export class Login implements OnInit, OnDestroy {
       .pipe(
         catchError((err: HttpErrorResponse) => {
           if (err.status === 429) {
-            // ThrottlerException
             const blockDurationSeconds = 600; // 10 minutos
             const expiresAt = new Date().getTime() + blockDurationSeconds * 1000;
             localStorage.setItem('loginBlockExpiresAt', expiresAt.toString());

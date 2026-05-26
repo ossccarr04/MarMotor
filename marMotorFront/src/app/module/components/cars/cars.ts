@@ -18,7 +18,6 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './cars.scss',
 })
 export class Cars implements OnInit, OnDestroy {
-  
   @ViewChild(Filters) filtroComponent!: Filters;
 
   private carService = inject(CarServiceBBDD);
@@ -49,7 +48,6 @@ export class Cars implements OnInit, OnDestroy {
       this.cargarFavoritosYCoches(params);
     });
 
-    // Escucha el evento de recarga desde el interruptor "Vendidos" en Filters.
     this.carService.recargarCoches$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       // Si hay filtros en la URL, navegamos para limpiarla.
       // Esta navegación disparará el `queryParams.subscribe` de arriba, que recargará los coches.
@@ -67,9 +65,6 @@ export class Cars implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Este método se ejecuta cuando el componente se destruye.
-    // Enviamos una señal para que todas las suscripciones activas (con takeUntil)
-    // se cancelen automáticamente, evitando fugas de memoria.
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -82,47 +77,41 @@ export class Cars implements OnInit, OnDestroy {
     this.cargando = true;
     this.cochesFiltrados = [];
     this.cochesVisibles = [];
-    this.cdr.detectChanges(); // Forzamos la detección de cambios para mostrar el estado de carga
+    this.cdr.detectChanges();
 
     if (this.authService.isLoggedIn()) {
       this.favoriteService.getMyFavorites().subscribe({
         next: (favs) => {
-          this.misFavoritosIds = favs.map(c => c.id);
-          this.cargarCoches(params); // Carga coches después de tener los favoritos
+          this.misFavoritosIds = favs.map((c) => c.id);
+          this.cargarCoches(params);
         },
         error: () => {
-          this.misFavoritosIds = []; // En caso de error, lista de favoritos vacía
-          this.cargarCoches(params); // Aún así cargamos los coches
-        }
+          this.misFavoritosIds = [];
+          this.cargarCoches(params);
+        },
       });
     } else {
-      this.misFavoritosIds = []; // Usuario no logueado, no hay favoritos
+      this.misFavoritosIds = [];
       this.cargarCoches(params);
     }
   }
 
   getBadgeText(badge: any): string {
     if (!badge) return '';
-    // Convertir el badge a minúsculas para que coincida con las claves del enum BadgeType (que ahora son en español minúsculas)
-    const badgeKey = badge ? String(badge).trim().toLowerCase() as BadgeType : BadgeType.NONE;
+
+    const badgeKey = badge ? (String(badge).trim().toLowerCase() as BadgeType) : BadgeType.NONE;
     // Asegurarse de que la clave exista en BadgeType antes de acceder a BadgeLabel
     if (Object.values(this.badgeType).includes(badgeKey)) {
       return this.badgeLabel[badgeKey as BadgeType];
     }
-    return badge ? badge.toString() : ''; // Fallback si no se encuentra en el enum
+    return badge ? badge.toString() : '';
   }
 
-  /**
-   * Mapea la lista de coches para marcar cuáles son favoritos.
-   * @param coches La lista de coches a mapear.
-   * @returns La lista de coches con el estado `isSaved` actualizado.
-   */
   private aplicarEstadoFavoritos(coches: CarDTO[]): CarDTO[] {
-    return coches.map(coche => ({ ...coche, isSaved: this.misFavoritosIds.includes(coche.id) }));
+    return coches.map((coche) => ({ ...coche, isSaved: this.misFavoritosIds.includes(coche.id) }));
   }
 
   cargarCoches(filtrosNuevos: any = {}) {
-    // 1. LA ÚNICA REGLA: ¿Qué dice el interruptor de Admin ahora mismo?
     const quiereVerVendidos = this.carService.mantenerVendidosActivo;
 
     // 2. Decodificamos TODOS los filtros UNA SOLA VEZ
@@ -134,15 +123,13 @@ export class Cars implements OnInit, OnDestroy {
       }
     });
 
-    // --- FUNCIÓN AUXILIAR (Totalmente limpia de rutas) ---
     const aplicarFiltroVendidos = (data: any[]) => {
-      // Guardamos la palabra exacta en mayúsculas ("SOLD")
       const VALOR_VENDIDO = String(this.badgeType.SOLD).toUpperCase();
 
       return (data || []).filter((coche) => {
         const badgeSeguro = coche.badge ? coche.badge.trim().toUpperCase() : 'NONE';
-        // Si quiere ver vendidos, solo muestra los vendidos. Si no, muestra los que NO son vendidos NI reservados.
-        return quiereVerVendidos ? badgeSeguro === VALOR_VENDIDO : (badgeSeguro !== VALOR_VENDIDO);
+
+        return quiereVerVendidos ? badgeSeguro === VALOR_VENDIDO : badgeSeguro !== VALOR_VENDIDO;
       });
     };
 
@@ -175,7 +162,7 @@ export class Cars implements OnInit, OnDestroy {
         },
       });
 
-      return; // Salimos de la función
+      return;
     }
 
     // 4. LÓGICA DE FILTROS NORMALES (Desplegables)
@@ -211,10 +198,9 @@ export class Cars implements OnInit, OnDestroy {
       .subscribe((params) => {
         this.cargarFavoritosYCoches(params);
       })
-      .unsubscribe(); // Nos desuscribimos al instante para que no se quede escuchando
+      .unsubscribe();
   }
 
-  // Este método recibe los cambios del componente Filters
   aplicarFiltros(filtrosNuevos: any) {
     // 5. Al navegar a la misma URL con los nuevos filtros, el subscribe del ngOnInit
     // se activará solo, ejecutando cargarCoches() automáticamente.
@@ -266,26 +252,21 @@ export class Cars implements OnInit, OnDestroy {
         this.cochesFiltrados.sort((a, b) => b.mileage - a.mileage);
         break;
       default:
-        // Aquí podrías volver al orden original si guardaste una copia
         break;
     }
 
-    // Reiniciamos la paginación para mostrar los primeros resultados del nuevo orden
     this.paginaActual = 1;
-    this.actualizarVista(); // El método que recorta los coches que se ven
+    this.actualizarVista();
   }
 
   resetFilters() {
-    
-      this.filtroComponent.limpiarMarca();
-      this.filtroComponent.limpiarCarroceria();
-      this.filtroComponent.limpiarCombustible();
-      this.filtroComponent.precioActual = 0;
-      this.filtroComponent.precioModificado = false;
-      this.filtroComponent.busquedaAdmin = '';
-    
+    this.filtroComponent.limpiarMarca();
+    this.filtroComponent.limpiarCarroceria();
+    this.filtroComponent.limpiarCombustible();
+    this.filtroComponent.precioActual = 0;
+    this.filtroComponent.precioModificado = false;
+    this.filtroComponent.busquedaAdmin = '';
 
-    // 2. Navegamos a la ruta limpia (esto resetea los coches en pantalla)
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {},
@@ -304,7 +285,6 @@ export class Cars implements OnInit, OnDestroy {
 
     const estadoAnterior = coche.isSaved;
 
-    // 1. Actualización optimista de la UI
     coche.isSaved = !estadoAnterior;
     this.cdr.detectChanges();
 
@@ -313,24 +293,21 @@ export class Cars implements OnInit, OnDestroy {
       : this.favoriteService.addFavorite(coche.id);
 
     peticion.subscribe({
-      // 2. En caso de éxito, no hacemos nada porque la UI ya está actualizada.
       next: () => {
-        // Opcional: Toast de éxito silencioso.
-        // Actualizamos nuestra lista de IDs localmente para consistencia
         if (estadoAnterior) {
-          this.misFavoritosIds = this.misFavoritosIds.filter(id => id !== coche.id);
+          this.misFavoritosIds = this.misFavoritosIds.filter((id) => id !== coche.id);
         } else {
           this.misFavoritosIds.push(coche.id);
         }
       },
-      // 3. En caso de error, revertimos el cambio en la UI y notificamos al usuario.
+
       error: (err) => {
         console.error(estadoAnterior ? 'Error al eliminar:' : 'Error al guardar:', err);
-        coche.isSaved = estadoAnterior; // Revertimos al estado original
+        coche.isSaved = estadoAnterior;
         this.cdr.detectChanges();
         this.toast.error(
           'No se pudo completar la acción. Por favor, inténtalo de nuevo.',
-          'Error de conexión'
+          'Error de conexión',
         );
       },
     });

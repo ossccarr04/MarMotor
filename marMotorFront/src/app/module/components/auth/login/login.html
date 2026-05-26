@@ -35,7 +35,13 @@
             [readOnly]="isBlocked"
           />
 
-          <button type="button" class="toggle-eye" (click)="togglePassword()" tabindex="-1" [disabled]="isBlocked">
+          <button
+            type="button"
+            class="toggle-eye"
+            (click)="togglePassword()"
+            tabindex="-1"
+            [disabled]="isBlocked"
+          >
             @if (passwordVisible) {
               <i class="fa-solid fa-eye-slash"></i>
             } @else {
@@ -56,7 +62,6 @@
         }
       </div>
 
-      <!-- Throttler Block Message -->
       @if (isBlocked) {
         <div class="block-message">
           <p>Demasiados intentos. Podrás volver a intentarlo en:</p>
@@ -64,8 +69,10 @@
         </div>
       }
 
-      <button type="submit" class="btn-submit" [disabled]="loginForm.invalid || isBlocked">{{ isBlocked ? 'Bloqueado' : 'Iniciar sesión' }}</button>
-      
+      <button type="submit" class="btn-submit" [disabled]="loginForm.invalid || isBlocked">
+        {{ isBlocked ? 'Bloqueado' : 'Iniciar sesión' }}
+      </button>
+
       <div class="forgot-password-container">
         <a
           (click)="isForgotPasswordOpen = true"
@@ -76,14 +83,12 @@
         </a>
       </div>
 
-
-
       <div class="auth-links">
         ¿No tienes cuenta? <a routerLink="/auth/register">Regístrate aquí</a>
       </div>
     </form>
-          @if (isForgotPasswordOpen) {
-  <app-forgot-password (close)="isForgotPasswordOpen = false"></app-forgot-password>
-}
+    @if (isForgotPasswordOpen) {
+      <app-forgot-password (close)="isForgotPasswordOpen = false"></app-forgot-password>
+    }
   </div>
 </div>

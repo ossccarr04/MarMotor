@@ -1,4 +1,3 @@
-/* --- VARIABLES --- */
 $primary-blue: #0a1f33;
 $accent-green: #37df8c;
 $text-dark: #1a202c;
@@ -6,7 +5,7 @@ $green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
 $font-family: 'Montserrat', sans-serif;
 
 .car-gallery-section {
-  padding: 40px 0; // Eliminado padding lateral para que el scroll llegue al borde
+  padding: 40px 0;
   font-family: $font-family;
   background: linear-gradient(135deg, #051121 0%, #162b44 100%);
   width: 100%;
@@ -16,13 +15,12 @@ $font-family: 'Montserrat', sans-serif;
     padding: 60px 40px;
   }
 
-  /* --- HEADER DE LA GALERÍA --- */
   .gallery-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
-    padding: 0 20px; // Padding solo para el texto y flechas
+    padding: 0 20px;
 
     @media (min-width: 768px) {
       margin-bottom: 40px;
@@ -81,18 +79,16 @@ $font-family: 'Montserrat', sans-serif;
     }
   }
 
-  /* --- GRID / CONTENEDOR DE TARJETAS (MOVIMIENTO TÁCTIL) --- */
   .car-cards-grid {
     display: flex;
     align-items: flex-start;
     overflow-x: auto;
     gap: 20px;
-    padding: 10px 20px 40px 20px; // Padding lateral para que la 1ª tarjeta respire
+    padding: 10px 20px 40px 20px;
 
-    // Propiedades críticas para el deslizamiento móvil
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
-    user-select: none; // Evita que se seleccione el texto al arrastrar
+    user-select: none;
     -webkit-user-drag: none;
     -webkit-overflow-scrolling: touch;
 
@@ -113,7 +109,6 @@ $font-family: 'Montserrat', sans-serif;
       cursor: grabbing;
     }
 
-    /* Ocultar scrollbar */
     &::-webkit-scrollbar {
       display: none;
     }
@@ -123,13 +118,12 @@ $font-family: 'Montserrat', sans-serif;
     @media (min-width: 768px) {
       gap: 30px;
       padding: 10px 5px 40px 5px;
-      scroll-snap-type: none; // En PC preferimos scroll libre con flechas
+      scroll-snap-type: none;
     }
 
-    /* --- TARJETA INDIVIDUAL --- */
     .car-card {
-      flex: 0 0 90%; // Ocupa casi todo el ancho en móvil para impacto visual
-      scroll-snap-align: center; // Se imanta al centro en móvil
+      flex: 0 0 90%;
+      scroll-snap-align: center;
       background: #ffffff;
       border-radius: 20px;
 
@@ -231,7 +225,6 @@ $font-family: 'Montserrat', sans-serif;
         }
       }
 
-      /* --- DETALLES --- */
       .car-details {
         padding: 20px;
 
@@ -243,7 +236,7 @@ $font-family: 'Montserrat', sans-serif;
 
           h3 {
             color: $text-dark;
-            font-size: 19px; // Ligeramente más grande
+            font-size: 19px;
             font-weight: 700;
             margin: 0;
             flex: 1;
@@ -251,7 +244,7 @@ $font-family: 'Montserrat', sans-serif;
 
           .car-price {
             color: $accent-green;
-            font-size: 21px; // Ligeramente más grande
+            font-size: 21px;
             font-weight: 900;
             margin-left: 10px;
           }
@@ -274,20 +267,18 @@ $font-family: 'Montserrat', sans-serif;
           .stat {
             display: flex;
             flex-direction: column;
-            align-items: center; /* Asegura que el contenido (la etiqueta) esté centrado */
-            gap: 4px; /* Un pelín más de espacio para respirar */
+            align-items: center;
+            gap: 4px;
 
             .stat-value {
               font-size: 14px;
               font-weight: 800;
               color: $text-dark;
 
-              /* --- LA MAGIA DE LA ALINEACIÓN --- */
               display: flex;
               align-items: center;
               justify-content: center;
-              min-height: 28px; /* Obliga a que todos los números midan de alto lo mismo que la etiqueta */
-              /* ---------------------------------- */
+              min-height: 28px;
 
               @media (min-width: 768px) {
                 font-size: 15px;
@@ -303,7 +294,6 @@ $font-family: 'Montserrat', sans-serif;
         }
       }
 
-      /* --- BOTÓN SIEMPRE VISIBLE EN MÓVIL --- */
       .hover-btn-container {
         max-height: 0;
         opacity: 0;
@@ -344,7 +334,6 @@ $font-family: 'Montserrat', sans-serif;
   }
 }
 
-/* --- FILTROS CON SCROLL EN MÓVIL --- */
 .badge-filters {
   font-family: $font-family;
   display: flex;
@@ -385,7 +374,7 @@ $font-family: 'Montserrat', sans-serif;
     margin: 20px 0;
     padding: 0 20px 10px 20px;
     justify-content: flex-start;
-    overflow-x: auto; // Permite deslizar los filtros si hay muchos
+    overflow-x: auto;
     width: 100%;
     -webkit-overflow-scrolling: touch;
 
@@ -400,43 +389,39 @@ $font-family: 'Montserrat', sans-serif;
   }
 }
 
-/* --- RESPONSIVE HEADER --- */
 @media (max-width: 768px) {
   .car-gallery-section {
     .gallery-header {
       flex-direction: column;
-      align-items: center; // Centra el H2 y el grupo de nav-arrows
-      text-align: center; // Centra el texto del H2
+      align-items: center;
+      text-align: center;
       gap: 20px;
 
       h2 {
-        width: 100%; // Asegura que el título ocupe el ancho para centrarse
+        width: 100%;
       }
 
       .gallery-nav {
-        align-self: center; // Centra las flechas en lugar de mandarlas a la derecha
+        align-self: center;
       }
     }
   }
 
-  /* --- FILTROS CENTRADOS EN MÓVIL --- */
   .badge-filters {
     margin: 20px 0;
-    padding: 0 10px; // Pequeño aire lateral
-    justify-content: center; // MÁGIA: Centra los botones de filtro
+    padding: 0 10px;
+    justify-content: center;
     width: 100%;
-    flex-wrap: wrap; // Si hay muchos, bajan centrados.
-    // Si prefieres que deslicen de lado, cambia wrap por nowrap y usa overflow-x: auto
+    flex-wrap: wrap;
 
     button {
-      margin-top: 5px; // Espacio si llegan a saltar de línea
+      margin-top: 5px;
       font-size: 12px;
       padding: 8px 16px;
     }
   }
 }
 
-/* --- ANIMACIONES --- */
 @keyframes latido {
   0% {
     transform: scale(1);

@@ -18,9 +18,8 @@ $font-family: 'Montserrat', sans-serif;
   position: relative;
   overflow: hidden;
   font-family: $font-family;
-  padding: 40px 20px; /* Un poco más de padding superior por si el form es largo */
+  padding: 40px 20px;
 
-  /* La ola verde diagonal heredada del Home */
   &::before {
     content: '';
     position: absolute;
@@ -40,7 +39,7 @@ $font-family: 'Montserrat', sans-serif;
     padding: 50px 40px;
     border-radius: 30px;
     width: 100%;
-    max-width: 500px; /* Un poco más ancho que el login para acomodar mejor los campos */
+    max-width: 500px;
     position: relative;
     z-index: 1;
     border: 1px solid rgba($accent-green, 0.2);
@@ -64,7 +63,7 @@ $font-family: 'Montserrat', sans-serif;
     }
 
     .form-group {
-      margin-bottom: 22px; /* Espaciado uniforme */
+      margin-bottom: 22px;
 
       label {
         display: block;
@@ -99,7 +98,6 @@ $font-family: 'Montserrat', sans-serif;
           box-shadow: 0 0 15px rgba(55, 223, 140, 0.2);
         }
 
-        /* Estilo de error cuando el validador falla */
         &.is-invalid {
           border-color: $error-red;
           background-color: rgba($error-red, 0.05);
@@ -113,7 +111,7 @@ $font-family: 'Montserrat', sans-serif;
         font-weight: 600;
         margin-top: 8px;
         display: block;
-        // Animación sutil de entrada para el error
+
         animation: fadeIn 0.3s ease;
       }
     }
@@ -123,17 +121,17 @@ $font-family: 'Montserrat', sans-serif;
       align-items: center;
 
       input {
-        padding-right: 50px; // Dejamos espacio para que el texto no tape el ojo
-        -webkit-text-security: none; // Desactiva seguridad visual extra en algunos navegadores
+        padding-right: 50px;
+        -webkit-text-security: none;
         font-family: $font-family;
       }
 
       &[type='password'] {
-        letter-spacing: 3px; // Los puntitos se ven mejor separados
+        letter-spacing: 3px;
       }
 
       &[type='text'] {
-        letter-spacing: normal; // El texto normal se ve bien así
+        letter-spacing: normal;
       }
 
       .toggle-eye {

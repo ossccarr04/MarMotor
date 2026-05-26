@@ -8,13 +8,12 @@ export const adminGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   const user = authService.getCurrentUser();
-  // Decodificamos el rol que guardaste en base64
+  // Decodificamos el rol que se guarda en base64
   const role = user ? atob(user.role) : '';
 
   if (role === UserRoles.ADMIN.toUpperCase()) {
-    return true; 
+    return true;
   }
-
 
   router.navigate(['/']);
   return false;

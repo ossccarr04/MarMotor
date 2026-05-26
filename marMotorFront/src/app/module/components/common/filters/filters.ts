@@ -37,7 +37,6 @@ export class Filters implements OnInit {
   @Input() limiteMarcas: number = 10;
 
   @Input() set initialFilters(value: any) {
-    // Protección para evitar ejecutar lógica de decodificación en el servidor
     if (value && isPlatformBrowser(this.platformId)) {
       try {
         const brands = value[btoa('brand')] ? atob(value[btoa('brand')]).split(',') : [];
@@ -45,9 +44,9 @@ export class Filters implements OnInit {
         const fuels = value[btoa('fuelType')] ? atob(value[btoa('fuelType')]).split(',') : [];
         const price = value[btoa('maxPrice')] ? atob(value[btoa('maxPrice')]) : null;
 
-        if (brands.length > 0) brands.forEach(b => this.seleccionarMarcaPorNombre(b));
-        if (bodies.length > 0) bodies.forEach(b => this.seleccionarCarroceriaPorNombre(b));
-        if (fuels.length > 0) fuels.forEach(f => this.seleccionarCombustiblePorNombre(f));
+        if (brands.length > 0) brands.forEach((b) => this.seleccionarMarcaPorNombre(b));
+        if (bodies.length > 0) bodies.forEach((b) => this.seleccionarCarroceriaPorNombre(b));
+        if (fuels.length > 0) fuels.forEach((f) => this.seleccionarCombustiblePorNombre(f));
 
         if (price) {
           this.precioActual = parseInt(price);
@@ -85,15 +84,13 @@ export class Filters implements OnInit {
   isDragging = false;
   busquedaAdmin: string = '';
   resultadosAdmin: any[] = [];
-  isAdminV: boolean = false; 
+  isAdminV: boolean = false;
   private internalLoading: boolean = true;
   private loadingCounter = 0;
 
   @ViewChild('sliderElement') sliderElement!: ElementRef;
 
   get isLoading(): boolean {
-    // Si el padre manda el estado de carga (como en /cars), se respeta.
-    // Si no (como en /home), usa su propio estado de carga interno.
     return this.cargando || this.internalLoading;
   }
 
@@ -105,7 +102,7 @@ export class Filters implements OnInit {
     this.limpiezaFiltros();
     // 1. Cargar Marcas
     this.cargarMarcasSegunEstado();
-    // 2. Cargar Carrocerías (ahora dinámico)
+    // 2. Cargar Carrocerías
     this.actualizarCarroceriasDinamicas();
 
     // 3. Cargar Combustibles
@@ -122,10 +119,11 @@ export class Filters implements OnInit {
 
   actualizarCombustiblesDinamicos() {
     const mostrarVendidos = this.carService.mantenerVendidosActivo;
-    const combustiblesPreviamenteSeleccionados = this.combustibles.filter((f) => f.selected).map(f => f.name);
+    const combustiblesPreviamenteSeleccionados = this.combustibles
+      .filter((f) => f.selected)
+      .map((f) => f.name);
 
-    // CORRECCIÓN: Cambiado getActiveFuels por getFuels
-    this.fuelTypeService.getFuels(mostrarVendidos).subscribe({ 
+    this.fuelTypeService.getFuels(mostrarVendidos).subscribe({
       next: (data) => {
         this.combustibles = data.map((f: any) => ({
           ...f,
@@ -134,7 +132,7 @@ export class Filters implements OnInit {
         }));
         const fuelFromUrl = this.getParamFromUrl('fuelType');
         if (fuelFromUrl) {
-          fuelFromUrl.split(',').forEach(name => this.seleccionarCombustiblePorNombre(name));
+          fuelFromUrl.split(',').forEach((name) => this.seleccionarCombustiblePorNombre(name));
         }
         this.cdr.detectChanges();
         this.checkLoadingComplete();
@@ -148,25 +146,24 @@ export class Filters implements OnInit {
 
   actualizarCarroceriasDinamicas() {
     const mostrarVendidos = this.carService.mantenerVendidosActivo;
-    
-    // TRUCO: Guardamos lo que ya estaba seleccionado transformándolo a MAYÚSCULAS
+
     const carroceriasPreviamenteSeleccionadas = this.carrocerias
       .filter((c) => c.selected)
-      .map(c => c.name.toUpperCase());
+      .map((c) => c.name.toUpperCase());
 
     this.bodyTypeService.getBodyTypes(mostrarVendidos).subscribe({
       next: (data) => {
         this.carrocerias = data.map((c: any) => ({
           ...c,
-          // VISUAL: Lo ponemos bonito ("Berlina", "Suv") para que el usuario lo lea bien
-          name: c.name.toUpperCase(), 
-          
-          selected: carroceriasPreviamenteSeleccionadas.includes(c.name.toUpperCase()), 
+
+          name: c.name.toUpperCase(),
+
+          selected: carroceriasPreviamenteSeleccionadas.includes(c.name.toUpperCase()),
         }));
-        
+
         const bodyFromUrl = this.getParamFromUrl('bodyType');
         if (bodyFromUrl) {
-          bodyFromUrl.split(',').forEach(name => this.seleccionarCarroceriaPorNombre(name));
+          bodyFromUrl.split(',').forEach((name) => this.seleccionarCarroceriaPorNombre(name));
         }
         this.cdr.detectChanges();
         this.checkLoadingComplete();
@@ -180,11 +177,10 @@ export class Filters implements OnInit {
 
   cargarMarcasSegunEstado() {
     const mostrarVendidos = this.carService.mantenerVendidosActivo;
-    const marcasPreviamenteSeleccionadas = this.marcas.filter((m) => m.selected).map(m => m.name);
+    const marcasPreviamenteSeleccionadas = this.marcas.filter((m) => m.selected).map((m) => m.name);
 
-    // CORRECCIÓN: Elegimos el método correcto según el interruptor
-    const brandsObservable = mostrarVendidos 
-      ? this.brandService.getBrandsSold() 
+    const brandsObservable = mostrarVendidos
+      ? this.brandService.getBrandsSold()
       : this.brandService.getBrands();
 
     brandsObservable.subscribe({
@@ -197,7 +193,7 @@ export class Filters implements OnInit {
 
         const brandFromUrl = this.getParamFromUrl('brand');
         if (brandFromUrl) {
-          brandFromUrl.split(',').forEach(name => this.seleccionarMarcaPorNombre(name));
+          brandFromUrl.split(',').forEach((name) => this.seleccionarMarcaPorNombre(name));
         }
         this.cdr.detectChanges();
         this.checkLoadingComplete();
@@ -212,7 +208,7 @@ export class Filters implements OnInit {
   seleccionarMarcaPorNombre(nombre: string) {
     if (!nombre) return;
     const nombreUpper = nombre.toUpperCase();
-    const marca = this.marcas.find(m => m.name === nombreUpper);
+    const marca = this.marcas.find((m) => m.name === nombreUpper);
     if (marca) {
       marca.selected = true;
     }
@@ -221,18 +217,15 @@ export class Filters implements OnInit {
   // Métodos de selección y lógica de negocio
   seleccionarCarroceriaPorNombre(nombre: string) {
     if (!nombre) return;
-    
-    // Normalizamos la entrada a MAYÚSCULAS
-    const nombreUpper = nombre.toUpperCase(); 
-    
-    // Buscamos ignorando cómo esté escrito en c.name
-    const item = this.carrocerias.find((c) => c.name.toUpperCase() === nombreUpper); 
-    
+
+    const nombreUpper = nombre.toUpperCase();
+
+    const item = this.carrocerias.find((c) => c.name.toUpperCase() === nombreUpper);
+
     if (item) {
       item.selected = true;
     }
   }
-
 
   private capitalizeFirstLetter(text: string): string {
     if (!text) return '';
@@ -274,18 +267,19 @@ export class Filters implements OnInit {
     const marcaEncontrada = this.marcas.find((m) => m.name.trim().toUpperCase() === nombreBusqueda);
 
     if (marcaEncontrada) {
-      // Simplemente cambiamos el estado de selección (toggle)
       marcaEncontrada.selected = !marcaEncontrada.selected;
     }
   }
 
   get marcaBusquedaTexto(): string {
-    const otrasMarcasSeleccionadas = this.marcas.filter((m, i) => m.selected && i >= this.limiteMarcas);
+    const otrasMarcasSeleccionadas = this.marcas.filter(
+      (m, i) => m.selected && i >= this.limiteMarcas,
+    );
     if (otrasMarcasSeleccionadas.length === 0) {
-        return '+';
+      return '+';
     }
     if (otrasMarcasSeleccionadas.length === 1) {
-        return otrasMarcasSeleccionadas[0].name;
+      return otrasMarcasSeleccionadas[0].name;
     }
     return `${otrasMarcasSeleccionadas.length} marcas`;
   }
@@ -371,13 +365,18 @@ export class Filters implements OnInit {
     if (!isPlatformBrowser(this.platformId)) return;
 
     const queryParams: any = {};
-    const marcasSeleccionadas = this.marcas.filter(m => m.selected).map(m => m.name);
-    const carroceriasSeleccionadas = this.carrocerias.filter(c => c.selected).map(c => c.name);
-    const combustiblesSeleccionados = this.combustibles.filter(f => f.selected).map(f => f.name);
+    const marcasSeleccionadas = this.marcas.filter((m) => m.selected).map((m) => m.name);
+    const carroceriasSeleccionadas = this.carrocerias.filter((c) => c.selected).map((c) => c.name);
+    const combustiblesSeleccionados = this.combustibles
+      .filter((f) => f.selected)
+      .map((f) => f.name);
 
-    if (marcasSeleccionadas.length > 0) queryParams[btoa('brand')] = btoa(marcasSeleccionadas.join(','));
-    if (carroceriasSeleccionadas.length > 0) queryParams[btoa('bodyType')] = btoa(carroceriasSeleccionadas.join(','));
-    if (combustiblesSeleccionados.length > 0) queryParams[btoa('fuelType')] = btoa(combustiblesSeleccionados.join(','));
+    if (marcasSeleccionadas.length > 0)
+      queryParams[btoa('brand')] = btoa(marcasSeleccionadas.join(','));
+    if (carroceriasSeleccionadas.length > 0)
+      queryParams[btoa('bodyType')] = btoa(carroceriasSeleccionadas.join(','));
+    if (combustiblesSeleccionados.length > 0)
+      queryParams[btoa('fuelType')] = btoa(combustiblesSeleccionados.join(','));
 
     if (this.precioModificado && this.precioActual > 0) {
       queryParams[btoa('maxPrice')] = btoa(this.precioActual.toString());
@@ -391,7 +390,6 @@ export class Filters implements OnInit {
     lista[index].selected = !lista[index].selected;
   }
 
-  // Método centralizado y seguro para la URL
   private getParamFromUrl(key: string): string | null {
     if (isPlatformBrowser(this.platformId)) {
       try {
@@ -406,13 +404,13 @@ export class Filters implements OnInit {
     return null;
   }
 
-  isAdmin(){
+  isAdmin() {
     if (this.authService.isLoggedIn()) {
-          const user = this.authService.getCurrentUser();
-          if (user) {
-            this.isAdminV = atob(user.role) === UserRoles.ADMIN.toUpperCase();
-          }
-        }
+      const user = this.authService.getCurrentUser();
+      if (user) {
+        this.isAdminV = atob(user.role) === UserRoles.ADMIN.toUpperCase();
+      }
+    }
   }
   limpiezaFiltros() {
     this.limpiarMarca();
@@ -441,16 +439,10 @@ export class Filters implements OnInit {
   alCambiarInterruptor() {
     this.limpiezaFiltros();
 
-    // El ngModel ya ha actualizado el servicio a través del setter 'buscarEnVendidos'.
-    // this.carService.mantenerVendidosActivo = this.buscarEnVendidos;
-
-    // Actualizamos las fuentes de datos para los desplegables (marcas, combustibles).
     this.actualizarCombustiblesDinamicos();
     this.actualizarCarroceriasDinamicas();
     this.cargarMarcasSegunEstado();
 
-    // Emitimos una señal para que el componente padre (Cars) se encargue de recargar.
-    // El padre limpiará la URL y recargará la lista de coches.
     this.carService.recargarCoches$.next();
   }
 

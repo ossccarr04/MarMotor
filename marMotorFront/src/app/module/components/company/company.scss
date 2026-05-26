@@ -1,6 +1,5 @@
-/* --- VARIABLES --- */
-$dark-background: #0b1624; 
-$card-bg: #132235; // Azul oscuro premium para las tarjetas
+$dark-background: #0b1624;
+$card-bg: #132235;
 $card-border: rgba(255, 255, 255, 0.05);
 $accent-green: #37df8c;
 $accent-green-transparent: rgba(55, 223, 140, 0.1);
@@ -12,11 +11,11 @@ $font-family: 'Montserrat', sans-serif;
   background-color: $dark-background;
   min-height: 100vh;
   font-family: $font-family;
-  padding: 60px 0; // Padding vertical por defecto para escritorio.
+  padding: 60px 0;
   color: $text-light;
 
   @media (max-width: 768px) {
-    padding: 40px 20px; // En móvil, el wrapper principal se encarga del padding horizontal.
+    padding: 40px 20px;
   }
 }
 
@@ -25,10 +24,11 @@ $font-family: 'Montserrat', sans-serif;
   margin: 0 auto;
   padding: 0 40px;
 
-  @media (max-width: 768px) { padding: 0; } // En móvil, el padding ya lo gestiona el wrapper.
+  @media (max-width: 768px) {
+    padding: 0;
+  }
 }
 
-/* Cabecera */
 .page-header {
   text-align: center;
   margin-bottom: 50px;
@@ -47,19 +47,17 @@ $font-family: 'Montserrat', sans-serif;
   }
 }
 
-/* GRID PRINCIPAL: Izquierda (Historia) y Derecha (Contacto) */
 .company-content-grid {
   display: grid;
-  grid-template-columns: 1.2fr 1fr; /* Izquierda un poco más ancha que la derecha */
+  grid-template-columns: 1.2fr 1fr;
   gap: 40px;
   align-items: start;
 
   @media (max-width: 1024px) {
-    grid-template-columns: 1fr; /* En móvil/tablet se pone uno encima del otro */
+    grid-template-columns: 1fr;
   }
 }
 
-/* Cajas principales (Paneles) */
 .company-info-section,
 .contact-and-form-section {
   background-color: $card-bg;
@@ -79,15 +77,16 @@ $font-family: 'Montserrat', sans-serif;
     border-bottom: 1px solid $card-border;
     padding-bottom: 15px;
 
-    i { color: $accent-green; }
+    i {
+      color: $accent-green;
+    }
   }
 
   @media (max-width: 768px) {
-    padding: 20px; // Reduce el padding de las tarjetas en móvil para evitar desbordamientos
+    padding: 20px;
   }
 }
 
-/* --- LADO IZQUIERDO: HISTORIA --- */
 .company-info-section {
   .text-content p {
     font-size: 16px;
@@ -121,34 +120,32 @@ $font-family: 'Montserrat', sans-serif;
   }
 }
 
-/* --- LADO DERECHO: TARJETAS Y FORMULARIO --- */
-.contact-and-form-section {  
+.contact-and-form-section {
   .contact-group {
-    margin-bottom: 30px; // Espacio entre el grupo de emails y el de teléfonos
+    margin-bottom: 30px;
 
     h3 {
       font-size: 20px;
       font-weight: 600;
       color: $text-light;
-      text-align: center; // Centra el título de cada grupo
+      text-align: center;
       margin-bottom: 20px;
     }
 
     .contact-cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); // Grid responsivo para las tarjetas
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 15px;
-      justify-items: center; // Centra cada tarjeta dentro de su celda del grid
-      max-width: fit-content; // Permite que el grid se ajuste al contenido
-      margin: 0 auto; // Centra el grid completo si no ocupa todo el ancho
+      justify-items: center;
+      max-width: fit-content;
+      margin: 0 auto;
 
       @media (max-width: 600px) {
-        grid-template-columns: 1fr; // Una columna en pantallas muy pequeñas
+        grid-template-columns: 1fr;
       }
     }
   }
 
-  /* Tarjetas individuales */
   .contact-card {
     display: flex;
     align-items: center;
@@ -174,18 +171,27 @@ $font-family: 'Montserrat', sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
-      i { color: $accent-green; font-size: 20px; }
+      i {
+        color: $accent-green;
+        font-size: 20px;
+      }
     }
 
     .card-details {
       display: flex;
       flex-direction: column;
-      .card-label { font-size: 12px; color: $text-muted; }
-      .card-value { font-size: 15px; color: $text-light; font-weight: 500; }
+      .card-label {
+        font-size: 12px;
+        color: $text-muted;
+      }
+      .card-value {
+        font-size: 15px;
+        color: $text-light;
+        font-weight: 500;
+      }
     }
   }
 
-  /* Formulario de Dudas arreglado */
   .doubts-form-section {
     border-top: 1px solid $card-border;
     padding-top: 30px;
@@ -204,14 +210,16 @@ $font-family: 'Montserrat', sans-serif;
       .form-row {
         display: flex;
         gap: 15px;
-        @media (max-width: 600px) { flex-direction: column; }
+        @media (max-width: 600px) {
+          flex-direction: column;
+        }
       }
 
-      /* Fix de los inputs rotos de tu captura */
-      input, textarea {
+      input,
+      textarea {
         width: 100%;
-        box-sizing: border-box; /* Fundamental para que no se desborden */
-        background-color: rgba(0, 0, 0, 0.2); /* Fondo oscuro para el input */
+        box-sizing: border-box;
+        background-color: rgba(0, 0, 0, 0.2);
         border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 14px;
         border-radius: 8px;
@@ -220,7 +228,9 @@ $font-family: 'Montserrat', sans-serif;
         font-size: 14px;
         transition: all 0.3s ease;
 
-        &::placeholder { color: rgba(255,255,255,0.3); }
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.3);
+        }
 
         &:focus {
           outline: none;
@@ -230,12 +240,12 @@ $font-family: 'Montserrat', sans-serif;
       }
 
       textarea {
-        resize: vertical; /* Solo permite estirar hacia abajo */
+        resize: vertical;
       }
 
       .btn-submit {
         background-color: $accent-green;
-        color: #0b1624; /* Texto oscuro para contrastar con el botón verde */
+        color: #0b1624;
         border: none;
         padding: 14px;
         border-radius: 8px;

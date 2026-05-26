@@ -1,4 +1,3 @@
-/* --- VARIABLES --- */
 $primary-blue: #0a1f33;
 $accent-green: #37df8c;
 $text-light: #fff;
@@ -9,28 +8,27 @@ $font-family: 'Montserrat', sans-serif;
 .autoflow-header {
   font-family: $font-family;
   display: flex;
-  justify-content: space-between; // 🚩 Separa el Logo (izquierda) de las Acciones (derecha)
+  justify-content: space-between;
   align-items: center;
-  padding: 12px 15px; // Padding reducido para ganar espacio en móviles
+  padding: 12px 15px;
   background: $primary-blue;
   color: $text-light;
   width: 100%;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-sizing: border-box; // Evita que el padding ensanche el header en móviles
+  box-sizing: border-box;
 
   @media (min-width: 1024px) {
     padding: 20px 40px;
   }
 
-  /* --- LOGO (Sin cambios) --- */
   .logo {
     display: flex;
     align-items: center;
     font-size: 20px;
-    flex-shrink: 1; // Permite que el logo se encoja un poco si es necesario
-    min-width: 0; // Evita que el texto del logo bloquee el espacio
+    flex-shrink: 1;
+    min-width: 0;
     z-index: 1010;
     font-weight: bold;
     cursor: pointer;
@@ -38,9 +36,9 @@ $font-family: 'Montserrat', sans-serif;
     z-index: 1010;
 
     span {
-      white-space: nowrap; // Evita que el nombre de la marca salte de línea
+      white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis; // Si el móvil es diminuto, corta el texto con "..."
+      text-overflow: ellipsis;
     }
     @media (min-width: 1024px) {
       font-size: 24px;
@@ -61,8 +59,6 @@ $font-family: 'Montserrat', sans-serif;
     }
   }
 
-  
-
   .menu-toggle {
     display: flex;
     flex-direction: column;
@@ -71,8 +67,8 @@ $font-family: 'Montserrat', sans-serif;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 8px; // Área de clic optimizada
-    margin-left: 50%; // 🚩 Eliminado cualquier margen previo (como el 64%)
+    padding: 8px;
+    margin-left: 50%;
     position: relative;
     z-index: 2100;
 
@@ -103,7 +99,6 @@ $font-family: 'Montserrat', sans-serif;
     }
   }
 
-  /* --- NAVEGACIÓN MÓVIL (Sin cambios) --- */
   .nav-links {
     display: flex;
     gap: 30px;
@@ -151,19 +146,16 @@ $font-family: 'Montserrat', sans-serif;
     }
   }
 
-  /* --- ACCIONES (Modificado para anclar la hamburguesa a la derecha) --- */
   .header-actions {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    flex-shrink: 0; // 🚩 ESTO ES LO MÁS IMPORTANTE: impide que la hamburguesa desaparezca
-    margin-left: 10px; // Espacio mínimo de seguridad con el logo
+    flex-shrink: 0;
+    margin-left: 10px;
     z-index: 1010;
   }
 }
 
-
-/* --- BOTONES Y RESTO (Sin cambios) --- */
 .btn {
   font-family: $font-family;
   padding: 10px 24px;
@@ -226,25 +218,24 @@ body[style*='overflow: hidden'] {
 
 @media (max-width: 1023px) {
   .profile-desktop-only {
-    display: none !important; /* Desaparece por completo de la derecha del logo */
+    display: none !important;
   }
 
-.profile-mobile-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 20px;
-}
+  .profile-mobile-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+  }
 }
 
-/* En escritorio (1024px o más) */
 @media (min-width: 1024px) {
   .profile-mobile-container {
-    display: none !important; /* Desaparece del menú hamburguesa */
+    display: none !important;
   }
 
   .profile-desktop-only {
-    display: block !important; /* Aparece en la derecha */
+    display: block !important;
   }
 }

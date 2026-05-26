@@ -19,11 +19,11 @@ export class AuthServiceBBDD {
   authStatus$ = this.authStatus.asObservable();
 
   checkServerHealth() {
-  return this.http.get(`${this.URL}/public/health`, { responseType: 'text' });
-}
+    return this.http.get(`${this.URL}/public/health`, { responseType: 'text' });
+  }
 
   getCurrentUser(): LoggedUserDTO | null {
-    const token = this.cookieService.get('access_token'); 
+    const token = this.cookieService.get('access_token');
 
     if (!token) {
       return null;
@@ -33,8 +33,8 @@ export class AuthServiceBBDD {
       const decoded: any = jwtDecode(token);
       return {
         user: btoa(decoded.user),
-        correo: btoa(decoded.sub), // Codificar el ID en Base64
-        role: btoa(decoded.role), // Codificar el rol en Base64
+        correo: btoa(decoded.sub),
+        role: btoa(decoded.role),
       } as LoggedUserDTO;
     } catch (error) {
       console.error('Token inválido o mal formado', error);
@@ -45,7 +45,7 @@ export class AuthServiceBBDD {
   isLoggedIn(): boolean {
     return this.cookieService.check('access_token');
   }
-  
+
   register(userRegister: RegisterDTO): Observable<any> {
     return this.http.post<any>(`${this.URL}/register`, userRegister);
   }
@@ -60,7 +60,7 @@ export class AuthServiceBBDD {
             this.authStatus.next(true);
           }
         },
-      })
+      }),
     );
   }
 

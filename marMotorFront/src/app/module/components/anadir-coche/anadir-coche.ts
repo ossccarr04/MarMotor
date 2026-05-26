@@ -36,7 +36,7 @@ export class AnadirCoche implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  private route = inject(ActivatedRoute); // Inyectamos la ruta activa
+  private route = inject(ActivatedRoute);
   private toast = inject(ToastrService);
   private carService = inject(CarServiceBBDD);
   private brandService = inject(BrandServiceBBDD);
@@ -104,7 +104,7 @@ export class AnadirCoche implements OnInit {
     this.carForm = this.fb.group({
       model: ['', [Validators.required, Validators.minLength(2)]],
       version: [''],
-      // El año no puede ser mayor al actual + 1 (coches nuevos)
+
       year: [
         new Date().getFullYear(),
         [Validators.required, Validators.min(1900), Validators.max(new Date().getFullYear() + 1)],
@@ -143,7 +143,7 @@ export class AnadirCoche implements OnInit {
         else if (labelValue.includes('ECO')) labelToForm = 'ECO';
         else if (labelValue.includes('C')) labelToForm = 'C';
         else if (labelValue.includes('B')) labelToForm = 'B';
-        // 1. Rellenar campos simples
+
         this.carForm.patchValue({
           model: car.model,
           year: car.year,
@@ -168,15 +168,12 @@ export class AnadirCoche implements OnInit {
           features: car.features?.join(', ') || '',
         });
 
-        // 2. Limpiar FormArrays antes de cargar (evita duplicados si entras/sales)
         this.history.clear();
 
-        // 4. Rellenar Historial (Aseguramos los nombres de campos)
         if (car.history && car.history.length > 0) {
           car.history.forEach((h: any) => {
             this.history.push(
               this.fb.group({
-                // IMPORTANTE: Verifica si en tu BBDD el campo es 'year' o 'año'
                 year: [
                   h.year,
                   [
@@ -187,7 +184,7 @@ export class AnadirCoche implements OnInit {
                 ],
                 title: [h.title, Validators.required],
                 icon: [h.icon || '🔧'],
-                // IMPORTANTE: Asegúrate de que el nombre sea 'isCompleted' o 'completed' según tu DTO
+
                 isCompleted: [!!h.isCompleted],
               }),
             );
@@ -202,7 +199,6 @@ export class AnadirCoche implements OnInit {
 
         this.cdr.detectChanges();
 
-        // Forzamos el auto-crecimiento de los textareas después de que Angular haya pintado los datos
         setTimeout(() => {
           if (this.versionArea?.nativeElement) this.autoGrow(this.versionArea.nativeElement);
           if (this.descArea?.nativeElement) this.autoGrow(this.descArea.nativeElement);
@@ -226,7 +222,7 @@ export class AnadirCoche implements OnInit {
           [Validators.required, Validators.min(1900), Validators.max(new Date().getFullYear())],
         ],
         title: ['', Validators.required],
-        icon: [HistoryIcon.MANTENIMIENTO], // Usas el enum aquí
+        icon: [HistoryIcon.MANTENIMIENTO],
         isCompleted: [false],
       }),
     );
@@ -235,7 +231,6 @@ export class AnadirCoche implements OnInit {
     this.history.removeAt(i);
   }
 
-  // --- GESTIÓN DE IMÁGENES (Mantienes tu lógica rápida con URL.createObjectURL) ---
   onPortadaSelected(event: any) {
     const file = event.target.files[0];
     if (!file) return;
@@ -296,10 +291,9 @@ export class AnadirCoche implements OnInit {
     this.isSubmitting = true;
 
     const formRawValue = this.carForm.getRawValue();
-    // Filtramos las imágenes que se quedan (las que ya tienen URL de Cloudinary)
+
     const currentExistingImages: string[] = [];
 
-    // Si la portada actual es de Cloudinary (no es un blob local), se queda
     if (this.previewPortada && this.previewPortada.startsWith('http')) {
       currentExistingImages.push(this.previewPortada);
     }
@@ -322,7 +316,7 @@ export class AnadirCoche implements OnInit {
       transmission:
         this.carForm.value.transmission.toUpperCase() === 'AUTOMATICA' ? 'AUTOMATICA' : 'MANUAL',
       features: featuresArray,
-      existingImages: currentExistingImages, // Mandamos la lista de "sobrevivientes"
+      existingImages: currentExistingImages,
       clearImages:
         currentExistingImages.length === 0 && !this.fotoPortada && this.fotosGaleria.length === 0,
       history: formRawValue.history
@@ -336,11 +330,9 @@ export class AnadirCoche implements OnInit {
     const formData = new FormData();
     formData.append('carData', JSON.stringify(carData));
 
-    // Solo adjuntamos los archivos FÍSICOS nuevos
     if (this.fotoPortada) formData.append('images', this.fotoPortada);
     this.fotosGaleria.forEach((f) => formData.append('images', f));
 
-    // 5. LLAMADA AL SERVICIO
     const idDecoded = atob(this.carId!);
     const request = this.isEditMode
       ? this.carService.updateCar(idDecoded!, formData)
@@ -361,13 +353,13 @@ export class AnadirCoche implements OnInit {
   }
 
   autoGrow(element: any) {
-    element.style.height = 'auto'; // Resetea la altura para recalcular
-    element.style.height = element.scrollHeight + 'px'; // Ajusta a la altura del texto
+    element.style.height = 'auto';
+    element.style.height = element.scrollHeight + 'px';
   }
 
   cargarSugerencias() {
     this.brandService
-      .getBrands() // Ya estaba bien
+      .getBrands()
       .subscribe((d) => (this.marcasSugeridas = d.map((b: BrandDTO) => b.name)));
     this.bodyTypeService
       .getBodyTypes()

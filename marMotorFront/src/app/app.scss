@@ -12,15 +12,16 @@ $font-family: 'Montserrat', sans-serif;
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   width: 100%;
   max-width: 100%;
   margin: 0;
   padding: 0;
-  /* El overflow-x: hidden aquí es el primer nivel de seguridad */
-  overflow-x: hidden; 
+
+  overflow-x: hidden;
   position: relative;
-  background-color: #081225; /* Color oscuro base para que no brille blanco al cargar */
+  background-color: #081225;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -44,7 +45,7 @@ a {
 #page-wrapper {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden; 
+  overflow-x: hidden;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -60,30 +61,26 @@ main {
      Si quieres margen en los textos, dáselo a los componentes internos, 
      pero NO al <main>, porque romperá los fondos que deben ir de lado a lado.
   */
-  overflow-x: hidden; 
+  overflow-x: hidden;
   position: relative;
-  flex-grow: 1; /* Empuja el footer hacia abajo si hay poco contenido */
+  flex-grow: 1;
 }
 
-/* Media Query para móviles */
 @media (max-width: 768px) {
   main {
-    /* Mantenemos solo el margen superior si lo necesitas para el header sticky */
-    margin-top: 0; 
-    /* Padding lateral ELIMINADO para evitar el desborde blanco */
+    margin-top: 0;
+
     padding-left: 0;
     padding-right: 0;
   }
 }
 
-/* Corrección para componentes inyectados por el Router */
 router-outlet + * {
   display: block;
   width: 100%;
   max-width: 100%;
 }
 
-/* Asegura que las imágenes no rompan el layout */
 img {
   max-width: 100%;
   height: auto;
@@ -91,7 +88,6 @@ img {
 }
 
 .server-warning-banner {
-  // Un degradado le da más profundidad que un color plano
   font-family: $font-family;
   background: linear-gradient(90deg, #1e40af 0%, #3b82f6 100%);
   color: white;
@@ -118,7 +114,7 @@ img {
       margin: 0 0 0.5rem 0;
       font-size: 0.95rem;
       line-height: 1.2;
-      
+
       strong {
         font-size: 1.05rem;
         display: inline-block;
@@ -133,7 +129,6 @@ img {
   }
 }
 
-/* Contenedor de la barra (el fondo grisáceo) */
 .progress-track {
   width: 100%;
   height: 6px;
@@ -143,12 +138,11 @@ img {
   margin-top: 8px;
 }
 
-/* La parte que se llena (blanca) */
 .progress-fill {
   height: 100%;
   background-color: #ffffff;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-  transition: width 1s linear; // Para que el movimiento sea fluido
+  transition: width 1s linear;
   border-radius: 10px;
 }
 
@@ -163,11 +157,21 @@ img {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes slideIn {
-  from { transform: translateY(-100%); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

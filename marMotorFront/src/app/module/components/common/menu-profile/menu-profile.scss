@@ -1,4 +1,3 @@
-/* --- IMPORTACIÓN DE TUS VARIABLES --- */
 $primary-blue: #0a1f33;
 $accent-green: #37df8c;
 $text-light: #fff;
@@ -55,14 +54,13 @@ $green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
     }
   }
 
-  /* --- DESPLEGABLE --- */
   .profile-dropdown {
     position: absolute;
     top: calc(100% + 15px);
     right: 0;
     width: 250px;
     background: rgba($primary-blue, 0.95);
-    backdrop-filter: blur(10px); // Efecto cristal
+    backdrop-filter: blur(10px);
     border: 1px solid rgba($accent-green, 0.2);
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
@@ -127,7 +125,7 @@ $green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
         }
 
         .logout-btn {
-          color: #ff5f5f; // Color rojizo para logout
+          color: #ff5f5f;
           &:hover {
             background: rgba(#ff5f5f, 0.1);
             color: #ff5f5f;
@@ -149,9 +147,7 @@ $green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
   }
 }
 
-/* Adaptación para el menú móvil */
 @media (max-width: 1023px) {
-  /* Forzamos que el contenedor sea un bloque vertical */
   .profile-container {
     display: flex !important;
     flex-direction: column !important;
@@ -160,26 +156,23 @@ $green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
     position: relative;
   }
 
-  /* El botón del avatar ya no debe tener un ancho fijo pequeño */
   .avatar-btn {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-bottom: 10px; // Espacio entre el círculo y la caja
+    margin-bottom: 10px;
 
     .chevron {
-      display: none; // En móvil queda más limpio sin la flechita si vas a mostrar el menú debajo
+      display: none;
     }
   }
 
   .profile-dropdown {
-    /* 🚩 CLAVE: Quitamos el posicionamiento absoluto que lo manda a la derecha */
     position: static !important;
     transform: none !important;
-    width: 100% !important; // Que ocupe el ancho del menú hamburguesa
-    max-width: 280px; // Pero con un límite para que no se vea gigante
+    width: 100% !important;
+    max-width: 280px;
 
-    /* Diseño de la "caja" */
     background: rgba($primary-blue, 0.4) !important;
     border: 1px solid rgba($accent-green, 0.5) !important;
     border-radius: 12px !important;
@@ -192,7 +185,7 @@ $green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
       padding: 0 10px;
 
       .user-email {
-        font-size: 14px !important; // Más legible en móvil
+        font-size: 14px !important;
       }
     }
 
@@ -204,7 +197,6 @@ $green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
       li {
         width: 100%;
 
-        /* Esta clase iguala el <a> y el <button> */
         .menu-item {
           width: 100%;
           display: flex;
@@ -212,14 +204,12 @@ $green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
           padding: 12px 20px;
           gap: 12px;
 
-          /* Reset de estilos */
           background: none;
           border: none;
           text-decoration: none;
           cursor: pointer;
 
-          /* Fuente idéntica */
-          font-family: 'Montserrat', sans-serif; // O la que uses en el resto de la web
+          font-family: 'Montserrat', sans-serif;
           font-size: 14px;
           font-weight: 500;
           color: rgba(255, 255, 255, 0.8);
@@ -236,7 +226,6 @@ $green-gradient: linear-gradient(135deg, #109b7c 0%, #37df8c 100%);
           }
         }
 
-        /* Estilo específico para el texto de logout si quieres mantener el rojo */
         .logout-btn {
           color: #ff5f5f;
 

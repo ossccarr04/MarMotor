@@ -11,13 +11,12 @@ import { CommonModule } from '@angular/common';
   styleUrl: './menu-profile.scss',
 })
 export class Profile {
-  
-    private authService = inject(AuthServiceBBDD);
+  private authService = inject(AuthServiceBBDD);
   private router = inject(Router);
   private toast = inject(ToastrService);
   private elementRef = inject(ElementRef);
   private cdr = inject(ChangeDetectorRef);
-  
+
   isMenuOpen = false;
 
   get userData() {
@@ -49,33 +48,27 @@ export class Profile {
   }
 
   verificarSesion(): void {
-    // Si este componente está visible, se asume que la sesión estaba activa.
-    // Comprobamos el estado real de la cookie.
     if (!this.authService.isLoggedIn()) {
-      // Si la cookie ya no existe, hay una desincronización.
-      // Forzamos el logout en el servicio. Esto notificará al Header
-      // para que actualice su estado 'isLogged' a false y oculte este componente.
       console.log('Cookie no encontrada. Forzando actualización de estado.');
       this.authService.logout();
-      this.cdr.detectChanges(); // Forzamos la detección de cambios para que la UI reaccione al instante.
+      this.cdr.detectChanges();
     }
   }
 
   toggleMenu(event: Event) {
-    this.verificarSesion(); // También es buena idea comprobarlo al hacer clic
+    this.verificarSesion();
     event.stopPropagation();
     this.isMenuOpen = !this.isMenuOpen;
   }
 
   onLogout() {
     this.authService.logout();
-    this.isMenuOpen= false
+    this.isMenuOpen = false;
     this.toast.success('Sesión cerrada correctamente', '¡Hasta pronto!');
     this.router.navigate(['/home']).then(() => {
       setTimeout(() => {
-          window.location.reload();
-        }, 800);
-      
+        window.location.reload();
+      }, 800);
     });
   }
 }

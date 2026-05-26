@@ -75,7 +75,7 @@ $font-family: 'Montserrat', sans-serif;
     align-items: center;
     justify-content: center;
     font-size: 1.1rem;
-    color: #3b82f6; // Azul corporativo
+    color: #3b82f6;
   }
 }
 
@@ -192,13 +192,12 @@ $font-family: 'Montserrat', sans-serif;
     transition: $transition;
     box-sizing: border-box;
     width: 100% !important;
-    max-width: 100%; // Evita que crezca más que el padre
-    box-sizing: border-box; // Incluye el padding en el cálculo del ancho
+    max-width: 100%;
+    box-sizing: border-box;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    /* Para que el menú no sea más ancho que el input */
     min-width: 0;
 
     &::placeholder {
@@ -280,7 +279,6 @@ $font-family: 'Montserrat', sans-serif;
     }
   }
 
-  /* La zona de portada se mantiene algo más compacta */
   &.portrait {
     height: 160px;
     padding: 20px;
@@ -589,7 +587,6 @@ $font-family: 'Montserrat', sans-serif;
   }
 }
 
-/* Quitar flechas number */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -617,15 +614,15 @@ input[type='number'] {
   box-sizing: border-box;
 
   .field-wrapper {
-    position: relative; // Crucial para el posicionamiento del asterisco
+    position: relative;
     display: flex;
     align-items: center;
 
     .required-asterisk {
       position: absolute;
-      top: 40%; // Lo centramos verticalmente
-      transform: translateY(-50%); // Ajuste fino del centrado vertical
-      right: 10px; // Distancia desde el borde derecho
+      top: 40%;
+      transform: translateY(-50%);
+      right: 10px;
       color: #ef4444;
       font-size: 0.8rem;
       font-weight: bold;
@@ -654,7 +651,7 @@ input[type='number'] {
       display: flex;
       align-items: center;
       gap: 10px;
-      background: #0b131d; // Fondo oscuro igual que tus otros inputs
+      background: #0b131d;
       padding: 6px 12px;
       border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -671,20 +668,18 @@ input[type='number'] {
       .minimal-select {
         background: transparent;
         border: none;
-        color: #f8f9fa; // Color del texto seleccionado
+        color: #f8f9fa;
         font-size: 0.9rem;
         cursor: pointer;
         outline: none;
-        width: 180px; // ANCHO AUMENTADO para que quepa "Motor/Caja de cambios"
+        width: 180px;
 
-        /* Estilo para las opciones cuando el menú se abre */
         option {
-          background-color: #121d2b !important; // Fondo oscuro para el desplegable
-          color: #f8f9fa !important; // Texto claro para el desplegable
+          background-color: #121d2b !important;
+          color: #f8f9fa !important;
           padding: 10px;
         }
 
-        /* Quitar estilos por defecto en algunos navegadores */
         &:focus {
           outline: none;
         }
@@ -705,7 +700,7 @@ input[type='number'] {
         gap: 6px;
         font-size: 0.8rem;
         color: #8c9baf;
-        margin-left: auto; // Empuja el check y el botón a la derecha
+        margin-left: auto;
       }
 
       .btn-remove-compact {
@@ -719,7 +714,7 @@ input[type='number'] {
         transition: $transition;
 
         i {
-          color: #ff4757 !important; // ROJO intenso
+          color: #ff4757 !important;
           font-size: 1.1rem;
           filter: drop-shadow(0 0 2px rgba(255, 71, 87, 0.2));
         }
@@ -727,7 +722,7 @@ input[type='number'] {
         &:hover {
           transform: scale(1.15);
           i {
-            color: #ff6b81 !important; // Un rojo un poco más claro al pasar el ratón
+            color: #ff6b81 !important;
             filter: drop-shadow(0 0 5px rgba(255, 71, 87, 0.5));
           }
         }
@@ -756,13 +751,11 @@ input[type='number'] {
     }
   }
 
-  /* Checkbox Verde */
   .dark-checkbox {
     accent-color: #4ade80;
     cursor: pointer;
   }
 
-  /* Reset de inputs para que no hereden márgenes extra */
   .dark-input-compact {
     background: #0b131d;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -792,15 +785,14 @@ input[type='number'] {
 }
 @media (max-width: 768px) {
   .page-wrapper {
-    padding: 10px; // Menos espacio exterior para ganar pantalla
+    padding: 10px;
   }
 
   .form-container {
     padding: 20px;
-    border-radius: 0; // Opcional: quitar redondeado para ganar espacio lateral
+    border-radius: 0;
   }
 
-  /* Forzamos que todos los GRIDS pasen a ser de 1 sola columna */
   .form-grid-2,
   .form-grid-3,
   .form-grid-4 {
@@ -808,23 +800,21 @@ input[type='number'] {
     gap: 15px;
   }
 
-  /* Ajuste para las secciones dinámicas (Equipamiento e Historial) */
   .dynamic-sections-wrapper {
     grid-template-columns: 1fr !important;
   }
 
-  /* Importante: Ajuste de la fila del Historial para que no desborde */
   .dynamic-row {
-    flex-wrap: wrap; // Permite que si no cabe, baje a la siguiente línea
+    flex-wrap: wrap;
     padding: 10px;
     gap: 8px;
 
     input {
-      font-size: 16px; // Evita el zoom automático en iOS
+      font-size: 16px;
     }
   }
   select {
-    font-size: 16px; // Evita el zoom automático en iPhone que causa desbordamientos
+    font-size: 16px;
   }
 
   .history-card-item .row-top {
@@ -840,7 +830,6 @@ input[type='number'] {
     width: 100%;
   }
 
-  /* Ajuste para el wrapper de imágenes */
   .gallery-upload-wrapper {
     grid-template-columns: 1fr !important;
   }

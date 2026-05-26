@@ -1,4 +1,3 @@
-// --- VARIABLES ---
 $dark-background: #0b1624;
 $white-results: #ffffff;
 $card-stock-bg: #fdfdfd;
@@ -6,9 +5,8 @@ $accent-green: #37df8c;
 $text-dark: #051121;
 $text-gray: #718096;
 $font-family: 'Montserrat', sans-serif;
-$error-red: #ef4444; 
+$error-red: #ef4444;
 
-// --- ESTILOS DE LAS ETIQUETAS DGT (Locales para evitar fallos de Angular) ---
 .dgt-badge {
   display: inline-flex;
   align-items: center;
@@ -22,7 +20,7 @@ $error-red: #ef4444;
   height: 28px;
   border-radius: 50%;
   font-size: 14px;
-  color: #1a1a1a !important; 
+  color: #1a1a1a !important;
   line-height: 1;
 
   &.badge-zero {
@@ -31,15 +29,19 @@ $error-red: #ef4444;
     font-size: 16px;
   }
   &.badge-eco {
-    width: auto; 
+    width: auto;
     height: 24px;
     padding: 0 10px;
-    border-radius: 12px; 
-    background: linear-gradient(90deg, #add036 50%, #00a1df 50%); 
+    border-radius: 12px;
+    background: linear-gradient(90deg, #add036 50%, #00a1df 50%);
     font-size: 12px;
   }
-  &.badge-c { background-color: #add036; }
-  &.badge-b { background-color: #f1dc00; }
+  &.badge-c {
+    background-color: #add036;
+  }
+  &.badge-b {
+    background-color: #f1dc00;
+  }
   &.badge-none {
     width: auto;
     height: 24px;
@@ -54,17 +56,14 @@ $error-red: #ef4444;
   }
 }
 
-// --- CONTENEDOR PRINCIPAL DE LA PÁGINA ---
 .sold-cars-page-wrapper {
   background-color: $dark-background;
   min-height: 100vh;
   font-family: $font-family;
-  
-  /* Permite que el fondo blanco se estire hasta abajo */
+
   display: flex;
   flex-direction: column;
 
-  // --- SECCIÓN DE INTRODUCCIÓN ---
   .intro-section {
     background-color: $dark-background;
     color: #fff;
@@ -89,17 +88,16 @@ $error-red: #ef4444;
     }
   }
 
-  // --- CONTENEDOR BLANCO DE RESULTADOS ---
   .results-wrapper {
     background-color: $white-results;
-    padding: 50px 0 100px 0; /* Padding inferior generoso */
+    padding: 50px 0 100px 0;
     border-top-left-radius: 40px;
     border-top-right-radius: 40px;
     box-shadow: 0 -20px 40px rgba(0, 0, 0, 0.05);
     margin-top: -40px;
     position: relative;
     z-index: 5;
-    flex-grow: 1; /* Obliga a estirarse hasta el final de la pantalla */
+    flex-grow: 1;
   }
 
   .container-mx {
@@ -108,7 +106,6 @@ $error-red: #ef4444;
     padding: 0 20px;
   }
 
-  // --- ESTADOS DE CARGA Y SIN RESULTADOS ---
   .loading-state-container,
   .no-results-container {
     display: flex;
@@ -137,15 +134,13 @@ $error-red: #ef4444;
     }
   }
 
-  // --- GRID DE COCHES ---
   .stock-grid {
     display: grid;
     gap: 30px;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    align-items: stretch; /* Obliga a que todas las tarjetas midan lo mismo */
+    align-items: stretch;
   }
 
-  // --- TARJETA DE COCHE ---
   .car-card {
     background: $card-stock-bg;
     border: 1px solid #e2e8f0;
@@ -153,11 +148,10 @@ $error-red: #ef4444;
     overflow: hidden;
     position: relative;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    
-    /* PROTECCIÓN DE ALTURA ABSOLUTA */
+
     display: flex;
     flex-direction: column;
-    height: 100%; 
+    height: 100%;
 
     &.sold-card {
       opacity: 0.9;
@@ -169,7 +163,7 @@ $error-red: #ef4444;
     .car-image-container {
       position: relative;
       height: 220px;
-      flex-shrink: 0; 
+      flex-shrink: 0;
       overflow: hidden;
 
       .badge {
@@ -183,10 +177,18 @@ $error-red: #ef4444;
         color: white;
         text-transform: uppercase;
         z-index: 2;
-        &.badge-sold { background-color: $error-red; }
-        &.badge-new_arrivals { background-color: #3b82f6; }
-        &.badge-featured { background-color: #8b5cf6; }
-        &.badge-offer { background-color: #f59e0b; }
+        &.badge-sold {
+          background-color: $error-red;
+        }
+        &.badge-new_arrivals {
+          background-color: #3b82f6;
+        }
+        &.badge-featured {
+          background-color: #8b5cf6;
+        }
+        &.badge-offer {
+          background-color: #f59e0b;
+        }
       }
 
       .car-image {
@@ -201,9 +203,8 @@ $error-red: #ef4444;
       padding: 25px;
       display: flex;
       flex-direction: column;
-      flex-grow: 1; /* Esto empuja todo hacia abajo correctamente */
+      flex-grow: 1;
 
-      /* --- NUEVA CABECERA MEJORADA --- */
       .card-header {
         display: flex;
         justify-content: space-between;
@@ -231,10 +232,9 @@ $error-red: #ef4444;
           }
         }
 
-        /* --- LA CÁPSULA DE VENTA (DISEÑO PREMIUM) --- */
         .sold-status-badge {
-          background-color: rgba($error-red, 0.08); /* Fondo rojo muy suave */
-          border: 1px solid rgba($error-red, 0.15); /* Borde sutil */
+          background-color: rgba($error-red, 0.08);
+          border: 1px solid rgba($error-red, 0.15);
           padding: 8px 14px;
           border-radius: 12px;
           display: flex;
@@ -252,7 +252,7 @@ $error-red: #ef4444;
           }
 
           .status-date {
-            color: darken($error-red, 15%); /* Rojo oscurecido para la fecha */
+            color: darken($error-red, 15%);
             font-size: 0.75rem;
             font-weight: 600;
             margin-top: 3px;
@@ -260,31 +260,32 @@ $error-red: #ef4444;
         }
       }
 
-      /* FILA DE ESTADÍSTICAS */
       .car-stats-row {
         display: flex;
         justify-content: space-between;
-        margin-top: auto; /* Ancla esta fila al fondo del contenedor */
+        margin-top: auto;
         padding-top: 18px;
         border-top: 1px solid rgba(0, 0, 0, 0.05);
 
         .stat {
           display: flex;
           flex-direction: column;
-          align-items: center; 
+          align-items: center;
 
           .stat-value {
             color: $text-dark;
             font-weight: 700;
             font-size: 14px;
-            
+
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 28px;
             margin-bottom: 4px;
 
-            .dgt-badge { margin: 0; }
+            .dgt-badge {
+              margin: 0;
+            }
           }
 
           .stat-label {
@@ -299,13 +300,16 @@ $error-red: #ef4444;
   }
 }
 
-// Media queries
 @media (max-width: 768px) {
   .sold-cars-page-wrapper {
     .intro-section {
       padding: 40px 20px;
-      h1 { font-size: 2rem; }
-      p { font-size: 1rem; }
+      h1 {
+        font-size: 2rem;
+      }
+      p {
+        font-size: 1rem;
+      }
     }
     .results-wrapper {
       padding: 30px 0 60px 0;
@@ -318,25 +322,38 @@ $error-red: #ef4444;
       gap: 20px;
     }
     .car-card {
-      .car-image-container { height: 180px; }
+      .car-image-container {
+        height: 180px;
+      }
       .car-details {
         padding: 20px;
-        
-        /* Ajustes responsive para la nueva cabecera */
+
         .card-header {
           margin-bottom: 20px;
-          .title-column h3 { font-size: 16px; }
-          .title-column .car-subtitle { font-size: 12px; }
-          
+          .title-column h3 {
+            font-size: 16px;
+          }
+          .title-column .car-subtitle {
+            font-size: 12px;
+          }
+
           .sold-status-badge {
             padding: 6px 10px;
-            .status-title { font-size: 0.75rem; }
-            .status-date { font-size: 0.65rem; }
+            .status-title {
+              font-size: 0.75rem;
+            }
+            .status-date {
+              font-size: 0.65rem;
+            }
           }
         }
-        
-        .car-stats-row .stat .stat-value { font-size: 13px; }
-        .car-stats-row .stat .stat-label { font-size: 10px; }
+
+        .car-stats-row .stat .stat-value {
+          font-size: 13px;
+        }
+        .car-stats-row .stat .stat-label {
+          font-size: 10px;
+        }
       }
     }
   }

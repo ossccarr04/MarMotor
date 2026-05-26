@@ -12,9 +12,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './forgot-password.scss',
 })
 export class ForgotPassword {
+  @Output() close = new EventEmitter<void>();
 
-  @Output() close = new EventEmitter<void>(); 
-  
   email: string = '';
   isLoading: boolean = false;
   successMessage: string = '';
@@ -24,27 +23,23 @@ export class ForgotPassword {
   timerInterval: any;
 
   private authService = inject(AuthServiceBBDD);
-  private toast= inject(ToastrService)
+  private toast = inject(ToastrService);
   private cdr = inject(ChangeDetectorRef);
 
   onSubmit() {
     if (!this.email) return;
 
-    // 1. Limpiamos cualquier mensaje anterior antes de empezar
     this.isLoading = true;
     this.successMessage = '';
     this.errorMessage = '';
 
-    
-    
     this.authService.forgotPassword(this.email).subscribe({
       next: (response) => {
         setTimeout(() => {
           this.isLoading = false;
-          this.successMessage = response.message; 
-          this.toast.success("Enlace de recuperación enviado. Revisa tu correo.", "¡Éxito!");
+          this.successMessage = response.message;
+          this.toast.success('Enlace de recuperación enviado. Revisa tu correo.', '¡Éxito!');
           this.startCountdown();
-          
         }, 2000);
       },
       error: (err) => {
@@ -52,22 +47,26 @@ export class ForgotPassword {
           console.error('Error enviando el correo', err);
           this.isLoading = false;
 
-          this.toast.error("Error enviando el correo, revisa la bandeja de entrada o spam", "Error");
-          
+          this.toast.error(
+            'Error enviando el correo, revisa la bandeja de entrada o spam',
+            'Error',
+          );
+
           if (err.error && err.error.error) {
-            this.errorMessage = err.error.error; // El mensaje del backend ("Espera 2 minutos...")
+            this.errorMessage = err.error.error;
           } else {
-            this.errorMessage = 'Ha habido un error. Revisa tu bandeja de entrada o inténtalo de nuevo en 15 minutos.';
+            this.errorMessage =
+              'Ha habido un error. Revisa tu bandeja de entrada o inténtalo de nuevo en 15 minutos.';
           }
           this.cdr.detectChanges();
         }, 2000);
-      }
+      },
     });
   }
 
   onClose() {
     if (this.isLoading) {
-      return; 
+      return;
     }
     this.close.emit();
   }
@@ -78,12 +77,12 @@ export class ForgotPassword {
     }
 
     this.countdown = 10;
-    this.cdr.detectChanges(); 
+    this.cdr.detectChanges();
 
     this.timerInterval = setInterval(() => {
       this.countdown--;
-      
-      this.cdr.detectChanges(); 
+
+      this.cdr.detectChanges();
 
       if (this.countdown <= 0) {
         clearInterval(this.timerInterval);

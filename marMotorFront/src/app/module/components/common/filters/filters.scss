@@ -1,4 +1,3 @@
-// Variables de color
 $primary-blue: #0a1f33;
 $accent-green: #37df8c;
 $electric-blue: #0b79d0;
@@ -11,7 +10,6 @@ $text-light: #fff;
 $font-family: 'Montserrat', sans-serif;
 $text-dark: #333;
 
-/* --- SECCIÓN PRINCIPAL DE FILTROS --- */
 .visual-filter-section {
   padding: 40px 20px;
   background-color: #f7f9fc;
@@ -81,7 +79,6 @@ $text-dark: #333;
         }
       }
 
-      /* Estado Deshabilitado (Grisáceo + Tick Verde) */
       &.is-disabled {
         background-color: #f8fafc;
         box-shadow: none;
@@ -147,7 +144,7 @@ $text-dark: #333;
         margin-bottom: 20px;
 
         h3 {
-          margin-bottom: 0; /* El margen inferior lo da ahora el contenedor card-header */
+          margin-bottom: 0;
         }
 
         .clear-filter {
@@ -291,7 +288,6 @@ $text-dark: #333;
   }
 }
 
-/* --- ESTILOS DEL MODAL / BUSCADOR (CORREGIDO) --- */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -349,7 +345,6 @@ $text-dark: #333;
     }
   }
 
-  /* El Input de búsqueda */
   .search-input {
     width: 100%;
     padding: 15px 20px;
@@ -373,20 +368,17 @@ $text-dark: #333;
     }
   }
 
-  /* Listado de marcas en el modal */
   .modal-brands-list {
     display: grid;
-    // Usamos auto-fill con un ancho fijo para que las opciones mantengan su tamaño de "cuadro"
-    // y no se estiren horizontalmente cuando hay menos elementos. Además, flex-grow: 1 gestiona la altura.
-    grid-template-columns: repeat(auto-fill, 155px); // Aumentado el ancho de cada opción
+
+    grid-template-columns: repeat(auto-fill, 155px);
     gap: 12px;
     overflow-y: auto;
     padding-right: 5px;
     margin-bottom: 10px;
-    flex-grow: 1; // Permite que la lista ocupe el espacio vertical restante y se desplace si es necesario.
+    flex-grow: 1;
 
-    /* Personalización del scroll */
-    justify-content: center; // Centra las opciones horizontalmente.
+    justify-content: center;
     &::-webkit-scrollbar {
       width: 8px;
     }
@@ -428,23 +420,19 @@ $text-dark: #333;
   }
 
   .no-results {
-    /* Hacemos que ocupe todo el ancho del grid para centrarse correctamente */
     grid-column: 1 / -1;
 
-    /* Estilo visual */
     color: #94a3b8;
     font-style: italic;
     font-size: 15px;
     min-height: 100px;
     text-align: center;
 
-    /* Centra el texto <p> interior */
     display: flex;
     justify-content: center;
     align-items: center;
   }
 }
-
 
 .action-buttons-container {
   display: flex;
@@ -452,25 +440,24 @@ $text-dark: #333;
   align-items: center;
   justify-content: center;
   gap: 15px;
-  
-  margin: 30px auto 0; 
+
+  margin: 30px auto 0;
   width: 90%;
-  max-width: 400px; 
+  max-width: 400px;
 
+  grid-column: 1 / -1;
 
-  grid-column: 1 / -1; 
-
-  margin-top: 30px; 
+  margin-top: 30px;
 
   @media (min-width: 768px) {
     flex-direction: row;
     gap: 20px;
-    width: 100%; 
+    width: 100%;
     max-width: none;
   }
 
   button {
-    width: 100%; 
+    width: 100%;
     padding: 15px 35px;
     border-radius: 30px;
     font-size: 16px;
@@ -482,9 +469,9 @@ $text-dark: #333;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    
+
     @media (min-width: 768px) {
-      width: 280px; 
+      width: 280px;
     }
   }
 
@@ -509,8 +496,8 @@ $text-dark: #333;
     background-color: rgba(255, 255, 255, 0.9);
     color: #0a1f33;
 
-    border: 1px solid rgba(0, 0, 0, 0.1); 
-    box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.05); 
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.05);
 
     &:hover {
       background-color: #ffffff;
@@ -551,24 +538,21 @@ $text-dark: #333;
 }
 
 .visual-filter-section {
-  position: relative; // Necesario para que el buscador flote dentro
+  position: relative;
 }
 
 .admin-control-bar {
-  // 1. Posicionamiento (antes estaba en .admin-quick-search)
   position: absolute;
   top: 35px;
   right: 40px;
   z-index: 100;
 
-  // 2. Alineación Flexbox para poner el switch y el buscador en línea
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 15px;
-  min-width: 450px; // Anchura mínima para que no se aplasten los elementos
+  min-width: 450px;
 
-  /* --- SECCIÓN 1: EL INTERRUPTOR (SWITCH) --- */
   .toggle-vendidos {
     display: flex;
     align-items: center;
@@ -577,8 +561,8 @@ $text-dark: #333;
 
     .label-text {
       font-size: 0.85rem;
-      // Si tu fondo es oscuro, te sugiero cambiar este color a blanco (#fff) o gris (#cbd5e1)
-      color: #000000; 
+
+      color: #000000;
       font-weight: 500;
       transition: color 0.3s ease;
     }
@@ -597,26 +581,28 @@ $text-dark: #333;
 
       .slider {
         position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background-color: rgba(15, 23, 42, 0.4); // Gris oscuro de fondo
-        border: 1px solid rgba(16, 185, 129, 0.2); // Borde esmeralda muy suave
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(15, 23, 42, 0.4);
+        border: 1px solid rgba(16, 185, 129, 0.2);
         border-radius: 34px;
-        transition: .4s;
+        transition: 0.4s;
 
         &:before {
           position: absolute;
-          content: "";
+          content: '';
           height: 12px;
           width: 12px;
           left: 3px;
-          bottom: 2px; // Ajustado para que quede perfectamente centrado
+          bottom: 2px;
           background-color: #f8fafc;
           border-radius: 50%;
-          transition: .4s;
+          transition: 0.4s;
         }
       }
 
-      /* Cuando se marca, usa el verde esmeralda de tu diseño */
       input:checked + .slider {
         background-color: rgba(16, 185, 129, 0.8);
         border-color: #10b981;
@@ -628,9 +614,8 @@ $text-dark: #333;
     }
   }
 
-  /* --- SECCIÓN 2: LA CAJA DE BÚSQUEDA --- */
   .search-box {
-    flex: 1; // Ocupa el resto del espacio disponible
+    flex: 1;
     display: flex;
     align-items: center;
     background: rgba(15, 23, 42, 0.9);
@@ -685,38 +670,37 @@ $text-dark: #333;
   }
 }
 
-// Responsive: en móviles lo movemos para que no tape el título
 @media (max-width: 768px) {
   .admin-control-bar {
-    position: static; /* Asegura que el elemento esté en el flujo normal del documento */
-    top: auto; /* Resetea la posición absoluta */
-    right: auto; /* Resetea la posición absoluta */
-    margin-bottom: 30px; /* Espacio debajo de la barra de control */
+    position: static;
+    top: auto;
+    right: auto;
+    margin-bottom: 30px;
     min-width: 0;
     flex-direction: column;
-    align-items: center; /* Centra los elementos horizontalmente */
-    gap: 20px; /* Añade espacio entre el interruptor y el buscador */
+    align-items: center;
+    gap: 20px;
     width: 100%;
-    padding: 15px 20px; /* Añade padding interno a la barra de control */
-    box-sizing: border-box; /* Asegura que el padding no aumente el ancho total */
-    background-color: #f0f4f8; /* Un fondo ligeramente diferente para destacarlo */
-    border-bottom: 1px solid #e2e8f0; /* Separador visual */
-    border-radius: 0; /* Elimina bordes redondeados si los tuviera */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+    padding: 15px 20px;
+    box-sizing: border-box;
+    background-color: #f0f4f8;
+    border-bottom: 1px solid #e2e8f0;
+    border-radius: 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 
     .search-box {
       width: 100%;
-      max-width: 300px; /* Limita el ancho del buscador para que no sea demasiado grande */
+      max-width: 300px;
     }
 
     .toggle-vendidos {
-      width: 100%; /* Asegura que el toggle ocupe el ancho completo para centrar su contenido */
-      justify-content: center; /* Centra el texto y el switch dentro del toggle */
+      width: 100%;
+      justify-content: center;
     }
   }
 
   .visual-filter-section h2 {
-    margin-top: 20px; /* Añade un margen superior al título para separarlo de la barra de control */
-    text-align: center; /* Mantiene el título centrado en móvil */
+    margin-top: 20px;
+    text-align: center;
   }
 }

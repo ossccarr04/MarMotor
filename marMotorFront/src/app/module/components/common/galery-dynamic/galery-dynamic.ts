@@ -26,7 +26,7 @@ export class GaleryDynamic {
   @ViewChild('carrusel') carrusel!: ElementRef;
 
   BadgeType = BadgeType;
-  badgeLabel= BadgeLabel
+  badgeLabel = BadgeLabel;
   filtroSeleccionado: BadgeType = BadgeType.NONE;
   public cargando = true;
   cochesOriginal: CarDTO[] = [];
@@ -63,18 +63,18 @@ export class GaleryDynamic {
   private cargarCochesGaleria(): void {
     this.carservice.getCars().subscribe({
       next: (data) => {
-        const SOLD_UPPER = this.BadgeType.SOLD.toUpperCase(); // "VENDIDO"
-        const RESERVED_UPPER = this.BadgeType.RESERVED.toUpperCase(); // "RESERVADO"
+        const SOLD_UPPER = this.BadgeType.SOLD.toUpperCase();
+        const RESERVED_UPPER = this.BadgeType.RESERVED.toUpperCase();
 
         const dataConFavoritos = this.aplicarEstadoFavoritos(data);
         this.cochesOriginal = dataConFavoritos;
 
         // Por defecto, mostrar todos los coches que NO estén vendidos ni reservados
         const cochesDisponiblesInicial = this.cochesOriginal.filter((c) => {
-          const processedBadge = c.badge ? String(c.badge).trim().toUpperCase() : 'NONE'; // Aseguramos que sea string
+          const processedBadge = c.badge ? String(c.badge).trim().toUpperCase() : 'NONE';
           return processedBadge !== SOLD_UPPER && processedBadge !== RESERVED_UPPER;
         });
-        this.coches = cochesDisponiblesInicial.slice(0, 10); // Máximo 10
+        this.coches = cochesDisponiblesInicial.slice(0, 10);
 
         this.cochesFiltradoDetail = [...this.coches];
         this.cdr.detectChanges();
@@ -87,15 +87,15 @@ export class GaleryDynamic {
     });
   }
 
-    getBadgeText(badge: any): string {
+  getBadgeText(badge: any): string {
     if (!badge) return '';
-    // Convertir el badge a minúsculas para que coincida con las claves del enum BadgeType (que ahora son en español minúsculas)
-    const badgeKey = badge ? String(badge).trim().toLowerCase() as BadgeType : BadgeType.NONE;
-    // Asegurarse de que la clave exista en BadgeType antes de acceder a BadgeLabel
+
+    const badgeKey = badge ? (String(badge).trim().toLowerCase() as BadgeType) : BadgeType.NONE;
+
     if (Object.values(this.BadgeType).includes(badgeKey)) {
       return this.badgeLabel[badgeKey as BadgeType];
     }
-    return badge ? badge.toString() : ''; // Fallback si no se encuentra en el enum
+    return badge ? badge.toString() : '';
   }
 
   toggleGuardar(coche: CarDTO, event: Event) {
@@ -119,7 +119,6 @@ export class GaleryDynamic {
     peticion.subscribe({
       // 2. En caso de éxito, no hacemos nada.
       next: () => {
-        // Actualizamos nuestra lista de IDs localmente para consistencia
         if (estadoAnterior) {
           this.misFavoritosIds = this.misFavoritosIds.filter((id) => id !== coche.id);
         } else {
@@ -128,27 +127,27 @@ export class GaleryDynamic {
       },
       // 3. En caso de error, revertimos el cambio y notificamos.
       error: (err) => {
-        console.error(estadoAnterior ? 'Error al eliminar de favoritos:' : 'Error al guardar en favoritos:', err);
-        coche.isSaved = estadoAnterior; // Revertir
+        console.error(
+          estadoAnterior ? 'Error al eliminar de favoritos:' : 'Error al guardar en favoritos:',
+          err,
+        );
+        coche.isSaved = estadoAnterior;
         this.cdr.detectChanges();
         this.toast.error(
           'No se pudo completar la acción. Por favor, inténtalo de nuevo.',
-          'Error de conexión'
+          'Error de conexión',
         );
       },
     });
   }
 
-  // Lógica de arrastre del carrusel (se mantiene igual)
   moverCarrusel(direccion: number) {
     if (this.carrusel) {
       const elemento = this.carrusel.nativeElement;
 
-      // 1. Detectamos el ancho de la tarjeta y el GAP real del CSS
       const tarjeta = elemento.querySelector('.car-card');
       const anchoTarjeta = tarjeta?.clientWidth || 320;
 
-      // Obtenemos el gap real configurado en el SCSS (grid-gap o gap)
       const estiloDinamico = window.getComputedStyle(elemento);
       const gap = parseInt(estiloDinamico.gap) || 20;
 
@@ -158,14 +157,10 @@ export class GaleryDynamic {
 
       // --- LÓGICA DE INFINITO Y MOVIMIENTO ---
       if (direccion === 1 && posicionActual >= scrollMaximo - 10) {
-        // Final -> Inicio
         elemento.scrollTo({ left: 0, behavior: 'smooth' });
       } else if (direccion === -1 && posicionActual <= 10) {
-        // Inicio -> Final
         elemento.scrollTo({ left: scrollMaximo, behavior: 'smooth' });
       } else {
-        // Movimiento normal
-        // Redondeamos para evitar problemas con decimales en zooms de pantalla
         const nuevaPosicion = Math.round(posicionActual + distanciaMovimiento * direccion);
         elemento.scrollTo({ left: nuevaPosicion, behavior: 'smooth' });
       }
@@ -181,88 +176,80 @@ export class GaleryDynamic {
       const scrollLeft = el.scrollLeft;
       const scrollMax = el.scrollWidth - el.clientWidth;
 
-      // Margen de 5px para evitar errores de redondeo en navegadores
       this.isAtStart = scrollLeft <= 5;
       this.isAtEnd = scrollLeft >= scrollMax - 5;
     }
   }
 
-  // Variables para controlar el estado del arrastre
-isDragging = false;
-startX: number = 0;
-scrollLeftStart = 0;
-velocity = 0;
-rafId: number | null = null;
+  isDragging = false;
+  startX: number = 0;
+  scrollLeftStart = 0;
+  velocity = 0;
+  rafId: number | null = null;
 
-onMouseDown(e: MouseEvent) {
-  this.isDragging = true;
-  const el = this.carrusel.nativeElement;
-  
-  // Guardamos posición inicial
-  this.startX = e.pageX - el.offsetLeft;
-  this.scrollLeftStart = el.scrollLeft;
-  
-  // Preparamos el elemento
-  el.style.scrollBehavior = 'auto'; // El drag debe ser 'auto' para ser fluido
-  el.style.cursor = 'grabbing';
-  
-  // Cancelamos cualquier animación previa si el usuario hace clic mientras se mueve
-  if (this.rafId) cancelAnimationFrame(this.rafId);
-}
+  onMouseDown(e: MouseEvent) {
+    this.isDragging = true;
+    const el = this.carrusel.nativeElement;
 
-
-onMouseMove(e: MouseEvent) {
-  if (!this.isDragging) return;
-  e.preventDefault();
-  
-  const el = this.carrusel.nativeElement;
-  const x = e.pageX - el.offsetLeft;
-  const walk = (x - this.startX) * 1.5; 
-  
-  const scrollMaximo = el.scrollWidth - el.clientWidth;
-  const nuevaPosicion = this.scrollLeftStart - walk;
-
-  // --- LÓGICA DE BUCLE INFINITO AL ARRASTRAR ---
-  
-  if (nuevaPosicion > scrollMaximo + 100) { 
-    // Si arrastramos más allá del final (+50px de margen) -> Salto al inicio
+    // Guardamos posición inicial
     this.startX = e.pageX - el.offsetLeft;
-    this.scrollLeftStart = 0;
-    el.scrollLeft = 0;
-  } else if (nuevaPosicion < -100) {
-    // Si arrastramos más allá del inicio (-50px de margen) -> Salto al final
-    this.startX = e.pageX - el.offsetLeft;
-    this.scrollLeftStart = scrollMaximo;
-    el.scrollLeft = scrollMaximo;
-  } else {
-    // Movimiento normal
-    const prevScrollLeft = el.scrollLeft;
-    el.scrollLeft = nuevaPosicion;
-    this.velocity = el.scrollLeft - prevScrollLeft;
-  }
-}
+    this.scrollLeftStart = el.scrollLeft;
 
-onMouseUp() {
-  this.isDragging = false;
-  const el = this.carrusel.nativeElement;
-  el.style.cursor = 'grab';
-  
-  // Iniciamos la inercia (el movimiento extra al soltar)
-  this.applyInertia();
-}
+    // Preparamos el elemento
+    el.style.scrollBehavior = 'auto';
+    el.style.cursor = 'grabbing';
 
-private applyInertia() {
-  const el = this.carrusel.nativeElement;
-  
-  if (Math.abs(this.velocity) > 0.5) {
-    el.scrollLeft += this.velocity;
-    this.velocity *= 0.95; // Rozamiento (va frenando poco a poco)
-    this.rafId = requestAnimationFrame(() => this.applyInertia());
-  } else {
-    // Cuando se detiene, reactivamos el smooth para los botones
-    el.style.scrollBehavior = 'smooth';
+    // Cancelamos cualquier animación previa si el usuario hace clic mientras se mueve
+    if (this.rafId) cancelAnimationFrame(this.rafId);
   }
-}
+
+  onMouseMove(e: MouseEvent) {
+    if (!this.isDragging) return;
+    e.preventDefault();
+
+    const el = this.carrusel.nativeElement;
+    const x = e.pageX - el.offsetLeft;
+    const walk = (x - this.startX) * 1.5;
+
+    const scrollMaximo = el.scrollWidth - el.clientWidth;
+    const nuevaPosicion = this.scrollLeftStart - walk;
+
+    // --- LÓGICA DE BUCLE INFINITO AL ARRASTRAR ---
+
+    if (nuevaPosicion > scrollMaximo + 100) {
+      this.startX = e.pageX - el.offsetLeft;
+      this.scrollLeftStart = 0;
+      el.scrollLeft = 0;
+    } else if (nuevaPosicion < -100) {
+      this.startX = e.pageX - el.offsetLeft;
+      this.scrollLeftStart = scrollMaximo;
+      el.scrollLeft = scrollMaximo;
+    } else {
+      const prevScrollLeft = el.scrollLeft;
+      el.scrollLeft = nuevaPosicion;
+      this.velocity = el.scrollLeft - prevScrollLeft;
+    }
+  }
+
+  onMouseUp() {
+    this.isDragging = false;
+    const el = this.carrusel.nativeElement;
+    el.style.cursor = 'grab';
+
+    this.applyInertia();
+  }
+
+  private applyInertia() {
+    const el = this.carrusel.nativeElement;
+
+    if (Math.abs(this.velocity) > 0.5) {
+      el.scrollLeft += this.velocity;
+      this.velocity *= 0.95;
+      this.rafId = requestAnimationFrame(() => this.applyInertia());
+    } else {
+      el.style.scrollBehavior = 'smooth';
+    }
+  }
 
   setFiltro(tipo: BadgeType) {
     const elemento = this.carrusel.nativeElement;
@@ -278,13 +265,10 @@ private applyInertia() {
 
     if (tipo === BadgeType.NONE) {
       // Si el filtro es NONE, mostramos los primeros 10 coches disponibles
-      this.coches = cochesDisponibles
-        .slice(0, 10); // Máximo 10
+      this.coches = cochesDisponibles.slice(0, 10);
     } else {
-      // Si hay un filtro de tipo (NEW_ARRIVALS, FEATURED, OFFER), lo aplicamos sobre los coches disponibles
       this.coches = cochesDisponibles.filter(
-        (c) =>
-          c.badge && String(c.badge).trim().toUpperCase() === tipo.toUpperCase()
+        (c) => c.badge && String(c.badge).trim().toUpperCase() === tipo.toUpperCase(),
       );
     }
     this.cochesFiltradoDetail = this.coches;
@@ -292,7 +276,6 @@ private applyInertia() {
   }
 
   showDetails(id: number) {
-    // Codificamos el ID a Base64
     const encodedId = btoa(id.toString());
     this.router.navigate(['/detail-car', encodedId], {
       state: { listaFiltrada: this.cochesFiltradoDetail },

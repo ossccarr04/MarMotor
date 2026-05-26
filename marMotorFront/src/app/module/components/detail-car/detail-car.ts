@@ -40,44 +40,40 @@ export class DetailCar implements OnInit, OnDestroy {
   private favoriteService = inject(FavoriteServiceBBDD);
   private fb = inject(FormBuilder);
 
-  @ViewChild('timelineContainer') timelineContainer!: ElementRef; // ViewChild para el contenedor del historial
+  @ViewChild('timelineContainer') timelineContainer!: ElementRef;
   constructor() {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state && navigation.extras.state['listaFiltrada']) {
       const listaEntrante = navigation.extras.state['listaFiltrada'];
-      // Mapeamos a IDs por seguridad
+
       this.carIds = listaEntrante.map((c: any) => c.id);
     }
   }
 
-  // Estado del componente
   confirmandoBorrado: boolean = false;
   badgeLabel = BadgeLabel;
   badgeType = BadgeType;
   car: CarDetail | null = null;
-  carIds: number[] = []; // Solo guardamos IDs para navegación Next/Prev
+  carIds: number[] = [];
   currentIndex: number = 0;
   currentImageIndex: number = 0;
   isZoomed: boolean = false;
-  isAdmin: boolean = false; 
+  isAdmin: boolean = false;
   private scrollPosition: number = 0;
 
-  // --- Propiedades para Zoom y Paneo ---
   zoomLevel = 1;
   imagePosition = { x: 0, y: 0 };
   isDraggingImage = false;
   private dragStart = { x: 0, y: 0 };
   private lastImagePosition = { x: 0, y: 0 };
-  private initialPinchDistance: number | null = null; // Para el gesto de "pellizco" en móvil
+  private initialPinchDistance: number | null = null;
 
-  // Contact Seller properties
   showContactSellerModal: boolean = false;
   contactForm!: FormGroup;
-  sellerEmail: string[] = []; // Ahora es un array de strings
-  sellerPhone: string[] = []; // Ahora es un array de strings
-  isLoggedInUser: boolean = false; // Nueva propiedad para almacenar el estado de login
+  sellerEmail: string[] = [];
+  sellerPhone: string[] = [];
+  isLoggedInUser: boolean = false;
 
-  // Drag-to-scroll properties para el historial
   isDraggingTimeline = false;
   startXTimeline: number = 0;
   scrollLeftStartTimeline = 0;
@@ -85,26 +81,30 @@ export class DetailCar implements OnInit, OnDestroy {
   rafIdTimeline: number | null = null;
 
   ngOnInit(): void {
-    // Initialize contact details from environment
-    this.sellerEmail = environment.EMAIL_CONTACT
-    this.sellerPhone = environment.NUMBER_CONTACT
+    this.sellerEmail = environment.EMAIL_CONTACT;
+    this.sellerPhone = environment.NUMBER_CONTACT;
 
-    // Initialize contact form
     let userName = '';
     let userEmail = '';
-    this.isLoggedInUser = this.authService.isLoggedIn(); // Establecer el estado de login inicialmente
+    this.isLoggedInUser = this.authService.isLoggedIn();
     if (this.isLoggedInUser) {
       const currentUser = this.authService.getCurrentUser();
       if (currentUser) {
         userName = currentUser.user || '';
         userEmail = currentUser.correo || '';
-
       }
     }
 
     this.contactForm = this.fb.group({
       name: [userName, Validators.required],
-      email: [userEmail, [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      email: [
+        userEmail,
+        [
+          Validators.required,
+          Validators.email,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
     });
 
     if (this.carIds.length === 0) {
@@ -127,11 +127,9 @@ export class DetailCar implements OnInit, OnDestroy {
         const decodedId = atob(encodedId);
         const idNumerico = Number(decodedId);
 
-        // Reset visual para mostrar el estado "Cargando"
         this.currentImageIndex = 0;
-        this.cdr.detectChanges(); // Forzamos limpieza visual
+        this.cdr.detectChanges();
 
-        // 3. Pedimos el objeto DETAIL completo a la base de datos
         this.carsService.getCarsDetails(idNumerico).subscribe({
           next: (data) => {
             if (!data) {
@@ -146,33 +144,30 @@ export class DetailCar implements OnInit, OnDestroy {
             processedCar.bodyType = data.bodyType ? data.bodyType.toLowerCase() : null;
             this.car = processedCar;
 
-            // Comprobar si es favorito
             if (this.authService.isLoggedIn() && this.car) {
               this.favoriteService.getMyFavorites().subscribe({
                 next: (favs) => {
-                  if (this.car) { // Doble chequeo por asincronía
-                    this.car.isSaved = favs.some(favCar => favCar.id === this.car!.id);
+                  if (this.car) {
+                    this.car.isSaved = favs.some((favCar) => favCar.id === this.car!.id);
                     this.cdr.detectChanges();
                   }
                 },
-                // Si falla la carga de favoritos, asumimos que no lo es.
+
                 error: () => {
                   if (this.car) this.car.isSaved = false;
                   this.cdr.detectChanges();
-                }
+                },
               });
             } else if (this.car) {
               this.car.isSaved = false;
             }
-            // Si carIds está vacío (acceso directo por URL), lo inicializamos con el actual
+
             if (this.carIds.length === 0) {
               this.carIds = [this.car.id];
             }
 
-            // Calculamos en qué posición estamos dentro de la lista de navegación
             this.currentIndex = this.carIds.indexOf(this.car.id);
-           
-            // Forzamos el renderizado inmediato para evitar el lag de "cargando"
+
             this.cdr.detectChanges();
           },
           error: (err) => {
@@ -284,15 +279,16 @@ export class DetailCar implements OnInit, OnDestroy {
       error: (err) => {
         console.error(estadoAnterior ? 'Error al eliminar:' : 'Error al guardar:', err);
         if (this.car) {
-          this.car.isSaved = estadoAnterior; // Revertimos al estado original
+          this.car.isSaved = estadoAnterior;
         }
         this.cdr.detectChanges();
         this.toast.error(
           'No se pudo completar la acción. Por favor, inténtalo de nuevo.',
-          'Error de conexión'
+          'Error de conexión',
         );
       },
-    });  }
+    });
+  }
 
   prepararEliminacion() {
     this.confirmandoBorrado = true;
@@ -319,7 +315,6 @@ export class DetailCar implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy(): void {
-    // Limpieza de estilos al salir del componente
     if (isPlatformBrowser(this.platformId)) {
       this.renderer.removeStyle(document.body, 'overflow');
       if (this.isZoomed) {
@@ -329,9 +324,8 @@ export class DetailCar implements OnInit, OnDestroy {
     }
   }
 
-  // --- Contact Seller Modal methods ---
   openContactSellerModal(): void {
-    this.isLoggedInUser = this.authService.isLoggedIn(); // Actualizar el estado de login al abrir el modal
+    this.isLoggedInUser = this.authService.isLoggedIn();
     this.showContactSellerModal = true;
 
     // Si no está logueado, asegurar que los campos del formulario estén vacíos o reseteados
@@ -343,45 +337,38 @@ export class DetailCar implements OnInit, OnDestroy {
       if (currentUser) {
         this.contactForm.patchValue({
           name: currentUser.user || '',
-          email: currentUser.correo || ''
+          email: currentUser.correo || '',
         });
       }
     }
 
-    // Opcional: Resetear el formulario al cerrar el modal si no está logueado
     if (!this.isLoggedInUser) {
       this.contactForm.reset();
     }
-    // Si estaba logueado, los campos ya estaban pre-rellenados, no es necesario resetear
 
     if (isPlatformBrowser(this.platformId)) {
       this.renderer.removeStyle(document.body, 'overflow');
     }
   }
 
-  // El método onSubmitContactForm() ha sido eliminado ya que no hay un botón de envío
-  // y la funcionalidad principal es generar el mailto link.
-
-
-  getMailtoLinkForEmail(email: string): string { // Nuevo método que acepta el email como argumento
+  getMailtoLinkForEmail(email: string): string {
     if (!this.car) return `mailto:${email}`;
 
-    let name = this.contactForm.get('name')?.value || '[Tu Nombre]'; // Usar valor del formulario
-    let userEmail = this.contactForm.get('email')?.value || '[Tu Email]'; // Usar valor del formulario
-    if(this.authService.isLoggedIn()){
-    name = atob(this.contactForm.get('name')?.value) || '[Tu Nombre]'; // Usar valor del formulario
-    userEmail = atob(this.contactForm.get('email')?.value) || '[Tu Email]'; // Usar valor del formulario
-
-    
-  }
-  const subject = encodeURIComponent(`Consulta sobre el coche: ${this.car.make} ${this.car.model} (${this.car.year})`);
+    let name = this.contactForm.get('name')?.value || '[Tu Nombre]';
+    let userEmail = this.contactForm.get('email')?.value || '[Tu Email]';
+    if (this.authService.isLoggedIn()) {
+      name = atob(this.contactForm.get('name')?.value) || '[Tu Nombre]';
+      userEmail = atob(this.contactForm.get('email')?.value) || '[Tu Email]';
+    }
+    const subject = encodeURIComponent(
+      `Consulta sobre el coche: ${this.car.make} ${this.car.model} (${this.car.year})`,
+    );
     const body = encodeURIComponent(
       `Hola, estoy interesado en el coche ${this.car.make} ${this.car.model} (${this.car.year}). ` +
-      `Me gustaría obtener más información. Mi nombre es ${name} y mi email es ${userEmail}.`
+        `Me gustaría obtener más información. Mi nombre es ${name} y mi email es ${userEmail}.`,
     );
     return `mailto:${email}?subject=${subject}&body=${body}`;
-
-}
+  }
   isEmailContactEnabled(): boolean {
     // Si el usuario está logueado, los campos están pre-rellenados y válidos, así que el enlace está activo.
     if (this.isLoggedInUser) {
@@ -398,16 +385,25 @@ export class DetailCar implements OnInit, OnDestroy {
     }
   }
 
-  // --- Drag-to-scroll methods para el historial ---
   onTimelineMouseDown(e: MouseEvent) {
     if (!this.timelineContainer) return;
+
+    const target = e.target as HTMLElement;
+
+    const isLine = target.closest('.timeline-line');
+    const isNodePoint = target.closest('.node-point');
+
+    if (!isLine && !isNodePoint) {
+      return;
+    }
+
     this.isDraggingTimeline = true;
     const el = this.timelineContainer.nativeElement;
 
     this.startXTimeline = e.pageX - el.offsetLeft;
     this.scrollLeftStartTimeline = el.scrollLeft;
 
-    el.style.scrollBehavior = 'auto'; // Deshabilita el smooth scroll durante el arrastre
+    el.style.scrollBehavior = 'auto';
     el.style.cursor = 'grabbing';
 
     if (this.rafIdTimeline) cancelAnimationFrame(this.rafIdTimeline);
@@ -415,11 +411,11 @@ export class DetailCar implements OnInit, OnDestroy {
 
   onTimelineMouseMove(e: MouseEvent) {
     if (!this.isDraggingTimeline || !this.timelineContainer) return;
-    e.preventDefault(); // Previene la selección de texto
+    e.preventDefault();
 
     const el = this.timelineContainer.nativeElement;
     const x = e.pageX - el.offsetLeft;
-    const walk = (x - this.startXTimeline) * 1.5; // Ajusta la sensibilidad si es necesario
+    const walk = (x - this.startXTimeline) * 1.5;
 
     const prevScrollLeft = el.scrollLeft;
     el.scrollLeft = this.scrollLeftStartTimeline - walk;
@@ -434,7 +430,7 @@ export class DetailCar implements OnInit, OnDestroy {
     this.applyTimelineInertia();
   }
 
-  onTimelineMouseLeave() { // Añadido para detener el arrastre si el ratón sale del contenedor
+  onTimelineMouseLeave() {
     if (this.isDraggingTimeline) {
       this.onTimelineMouseUp();
     }
@@ -446,10 +442,10 @@ export class DetailCar implements OnInit, OnDestroy {
 
     if (Math.abs(this.velocityTimeline) > 0.5) {
       el.scrollLeft += this.velocityTimeline;
-      this.velocityTimeline *= 0.95; // Fricción
+      this.velocityTimeline *= 0.95;
       this.rafIdTimeline = requestAnimationFrame(() => this.applyTimelineInertia());
     } else {
-      el.style.scrollBehavior = 'smooth'; // Reactiva el smooth scroll después de la inercia
+      el.style.scrollBehavior = 'smooth';
       this.rafIdTimeline = null;
     }
   }
@@ -463,7 +459,6 @@ export class DetailCar implements OnInit, OnDestroy {
     const zoomIntensity = 0.1;
     const newZoomLevel = this.zoomLevel - event.deltaY * zoomIntensity * 0.05;
 
-    // Limita el zoom entre 1 (sin zoom) y 5 (máximo)
     this.zoomLevel = Math.max(1, Math.min(newZoomLevel, 5));
 
     if (this.zoomLevel <= 1) {
@@ -487,7 +482,6 @@ export class DetailCar implements OnInit, OnDestroy {
       const dx = event.clientX - this.dragStart.x;
       const dy = event.clientY - this.dragStart.y;
 
-      // Dividimos por el nivel de zoom para que el paneo se sienta natural
       this.imagePosition.x = this.lastImagePosition.x + dx / this.zoomLevel;
       this.imagePosition.y = this.lastImagePosition.y + dy / this.zoomLevel;
     }
@@ -505,10 +499,10 @@ export class DetailCar implements OnInit, OnDestroy {
   onTouchStart(event: TouchEvent): void {
     if (!this.isZoomed) return;
 
-    if (event.touches.length === 2) { // Gesto de "pellizco"
+    if (event.touches.length === 2) {
       event.preventDefault();
       this.initialPinchDistance = this.getPinchDistance(event);
-    } else if (event.touches.length === 1 && this.zoomLevel > 1) { // Arrastre con un dedo
+    } else if (event.touches.length === 1 && this.zoomLevel > 1) {
       event.preventDefault();
       this.isDraggingImage = true;
       this.dragStart = { x: event.touches[0].clientX, y: event.touches[0].clientY };
@@ -519,13 +513,13 @@ export class DetailCar implements OnInit, OnDestroy {
   onTouchMove(event: TouchEvent): void {
     if (!this.isZoomed) return;
 
-    if (event.touches.length === 2 && this.initialPinchDistance) { // "Pellizco" en movimiento
+    if (event.touches.length === 2 && this.initialPinchDistance) {
       event.preventDefault();
       const newPinchDistance = this.getPinchDistance(event);
       const zoomFactor = newPinchDistance / this.initialPinchDistance;
       this.zoomLevel = Math.max(1, Math.min(this.zoomLevel * zoomFactor, 5));
       this.initialPinchDistance = newPinchDistance;
-    } else if (event.touches.length === 1 && this.isDraggingImage) { // Arrastre en movimiento
+    } else if (event.touches.length === 1 && this.isDraggingImage) {
       event.preventDefault();
       const dx = event.touches[0].clientX - this.dragStart.x;
       const dy = event.touches[0].clientY - this.dragStart.y;

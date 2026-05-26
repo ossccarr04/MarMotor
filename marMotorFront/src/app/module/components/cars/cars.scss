@@ -1,4 +1,3 @@
-/* --- VARIABLES --- */
 $dark-background: #0b1624;
 $white-results: #ffffff;
 $card-stock-bg: #fdfdfd;
@@ -17,7 +16,7 @@ $font-family: 'Montserrat', sans-serif;
 @media (max-width: 768px) {
   .stock-page-wrapper {
     padding-top: 0;
-  } // Ajusta si el header es fijo y causa un doble padding
+  }
 }
 
 .container-mx {
@@ -32,7 +31,7 @@ $font-family: 'Montserrat', sans-serif;
   align-items: center;
   justify-content: center;
   padding: 80px 0;
-  color: #10b981; // El verde de tu diseño
+  color: #10b981;
 
   i {
     font-size: 3.5rem;
@@ -46,31 +45,29 @@ $font-family: 'Montserrat', sans-serif;
   }
 }
 
-/* --- SECCIÓN DE FILTROS --- */
 .filters-section-wrapper {
-  padding: 60px 0 80px 0; // Más padding abajo para el solape
+  padding: 60px 0 80px 0;
 }
 @media (max-width: 768px) {
   .filters-section-wrapper {
-    padding: 40px 0 60px 0; // Padding ligeramente menor para móvil
+    padding: 40px 0 60px 0;
   }
 }
 
-/* --- CONTENEDOR BLANCO --- */
 .results-wrapper {
   background-color: $white-results;
   padding: 50px 0;
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
   box-shadow: 0 -20px 40px rgba(0, 0, 0, 0.05);
-  margin-top: -40px; // Solape visual sobre el fondo oscuro
+  margin-top: -40px;
   position: relative;
   z-index: 5;
 }
 @media (max-width: 768px) {
   .results-wrapper {
-    padding: 30px 0; // Padding reducido
-    margin-top: -20px; // Menor solapamiento
+    padding: 30px 0;
+    margin-top: -20px;
   }
 }
 
@@ -94,43 +91,42 @@ $font-family: 'Montserrat', sans-serif;
 }
 @media (max-width: 768px) {
   .results-info-bar {
-    flex-direction: column; // Apila el contador de encontrados y los controles
-    align-items: flex-start; // Alinea los elementos al inicio (izquierda)
-    gap: 15px; // Espacio menor entre elementos apilados
-    margin-bottom: 30px; // Margen reducido
-    padding-bottom: 15px; // Padding reducido
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
 
     .found-count {
-      font-size: 18px; // Fuente ligeramente más pequeña
+      font-size: 18px;
     }
 
     .results-controls {
-      flex-direction: column; // Apila el selector de orden y el contador de mostrados
-      align-items: flex-start; // Alinea los elementos al inicio (izquierda)
-      gap: 15px; // Espacio menor
-      width: 100%; // Ocupa todo el ancho para alinear correctamente
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+      width: 100%;
 
       .sort-wrapper {
-        width: 100%; // Ocupa todo el ancho
-        justify-content: space-between; // Mantiene la etiqueta y el selector separados
+        width: 100%;
+        justify-content: space-between;
 
         label {
           font-size: 13px;
         }
         select {
-          width: auto; // Permite que el selector se ajuste naturalmente
+          width: auto;
           font-size: 13px;
           padding: 6px 10px;
         }
       }
       .showing-count {
         font-size: 15px;
-      } // Fuente ligeramente más pequeña
+      }
     }
   }
 }
 
-/* --- GRID --- */
 .stock-grid {
   display: grid;
   gap: 30px;
@@ -147,10 +143,9 @@ $font-family: 'Montserrat', sans-serif;
   }
 }
 
-/* --- CAR CARD --- */
 .car-card {
   background: $card-stock-bg;
-  border: 1px solid #888686; // Borde negro sólido de 1px
+  border: 1px solid #888686;
   border-radius: 20px;
   overflow: hidden;
   position: relative;
@@ -295,34 +290,33 @@ $font-family: 'Montserrat', sans-serif;
     }
   }
 
-  /* BOTÓN QUE SUBE */
   .hover-btn-container {
     position: absolute;
-    bottom: -80px; // Un poco más abajo para que no se vea la sombra al inicio
+    bottom: -80px;
     left: 0;
     width: 100%;
-    height: 80px; // Un poco más alto para dar margen
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 20px; // Margen lateral para que no toque los bordes
+    padding: 0 20px;
     opacity: 0;
     transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
     z-index: 3;
 
     .btn-details {
       width: 100%;
-      height: 50px; // Altura fija de cápsula
+      height: 50px;
       background: $accent-green;
       border: none;
       color: $text-dark;
-      font-weight: 800; // Un poco menos que 900 para que sea más legible
+      font-weight: 800;
       font-size: 13px;
       letter-spacing: 1px;
       text-transform: uppercase;
-      border-radius: 30px; // EL ROUND: Forma de cápsula
+      border-radius: 30px;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba($accent-green, 0.4); // Sombra para que flote sobre la imagen
+      box-shadow: 0 4px 15px rgba($accent-green, 0.4);
       transition: transform 0.2s ease;
 
       &:active {
@@ -330,7 +324,7 @@ $font-family: 'Montserrat', sans-serif;
       }
       &:hover {
         .hover-btn-container {
-          bottom: 15px; // Sube pero deja un pequeño margen inferior
+          bottom: 15px;
           opacity: 1;
         }
       }
@@ -340,23 +334,23 @@ $font-family: 'Montserrat', sans-serif;
 
 @media (max-width: 768px) {
   .stock-grid {
-    gap: 20px; // Espacio menor entre tarjetas
+    gap: 20px;
   }
 
   .car-card {
     .car-image-container {
-      height: 180px; // Altura de imagen menor
+      height: 180px;
     }
 
     .car-details {
-      padding: 20px; // Padding reducido
+      padding: 20px;
 
       .title-price-row {
         h3 {
-          font-size: 16px; // Título más pequeño
+          font-size: 16px;
         }
         .car-price {
-          font-size: 18px; // Precio más pequeño
+          font-size: 18px;
         }
       }
 
@@ -366,12 +360,12 @@ $font-family: 'Montserrat', sans-serif;
       }
 
       .car-stats-row {
-        flex-wrap: wrap; // Permite que las estadísticas se envuelvan si hay muchas
-        gap: 10px; // Espacio entre estadísticas
+        flex-wrap: wrap;
+        gap: 10px;
         .stat {
-          flex: 1 1 auto; // Permite que las estadísticas crezcan/encojan
-          min-width: 45%; // Asegura al menos dos estadísticas por fila
-          text-align: center; // Centra el texto de las estadísticas
+          flex: 1 1 auto;
+          min-width: 45%;
+          text-align: center;
           .stat-value {
             font-size: 13px;
           }
@@ -382,7 +376,7 @@ $font-family: 'Montserrat', sans-serif;
       }
     }
     .hover-btn-container {
-      height: 60px; // Altura menor para el contenedor del botón
+      height: 60px;
       .btn-details {
         height: 40px;
         font-size: 12px;
@@ -408,7 +402,7 @@ $font-family: 'Montserrat', sans-serif;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap; // Para que en móvil no se amontone
+  flex-wrap: wrap;
   gap: 20px;
   padding: 0 10px 20px 10px;
   border-bottom: 1px solid #eee;
@@ -423,7 +417,7 @@ $font-family: 'Montserrat', sans-serif;
   .results-controls {
     display: flex;
     align-items: center;
-    gap: 30px; // Espacio entre el select y el "Mostrando"
+    gap: 30px;
 
     .sort-wrapper {
       display: flex;
@@ -458,9 +452,8 @@ $font-family: 'Montserrat', sans-serif;
   }
 }
 
-/* --- MENSAJE DE NO RESULTADOS --- */
 .no-results-container {
-  grid-column: 1 / -1; // Ocupa todo el ancho del grid
+  grid-column: 1 / -1;
   padding: 80px 0;
   display: flex;
   justify-content: center;
@@ -508,7 +501,7 @@ $font-family: 'Montserrat', sans-serif;
 }
 @media (max-width: 768px) {
   .no-results-container {
-    padding: 50px 0; // Padding vertical reducido
+    padding: 50px 0;
     .no-results-content {
       i {
         font-size: 50px;
@@ -526,11 +519,10 @@ $font-family: 'Montserrat', sans-serif;
     }
   }
   .container-mx {
-    padding: 0 15px; // Padding reducido para pantallas pequeñas
+    padding: 0 15px;
   }
 }
 
-/* --- BOTÓN CARGAR MÁS --- */
 .load-more-section {
   display: flex;
   justify-content: center;
@@ -559,7 +551,7 @@ $font-family: 'Montserrat', sans-serif;
 }
 @media (max-width: 768px) {
   .load-more-section {
-    margin-top: 50px; // Margen reducido
+    margin-top: 50px;
     .btn-load-more {
       padding: 15px 40px;
       font-size: 13px;

@@ -32,7 +32,6 @@
 
         <div class="user-stats">
           <div class="stat-item">
-            
             <span class="stat-label">Miembro desde</span>
             <span class="stat-value">
               {{ profileData?.createdAt | date: 'dd/MM/yyyy' }}
@@ -64,12 +63,14 @@
             </p>
           </div>
           <div class="danger-action">
-            <!-- Botón inicial -->
-            <button *ngIf="!isConfirmingDelete" class="btn-delete-account" (click)="onDeleteAccount()">
+            <button
+              *ngIf="!isConfirmingDelete"
+              class="btn-delete-account"
+              (click)="onDeleteAccount()"
+            >
               <span>Eliminar mi cuenta</span>
             </button>
 
-            <!-- Grupo de confirmación -->
             <div *ngIf="isConfirmingDelete" class="confirm-delete-group">
               <button class="btn-delete-account confirming" (click)="onDeleteAccount()">
                 <span>Confirmar eliminación</span>

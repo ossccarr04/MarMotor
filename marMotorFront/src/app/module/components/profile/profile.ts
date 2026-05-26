@@ -33,16 +33,13 @@ export class Profile implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   ngOnInit(): void {
-    // 1. Carga inicial: Si el usuario ya está logueado al llegar a la página.
     if (this.authService.isLoggedIn()) {
       this.loadFavorites();
       this.loadProfile();
     }
 
-    // 2. Escucha de cambios: Reacciona si el estado de autenticación cambia (ej. logout).
     this.authService.authStatus$.pipe(takeUntil(this.destroy$)).subscribe((isLoggedIn) => {
       if (!isLoggedIn) {
-        // Si el usuario cierra sesión, limpiamos los datos y lo redirigimos.
         this.profileData = null;
         this.favoriteCars = [];
         this.router.navigate(['/login']);
@@ -62,7 +59,10 @@ export class Profile implements OnInit, OnDestroy {
     this.userService.getMyProfile().subscribe({
       next: (data) => {
         this.profileData = data;
-        if (this.profileData && (this.profileData.contacts === undefined || this.profileData.contacts === null)) {
+        if (
+          this.profileData &&
+          (this.profileData.contacts === undefined || this.profileData.contacts === null)
+        ) {
           this.profileData.contacts = 0;
         }
         this.cdr.detectChanges();
@@ -96,17 +96,15 @@ export class Profile implements OnInit, OnDestroy {
     // Guardamos el estado original por si la petición falla
     const originalFavoriteCars = [...this.favoriteCars];
 
-    // 1. Actualización optimista: quitamos el coche de la lista local inmediatamente
     this.favoriteCars = this.favoriteCars.filter((car) => car.id !== carId);
 
     // 2. Llamamos al servicio
     this.favoriteService.removeFavorite(carId).subscribe({
-      // En caso de éxito, no es necesario hacer nada porque la UI ya está actualizada.
       next: () => {},
       // 3. En caso de error, revertimos la UI a su estado original y notificamos
       error: (err) => {
         console.error('No se pudo eliminar de favoritos', err);
-        this.favoriteCars = originalFavoriteCars; // Revertimos
+        this.favoriteCars = originalFavoriteCars;
         this.toast.error(
           'No se pudo eliminar el vehículo de favoritos. Inténtalo de nuevo.',
           'Error',
@@ -116,17 +114,15 @@ export class Profile implements OnInit, OnDestroy {
   }
 
   onDeleteAccount() {
-    // Primer clic: entra en modo de confirmación
     if (!this.isConfirmingDelete) {
       this.isConfirmingDelete = true;
-      // Revierte el botón automáticamente después de 4 segundos
+
       this.deleteConfirmTimeout = setTimeout(() => {
         this.zone.run(() => this.cancelDelete());
       }, 3000);
       return;
     }
 
-    // Segundo clic (confirmación): procede a eliminar
     if (this.deleteConfirmTimeout) {
       clearTimeout(this.deleteConfirmTimeout);
     }
@@ -140,7 +136,7 @@ export class Profile implements OnInit, OnDestroy {
       error: (err) => {
         console.error('Error al eliminar cuenta', err);
         this.toast.error('Hubo un problema al intentar eliminar tu cuenta.', 'Error');
-        // Resetea el botón en caso de error
+
         this.isConfirmingDelete = false;
       },
     });
