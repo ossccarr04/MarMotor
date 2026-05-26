@@ -566,6 +566,8 @@ $font-family: 'Montserrat', sans-serif;
   overflow-x: auto;
   touch-action: pan-x;
   user-select: none;
+  overflow-x: auto;
+  touch-action: pan-y pan-x;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;

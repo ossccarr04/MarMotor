@@ -390,10 +390,13 @@ export class DetailCar implements OnInit, OnDestroy {
 
     const target = e.target as HTMLElement;
 
+    // Ampliamos un poco la zona de "agarre" por si en móvil es difícil acertar a la primera
     const isLine = target.closest('.timeline-line');
     const isNodePoint = target.closest('.node-point');
+    const isNodeIcon = target.closest('.node-icon'); // También permitimos arrastrar desde los iconos
 
-    if (!isLine && !isNodePoint) {
+    // Si toca cualquier parte blanca (que no sea línea, punto o icono), salimos.
+    if (!isLine && !isNodePoint && !isNodeIcon) {
       return;
     }
 
@@ -411,28 +414,26 @@ export class DetailCar implements OnInit, OnDestroy {
 
   onTimelineMouseMove(e: MouseEvent) {
     if (!this.isDraggingTimeline || !this.timelineContainer) return;
+
     e.preventDefault();
 
     const el = this.timelineContainer.nativeElement;
     const x = e.pageX - el.offsetLeft;
     const walk = (x - this.startXTimeline) * 1.5;
-
-    const prevScrollLeft = el.scrollLeft;
     el.scrollLeft = this.scrollLeftStartTimeline - walk;
-    this.velocityTimeline = el.scrollLeft - prevScrollLeft;
   }
 
   onTimelineMouseUp() {
-    if (!this.isDraggingTimeline || !this.timelineContainer) return;
     this.isDraggingTimeline = false;
-    const el = this.timelineContainer.nativeElement;
-    el.style.cursor = 'grab';
-    this.applyTimelineInertia();
+    if (this.timelineContainer) {
+      this.timelineContainer.nativeElement.style.cursor = 'grab';
+    }
   }
 
   onTimelineMouseLeave() {
-    if (this.isDraggingTimeline) {
-      this.onTimelineMouseUp();
+    this.isDraggingTimeline = false;
+    if (this.timelineContainer) {
+      this.timelineContainer.nativeElement.style.cursor = 'default';
     }
   }
 
