@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// Servicio de lógica de negocio que recupera del repositorio las carrocerías con coches en stock o vendidos y las transforma en objetos limpios (DTO) para enviar a la web.
 @Service
 public class BodyTypeService {
     @Autowired

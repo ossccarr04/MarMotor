@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// Endpoint que devuelve a la web la lista de carrocerías activas, filtrando por coches disponibles o vendidos.
 @RestController
 @RequestMapping("/api/body-types")
 @CrossOrigin(origins = "https://marmotor.vercel.app")
 public class BodyTypeController {
+
     @Autowired
     private BodyTypeService bodyTypeService;
 

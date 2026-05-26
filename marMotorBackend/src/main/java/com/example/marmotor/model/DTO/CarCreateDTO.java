@@ -7,7 +7,6 @@ import java.util.List;
 
 @Data
 public class CarCreateDTO {
-    //Datos basicos
 
     private String model;
     private Integer year;
@@ -20,16 +19,13 @@ public class CarCreateDTO {
     private String badgeType;
     private String label;
 
-    // Cambiamos IDs por Names para la lógica de "Buscar o Crear"
     private String brandName;
     private String fuelTypeName;
     private String bodyTypeName;
 
-    // Campos para CarDetail (La parte de abajo del formulario)
     private String color;
     private String description;
 
-    // Listas dinámicas
     private List<String> features; // ["Techo solar", "Asientos cuero"...]
     private List<HistoryEventDTO> history; // Lista de objetos del historial
     private List<String> existingImages;

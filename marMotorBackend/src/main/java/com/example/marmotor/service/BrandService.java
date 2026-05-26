@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+// Servicio que gestiona las marcas, controlando el filtrado por stock (disponibles/vendidas), su actualización y la validación de seguridad que impide borrar marcas si tienen coches asignados.
 @Service
 public class BrandService {
 

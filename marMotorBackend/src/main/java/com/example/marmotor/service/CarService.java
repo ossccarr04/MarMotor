@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+// Servicio central del sistema que gestiona el inventario de coches, controlando las consultas con filtros complejos, el mapeo de entidades a DTOs y el CRUD completo con sincronización de imágenes en Cloudinary.
 @Service
 public class CarService {
 
@@ -42,9 +43,7 @@ public class CarService {
     @Autowired
     private BrandService brandService;
 
-    /* ==========================================================================
-       MÉTODOS DE CONSULTA
-       ========================================================================== */
+    /*  MÉTODOS DE CONSULTA*/
 
     public List<CarDTO> getAllCars() {
         return carRepository.findAll().stream()
@@ -79,9 +78,7 @@ public class CarService {
                 .collect(Collectors.toList());
     }
 
-    /* ==========================================================================
-       OPERACIONES DE PERSISTENCIA (CREATE / UPDATE / DELETE)
-       ========================================================================== */
+    /* OPERACIONES DE PERSISTENCIA (CREATE / UPDATE / DELETE)*/
 
     @Transactional
     public CarDTO createCarWithImages(CarCreateDTO dto, MultipartFile[] images) throws IOException {
@@ -92,7 +89,7 @@ public class CarService {
             car.setStatus(Status.AVAILABLE);
         }
 
-        // 1. Subida de imágenes inicial
+        //Subida de imágenes inicial
         if (images != null && images.length > 0) {
             List<CarImage> carImages = new ArrayList<>();
             for (int i = 0; i < images.length; i++) {
@@ -108,14 +105,13 @@ public class CarService {
             car.setImages(carImages);
         }
 
-        // 2. Crear CarDetail y Equipamiento
         CarDetail detail = new CarDetail();
         detail.setColor(dto.getColor());
         detail.setDescription(dto.getDescription());
         detail.setFeatures(dto.getFeatures());
         detail.setCar(car);
 
-        // 3. Mapear Historial (Usando FontAwesome Class)
+        // Mapear Historial (Usando FontAwesome Class)
         if (dto.getHistory() != null) {
             List<HistoryEvent> historyEvents = dto.getHistory().stream().map(hDto -> {
                 HistoryEvent event = new HistoryEvent();
@@ -143,10 +139,9 @@ public class CarService {
     @Transactional
     public Optional<CarDTO> updateCar(Long id, CarCreateDTO dto, MultipartFile[] images) throws IOException {
         return carRepository.findById(id).map(car -> {
-            // 1. Mapear datos básicos
+            // Mapear datos básicos
             mapDtoToEntity(dto, car);
 
-            // 2. Actualizar CarDetail e Historial
             CarDetail detail = car.getDetail();
             if (detail == null) {
                 detail = new CarDetail();
@@ -176,7 +171,7 @@ public class CarService {
             }
             car.setDetail(detail);
 
-            // 3. Gestión de imágenes (Sincronización Cloudinary)
+            //Gestión de imágenes (Sincronización Cloudinary)
             List<CarImage> aBorrar = car.getImages().stream()
                     .filter(img -> dto.getExistingImages() == null || !dto.getExistingImages().contains(img.getUrl()))
                     .collect(Collectors.toList());
@@ -193,7 +188,7 @@ public class CarService {
 
             carRepository.saveAndFlush(car); // Sincroniza borrados antes de añadir nuevas
 
-            // 4. Añadir fotos nuevas
+            //Añadir fotos nuevas
             if (images != null && images.length > 0) {
                 for (int i = 0; i < images.length; i++) {
                     if (images[i] != null && !images[i].isEmpty()) {
@@ -237,9 +232,7 @@ public class CarService {
 
     }
 
-    /* ==========================================================================
-       LÓGICA DE BÚSQUEDA Y FILTRADO
-       ========================================================================== */
+    /*LÓGICA DE BÚSQUEDA Y FILTRADO*/
 
     public List<CarDTO> searchCars(List<String> brands, List<String> fuelTypes, List<String> bodyTypes, String maxPrice) {
         return carRepository.findAll().stream()
@@ -260,9 +253,7 @@ public class CarService {
                 .collect(Collectors.toList());
     }
 
-    /* ==========================================================================
-       MÉTODOS AUXILIARES DE CONVERSIÓN (ENTITY <-> DTO)
-       ========================================================================== */
+    /* MÉTODOS AUXILIARES DE CONVERSIÓN (ENTITY <-> DTO)*/
 
     private void mapDtoToEntity(CarCreateDTO dto, Car car) {
         car.setModel(dto.getModel());

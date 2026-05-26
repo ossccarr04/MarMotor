@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+// Gestor global de excepciones que intercepta los errores del backend y los devuelve a la web en un formato JSON ordenado y limpio.
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

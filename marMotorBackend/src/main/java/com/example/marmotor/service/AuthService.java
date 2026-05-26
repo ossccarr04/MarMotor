@@ -44,7 +44,7 @@ public class AuthService implements UserDetailsService {
     @Autowired
     private PasswordEncoderConfig passwordEncoderConfig;
 
-    // 1. Inyectamos los nuevos servicios
+    // Inyectamos los nuevos servicios
     @Autowired
     private LoginAttemptService loginAttemptService;
 
@@ -105,7 +105,7 @@ public class AuthService implements UserDetailsService {
             return new AuthResponse(token, user.getEmail(), user.getRole().name());
 
         } catch (BadCredentialsException e) {
-            // 6. Si el login falla, registramos el intento fallido
+            // Si el login falla, registramos el intento fallido
             loginAttemptService.loginFailed(ip);
             // Volvemos a lanzar la excepción para que Spring Security devuelva un 401/403
             throw e;

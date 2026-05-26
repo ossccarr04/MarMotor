@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// Servicio de lógica de negocio que obtiene del repositorio los tipos de motorización (Gasolina, Diésel, etc.) según su stock y los convierte a DTO para consumo de la web.
 @Service
 public class FuelTypeService {
     @Autowired

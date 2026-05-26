@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// Controlador protegido que gestiona la lista de favoritos de cada usuario autenticado, permitiendo listar sus coches guardados, añadir nuevos o eliminarlos.
 @RestController
 @RequestMapping("/api/users/me/favorites")
 @CrossOrigin(origins = "https://marmotor.vercel.app")

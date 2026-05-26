@@ -2,8 +2,6 @@ package com.example.marmotor.controller;
 
 import com.example.marmotor.model.DTO.ChangePasswordRequest;
 import com.example.marmotor.model.DTO.UserDTO;
-import com.example.marmotor.model.entity.User;
-import com.example.marmotor.service.AuthService; // Importar AuthService
 import com.example.marmotor.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+// Controlador de usuarios que gestiona el perfil privado, permitiendo al usuario autenticado consultar sus datos, cambiar la contraseña y dar de baja su propia cuenta.
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin(origins = "https://marmotor.vercel.app")

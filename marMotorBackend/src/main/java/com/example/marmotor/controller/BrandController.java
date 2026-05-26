@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// Controlador que gestiona el CRUD de marcas (listar todas, listar vendidas, crear, editar y borrar).
 @RestController
 @RequestMapping("/api/brands")
 @CrossOrigin(origins = "https://marmotor.vercel.app")

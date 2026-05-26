@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+// Servicio que gestiona las imágenes de los coches, permitiendo guardarlas, asignarlas a un vehículo, eliminarlas y alternar cuál es la foto principal mediante una transacción.
 @Service
 public class CarImageService {
 

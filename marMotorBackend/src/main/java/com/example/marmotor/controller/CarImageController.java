@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+// Controlador  que gestiona la lista de favoritos de cada usuario autenticado, permitiendo listar sus coches guardados, añadir nuevos o eliminarlos.
 @RestController
 @RequestMapping("/api/images")
 @CrossOrigin(origins = "https://marmotor.vercel.app")
