@@ -44,7 +44,7 @@
           <h3>Emails de Contacto</h3>
           <div class="contact-cards-grid">
             @for (email of emailContact; track email) {
-              <a href="mailto:{{ email }}" class="contact-card">
+              <a href="mailto:{{ email }}" class="contact-card" (click)="abrirYCopiarCorreo(email)">
                 <div class="icon-wrapper"><i class="fa-solid fa-envelope"></i></div>
                 <div class="card-details">
                   <span class="card-label">Email:</span>

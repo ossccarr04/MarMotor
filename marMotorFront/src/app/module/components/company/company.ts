@@ -10,13 +10,16 @@ import { environment } from '../../../../environments/environment.prod';
   styleUrl: './company.scss',
 })
 export class Company {
-
-  emailContact: String[] = []
-  numberContact: String[] = []
-
+  emailContact: String[] = [];
+  numberContact: String[] = [];
 
   ngOnInit(): void {
     this.emailContact = environment.EMAIL_CONTACT;
-    this.numberContact= environment.NUMBER_CONTACT;
+    this.numberContact = environment.NUMBER_CONTACT;
+  }
+
+  abrirYCopiarCorreo(email: String) {
+    navigator.clipboard.writeText(email.toString());
+    window.location.href = `mailto:${email}`;
   }
 }
