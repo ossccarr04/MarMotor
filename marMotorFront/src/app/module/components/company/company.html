@@ -1,33 +1,30 @@
 <div class="company-page-wrapper">
   <div class="container-mx">
-    
     <div class="page-header">
       <h1>Sobre MarMotor</h1>
       <div class="header-divider"></div>
     </div>
 
     <div class="company-content-grid">
-      
       <section class="company-info-section">
         <h2><i class="fa-solid fa-book-open"></i> Nuestra Historia y Compromiso</h2>
-        
+
         <div class="text-content">
           <p>
-            Nuestra empresa surge de la pasión por el mundo del automóvil de sus integrantes, 
+            Nuestra empresa surge de la pasión por el mundo del automóvil de sus integrantes,
             personas para los que el automóvil no es sólo un medio de transporte.
           </p>
           <p>
-            Fue creada en enero de 2026 después de varios años de experiencia de sus 
-            fundadores en el mundo del automóvil, tanto en vehículos históricos como en modelos 
-            más actuales.
+            Fue creada en enero de 2026 después de varios años de experiencia de sus fundadores en
+            el mundo del automóvil, tanto en vehículos históricos como en modelos más actuales.
           </p>
           <p>
-            Gran experiencia en todo tipo de trámites administrativos relacionados con la gestión 
+            Gran experiencia en todo tipo de trámites administrativos relacionados con la gestión
             del automóvil, así como en mecánica, electricidad y pintura.
           </p>
           <p>
-            Su objetivo es la satisfacción del cliente, asesorando y ofreciendo a los compradores 
-            vehículos seleccionados y revisados para que su experiencia en la compra sea lo más 
+            Su objetivo es la satisfacción del cliente, asesorando y ofreciendo a los compradores
+            vehículos seleccionados y revisados para que su experiencia en la compra sea lo más
             gratificante posible.
           </p>
         </div>
@@ -42,16 +39,16 @@
 
       <section class="contact-and-form-section">
         <h2><i class="fa-solid fa-headset"></i> Contáctanos</h2>
-        
+
         <div class="contact-group">
           <h3>Emails de Contacto</h3>
           <div class="contact-cards-grid">
-            @for(email of emailContact; track email) {
-              <a href='mailto:{{email}}' class="contact-card" target="_blank">
+            @for (email of emailContact; track email) {
+              <a [href]="'mailto:' + email" class="contact-card">
                 <div class="icon-wrapper"><i class="fa-solid fa-envelope"></i></div>
                 <div class="card-details">
                   <span class="card-label">Email:</span>
-                  <span class="card-value">{{email}}</span>
+                  <span class="card-value">{{ email }}</span>
                 </div>
               </a>
             }
@@ -61,20 +58,18 @@
         <div class="contact-group">
           <h3>Teléfonos de Contacto</h3>
           <div class="contact-cards-grid">
-            @for(number of numberContact; track number) {
-              <a href="tel:{{number}}" class="contact-card">
+            @for (number of numberContact; track number) {
+              <a href="tel:{{ number }}" class="contact-card">
                 <div class="icon-wrapper"><i class="fa-solid fa-phone"></i></div>
                 <div class="card-details">
                   <span class="card-label">Teléfono:</span>
-                  <span class="card-value">{{number}}</span>
+                  <span class="card-value">{{ number }}</span>
                 </div>
               </a>
             }
           </div>
         </div>
-
       </section>
-
     </div>
   </div>
 </div>
