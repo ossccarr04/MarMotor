@@ -6,8 +6,10 @@ services:
     environment:
       # MySQL creará esta base de datos al iniciar
       - MYSQL_DATABASE=marmotor_db
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
       # Usamos la contraseña de tu .env
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}
     ports:
       - "3306:3306"
     volumes:
