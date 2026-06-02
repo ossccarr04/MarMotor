@@ -36,7 +36,7 @@ La aplicación se encuentra desplegada y operativa en los siguientes entornos:
 
 | Componente | Plataforma | URL de Acceso |
 | :--- | :--- | :--- |
-| **Frontend** | Vercel | `https://marmotor26.vercel.app` |
+| **Frontend** | Vercel | `https://marmotor.vercel.app` |
 | **API Backend** | Render | `https://marmotor.onrender.com` |
 | **Base de Datos** | Aiven | MySQL 8.0 Cloud |
 
